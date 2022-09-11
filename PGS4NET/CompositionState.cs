@@ -10,12 +10,10 @@
 
 namespace PGS4NET
 {
-    public abstract class Segment
+    public enum CompositionState
     {
-        public uint PTS
-        { get; set; }
-
-        public uint DTS
-        { get; set; }
+        EpochStart,
+        AcquisitionPoint,
+        Normal,
     }
 }
