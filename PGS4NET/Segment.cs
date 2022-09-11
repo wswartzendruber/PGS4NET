@@ -8,14 +8,13 @@
  * SPDX-License-Identifier: MPL-2.0
  */
 
-namespace PGS4NET
-{
-    public abstract class Segment
-    {
-        public uint PTS
-        { get; set; }
+namespace PGS4NET;
 
-        public uint DTS
-        { get; set; }
-    }
+public abstract class Segment
+{
+    public uint PTS
+    { get; set; }
+
+    public uint DTS
+    { get; set; }
 }

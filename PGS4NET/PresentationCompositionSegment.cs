@@ -8,31 +8,30 @@
  * SPDX-License-Identifier: MPL-2.0
  */
 
+namespace PGS4NET;
+
 using System.Collections.Generic;
 
-namespace PGS4NET
+public class PresentationCompositionSegment : Segment
 {
-    public class PresentationCompositionSegment : Segment
-    {
-        public ushort Width
-        { get; set; }
+    public ushort Width
+    { get; set; }
 
-        public ushort Height
-        { get; set; }
+    public ushort Height
+    { get; set; }
 
-        public byte FrameRate
-        { get; set; }
+    public byte FrameRate
+    { get; set; }
 
-        public ushort Number
-        { get; set; }
+    public ushort Number
+    { get; set; }
 
-        public CompositionState State
-        { get; set; }
+    public CompositionState State
+    { get; set; }
 
-        public byte? PaletteUpdateID
-        { get; set; }
+    public byte? PaletteUpdateID
+    { get; set; }
 
-        public IList<object> Objects
-        { get; set; }
-    }
+    public IList<object> Objects
+    { get; set; }
 }

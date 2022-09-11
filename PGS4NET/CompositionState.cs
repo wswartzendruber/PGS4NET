@@ -8,12 +8,11 @@
  * SPDX-License-Identifier: MPL-2.0
  */
 
-namespace PGS4NET
+namespace PGS4NET;
+
+public enum CompositionState
 {
-    public enum CompositionState
-    {
-        EpochStart,
-        AcquisitionPoint,
-        Normal,
-    }
+    EpochStart,
+    AcquisitionPoint,
+    Normal,
 }

@@ -8,18 +8,17 @@
  * SPDX-License-Identifier: MPL-2.0
  */
 
+namespace PGS4NET;
+
 using System.IO;
 
-namespace PGS4NET
+public static class StreamExtensions
 {
-    public static class StreamExtensions
+    public static Segment ReadSegment(this Stream stream)
     {
-        public static Segment ReadSegment(this Stream stream)
-        {
-            if (!stream.CanRead)
-                throw new IOException("Stream does not support reading.");
+        if (!stream.CanRead)
+            throw new IOException("Stream does not support reading.");
 
-            return null;
-        }
+        return null;
     }
 }
