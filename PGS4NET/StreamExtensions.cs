@@ -10,6 +10,7 @@
 
 namespace PGS4NET;
 
+using System.Collections.Generic;
 using System.IO;
 
 public static class StreamExtensions
@@ -35,10 +36,92 @@ public static class StreamExtensions
         {
             0x14 => null,
             0x15 => null,
-            0x16 => null,
+            0x16 => ParsePCS(stream, pts, dts),
             0x17 => null,
             0x80 => null,
             _ => throw new SegmentException("Unrecognized kind."),
+        };
+    }
+
+    private static PresentationCompositionSegment ParsePCS(Stream stream, uint pts, uint dts)
+    {
+        var width = stream.ReadUInt16BE()
+            ?? throw new IOException("EOF while reading PCS width.");
+        var height = stream.ReadUInt16BE()
+            ?? throw new IOException("EOF while reading PCS height.");
+        var frameRate = stream.ReadUInt8()
+            ?? throw new IOException("EOF while reading PCS frame rate.");
+        var compositionNumber = stream.ReadUInt16BE()
+            ?? throw new IOException("EOF while reading PCS composition number.");
+        var parsedCompositionState = stream.ReadUInt8()
+            ?? throw new IOException("EOF while reading PCS composition state.");
+        var compositionState = parsedCompositionState switch
+        {
+            0x00 => CompositionState.Normal,
+            0x40 => CompositionState.AcquisitionPoint,
+            0x80 => CompositionState.EpochStart,
+            _ => throw new SegmentException("PCS has unrecognized composition state."),
+        };
+        var parsedPaletteUpdateFlag = stream.ReadUInt8()
+            ?? throw new IOException("EOF while reading PCS palette update flag.");
+        var parsedPaletteUpdateID = stream.ReadUInt8()
+            ?? throw new IOException("EOF while reading PCS palette update ID.");
+        byte? paletteUpdateID = parsedPaletteUpdateID switch
+        {
+            0x00 => null,
+            0x80 => parsedPaletteUpdateID,
+            _ => throw new SegmentException("PCS has unrecognized palette update flag."),
+        };
+        var compositionObjectCount = stream.ReadUInt8()
+            ?? throw new IOException("EOF while reading PCS composition count.");
+        var compositionObjects = new List<CompositionObject>();
+
+        for (int i = 0; i < compositionObjectCount; i++)
+        {
+            var objectID = stream.ReadUInt16BE()
+                ?? throw new IOException("EOF while reading PCS composition object ID.");
+            var windowID = stream.ReadUInt8()
+                ?? throw new IOException("EOF while reading PCS composition window ID.");
+            var flags = stream.ReadUInt8()
+                ?? throw new IOException("EOF while reading PCS composition flags.");
+            var x = stream.ReadUInt16BE()
+                ?? throw new IOException("EOF while reading PCS composition X value.");
+            var y = stream.ReadUInt16BE()
+                ?? throw new IOException("EOF while reading PCS composition Y value.");
+            var forced = (flags & 0x40) != 0;
+            Crop? croppedDimensions = ((flags & 0x80) != 0) ? new Crop {
+                x = stream.ReadUInt16BE()
+                    ?? throw new IOException("EOF while reading PCS composition crop X value."),
+                y = stream.ReadUInt16BE()
+                    ?? throw new IOException("EOF while reading PCS composition crop Y value."),
+                width = stream.ReadUInt16BE()
+                    ?? throw new IOException("EOF while reading PCS composition crop width."),
+                height = stream.ReadUInt16BE()
+                    ?? throw new IOException("EOF while reading PCS composition crop height."),
+            } : null;
+
+            compositionObjects.Add(
+                new CompositionObject {
+                    ObjectID = objectID,
+                    WindowID = windowID,
+                    X = x,
+                    Y = y,
+                    Forced = forced,
+                    CroppedDimensions = croppedDimensions,
+                }
+            );
+        }
+
+        return new PresentationCompositionSegment {
+            PTS = pts,
+            DTS = dts,
+            Width = width,
+            Height = height,
+            FrameRate = frameRate,
+            Number = compositionNumber,
+            State = compositionState,
+            PaletteUpdateID = paletteUpdateID,
+            Objects = compositionObjects,
         };
     }
 

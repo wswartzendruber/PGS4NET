@@ -14,9 +14,9 @@ using System.Collections.Generic;
 
 public class PresentationCompositionSegment : Segment
 {
-    PresentationCompositionSegment()
+    public PresentationCompositionSegment()
     {
-        Objects = new List<object>();
+        Objects = new List<CompositionObject>();
     }
 
     public ushort Width
@@ -37,6 +37,6 @@ public class PresentationCompositionSegment : Segment
     public byte? PaletteUpdateID
     { get; set; }
 
-    public IList<object> Objects
+    public IList<CompositionObject> Objects
     { get; set; }
 }
