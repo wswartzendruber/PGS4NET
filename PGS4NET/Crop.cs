@@ -12,11 +12,11 @@ namespace PGS4NET;
 
 public struct Crop
 {
-    public ushort x;
+    public ushort X;
 
-    public ushort y;
+    public ushort Y;
 
-    public ushort width;
+    public ushort Width;
 
-    public ushort height;
+    public ushort Height;
 }

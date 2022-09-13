@@ -90,13 +90,13 @@ public static class StreamExtensions
                 ?? throw new IOException("EOF while reading PCS composition Y value.");
             var forced = (flags & 0x40) != 0;
             Crop? croppedDimensions = ((flags & 0x80) != 0) ? new Crop {
-                x = stream.ReadUInt16BE()
+                X = stream.ReadUInt16BE()
                     ?? throw new IOException("EOF while reading PCS composition crop X value."),
-                y = stream.ReadUInt16BE()
+                Y = stream.ReadUInt16BE()
                     ?? throw new IOException("EOF while reading PCS composition crop Y value."),
-                width = stream.ReadUInt16BE()
+                Width = stream.ReadUInt16BE()
                     ?? throw new IOException("EOF while reading PCS composition crop width."),
-                height = stream.ReadUInt16BE()
+                Height = stream.ReadUInt16BE()
                     ?? throw new IOException("EOF while reading PCS composition crop height."),
             } : null;
 
