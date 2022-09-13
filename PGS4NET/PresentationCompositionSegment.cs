@@ -14,6 +14,11 @@ using System.Collections.Generic;
 
 public class PresentationCompositionSegment : Segment
 {
+    PresentationCompositionSegment()
+    {
+        Objects = new List<object>();
+    }
+
     public ushort Width
     { get; set; }
 

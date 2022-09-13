@@ -16,9 +16,78 @@ public static class StreamExtensions
 {
     public static Segment ReadSegment(this Stream stream)
     {
-        if (!stream.CanRead)
-            throw new IOException("Stream does not support reading.");
+        var magicNumber = stream.ReadUInt16BE()
+            ?? throw new IOException("EOF while reading magic number.");
 
-        return null;
+        if (magicNumber != 0x5047)
+            throw new SegmentException("Unrecognized magic number.");
+
+        var pts = stream.ReadUInt32BE()
+            ?? throw new IOException("EOF while reading segment PTS.");
+        var dts = stream.ReadUInt32BE()
+            ?? throw new IOException("EOF while reading segment DTS.");
+        var kind = stream.ReadUInt8()
+            ?? throw new IOException("EOF while reading segment kind.");
+        var size = stream.ReadUInt16BE()
+            ?? throw new IOException("EOF while reading segment size.");
+
+        return kind switch
+        {
+            0x14 => null,
+            0x15 => null,
+            0x16 => null,
+            0x17 => null,
+            0x80 => null,
+            _ => throw new SegmentException("Unrecognized kind."),
+        };
+    }
+
+    private static byte? ReadUInt8(this Stream stream)
+    {
+        var byteRead = stream.ReadByte();
+
+        return (byteRead >= 0) ? (byte)byteRead : null;
+    }
+
+    private static ushort? ReadUInt16BE(this Stream stream)
+    {
+        var buffer = new byte[2];
+        var bytesRead = stream.Read(buffer, 0, 2);
+
+        return (bytesRead == 2) ? (ushort)
+        (
+            buffer[0] << 8
+            | buffer[1]
+        )
+        : null;
+    }
+
+    private static uint? ReadUInt24BE(this Stream stream)
+    {
+        var buffer = new byte[3];
+        var bytesRead = stream.Read(buffer, 0, 3);
+
+        return (bytesRead == 3) ? (ushort)
+        (
+            buffer[0] << 16
+            | buffer[1] << 8
+            | buffer[2]
+        )
+        : null;
+    }
+
+    private static uint? ReadUInt32BE(this Stream stream)
+    {
+        var buffer = new byte[4];
+        var bytesRead = stream.Read(buffer, 0, 4);
+
+        return (bytesRead == 4) ? (ushort)
+        (
+            buffer[0] << 24
+            | buffer[1] << 16
+            | buffer[2] << 8
+            | buffer[3]
+        )
+        : null;
     }
 }
