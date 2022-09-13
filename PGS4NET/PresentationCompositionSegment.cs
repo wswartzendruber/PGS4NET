@@ -19,24 +19,17 @@ public class PresentationCompositionSegment : Segment
         Objects = new List<CompositionObject>();
     }
 
-    public ushort Width
-    { get; set; }
+    public ushort Width;
 
-    public ushort Height
-    { get; set; }
+    public ushort Height;
 
-    public byte FrameRate
-    { get; set; }
+    public byte FrameRate;
 
-    public ushort Number
-    { get; set; }
+    public ushort Number;
 
-    public CompositionState State
-    { get; set; }
+    public CompositionState State;
 
-    public byte? PaletteUpdateID
-    { get; set; }
+    public byte? PaletteUpdateID;
 
-    public IList<CompositionObject> Objects
-    { get; set; }
+    public IList<CompositionObject> Objects;
 }

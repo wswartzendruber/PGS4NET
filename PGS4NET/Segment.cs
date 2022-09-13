@@ -12,9 +12,7 @@ namespace PGS4NET;
 
 public abstract class Segment
 {
-    public uint PTS
-    { get; set; }
+    public uint PTS;
 
-    public uint DTS
-    { get; set; }
+    public uint DTS;
 }
