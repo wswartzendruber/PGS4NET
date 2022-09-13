@@ -150,7 +150,7 @@ public static class StreamExtensions
         var buffer = new byte[3];
         var bytesRead = stream.Read(buffer, 0, 3);
 
-        return (bytesRead == 3) ? (ushort)
+        return (bytesRead == 3) ? (uint)
         (
             buffer[0] << 16
             | buffer[1] << 8
@@ -164,7 +164,7 @@ public static class StreamExtensions
         var buffer = new byte[4];
         var bytesRead = stream.Read(buffer, 0, 4);
 
-        return (bytesRead == 4) ? (ushort)
+        return (bytesRead == 4) ? (uint)
         (
             buffer[0] << 24
             | buffer[1] << 16
