@@ -24,24 +24,24 @@ public class PCSReadTests
         {
             var segment = stream.ReadSegment();
 
-            Assert.True(segment.PTS == 0x01234567, "Unexpected DTS.");
-            Assert.True(segment.DTS == 0x12345678, "Unexpected DTS.");
+            Assert.True(segment.PTS == 0x01234567);
+            Assert.True(segment.DTS == 0x12345678);
 
             if (segment is PresentationCompositionSegment)
             {
                 var pcs = (PresentationCompositionSegment)segment;
 
-                Assert.True(pcs.Width == 0x2143, "Unexpected PCS width.");
-                Assert.True(pcs.Height == 0x6587, "Unexpected PCS height.");
-                Assert.True(pcs.FrameRate == 0x10, "Unexpected PCS frame rate.");
-                Assert.True(pcs.Number == 0x6543, "Unexpected PCS number.");
-                Assert.True(pcs.State == CompositionState.EpochStart, "Unexpected PCS state.");
-                Assert.True(pcs.PaletteUpdateID == null, "Unexpected PCS palette update ID.");
-                Assert.True(pcs.Objects.Count == 0, "Unexpected PCS object count.");
+                Assert.True(pcs.Width == 0x2143);
+                Assert.True(pcs.Height == 0x6587);
+                Assert.True(pcs.FrameRate == 0x10);
+                Assert.True(pcs.Number == 0x6543);
+                Assert.True(pcs.State == CompositionState.EpochStart);
+                Assert.True(pcs.PaletteUpdateID == null);
+                Assert.True(pcs.Objects.Count == 0);
             }
             else
             {
-                Assert.True(false, "Returned segment is not a PCS.");
+                Assert.True(false);
             }
         }
     }
@@ -53,24 +53,24 @@ public class PCSReadTests
         {
             var segment = stream.ReadSegment();
 
-            Assert.True(segment.PTS == 0x01234567, "Unexpected DTS.");
-            Assert.True(segment.DTS == 0x12345678, "Unexpected DTS.");
+            Assert.True(segment.PTS == 0x01234567);
+            Assert.True(segment.DTS == 0x12345678);
 
             if (segment is PresentationCompositionSegment)
             {
                 var pcs = (PresentationCompositionSegment)segment;
 
-                Assert.True(pcs.Width == 0x2143, "Unexpected PCS width.");
-                Assert.True(pcs.Height == 0x6587, "Unexpected PCS height.");
-                Assert.True(pcs.FrameRate == 0x10, "Unexpected PCS frame rate.");
-                Assert.True(pcs.Number == 0x6543, "Unexpected PCS number.");
-                Assert.True(pcs.State == CompositionState.AcquisitionPoint, "Unexpected PCS state.");
-                Assert.True(pcs.PaletteUpdateID == null, "Unexpected PCS palette update ID.");
-                Assert.True(pcs.Objects.Count == 0, "Unexpected PCS object count.");
+                Assert.True(pcs.Width == 0x2143);
+                Assert.True(pcs.Height == 0x6587);
+                Assert.True(pcs.FrameRate == 0x10);
+                Assert.True(pcs.Number == 0x6543);
+                Assert.True(pcs.State == CompositionState.AcquisitionPoint);
+                Assert.True(pcs.PaletteUpdateID == null);
+                Assert.True(pcs.Objects.Count == 0);
             }
             else
             {
-                Assert.True(false, "Returned segment is not a PCS.");
+                Assert.True(false);
             }
         }
     }
@@ -82,24 +82,24 @@ public class PCSReadTests
         {
             var segment = stream.ReadSegment();
 
-            Assert.True(segment.PTS == 0x01234567, "Unexpected DTS.");
-            Assert.True(segment.DTS == 0x12345678, "Unexpected DTS.");
+            Assert.True(segment.PTS == 0x01234567);
+            Assert.True(segment.DTS == 0x12345678);
 
             if (segment is PresentationCompositionSegment)
             {
                 var pcs = (PresentationCompositionSegment)segment;
 
-                Assert.True(pcs.Width == 0x2143, "Unexpected PCS width.");
-                Assert.True(pcs.Height == 0x6587, "Unexpected PCS height.");
-                Assert.True(pcs.FrameRate == 0x10, "Unexpected PCS frame rate.");
-                Assert.True(pcs.Number == 0x6543, "Unexpected PCS number.");
-                Assert.True(pcs.State == CompositionState.Normal, "Unexpected PCS state.");
-                Assert.True(pcs.PaletteUpdateID == null, "Unexpected PCS palette update ID.");
-                Assert.True(pcs.Objects.Count == 0, "Unexpected PCS object count.");
+                Assert.True(pcs.Width == 0x2143);
+                Assert.True(pcs.Height == 0x6587);
+                Assert.True(pcs.FrameRate == 0x10);
+                Assert.True(pcs.Number == 0x6543);
+                Assert.True(pcs.State == CompositionState.Normal);
+                Assert.True(pcs.PaletteUpdateID == null);
+                Assert.True(pcs.Objects.Count == 0);
             }
             else
             {
-                Assert.True(false, "Returned segment is not a PCS.");
+                Assert.True(false);
             }
         }
     }
@@ -111,24 +111,97 @@ public class PCSReadTests
         {
             var segment = stream.ReadSegment();
 
-            Assert.True(segment.PTS == 0x01234567, "Unexpected DTS.");
-            Assert.True(segment.DTS == 0x12345678, "Unexpected DTS.");
+            Assert.True(segment.PTS == 0x01234567);
+            Assert.True(segment.DTS == 0x12345678);
 
             if (segment is PresentationCompositionSegment)
             {
                 var pcs = (PresentationCompositionSegment)segment;
 
-                Assert.True(pcs.Width == 0x2143, "Unexpected PCS width.");
-                Assert.True(pcs.Height == 0x6587, "Unexpected PCS height.");
-                Assert.True(pcs.FrameRate == 0x10, "Unexpected PCS frame rate.");
-                Assert.True(pcs.Number == 0x6543, "Unexpected PCS number.");
-                Assert.True(pcs.State == CompositionState.Normal, "Unexpected PCS state.");
-                Assert.True(pcs.PaletteUpdateID == 0xAB, "Unexpected PCS palette update ID.");
-                Assert.True(pcs.Objects.Count == 0, "Unexpected PCS object count.");
+                Assert.True(pcs.Width == 0x2143);
+                Assert.True(pcs.Height == 0x6587);
+                Assert.True(pcs.FrameRate == 0x10);
+                Assert.True(pcs.Number == 0x6543);
+                Assert.True(pcs.State == CompositionState.Normal);
+                Assert.True(pcs.PaletteUpdateID == 0xAB);
+                Assert.True(pcs.Objects.Count == 0);
             }
             else
             {
-                Assert.True(false, "Returned segment is not a PCS.");
+                Assert.True(false);
+            }
+        }
+    }
+
+    [Fact]
+    public void Normal_NoPaletteUpdateID_OneObjectForced()
+    {
+        using (var stream = new MemoryStream(PCS.Normal_NoPaletteUpdateID_OneObjectForced))
+        {
+            var segment = stream.ReadSegment();
+
+            Assert.True(segment.PTS == 0x01234567);
+            Assert.True(segment.DTS == 0x12345678);
+
+            if (segment is PresentationCompositionSegment)
+            {
+                var pcs = (PresentationCompositionSegment)segment;
+
+                Assert.True(pcs.Width == 0x2143);
+                Assert.True(pcs.Height == 0x6587);
+                Assert.True(pcs.FrameRate == 0x10);
+                Assert.True(pcs.Number == 0x6543);
+                Assert.True(pcs.State == CompositionState.Normal);
+                Assert.True(pcs.PaletteUpdateID == null);
+                Assert.True(pcs.Objects.Count == 1);
+                Assert.True(pcs.Objects[0].ObjectID == 0xABCD);
+                Assert.True(pcs.Objects[0].WindowID == 0xEF);
+                Assert.True(pcs.Objects[0].X == 0x1A2B);
+                Assert.True(pcs.Objects[0].Y == 0x3C4D);
+                Assert.True(pcs.Objects[0].Forced == true);
+                Assert.True(pcs.Objects[0].Crop == null);
+            }
+            else
+            {
+                Assert.True(false);
+            }
+        }
+    }
+
+    [Fact]
+    public void Normal_NoPaletteUpdateID_OneObjectCropped()
+    {
+        using (var stream = new MemoryStream(PCS.Normal_NoPaletteUpdateID_OneObjectCropped))
+        {
+            var segment = stream.ReadSegment();
+
+            Assert.True(segment.PTS == 0x01234567);
+            Assert.True(segment.DTS == 0x12345678);
+
+            if (segment is PresentationCompositionSegment)
+            {
+                var pcs = (PresentationCompositionSegment)segment;
+
+                Assert.True(pcs.Width == 0x2143);
+                Assert.True(pcs.Height == 0x6587);
+                Assert.True(pcs.FrameRate == 0x10);
+                Assert.True(pcs.Number == 0x6543);
+                Assert.True(pcs.State == CompositionState.Normal);
+                Assert.True(pcs.PaletteUpdateID == null);
+                Assert.True(pcs.Objects.Count == 1);
+                Assert.True(pcs.Objects[0].ObjectID == 0xABCD);
+                Assert.True(pcs.Objects[0].WindowID == 0xEF);
+                Assert.True(pcs.Objects[0].X == 0x1A2B);
+                Assert.True(pcs.Objects[0].Y == 0x3C4D);
+                Assert.True(pcs.Objects[0].Forced == false);
+                Assert.True(pcs.Objects[0].Crop?.X == 0xA1A2);
+                Assert.True(pcs.Objects[0].Crop?.Y == 0xA3A4);
+                Assert.True(pcs.Objects[0].Crop?.Width == 0xA5A6);
+                Assert.True(pcs.Objects[0].Crop?.Height == 0xA7A8);
+            }
+            else
+            {
+                Assert.True(false);
             }
         }
     }

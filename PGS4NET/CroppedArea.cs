@@ -10,7 +10,7 @@
 
 namespace PGS4NET;
 
-public struct Crop
+public struct CroppedArea
 {
     public ushort X;
 

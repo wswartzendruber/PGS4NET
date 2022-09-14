@@ -22,5 +22,5 @@ public struct CompositionObject
 
     public bool Forced;
 
-    public Crop? CroppedDimensions;
+    public CroppedArea? Crop;
 }
