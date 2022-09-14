@@ -131,4 +131,44 @@ internal static class PCS
         0xA5, 0xA6,             // Object 1 cropped width
         0xA7, 0xA8,             // Object 1 cropped height
     };
+
+    internal static byte[] Normal_NoPaletteUpdateID_ThreeObjectsMixed = new byte[]
+    {
+        0x50, 0x47,             // Magic number
+        0x01, 0x23, 0x45, 0x67, // PTS
+        0x12, 0x34, 0x56, 0x78, // DTS
+        0x16,                   // Type
+        0x00, 0x00,             // Size
+        0x21, 0x43,             // Width
+        0x65, 0x87,             // Height
+        0x10,                   // Frame rate
+        0x65, 0x43,             // Composition number
+        0x00,                   // Composition state
+        0x00,                   // Palette update flag
+        0x00,                   // Palette update ID
+        0x03,                   // Composition object count
+        0xAB, 0xCD,             // Object 1 object ID
+        0xEF,                   // Object 1 window ID
+        0x80,                   // Object 1 flags
+        0x1A, 0x2B,             // Object 1 X offset
+        0x3C, 0x4D,             // Object 1 Y offset
+        0xA1, 0xA2,             // Object 1 cropped X offset
+        0xA3, 0xA4,             // Object 1 cropped Y offset
+        0xA5, 0xA6,             // Object 1 cropped width
+        0xA7, 0xA8,             // Object 1 cropped height
+        0xAB, 0xCD,             // Object 2 object ID
+        0xEF,                   // Object 2 window ID
+        0x40,                   // Object 2 flags
+        0x1A, 0x2B,             // Object 2 X offset
+        0x3C, 0x4D,             // Object 2 Y offset
+        0xAB, 0xCD,             // Object 3 object ID
+        0xEF,                   // Object 3 window ID
+        0xC0,                   // Object 3 flags
+        0x1A, 0x2B,             // Object 3 X offset
+        0x3C, 0x4D,             // Object 3 Y offset
+        0xA1, 0xA2,             // Object 3 cropped X offset
+        0xA3, 0xA4,             // Object 3 cropped Y offset
+        0xA5, 0xA6,             // Object 3 cropped width
+        0xA7, 0xA8,             // Object 3 cropped height
+    };
 }
