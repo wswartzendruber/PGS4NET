@@ -66,7 +66,7 @@ public static class StreamExtensions
             ?? throw new IOException("EOF while reading PCS palette update flag.");
         var parsedPaletteUpdateID = stream.ReadUInt8()
             ?? throw new IOException("EOF while reading PCS palette update ID.");
-        byte? paletteUpdateID = parsedPaletteUpdateID switch
+        byte? paletteUpdateID = parsedPaletteUpdateFlag switch
         {
             0x00 => null,
             0x80 => parsedPaletteUpdateID,
