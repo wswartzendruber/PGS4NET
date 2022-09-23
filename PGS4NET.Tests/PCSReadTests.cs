@@ -22,7 +22,7 @@ public class PCSReadTests
     {
         using (var stream = new MemoryStream(PCS.EpochStart_NoPaletteUpdateID_NoObjects))
         {
-            var segment = Segment.Read(stream);
+            var segment = stream.ReadSegment();
 
             Assert.True(segment.PTS == 0x01234567);
             Assert.True(segment.DTS == 0x12345678);
@@ -51,7 +51,7 @@ public class PCSReadTests
     {
         using (var stream = new MemoryStream(PCS.AcquisitionPoint_NoPaletteUpdateID_NoObjects))
         {
-            var segment = Segment.Read(stream);
+            var segment = stream.ReadSegment();
 
             Assert.True(segment.PTS == 0x01234567);
             Assert.True(segment.DTS == 0x12345678);
@@ -80,7 +80,7 @@ public class PCSReadTests
     {
         using (var stream = new MemoryStream(PCS.Normal_NoPaletteUpdateID_NoObjects))
         {
-            var segment = Segment.Read(stream);
+            var segment = stream.ReadSegment();
 
             Assert.True(segment.PTS == 0x01234567);
             Assert.True(segment.DTS == 0x12345678);
@@ -109,7 +109,7 @@ public class PCSReadTests
     {
         using (var stream = new MemoryStream(PCS.Normal_PaletteUpdateID_NoObjects))
         {
-            var segment = Segment.Read(stream);
+            var segment = stream.ReadSegment();
 
             Assert.True(segment.PTS == 0x01234567);
             Assert.True(segment.DTS == 0x12345678);
@@ -138,7 +138,7 @@ public class PCSReadTests
     {
         using (var stream = new MemoryStream(PCS.Normal_NoPaletteUpdateID_OneObjectForced))
         {
-            var segment = Segment.Read(stream);
+            var segment = stream.ReadSegment();
 
             Assert.True(segment.PTS == 0x01234567);
             Assert.True(segment.DTS == 0x12345678);
@@ -173,7 +173,7 @@ public class PCSReadTests
     {
         using (var stream = new MemoryStream(PCS.Normal_NoPaletteUpdateID_OneObjectCropped))
         {
-            var segment = Segment.Read(stream);
+            var segment = stream.ReadSegment();
 
             Assert.True(segment.PTS == 0x01234567);
             Assert.True(segment.DTS == 0x12345678);
@@ -211,7 +211,7 @@ public class PCSReadTests
     {
         using (var stream = new MemoryStream(PCS.Normal_NoPaletteUpdateID_ThreeObjectsMixed))
         {
-            var segment = Segment.Read(stream);
+            var segment = stream.ReadSegment();
 
             Assert.True(segment.PTS == 0x01234567);
             Assert.True(segment.DTS == 0x12345678);

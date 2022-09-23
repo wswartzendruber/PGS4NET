@@ -11,7 +11,6 @@
 namespace PGS4NET;
 
 using System.Collections.Generic;
-using System.IO;
 
 public class PresentationCompositionSegment : Segment
 {
@@ -33,8 +32,4 @@ public class PresentationCompositionSegment : Segment
     public byte? PaletteUpdateID;
 
     public IList<CompositionObject> Objects;
-
-    public override void Write(Stream stream)
-    {
-    }
 }
