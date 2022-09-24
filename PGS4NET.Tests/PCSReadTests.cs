@@ -27,10 +27,8 @@ public class PCSReadTests
             Assert.True(segment.PTS == 0x01234567);
             Assert.True(segment.DTS == 0x12345678);
 
-            if (segment is PresentationCompositionSegment)
+            if (segment is PresentationCompositionSegment pcs)
             {
-                var pcs = (PresentationCompositionSegment)segment;
-
                 Assert.True(pcs.Width == 0x2143);
                 Assert.True(pcs.Height == 0x6587);
                 Assert.True(pcs.FrameRate == 0x10);
@@ -56,10 +54,8 @@ public class PCSReadTests
             Assert.True(segment.PTS == 0x01234567);
             Assert.True(segment.DTS == 0x12345678);
 
-            if (segment is PresentationCompositionSegment)
+            if (segment is PresentationCompositionSegment pcs)
             {
-                var pcs = (PresentationCompositionSegment)segment;
-
                 Assert.True(pcs.Width == 0x2143);
                 Assert.True(pcs.Height == 0x6587);
                 Assert.True(pcs.FrameRate == 0x10);
@@ -85,10 +81,8 @@ public class PCSReadTests
             Assert.True(segment.PTS == 0x01234567);
             Assert.True(segment.DTS == 0x12345678);
 
-            if (segment is PresentationCompositionSegment)
+            if (segment is PresentationCompositionSegment pcs)
             {
-                var pcs = (PresentationCompositionSegment)segment;
-
                 Assert.True(pcs.Width == 0x2143);
                 Assert.True(pcs.Height == 0x6587);
                 Assert.True(pcs.FrameRate == 0x10);
@@ -114,10 +108,8 @@ public class PCSReadTests
             Assert.True(segment.PTS == 0x01234567);
             Assert.True(segment.DTS == 0x12345678);
 
-            if (segment is PresentationCompositionSegment)
+            if (segment is PresentationCompositionSegment pcs)
             {
-                var pcs = (PresentationCompositionSegment)segment;
-
                 Assert.True(pcs.Width == 0x2143);
                 Assert.True(pcs.Height == 0x6587);
                 Assert.True(pcs.FrameRate == 0x10);
@@ -143,10 +135,8 @@ public class PCSReadTests
             Assert.True(segment.PTS == 0x01234567);
             Assert.True(segment.DTS == 0x12345678);
 
-            if (segment is PresentationCompositionSegment)
+            if (segment is PresentationCompositionSegment pcs)
             {
-                var pcs = (PresentationCompositionSegment)segment;
-
                 Assert.True(pcs.Width == 0x2143);
                 Assert.True(pcs.Height == 0x6587);
                 Assert.True(pcs.FrameRate == 0x10);
@@ -178,10 +168,8 @@ public class PCSReadTests
             Assert.True(segment.PTS == 0x01234567);
             Assert.True(segment.DTS == 0x12345678);
 
-            if (segment is PresentationCompositionSegment)
+            if (segment is PresentationCompositionSegment pcs)
             {
-                var pcs = (PresentationCompositionSegment)segment;
-
                 Assert.True(pcs.Width == 0x2143);
                 Assert.True(pcs.Height == 0x6587);
                 Assert.True(pcs.FrameRate == 0x10);
@@ -216,10 +204,8 @@ public class PCSReadTests
             Assert.True(segment.PTS == 0x01234567);
             Assert.True(segment.DTS == 0x12345678);
 
-            if (segment is PresentationCompositionSegment)
+            if (segment is PresentationCompositionSegment pcs)
             {
-                var pcs = (PresentationCompositionSegment)segment;
-
                 Assert.True(pcs.Width == 0x2143);
                 Assert.True(pcs.Height == 0x6587);
                 Assert.True(pcs.FrameRate == 0x10);

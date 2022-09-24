@@ -89,7 +89,7 @@ public static partial class StreamExtensions
             }
 
             WriteUInt16BE(stream, (ushort)ms.Length);
-            ms.CopyTo(stream);
+            ms.WriteTo(stream);
         }
     }
 
