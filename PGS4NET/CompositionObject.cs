@@ -14,7 +14,7 @@ public struct CompositionObject
 {
     public ushort ObjectID;
 
-    public ushort WindowID;
+    public byte WindowID;
 
     public ushort X;
 

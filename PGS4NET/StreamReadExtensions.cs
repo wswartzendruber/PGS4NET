@@ -17,43 +17,43 @@ public static partial class StreamExtensions
 {
     public static Segment ReadSegment(this Stream stream)
     {
-        var magicNumber = stream.ReadUInt16BE()
+        var magicNumber = ReadUInt16BE(stream)
             ?? throw new IOException("EOF while reading magic number.");
 
         if (magicNumber != 0x5047)
             throw new SegmentException("Unrecognized magic number.");
 
-        var pts = stream.ReadUInt32BE()
+        var pts = ReadUInt32BE(stream)
             ?? throw new IOException("EOF while reading segment PTS.");
-        var dts = stream.ReadUInt32BE()
+        var dts = ReadUInt32BE(stream)
             ?? throw new IOException("EOF while reading segment DTS.");
-        var kind = stream.ReadUInt8()
+        var kind = ReadUInt8(stream)
             ?? throw new IOException("EOF while reading segment kind.");
-        var size = stream.ReadUInt16BE()
+        var size = ReadUInt16BE(stream)
             ?? throw new IOException("EOF while reading segment size.");
 
         return kind switch
         {
             0x14 => null,
             0x15 => null,
-            0x16 => ParsePCS(stream, pts, dts),
+            0x16 => ReadPCS(stream, pts, dts),
             0x17 => null,
             0x80 => null,
             _ => throw new SegmentException("Unrecognized kind."),
         };
     }
 
-    private static PresentationCompositionSegment ParsePCS(Stream stream, uint pts, uint dts)
+    private static PresentationCompositionSegment ReadPCS(Stream stream, uint pts, uint dts)
     {
-        var width = stream.ReadUInt16BE()
+        var width = ReadUInt16BE(stream)
             ?? throw new IOException("EOF while reading PCS width.");
-        var height = stream.ReadUInt16BE()
+        var height = ReadUInt16BE(stream)
             ?? throw new IOException("EOF while reading PCS height.");
-        var frameRate = stream.ReadUInt8()
+        var frameRate = ReadUInt8(stream)
             ?? throw new IOException("EOF while reading PCS frame rate.");
-        var compositionNumber = stream.ReadUInt16BE()
+        var compositionNumber = ReadUInt16BE(stream)
             ?? throw new IOException("EOF while reading PCS composition number.");
-        var parsedCompositionState = stream.ReadUInt8()
+        var parsedCompositionState = ReadUInt8(stream)
             ?? throw new IOException("EOF while reading PCS composition state.");
         var compositionState = parsedCompositionState switch
         {
@@ -62,9 +62,9 @@ public static partial class StreamExtensions
             0x80 => CompositionState.EpochStart,
             _ => throw new SegmentException("PCS has unrecognized composition state."),
         };
-        var parsedPaletteUpdateFlag = stream.ReadUInt8()
+        var parsedPaletteUpdateFlag = ReadUInt8(stream)
             ?? throw new IOException("EOF while reading PCS palette update flag.");
-        var parsedPaletteUpdateID = stream.ReadUInt8()
+        var parsedPaletteUpdateID = ReadUInt8(stream)
             ?? throw new IOException("EOF while reading PCS palette update ID.");
         byte? paletteUpdateID = parsedPaletteUpdateFlag switch
         {
@@ -72,31 +72,31 @@ public static partial class StreamExtensions
             0x80 => parsedPaletteUpdateID,
             _ => throw new SegmentException("PCS has unrecognized palette update flag."),
         };
-        var compositionObjectCount = stream.ReadUInt8()
+        var compositionObjectCount = ReadUInt8(stream)
             ?? throw new IOException("EOF while reading PCS composition count.");
         var compositionObjects = new List<CompositionObject>();
 
         for (int i = 0; i < compositionObjectCount; i++)
         {
-            var objectID = stream.ReadUInt16BE()
+            var objectID = ReadUInt16BE(stream)
                 ?? throw new IOException("EOF while reading PCS composition object ID.");
-            var windowID = stream.ReadUInt8()
+            var windowID = ReadUInt8(stream)
                 ?? throw new IOException("EOF while reading PCS composition window ID.");
-            var flags = stream.ReadUInt8()
+            var flags = ReadUInt8(stream)
                 ?? throw new IOException("EOF while reading PCS composition flags.");
-            var x = stream.ReadUInt16BE()
+            var x = ReadUInt16BE(stream)
                 ?? throw new IOException("EOF while reading PCS composition X value.");
-            var y = stream.ReadUInt16BE()
+            var y = ReadUInt16BE(stream)
                 ?? throw new IOException("EOF while reading PCS composition Y value.");
             var forced = (flags & 0x40) != 0;
             CroppedArea? croppedArea = ((flags & 0x80) != 0) ? new CroppedArea {
-                X = stream.ReadUInt16BE()
+                X = ReadUInt16BE(stream)
                     ?? throw new IOException("EOF while reading PCS composition crop X value."),
-                Y = stream.ReadUInt16BE()
+                Y = ReadUInt16BE(stream)
                     ?? throw new IOException("EOF while reading PCS composition crop Y value."),
-                Width = stream.ReadUInt16BE()
+                Width = ReadUInt16BE(stream)
                     ?? throw new IOException("EOF while reading PCS composition crop width."),
-                Height = stream.ReadUInt16BE()
+                Height = ReadUInt16BE(stream)
                     ?? throw new IOException("EOF while reading PCS composition crop height."),
             } : null;
 
@@ -125,7 +125,7 @@ public static partial class StreamExtensions
         };
     }
 
-    private static byte? ReadUInt8(this Stream stream)
+    private static byte? ReadUInt8(Stream stream)
     {
         var byteRead = stream.ReadByte();
 
@@ -145,7 +145,7 @@ public static partial class StreamExtensions
         : null;
     }
 
-    private static uint? ReadUInt24BE(this Stream stream)
+    private static uint? ReadUInt24BE(Stream stream)
     {
         var buffer = new byte[3];
         var bytesRead = stream.Read(buffer, 0, 3);
@@ -159,7 +159,7 @@ public static partial class StreamExtensions
         : null;
     }
 
-    private static uint? ReadUInt32BE(this Stream stream)
+    private static uint? ReadUInt32BE(Stream stream)
     {
         var buffer = new byte[4];
         var bytesRead = stream.Read(buffer, 0, 4);
