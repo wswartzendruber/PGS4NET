@@ -26,6 +26,11 @@ public static partial class StreamExtensions
                 WriteUInt8(stream, 0x16);
                 WritePCS(stream, pcs);
                 break;
+            case WindowDefinitionSegment wds:
+                WriteTS(stream, segment);
+                WriteUInt8(stream, 0x17);
+                WriteWDS(stream, wds);
+                break;
             default:
                 throw new ArgumentException("Segment type is not recognized.");
         }
@@ -95,18 +100,24 @@ public static partial class StreamExtensions
 
     private static void WriteWDS(Stream stream, WindowDefinitionSegment wds)
     {
-        if (wds.Definitions.Count < 256)
-            WriteUInt8(stream, (byte)wds.Definitions.Count);
-        else
-            throw new SegmentException("WDS defines too many window definitions.");
-
-        foreach (var wd in wds.Definitions)
+        using (var ms = new MemoryStream())
         {
-            WriteUInt8(stream, wd.ID);
-            WriteUInt16BE(stream, wd.X);
-            WriteUInt16BE(stream, wd.Y);
-            WriteUInt16BE(stream, wd.Width);
-            WriteUInt16BE(stream, wd.Height);
+            if (wds.Definitions.Count < 256)
+                WriteUInt8(ms, (byte)wds.Definitions.Count);
+            else
+                throw new SegmentException("WDS defines too many window definitions.");
+
+            foreach (var wd in wds.Definitions)
+            {
+                WriteUInt8(ms, wd.ID);
+                WriteUInt16BE(ms, wd.X);
+                WriteUInt16BE(ms, wd.Y);
+                WriteUInt16BE(ms, wd.Width);
+                WriteUInt16BE(ms, wd.Height);
+            }
+
+            WriteUInt16BE(stream, (ushort)ms.Length);
+            ms.WriteTo(stream);
         }
     }
 
