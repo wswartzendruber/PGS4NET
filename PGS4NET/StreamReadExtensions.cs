@@ -37,7 +37,7 @@ public static partial class StreamExtensions
             0x14 => null,
             0x15 => null,
             0x16 => ReadPCS(stream, pts, dts),
-            0x17 => null,
+            0x17 => ReadWDS(stream, pts, dts),
             0x80 => null,
             _ => throw new SegmentException("Unrecognized kind."),
         };
@@ -122,6 +122,38 @@ public static partial class StreamExtensions
             State = compositionState,
             PaletteUpdateID = paletteUpdateID,
             Objects = compositionObjects,
+        };
+    }
+
+    private static WindowDefinitionSegment ReadWDS(Stream stream, uint pts, uint dts)
+    {
+        var definitions = new List<WindowDefinition>();
+        var count = ReadUInt8(stream)
+            ?? throw new IOException("EOF while reading WDS definition count.");
+
+        for (int i = 0; i < count; i++)
+        {
+            definitions.Add(new WindowDefinition
+                {
+                    ID = ReadUInt8(stream)
+                        ?? throw new IOException("EOF while reading WDS definition ID."),
+                    X = ReadUInt16BE(stream)
+                        ?? throw new IOException("EOF while reading WDS definition X value."),
+                    Y = ReadUInt16BE(stream)
+                        ?? throw new IOException("EOF while reading WDS definition X value."),
+                    Width = ReadUInt16BE(stream)
+                        ?? throw new IOException("EOF while reading WDS definition X value."),
+                    Height = ReadUInt16BE(stream)
+                        ?? throw new IOException("EOF while reading WDS definition X value."),
+                }
+            );
+        }
+
+        return new WindowDefinitionSegment
+        {
+            PTS = pts,
+            DTS = dts,
+            Definitions = definitions,
         };
     }
 

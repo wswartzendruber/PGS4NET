@@ -93,6 +93,23 @@ public static partial class StreamExtensions
         }
     }
 
+    private static void WriteWDS(Stream stream, WindowDefinitionSegment wds)
+    {
+        if (wds.Definitions.Count < 256)
+            WriteUInt8(stream, (byte)wds.Definitions.Count);
+        else
+            throw new SegmentException("WDS defines too many window definitions.");
+
+        foreach (var wd in wds.Definitions)
+        {
+            WriteUInt8(stream, wd.ID);
+            WriteUInt16BE(stream, wd.X);
+            WriteUInt16BE(stream, wd.Y);
+            WriteUInt16BE(stream, wd.Width);
+            WriteUInt16BE(stream, wd.Height);
+        }
+    }
+
     private static void WriteUInt8(Stream stream, byte value)
     {
         stream.WriteByte(value);
