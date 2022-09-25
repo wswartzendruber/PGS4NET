@@ -140,11 +140,11 @@ public static partial class StreamExtensions
                     X = ReadUInt16BE(stream)
                         ?? throw new IOException("EOF while reading WDS definition X value."),
                     Y = ReadUInt16BE(stream)
-                        ?? throw new IOException("EOF while reading WDS definition X value."),
+                        ?? throw new IOException("EOF while reading WDS definition Y value."),
                     Width = ReadUInt16BE(stream)
-                        ?? throw new IOException("EOF while reading WDS definition X value."),
+                        ?? throw new IOException("EOF while reading WDS definition width."),
                     Height = ReadUInt16BE(stream)
-                        ?? throw new IOException("EOF while reading WDS definition X value."),
+                        ?? throw new IOException("EOF while reading WDS definition height."),
                 }
             );
         }
