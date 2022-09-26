@@ -34,7 +34,7 @@ public static partial class StreamExtensions
 
         return kind switch
         {
-            0x14 => null,
+            0x14 => ReadPDS(stream, pts, dts, size),
             0x15 => null,
             0x16 => ReadPCS(stream, pts, dts),
             0x17 => ReadWDS(stream, pts, dts),
@@ -154,6 +154,43 @@ public static partial class StreamExtensions
             PTS = pts,
             DTS = dts,
             Definitions = definitions,
+        };
+    }
+
+    private static PaletteDefinitionSegment ReadPDS(Stream stream, uint pts, uint dts, int size)
+    {
+        var count = (size - 2) / 5;
+        var id = ReadUInt8(stream)
+            ?? throw new IOException("EOF while reading PDS ID.");
+        var version = ReadUInt8(stream)
+            ?? throw new IOException("EOF while reading PDS version.");
+        var entries = new List<PaletteEntry>();
+
+        for (int i = 0; i < count; i++)
+        {
+            entries.Add(new PaletteEntry
+                {
+                    ID = ReadUInt8(stream)
+                        ?? throw new IOException("EOF while reading PDS entry ID."),
+                    Y = ReadUInt8(stream)
+                        ?? throw new IOException("EOF while reading PDS entry Y value."),
+                    Cr = ReadUInt8(stream)
+                        ?? throw new IOException("EOF while reading PDS entry Cr value."),
+                    Cb = ReadUInt8(stream)
+                        ?? throw new IOException("EOF while reading PDS entry Cb value."),
+                    Alpha = ReadUInt8(stream)
+                        ?? throw new IOException("EOF while reading PDS entry alpha value."),
+                }
+            );
+        }
+
+        return new PaletteDefinitionSegment
+        {
+            PTS = pts,
+            DTS = dts,
+            ID = id,
+            Version = version,
+            Entries = entries,
         };
     }
 
