@@ -31,6 +31,11 @@ public static partial class StreamExtensions
                 WriteUInt8(stream, 0x17);
                 WriteWDS(stream, wds);
                 break;
+            case PaletteDefinitionSegment pcs:
+                WriteTS(stream, segment);
+                WriteUInt8(stream, 0x14);
+                WritePDS(stream, pcs);
+                break;
             default:
                 throw new ArgumentException("Segment type is not recognized.");
         }
@@ -114,6 +119,27 @@ public static partial class StreamExtensions
                 WriteUInt16BE(ms, wd.Y);
                 WriteUInt16BE(ms, wd.Width);
                 WriteUInt16BE(ms, wd.Height);
+            }
+
+            WriteUInt16BE(stream, (ushort)ms.Length);
+            ms.WriteTo(stream);
+        }
+    }
+
+    private static void WritePDS(Stream stream, PaletteDefinitionSegment pds)
+    {
+        using (var ms = new MemoryStream())
+        {
+            WriteUInt8(ms, pds.ID);
+            WriteUInt8(ms, pds.Version);
+
+            foreach (var entry in pds.Entries)
+            {
+                WriteUInt8(ms, entry.ID);
+                WriteUInt8(ms, entry.Y);
+                WriteUInt8(ms, entry.Cr);
+                WriteUInt8(ms, entry.Cb);
+                WriteUInt8(ms, entry.Alpha);
             }
 
             WriteUInt16BE(stream, (ushort)ms.Length);
