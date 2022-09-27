@@ -10,7 +10,7 @@
 
 namespace PGS4NET;
 
-public class SingleObjectDefinitionSegment : Segment
+public class SingleObjectDefinitionSegment : ObjectDefinitionSegment
 {
     public ushort Width;
 

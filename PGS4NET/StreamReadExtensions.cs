@@ -35,7 +35,7 @@ public static partial class StreamExtensions
         return kind switch
         {
             0x14 => ReadPDS(stream, pts, dts, size),
-            0x15 => null,
+            0x15 => ReadODS(stream, pts, dts),
             0x16 => ReadPCS(stream, pts, dts),
             0x17 => ReadWDS(stream, pts, dts),
             0x80 => null,
@@ -192,6 +192,49 @@ public static partial class StreamExtensions
             Version = version,
             Entries = entries,
         };
+    }
+
+    private static ObjectDefinitionSegment ReadODS(Stream stream, uint pts, uint dts)
+    {
+        var id = ReadUInt16BE(stream)
+            ?? throw new IOException("EOF while reading ODS ID.");
+        var version = ReadUInt8(stream)
+            ?? throw new IOException("EOF while reading ODS version.");
+        var sequenceFlags = ReadUInt8(stream)
+            ?? throw new IOException("EOF while reading ODS sequence flags.");
+
+        return sequenceFlags switch
+        {
+            0xC0 => ReadSODS(stream, pts, dts, id, version),
+            0x80 => ReadIODS(stream, pts, dts, id, version),
+            0x00 => ReadMODS(stream, pts, dts, id, version),
+            0x40 => ReadFODS(stream, pts, dts, id, version),
+            _ => throw new SegmentException("Unrecognized ODS sequence flags."),
+        };
+    }
+
+    private static SingleObjectDefinitionSegment ReadSODS(Stream stream, uint pts, uint dts
+        , ushort id, byte version)
+    {
+        return null;
+    }
+
+    private static InitialObjectDefinitionSegment ReadIODS(Stream stream, uint pts, uint dts
+        , ushort id, byte version)
+    {
+        return null;
+    }
+
+    private static MiddleObjectDefinitionSegment ReadMODS(Stream stream, uint pts, uint dts
+        , ushort id, byte version)
+    {
+        return null;
+    }
+
+    private static FinalObjectDefinitionSegment ReadFODS(Stream stream, uint pts, uint dts
+        , ushort id, byte version)
+    {
+        return null;
     }
 
     private static byte? ReadUInt8(Stream stream)

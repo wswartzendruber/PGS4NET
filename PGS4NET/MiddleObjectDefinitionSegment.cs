@@ -10,6 +10,6 @@
 
 namespace PGS4NET;
 
-public class MiddleObjectDefinitionSegment : Segment
+public class MiddleObjectDefinitionSegment : ObjectDefinitionSegment
 {
 }

@@ -10,7 +10,7 @@
 
 namespace PGS4NET;
 
-public class InitialObjectDefinitionSegment : Segment
+public class InitialObjectDefinitionSegment : ObjectDefinitionSegment
 {
     public uint Length;
 

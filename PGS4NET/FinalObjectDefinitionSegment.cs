@@ -10,6 +10,6 @@
 
 namespace PGS4NET;
 
-public class FinalObjectDefinitionSegment : Segment
+public class FinalObjectDefinitionSegment : ObjectDefinitionSegment
 {
 }
