@@ -134,18 +134,18 @@ public static partial class StreamExtensions
         for (int i = 0; i < count; i++)
         {
             definitions.Add(new WindowDefinition
-                {
-                    ID = ReadUInt8(stream)
-                        ?? throw new IOException("EOF while reading WDS definition ID."),
-                    X = ReadUInt16BE(stream)
-                        ?? throw new IOException("EOF while reading WDS definition X value."),
-                    Y = ReadUInt16BE(stream)
-                        ?? throw new IOException("EOF while reading WDS definition Y value."),
-                    Width = ReadUInt16BE(stream)
-                        ?? throw new IOException("EOF while reading WDS definition width."),
-                    Height = ReadUInt16BE(stream)
-                        ?? throw new IOException("EOF while reading WDS definition height."),
-                }
+            {
+                ID = ReadUInt8(stream)
+                    ?? throw new IOException("EOF while reading WDS definition ID."),
+                X = ReadUInt16BE(stream)
+                    ?? throw new IOException("EOF while reading WDS definition X value."),
+                Y = ReadUInt16BE(stream)
+                    ?? throw new IOException("EOF while reading WDS definition Y value."),
+                Width = ReadUInt16BE(stream)
+                    ?? throw new IOException("EOF while reading WDS definition width."),
+                Height = ReadUInt16BE(stream)
+                    ?? throw new IOException("EOF while reading WDS definition height."),
+            }
             );
         }
 
@@ -169,18 +169,18 @@ public static partial class StreamExtensions
         for (int i = 0; i < count; i++)
         {
             entries.Add(new PaletteEntry
-                {
-                    ID = ReadUInt8(stream)
-                        ?? throw new IOException("EOF while reading PDS entry ID."),
-                    Y = ReadUInt8(stream)
-                        ?? throw new IOException("EOF while reading PDS entry Y value."),
-                    Cr = ReadUInt8(stream)
-                        ?? throw new IOException("EOF while reading PDS entry Cr value."),
-                    Cb = ReadUInt8(stream)
-                        ?? throw new IOException("EOF while reading PDS entry Cb value."),
-                    Alpha = ReadUInt8(stream)
-                        ?? throw new IOException("EOF while reading PDS entry alpha value."),
-                }
+            {
+                ID = ReadUInt8(stream)
+                    ?? throw new IOException("EOF while reading PDS entry ID."),
+                Y = ReadUInt8(stream)
+                    ?? throw new IOException("EOF while reading PDS entry Y value."),
+                Cr = ReadUInt8(stream)
+                    ?? throw new IOException("EOF while reading PDS entry Cr value."),
+                Cb = ReadUInt8(stream)
+                    ?? throw new IOException("EOF while reading PDS entry Cb value."),
+                Alpha = ReadUInt8(stream)
+                    ?? throw new IOException("EOF while reading PDS entry alpha value."),
+            }
             );
         }
 

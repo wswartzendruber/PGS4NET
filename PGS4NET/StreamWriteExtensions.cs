@@ -56,12 +56,12 @@ public static partial class StreamExtensions
             WriteUInt8(ms, pcs.FrameRate);
             WriteUInt16BE(ms, pcs.Number);
             WriteUInt8(ms, pcs.State switch
-                {
-                    CompositionState.Normal => 0x00,
-                    CompositionState.AcquisitionPoint => 0x40,
-                    CompositionState.EpochStart => 0x80,
-                    _ => throw new ArgumentException("PCS has unrecognized composition state."),
-                }
+            {
+                CompositionState.Normal => 0x00,
+                CompositionState.AcquisitionPoint => 0x40,
+                CompositionState.EpochStart => 0x80,
+                _ => throw new ArgumentException("PCS has unrecognized composition state."),
+            }
             );
 
             if (pcs.PaletteUpdateID is byte paletteUpdateID)
