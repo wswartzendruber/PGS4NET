@@ -14,10 +14,5 @@ using System.Collections.Generic;
 
 public class WindowDefinitionSegment : Segment
 {
-    public WindowDefinitionSegment()
-    {
-        Definitions = new List<WindowDefinition>();
-    }
-
-    public IList<WindowDefinition> Definitions;
+    public IList<WindowDefinition> Definitions = new List<WindowDefinition>();
 }

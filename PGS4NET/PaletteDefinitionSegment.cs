@@ -14,14 +14,9 @@ using System.Collections.Generic;
 
 public class PaletteDefinitionSegment : Segment
 {
-    public PaletteDefinitionSegment()
-    {
-        Entries = new List<PaletteEntry>();
-    }
-
     public byte ID;
 
     public byte Version;
 
-    public IList<PaletteEntry> Entries;
+    public IList<PaletteEntry> Entries = new List<PaletteEntry>();
 }
