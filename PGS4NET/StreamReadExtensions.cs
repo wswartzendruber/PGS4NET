@@ -38,7 +38,7 @@ public static partial class StreamExtensions
             0x15 => ReadODS(stream, pts, dts, size),
             0x16 => ReadPCS(stream, pts, dts),
             0x17 => ReadWDS(stream, pts, dts),
-            0x80 => null,
+            0x80 => new EndSegment { PTS = pts, DTS = dts },
             _ => throw new SegmentException("Unrecognized kind."),
         };
     }

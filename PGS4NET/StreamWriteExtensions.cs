@@ -36,6 +36,11 @@ public static partial class StreamExtensions
                 WriteUInt8(stream, 0x14);
                 WritePDS(stream, pcs);
                 break;
+            case EndSegment:
+                WriteTS(stream, segment);
+                WriteUInt8(stream, 0x80);
+                WriteUInt16BE(stream, 0);
+                break;
             default:
                 throw new ArgumentException("Segment type is not recognized.");
         }
