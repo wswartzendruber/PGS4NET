@@ -35,7 +35,7 @@ public static partial class StreamExtensions
         return kind switch
         {
             0x14 => ReadPDS(stream, pts, dts, size),
-            0x15 => ReadODS(stream, pts, dts),
+            0x15 => ReadODS(stream, pts, dts, size),
             0x16 => ReadPCS(stream, pts, dts),
             0x17 => ReadWDS(stream, pts, dts),
             0x80 => null,
@@ -194,7 +194,7 @@ public static partial class StreamExtensions
         };
     }
 
-    private static ObjectDefinitionSegment ReadODS(Stream stream, uint pts, uint dts)
+    private static ObjectDefinitionSegment ReadODS(Stream stream, uint pts, uint dts, int size)
     {
         var id = ReadUInt16BE(stream)
             ?? throw new IOException("EOF while reading ODS ID.");
@@ -205,36 +205,105 @@ public static partial class StreamExtensions
 
         return sequenceFlags switch
         {
-            0xC0 => ReadSODS(stream, pts, dts, id, version),
-            0x80 => ReadIODS(stream, pts, dts, id, version),
-            0x00 => ReadMODS(stream, pts, dts, id, version),
-            0x40 => ReadFODS(stream, pts, dts, id, version),
+            0xC0 => ReadSODS(stream, pts, dts, id, version, size),
+            0x80 => ReadIODS(stream, pts, dts, id, version, size),
+            0x00 => ReadMODS(stream, pts, dts, id, version, size),
+            0x40 => ReadFODS(stream, pts, dts, id, version, size),
             _ => throw new SegmentException("Unrecognized ODS sequence flags."),
         };
     }
 
     private static SingleObjectDefinitionSegment ReadSODS(Stream stream, uint pts, uint dts
-        , ushort id, byte version)
+        , ushort id, byte version, int size)
     {
-        return null;
+        var dataLength = ReadUInt24BE(stream)
+            ?? throw new IOException("EOF while reading S-ODS data length.");
+
+        if (dataLength != size - 7)
+            throw new SegmentException("Unexpected S-ODS data length.");
+
+        var width = ReadUInt16BE(stream)
+            ?? throw new IOException("EOF while reading S-ODS width.");
+        var height = ReadUInt16BE(stream)
+            ?? throw new IOException("EOF while reading S-ODS height.");
+        var data = new byte[size - 11];
+
+        if (stream.Read(data, 0, data.Length) != data.Length)
+            throw new IOException("EOF while reading S-ODS image data.");
+
+        return new SingleObjectDefinitionSegment
+        {
+            PTS = pts,
+            DTS = dts,
+            ID = id,
+            Version = version,
+            Data = data,
+            Width = width,
+            Height = height,
+        };
     }
 
     private static InitialObjectDefinitionSegment ReadIODS(Stream stream, uint pts, uint dts
-        , ushort id, byte version)
+        , ushort id, byte version, int size)
     {
-        return null;
+        var dataLength = ReadUInt24BE(stream)
+            ?? throw new IOException("EOF while reading I-ODS data length.");
+        var width = ReadUInt16BE(stream)
+            ?? throw new IOException("EOF while reading I-ODS width.");
+        var height = ReadUInt16BE(stream)
+            ?? throw new IOException("EOF while reading I-ODS height.");
+        var data = new byte[size - 11];
+
+        if (stream.Read(data, 0, data.Length) != data.Length)
+            throw new IOException("EOF while reading I-ODS image data.");
+
+        return new InitialObjectDefinitionSegment
+        {
+            PTS = pts,
+            DTS = dts,
+            ID = id,
+            Version = version,
+            Data = data,
+            Length = dataLength,
+            Width = width,
+            Height = height,
+        };
     }
 
     private static MiddleObjectDefinitionSegment ReadMODS(Stream stream, uint pts, uint dts
-        , ushort id, byte version)
+        , ushort id, byte version, int size)
     {
-        return null;
+        var data = new byte[size - 4];
+
+        if (stream.Read(data, 0, data.Length) != data.Length)
+            throw new IOException("EOF while reading M-ODS image data.");
+
+        return new MiddleObjectDefinitionSegment
+        {
+            PTS = pts,
+            DTS = dts,
+            ID = id,
+            Version = version,
+            Data = data,
+        };
     }
 
     private static FinalObjectDefinitionSegment ReadFODS(Stream stream, uint pts, uint dts
-        , ushort id, byte version)
+        , ushort id, byte version, int size)
     {
-        return null;
+        var data = new byte[size - 4];
+
+        if (stream.Read(data, 0, data.Length) != data.Length)
+            throw new IOException("EOF while reading M-ODS image data.");
+
+        return new FinalObjectDefinitionSegment
+        {
+            PTS = pts,
+            DTS = dts,
+            ID = id,
+            Version = version,
+            Data = data,
+        };
     }
 
     private static byte? ReadUInt8(Stream stream)
