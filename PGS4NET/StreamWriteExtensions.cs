@@ -36,6 +36,26 @@ public static partial class StreamExtensions
                 WriteUInt8(stream, 0x14);
                 WritePDS(stream, pcs);
                 break;
+            case SingleObjectDefinitionSegment sods:
+                WriteTS(stream, segment);
+                WriteUInt8(stream, 0x15);
+                WriteSODS(stream, sods);
+                break;
+            case InitialObjectDefinitionSegment iods:
+                WriteTS(stream, segment);
+                WriteUInt8(stream, 0x15);
+                WriteIODS(stream, iods);
+                break;
+            case MiddleObjectDefinitionSegment mods:
+                WriteTS(stream, segment);
+                WriteUInt8(stream, 0x15);
+                WriteMODS(stream, mods);
+                break;
+            case FinalObjectDefinitionSegment fods:
+                WriteTS(stream, segment);
+                WriteUInt8(stream, 0x15);
+                WriteFODS(stream, fods);
+                break;
             case EndSegment:
                 WriteTS(stream, segment);
                 WriteUInt8(stream, 0x80);
@@ -146,6 +166,100 @@ public static partial class StreamExtensions
                 WriteUInt8(ms, entry.Cb);
                 WriteUInt8(ms, entry.Alpha);
             }
+
+            WriteUInt16BE(stream, (ushort)ms.Length);
+            ms.WriteTo(stream);
+        }
+    }
+
+    private static void WriteSODS(Stream stream, SingleObjectDefinitionSegment sods)
+    {
+        var dataLength = sods.Data.Length;
+
+        using (var ms = new MemoryStream())
+        {
+            WriteUInt16BE(ms, sods.ID);
+            WriteUInt8(ms, sods.Version);
+            WriteUInt8(ms, 0xC0);
+
+            if (dataLength <= 16_777_211)
+                WriteUInt24BE(ms, (uint)dataLength + 4);
+            else
+                throw new SegmentException("S-ODS data length is too large.");
+
+            WriteUInt16BE(ms, sods.Width);
+            WriteUInt16BE(ms, sods.Height);
+            ms.Write(sods.Data, 0, dataLength);
+
+            WriteUInt16BE(stream, (ushort)ms.Length);
+            ms.WriteTo(stream);
+        }
+    }
+
+    private static void WriteIODS(Stream stream, InitialObjectDefinitionSegment iods)
+    {
+        var dataLength = iods.Data.Length;
+
+        using (var ms = new MemoryStream())
+        {
+            WriteUInt16BE(ms, iods.ID);
+            WriteUInt8(ms, iods.Version);
+            WriteUInt8(ms, 0x80);
+
+            if (dataLength <= 16_777_215)
+                WriteUInt24BE(ms, (uint)dataLength);
+            else
+                throw new SegmentException("I-ODS data length is too large.");
+
+            WriteUInt16BE(ms, iods.Width);
+            WriteUInt16BE(ms, iods.Height);
+            ms.Write(iods.Data, 0, dataLength);
+
+            WriteUInt16BE(stream, (ushort)ms.Length);
+            ms.WriteTo(stream);
+        }
+    }
+
+    private static void WriteMODS(Stream stream, MiddleObjectDefinitionSegment mods)
+    {
+        var dataLength = mods.Data.Length;
+
+        using (var ms = new MemoryStream())
+        {
+            WriteUInt16BE(ms, mods.ID);
+            WriteUInt8(ms, mods.Version);
+            WriteUInt8(ms, 0x00);
+
+            // TODO: Validate data length
+            // if (dataLength <= 16_777_211)
+            //     WriteUInt24BE(ms, (uint)dataLength + 4);
+            // else
+            //     throw new SegmentException("M-ODS data length is too large.");
+
+            ms.Write(mods.Data, 0, dataLength);
+
+            WriteUInt16BE(stream, (ushort)ms.Length);
+            ms.WriteTo(stream);
+        }
+    }
+
+    private static void WriteFODS(Stream stream, FinalObjectDefinitionSegment fods)
+    {
+        var dataLength = fods.Data.Length;
+
+        using (var ms = new MemoryStream())
+        {
+            WriteUInt16BE(ms, fods.ID);
+            WriteUInt8(ms, fods.Version);
+            WriteUInt8(ms, 0x40);
+
+            // TODO: Validate data length
+            // if (dataLength <= 16_777_211)
+            //     WriteUInt24BE(ms, (uint)dataLength + 4);
+            // else
+            //     throw new SegmentException("F-ODS data length is too large.");
+
+            ms.Write(fods.Data, 0, dataLength);
 
             WriteUInt16BE(stream, (ushort)ms.Length);
             ms.WriteTo(stream);
