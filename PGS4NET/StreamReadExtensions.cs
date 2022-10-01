@@ -157,7 +157,8 @@ public static partial class StreamExtensions
         };
     }
 
-    private static PaletteDefinitionSegment ReadPDS(Stream stream, uint pts, uint dts, int size)
+    private static PaletteDefinitionSegment ReadPDS(Stream stream, uint pts, uint dts
+        , ushort size)
     {
         var count = (size - 2) / 5;
         var id = ReadUInt8(stream)
@@ -194,7 +195,8 @@ public static partial class StreamExtensions
         };
     }
 
-    private static ObjectDefinitionSegment ReadODS(Stream stream, uint pts, uint dts, int size)
+    private static ObjectDefinitionSegment ReadODS(Stream stream, uint pts, uint dts
+        , ushort size)
     {
         var id = ReadUInt16BE(stream)
             ?? throw new IOException("EOF while reading ODS ID.");
@@ -214,7 +216,7 @@ public static partial class StreamExtensions
     }
 
     private static SingleObjectDefinitionSegment ReadSODS(Stream stream, uint pts, uint dts
-        , ushort id, byte version, int size)
+        , ushort id, byte version, ushort size)
     {
         var dataLength = ReadUInt24BE(stream)
             ?? throw new IOException("EOF while reading S-ODS data length.");
@@ -244,7 +246,7 @@ public static partial class StreamExtensions
     }
 
     private static InitialObjectDefinitionSegment ReadIODS(Stream stream, uint pts, uint dts
-        , ushort id, byte version, int size)
+        , ushort id, byte version, ushort size)
     {
         var dataLength = ReadUInt24BE(stream)
             ?? throw new IOException("EOF while reading I-ODS data length.");
@@ -271,7 +273,7 @@ public static partial class StreamExtensions
     }
 
     private static MiddleObjectDefinitionSegment ReadMODS(Stream stream, uint pts, uint dts
-        , ushort id, byte version, int size)
+        , ushort id, byte version, ushort size)
     {
         var data = new byte[size - 4];
 
@@ -289,7 +291,7 @@ public static partial class StreamExtensions
     }
 
     private static FinalObjectDefinitionSegment ReadFODS(Stream stream, uint pts, uint dts
-        , ushort id, byte version, int size)
+        , ushort id, byte version, ushort size)
     {
         var data = new byte[size - 4];
 
