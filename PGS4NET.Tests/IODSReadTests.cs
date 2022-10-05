@@ -27,14 +27,14 @@ public class IODSReadTests
             Assert.True(segment.PTS == 0x01234567);
             Assert.True(segment.DTS == 0x12345678);
 
-            if (segment is InitialObjectDefinitionSegment sods)
+            if (segment is InitialObjectDefinitionSegment iods)
             {
-                Assert.True(sods.ID == 0xA0A1);
-                Assert.True(sods.Version == 0xA2);
-                Assert.True(sods.Length == 0xABCDEF);
-                Assert.True(sods.Width == 0x2143);
-                Assert.True(sods.Height == 0x6587);
-                Assert.True(sods.Data.Length == 0);
+                Assert.True(iods.ID == 0xA0A1);
+                Assert.True(iods.Version == 0xA2);
+                Assert.True(iods.Length == 0xABCDEF);
+                Assert.True(iods.Width == 0x2143);
+                Assert.True(iods.Height == 0x6587);
+                Assert.True(iods.Data.Length == 0);
             }
             else
             {
@@ -53,18 +53,18 @@ public class IODSReadTests
             Assert.True(segment.PTS == 0x01234567);
             Assert.True(segment.DTS == 0x12345678);
 
-            if (segment is InitialObjectDefinitionSegment sods)
+            if (segment is InitialObjectDefinitionSegment iods)
             {
-                Assert.True(sods.ID == 0xA0A1);
-                Assert.True(sods.Version == 0xA2);
-                Assert.True(sods.Length == 0xABCDEF);
-                Assert.True(sods.Width == 0x2143);
-                Assert.True(sods.Height == 0x6587);
-                Assert.True(sods.Data.Length == 4);
-                Assert.True(sods.Data[0] == 0xE0);
-                Assert.True(sods.Data[1] == 0xE1);
-                Assert.True(sods.Data[2] == 0xE2);
-                Assert.True(sods.Data[3] == 0xE3);
+                Assert.True(iods.ID == 0xA0A1);
+                Assert.True(iods.Version == 0xA2);
+                Assert.True(iods.Length == 0xABCDEF);
+                Assert.True(iods.Width == 0x2143);
+                Assert.True(iods.Height == 0x6587);
+                Assert.True(iods.Data.Length == 4);
+                Assert.True(iods.Data[0] == 0xE0);
+                Assert.True(iods.Data[1] == 0xE1);
+                Assert.True(iods.Data[2] == 0xE2);
+                Assert.True(iods.Data[3] == 0xE3);
             }
             else
             {
