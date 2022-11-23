@@ -29,7 +29,7 @@ internal static class PCS
         0x65, 0x43,             // Composition number
         0x80,                   // Composition state
         0x00,                   // Palette update flag
-        0x00,                   // Palette update ID
+        0xAB,                   // Palette update ID
         0x00,                   // Composition object count
     };
 
@@ -46,7 +46,7 @@ internal static class PCS
         0x65, 0x43,             // Composition number
         0x40,                   // Composition state
         0x00,                   // Palette update flag
-        0x00,                   // Palette update ID
+        0xAB,                   // Palette update ID
         0x00,                   // Composition object count
     };
 
@@ -63,7 +63,7 @@ internal static class PCS
         0x65, 0x43,             // Composition number
         0x00,                   // Composition state
         0x00,                   // Palette update flag
-        0x00,                   // Palette update ID
+        0xAB,                   // Palette update ID
         0x00,                   // Composition object count
     };
 
@@ -97,7 +97,7 @@ internal static class PCS
         0x65, 0x43,             // Composition number
         0x00,                   // Composition state
         0x00,                   // Palette update flag
-        0x00,                   // Palette update ID
+        0xAB,                   // Palette update ID
         0x01,                   // Composition object count
         0xAB, 0xCD,             // Object 1 object ID
         0xEF,                   // Object 1 window ID
@@ -119,7 +119,7 @@ internal static class PCS
         0x65, 0x43,             // Composition number
         0x00,                   // Composition state
         0x00,                   // Palette update flag
-        0x00,                   // Palette update ID
+        0xAB,                   // Palette update ID
         0x01,                   // Composition object count
         0xAB, 0xCD,             // Object 1 object ID
         0xEF,                   // Object 1 window ID
@@ -145,7 +145,7 @@ internal static class PCS
         0x65, 0x43,             // Composition number
         0x00,                   // Composition state
         0x00,                   // Palette update flag
-        0x00,                   // Palette update ID
+        0xAB,                   // Palette update ID
         0x03,                   // Composition object count
         0xAB, 0xCD,             // Object 1 object ID
         0xEF,                   // Object 1 window ID

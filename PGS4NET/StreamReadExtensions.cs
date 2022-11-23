@@ -64,14 +64,14 @@ public static partial class StreamExtensions
         };
         var parsedPaletteUpdateFlag = ReadUInt8(stream)
             ?? throw new IOException("EOF while reading PCS palette update flag.");
-        var parsedPaletteUpdateID = ReadUInt8(stream)
-            ?? throw new IOException("EOF while reading PCS palette update ID.");
-        byte? paletteUpdateID = parsedPaletteUpdateFlag switch
+        bool paletteUpdateOnly = parsedPaletteUpdateFlag switch
         {
-            0x00 => null,
-            0x80 => parsedPaletteUpdateID,
+            0x80 => true,
+            0x00 => false,
             _ => throw new SegmentException("PCS has unrecognized palette update flag."),
         };
+        var paletteUpdateID = ReadUInt8(stream)
+            ?? throw new IOException("EOF while reading PCS palette update ID.");
         var compositionObjectCount = ReadUInt8(stream)
             ?? throw new IOException("EOF while reading PCS composition count.");
         var compositionObjects = new List<CompositionObject>();
@@ -120,6 +120,7 @@ public static partial class StreamExtensions
             FrameRate = frameRate,
             Number = compositionNumber,
             State = compositionState,
+            PaletteUpdateOnly = paletteUpdateOnly,
             PaletteUpdateID = paletteUpdateID,
             Objects = compositionObjects,
         };

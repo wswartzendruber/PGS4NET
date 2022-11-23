@@ -31,7 +31,8 @@ public class PCSWriteTests
                 FrameRate = 0x10,
                 Number = 0x6543,
                 State = CompositionState.EpochStart,
-                PaletteUpdateID = null,
+                PaletteUpdateOnly = false,
+                PaletteUpdateID = 0xAB,
             };
 
             stream.WriteSegment(pcs);
@@ -57,7 +58,8 @@ public class PCSWriteTests
                 FrameRate = 0x10,
                 Number = 0x6543,
                 State = CompositionState.AcquisitionPoint,
-                PaletteUpdateID = null,
+                PaletteUpdateOnly = false,
+                PaletteUpdateID = 0xAB,
             };
 
             stream.WriteSegment(pcs);
@@ -83,7 +85,8 @@ public class PCSWriteTests
                 FrameRate = 0x10,
                 Number = 0x6543,
                 State = CompositionState.Normal,
-                PaletteUpdateID = null,
+                PaletteUpdateOnly = false,
+                PaletteUpdateID = 0xAB,
             };
 
             stream.WriteSegment(pcs);
@@ -109,6 +112,7 @@ public class PCSWriteTests
                 FrameRate = 0x10,
                 Number = 0x6543,
                 State = CompositionState.Normal,
+                PaletteUpdateOnly = true,
                 PaletteUpdateID = 0xAB,
             };
 
@@ -135,7 +139,8 @@ public class PCSWriteTests
                 FrameRate = 0x10,
                 Number = 0x6543,
                 State = CompositionState.Normal,
-                PaletteUpdateID = null,
+                PaletteUpdateOnly = false,
+                PaletteUpdateID = 0xAB,
                 Objects = new List<CompositionObject>
                 {
                     new CompositionObject
@@ -173,7 +178,8 @@ public class PCSWriteTests
                 FrameRate = 0x10,
                 Number = 0x6543,
                 State = CompositionState.Normal,
-                PaletteUpdateID = null,
+                PaletteUpdateOnly = false,
+                PaletteUpdateID = 0xAB,
                 Objects = new List<CompositionObject>
                 {
                     new CompositionObject
@@ -217,7 +223,8 @@ public class PCSWriteTests
                 FrameRate = 0x10,
                 Number = 0x6543,
                 State = CompositionState.Normal,
-                PaletteUpdateID = null,
+                PaletteUpdateOnly = false,
+                PaletteUpdateID = 0xAB,
                 Objects = new List<CompositionObject>
                 {
                     new CompositionObject

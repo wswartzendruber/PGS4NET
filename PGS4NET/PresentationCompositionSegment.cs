@@ -24,7 +24,9 @@ public class PresentationCompositionSegment : Segment
 
     public CompositionState State;
 
-    public byte? PaletteUpdateID;
+    public bool PaletteUpdateOnly;
+
+    public byte PaletteUpdateID;
 
     public IList<CompositionObject> Objects = new List<CompositionObject>();
 }
