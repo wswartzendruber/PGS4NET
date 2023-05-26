@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2022 William Swartzendruber
+ * Copyright 2023 William Swartzendruber
  *
  * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a
  * copy of the MPL was not distributed with this file, You can obtain one at
@@ -10,6 +10,9 @@
 
 namespace PGS4NET;
 
+/// <summary>
+///     Defines a middle portion of an object within an epoch.
+/// </summary>
 public class MiddleObjectDefinitionSegment : ObjectDefinitionSegment
 {
 }

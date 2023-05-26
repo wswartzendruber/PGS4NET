@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2022 William Swartzendruber
+ * Copyright 2023 William Swartzendruber
  *
  * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a
  * copy of the MPL was not distributed with this file, You can obtain one at
@@ -13,8 +13,14 @@ namespace PGS4NET;
 using System.Collections.Generic;
 using System.IO;
 
+/// <summary>
+///     Contains extensions against <see cref="System.IO.Stream" /> for reading PGS segments.
+/// </summary>
 public static partial class StreamExtensions
 {
+    /// <summary>
+    ///     Reads the next PGS segment from a <see cref="Stream" />.
+    /// </summary>
     public static Segment ReadSegment(this Stream stream)
     {
         var magicNumber = ReadUInt16BE(stream)

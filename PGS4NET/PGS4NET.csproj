@@ -1,5 +1,5 @@
 ﻿<!--
-    Copyright 2022 William Swartzendruber
+    Copyright 2023 William Swartzendruber
 
     To the extent possible under law, the person who associated CC0 with this file has waived
     all copyright and related or neighboring rights to this file.
@@ -15,6 +15,15 @@
     <TargetFrameworks>net6.0;netstandard2.0</TargetFrameworks>
     <LangVersion>10.0</LangVersion>
     <Nullable>enable</Nullable>
+    <Authors>William Swartzendruber</Authors>
+    <Product>PGS4NET</Product>
+    <Description>Implementation of the Presentation Graphics Stream subtitle format, commonly called SUP. Used in Blu-ray.</Description>
+    <Copyright>Copyright © 2023 William Swartzendruber</Copyright>
+    <RepositoryUrl>https://github.com/wswartzendruber/pgs4net</RepositoryUrl>
+    <PackageProjectUrl>$(RepositoryUrl)</PackageProjectUrl>
+    <PackageTags>pgs;presentation;graphics;stream;subtitles;blu-ray;bdmv;bd;sup</PackageTags>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <IsPackable>true</IsPackable>
   </PropertyGroup>
 
 </Project>

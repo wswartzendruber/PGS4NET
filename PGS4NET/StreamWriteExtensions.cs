@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2022 William Swartzendruber
+ * Copyright 2023 William Swartzendruber
  *
  * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a
  * copy of the MPL was not distributed with this file, You can obtain one at
@@ -13,8 +13,14 @@ namespace PGS4NET;
 using System;
 using System.IO;
 
+/// <summary>
+///     Contains extensions against <see cref="System.IO.Stream" /> for writing PGS segments.
+/// </summary>
 public static partial class StreamExtensions
 {
+    /// <summary>
+    ///     Writes a <see cref="Segment" /> to a <see cref="Stream" />.
+    /// </summary>
     public static void WriteSegment(this Stream stream, Segment segment)
     {
         WriteUInt16BE(stream, 0x5047);
