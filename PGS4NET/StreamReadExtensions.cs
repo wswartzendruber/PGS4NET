@@ -14,13 +14,19 @@ using System.Collections.Generic;
 using System.IO;
 
 /// <summary>
-///     Contains extensions against <see cref="System.IO.Stream" /> for reading PGS segments.
+///     Contains extensions against <see cref="Stream" /> for reading PGS segments.
 /// </summary>
 public static partial class StreamExtensions
 {
     /// <summary>
     ///     Reads the next PGS segment from a <see cref="Stream" />.
     /// </summary>
+    /// <exception cref="SegmentException">
+    ///     Thrown when the flags inside of a segment are invalid.
+    /// </exception>
+    /// <exception cref="IOException">
+    ///     Thrown when an underlying IO error occurs while attempting to read a segment.
+    /// </exception>
     public static Segment ReadSegment(this Stream stream)
     {
         var magicNumber = ReadUInt16BE(stream)

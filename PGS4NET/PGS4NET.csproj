@@ -16,12 +16,14 @@
     <LangVersion>10.0</LangVersion>
     <Nullable>enable</Nullable>
     <Authors>William Swartzendruber</Authors>
-    <Product>PGS4NET</Product>
     <Description>Implementation of the Presentation Graphics Stream subtitle format, commonly called SUP. Used in Blu-ray.</Description>
     <Copyright>Copyright © 2023 William Swartzendruber</Copyright>
-    <RepositoryUrl>https://github.com/wswartzendruber/pgs4net</RepositoryUrl>
     <PackageProjectUrl>$(RepositoryUrl)</PackageProjectUrl>
+    <PackageIcon>PackageIcon.png</PackageIcon>
+    <PackageReadmeFile>ReadMe.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/wswartzendruber/RuneEncoding</RepositoryUrl>
     <PackageTags>pgs;presentation;graphics;stream;subtitles;blu-ray;bdmv;bd;sup</PackageTags>
+    <PackageLicenseExpression>MPL-2.0</PackageLicenseExpression>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <IsPackable>true</IsPackable>
   </PropertyGroup>

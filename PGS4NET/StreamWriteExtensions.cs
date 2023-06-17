@@ -14,13 +14,19 @@ using System;
 using System.IO;
 
 /// <summary>
-///     Contains extensions against <see cref="System.IO.Stream" /> for writing PGS segments.
+///     Contains extensions against <see cref="Stream" /> for writing PGS segments.
 /// </summary>
 public static partial class StreamExtensions
 {
     /// <summary>
     ///     Writes a <see cref="Segment" /> to a <see cref="Stream" />.
     /// </summary>
+    /// <exception cref="SegmentException">
+    ///     Thrown when the flags inside of a segment are invalid.
+    /// </exception>
+    /// <exception cref="IOException">
+    ///     Thrown when an underlying IO error occurs while attempting to write a segment.
+    /// </exception>
     public static void WriteSegment(this Stream stream, Segment segment)
     {
         WriteUInt16BE(stream, 0x5047);

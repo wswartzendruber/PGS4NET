@@ -15,9 +15,6 @@ using System.Collections.Generic;
 /// <summary>
 ///     Defines a Presentation Composition Segment (PCS).
 /// </summary>
-/// <remarks>
-///     Defines a Presentation Composition Segment (PCS).
-/// </remarks>
 public class PresentationCompositionSegment : Segment
 {
     /// <summary>
