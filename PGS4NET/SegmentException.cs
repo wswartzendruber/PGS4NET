@@ -8,9 +8,9 @@
  * SPDX-License-Identifier: MPL-2.0
  */
 
-namespace PGS4NET;
-
 using System;
+
+namespace PGS4NET;
 
 /// <summary>
 ///     Represents a PGS bitstream error.

@@ -8,10 +8,10 @@
  * SPDX-License-Identifier: MPL-2.0
  */
 
-namespace PGS4NET;
-
 using System.Collections.Generic;
 using System.IO;
+
+namespace PGS4NET;
 
 /// <summary>
 ///     Contains extensions against <see cref="Stream" /> for reading PGS segments.

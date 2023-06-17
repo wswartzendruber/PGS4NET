@@ -10,10 +10,10 @@
  * SPDX-License-Identifier: CC0-1.0
  */
 
-namespace PGS4NET.Tests;
-
 using System.IO;
 using PGS4NET;
+
+namespace PGS4NET.Tests;
 
 public class WDSReadTests
 {

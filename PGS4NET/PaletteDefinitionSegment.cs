@@ -8,9 +8,9 @@
  * SPDX-License-Identifier: MPL-2.0
  */
 
-namespace PGS4NET;
-
 using System.Collections.Generic;
+
+namespace PGS4NET;
 
 /// <summary>
 ///     Defines a set of palette entries within an epoch.
