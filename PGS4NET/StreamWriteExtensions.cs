@@ -86,93 +86,90 @@ public static partial class StreamExtensions
 
     private static void WritePCS(Stream stream, PresentationCompositionSegment pcs)
     {
-        using (var ms = new MemoryStream())
+        using var ms = new MemoryStream();
+
+        WriteUInt16BE(ms, pcs.Width);
+        WriteUInt16BE(ms, pcs.Height);
+        WriteUInt8(ms, pcs.FrameRate);
+        WriteUInt16BE(ms, pcs.Number);
+        WriteUInt8(ms, pcs.State switch
         {
-            WriteUInt16BE(ms, pcs.Width);
-            WriteUInt16BE(ms, pcs.Height);
-            WriteUInt8(ms, pcs.FrameRate);
-            WriteUInt16BE(ms, pcs.Number);
-            WriteUInt8(ms, pcs.State switch
+            CompositionState.Normal => 0x00,
+            CompositionState.AcquisitionPoint => 0x40,
+            CompositionState.EpochStart => 0x80,
+            _ => throw new ArgumentException("PCS has unrecognized composition state."),
+        });
+        WriteUInt8(ms, (byte)(pcs.PaletteUpdateOnly ? 0x80 : 0x00));
+        WriteUInt8(ms, pcs.PaletteUpdateID);
+
+        if (pcs.Objects.Count < 256)
+            WriteUInt8(ms, (byte)pcs.Objects.Count);
+        else
+            throw new SegmentException("PCS defines too many composition objects.");
+
+        foreach (var co in pcs.Objects)
+        {
+            WriteUInt16BE(ms, co.ObjectID);
+            WriteUInt8(ms, co.WindowID);
+            WriteUInt8(ms, (byte)(
+                (co.Crop.HasValue ? 0x80 : 0x00) | (co.Forced ? 0x40 : 0x00)
+            ));
+            WriteUInt16BE(ms, co.X);
+            WriteUInt16BE(ms, co.Y);
+
+            if (co.Crop is CroppedArea ca)
             {
-                CompositionState.Normal => 0x00,
-                CompositionState.AcquisitionPoint => 0x40,
-                CompositionState.EpochStart => 0x80,
-                _ => throw new ArgumentException("PCS has unrecognized composition state."),
-            });
-            WriteUInt8(ms, (byte)(pcs.PaletteUpdateOnly ? 0x80 : 0x00));
-            WriteUInt8(ms, pcs.PaletteUpdateID);
-
-            if (pcs.Objects.Count < 256)
-                WriteUInt8(ms, (byte)pcs.Objects.Count);
-            else
-                throw new SegmentException("PCS defines too many composition objects.");
-
-            foreach (var co in pcs.Objects)
-            {
-                WriteUInt16BE(ms, co.ObjectID);
-                WriteUInt8(ms, co.WindowID);
-                WriteUInt8(ms, (byte)(
-                    (co.Crop.HasValue ? 0x80 : 0x00) | (co.Forced ? 0x40 : 0x00)
-                ));
-                WriteUInt16BE(ms, co.X);
-                WriteUInt16BE(ms, co.Y);
-
-                if (co.Crop is CroppedArea ca)
-                {
-                    WriteUInt16BE(ms, ca.X);
-                    WriteUInt16BE(ms, ca.Y);
-                    WriteUInt16BE(ms, ca.Width);
-                    WriteUInt16BE(ms, ca.Height);
-                }
+                WriteUInt16BE(ms, ca.X);
+                WriteUInt16BE(ms, ca.Y);
+                WriteUInt16BE(ms, ca.Width);
+                WriteUInt16BE(ms, ca.Height);
             }
-
-            WriteUInt16BE(stream, (ushort)ms.Length);
-            ms.WriteTo(stream);
         }
+
+        WriteUInt16BE(stream, (ushort)ms.Length);
+        ms.WriteTo(stream);
     }
 
     private static void WriteWDS(Stream stream, WindowDefinitionSegment wds)
     {
-        using (var ms = new MemoryStream())
+        using var ms = new MemoryStream();
+
+        if (wds.Definitions.Count < 256)
+            WriteUInt8(ms, (byte)wds.Definitions.Count);
+        else
+            throw new SegmentException("WDS defines too many window definitions.");
+
+        foreach (var wd in wds.Definitions)
         {
-            if (wds.Definitions.Count < 256)
-                WriteUInt8(ms, (byte)wds.Definitions.Count);
-            else
-                throw new SegmentException("WDS defines too many window definitions.");
-
-            foreach (var wd in wds.Definitions)
-            {
-                WriteUInt8(ms, wd.ID);
-                WriteUInt16BE(ms, wd.X);
-                WriteUInt16BE(ms, wd.Y);
-                WriteUInt16BE(ms, wd.Width);
-                WriteUInt16BE(ms, wd.Height);
-            }
-
-            WriteUInt16BE(stream, (ushort)ms.Length);
-            ms.WriteTo(stream);
+            WriteUInt8(ms, wd.ID);
+            WriteUInt16BE(ms, wd.X);
+            WriteUInt16BE(ms, wd.Y);
+            WriteUInt16BE(ms, wd.Width);
+            WriteUInt16BE(ms, wd.Height);
         }
+
+        WriteUInt16BE(stream, (ushort)ms.Length);
+        ms.WriteTo(stream);
     }
 
     private static void WritePDS(Stream stream, PaletteDefinitionSegment pds)
     {
-        using (var ms = new MemoryStream())
+        using var ms = new MemoryStream();
+
+        WriteUInt8(ms, pds.ID);
+        WriteUInt8(ms, pds.Version);
+
+        foreach (var entry in pds.Entries)
         {
-            WriteUInt8(ms, pds.ID);
-            WriteUInt8(ms, pds.Version);
-
-            foreach (var entry in pds.Entries)
-            {
-                WriteUInt8(ms, entry.ID);
-                WriteUInt8(ms, entry.Y);
-                WriteUInt8(ms, entry.Cr);
-                WriteUInt8(ms, entry.Cb);
-                WriteUInt8(ms, entry.Alpha);
-            }
-
-            WriteUInt16BE(stream, (ushort)ms.Length);
-            ms.WriteTo(stream);
+            WriteUInt8(ms, entry.ID);
+            WriteUInt8(ms, entry.Y);
+            WriteUInt8(ms, entry.Cr);
+            WriteUInt8(ms, entry.Cb);
+            WriteUInt8(ms, entry.Alpha);
         }
+
+        WriteUInt16BE(stream, (ushort)ms.Length);
+        ms.WriteTo(stream);
     }
 
     private static void WriteSODS(Stream stream, SingleObjectDefinitionSegment sods)
@@ -181,19 +178,17 @@ public static partial class StreamExtensions
             ? (uint)sods.Data.Length + 4
             : throw new SegmentException("S-ODS data length exceeds 65,524.");
 
-        using (var ms = new MemoryStream())
-        {
-            WriteUInt16BE(ms, sods.ID);
-            WriteUInt8(ms, sods.Version);
-            WriteUInt8(ms, 0xC0);
-            WriteUInt24BE(ms, dataLength);
-            WriteUInt16BE(ms, sods.Width);
-            WriteUInt16BE(ms, sods.Height);
-            ms.Write(sods.Data, 0, sods.Data.Length);
+        using var ms = new MemoryStream();
 
-            WriteUInt16BE(stream, (ushort)ms.Length);
-            ms.WriteTo(stream);
-        }
+        WriteUInt16BE(ms, sods.ID);
+        WriteUInt8(ms, sods.Version);
+        WriteUInt8(ms, 0xC0);
+        WriteUInt24BE(ms, dataLength);
+        WriteUInt16BE(ms, sods.Width);
+        WriteUInt16BE(ms, sods.Height);
+        ms.Write(sods.Data, 0, sods.Data.Length);
+        WriteUInt16BE(stream, (ushort)ms.Length);
+        ms.WriteTo(stream);
     }
 
     private static void WriteIODS(Stream stream, InitialObjectDefinitionSegment iods)
@@ -203,19 +198,17 @@ public static partial class StreamExtensions
         if (iods.Data.Length > 65_524)
             throw new SegmentException("I-ODS contained data length exceeds 65,524.");
 
-        using (var ms = new MemoryStream())
-        {
-            WriteUInt16BE(ms, iods.ID);
-            WriteUInt8(ms, iods.Version);
-            WriteUInt8(ms, 0x80);
-            WriteUInt24BE(ms, iods.Length);
-            WriteUInt16BE(ms, iods.Width);
-            WriteUInt16BE(ms, iods.Height);
-            ms.Write(iods.Data, 0, iods.Data.Length);
+        using var ms = new MemoryStream();
 
-            WriteUInt16BE(stream, (ushort)ms.Length);
-            ms.WriteTo(stream);
-        }
+        WriteUInt16BE(ms, iods.ID);
+        WriteUInt8(ms, iods.Version);
+        WriteUInt8(ms, 0x80);
+        WriteUInt24BE(ms, iods.Length);
+        WriteUInt16BE(ms, iods.Width);
+        WriteUInt16BE(ms, iods.Height);
+        ms.Write(iods.Data, 0, iods.Data.Length);
+        WriteUInt16BE(stream, (ushort)ms.Length);
+        ms.WriteTo(stream);
     }
 
     private static void WriteMODS(Stream stream, MiddleObjectDefinitionSegment mods)
@@ -223,16 +216,15 @@ public static partial class StreamExtensions
         if (mods.Data.Length > 65_531)
             throw new SegmentException("M-ODS contained data length exceeds 65,531.");
 
-        using (var ms = new MemoryStream())
-        {
-            WriteUInt16BE(ms, mods.ID);
-            WriteUInt8(ms, mods.Version);
-            WriteUInt8(ms, 0x00);
-            ms.Write(mods.Data, 0, mods.Data.Length);
+        using var ms = new MemoryStream();
 
-            WriteUInt16BE(stream, (ushort)ms.Length);
-            ms.WriteTo(stream);
-        }
+        WriteUInt16BE(ms, mods.ID);
+        WriteUInt8(ms, mods.Version);
+        WriteUInt8(ms, 0x00);
+        ms.Write(mods.Data, 0, mods.Data.Length);
+
+        WriteUInt16BE(stream, (ushort)ms.Length);
+        ms.WriteTo(stream);
     }
 
     private static void WriteFODS(Stream stream, FinalObjectDefinitionSegment fods)
@@ -240,16 +232,15 @@ public static partial class StreamExtensions
         if (fods.Data.Length > 65_531)
             throw new SegmentException("F-ODS contained data length exceeds 65,531.");
 
-        using (var ms = new MemoryStream())
-        {
-            WriteUInt16BE(ms, fods.ID);
-            WriteUInt8(ms, fods.Version);
-            WriteUInt8(ms, 0x40);
-            ms.Write(fods.Data, 0, fods.Data.Length);
+        using var ms = new MemoryStream();
 
-            WriteUInt16BE(stream, (ushort)ms.Length);
-            ms.WriteTo(stream);
-        }
+        WriteUInt16BE(ms, fods.ID);
+        WriteUInt8(ms, fods.Version);
+        WriteUInt8(ms, 0x40);
+        ms.Write(fods.Data, 0, fods.Data.Length);
+
+        WriteUInt16BE(stream, (ushort)ms.Length);
+        ms.WriteTo(stream);
     }
 
     private static void WriteUInt8(Stream stream, byte value)
