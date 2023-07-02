@@ -10,6 +10,8 @@
     SPDX-License-Identifier: CC0-1.0
 -->
 
+![PGS4NET Logo](./PGS4NET/PackageIcon.png)
+
 # Introduction
 
 This project aims to eventually provide a fully-functional Presentation Graphics Stream library
