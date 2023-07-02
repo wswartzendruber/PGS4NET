@@ -12,9 +12,9 @@
 
 ## Introduction
 
-This library is the beginning of what I hope to someday be a very mature and trustworthy
-implementation of Blu-ray's Presentation Graphics Stream subtitle format, commonly referred to
-as SUP.
+The purpose of this library is to someday facilitate intuitive interaction with Presentation
+Graphics Stream (PGS) subtitles, often times referred to as SUP subtitles due to their file
+extension.
 
 In it's current, early state, it only supports reading and writing individual segments.
 
