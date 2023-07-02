@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PGS4NET", "PGS4NET\PGS4NET.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PGS4NET.Tests", "PGS4NET.Tests\PGS4NET.Tests.csproj", "{FAA6E3E3-5A8E-44C6-8480-BE309164BDD4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PGS4NET.Examples.SegmentDump", "PGS4NET.Examples.SegmentDump\PGS4NET.Examples.SegmentDump.csproj", "{0BCF3C72-C966-4944-AF0B-C97D91F4F9E0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{FAA6E3E3-5A8E-44C6-8480-BE309164BDD4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FAA6E3E3-5A8E-44C6-8480-BE309164BDD4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FAA6E3E3-5A8E-44C6-8480-BE309164BDD4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0BCF3C72-C966-4944-AF0B-C97D91F4F9E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0BCF3C72-C966-4944-AF0B-C97D91F4F9E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0BCF3C72-C966-4944-AF0B-C97D91F4F9E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0BCF3C72-C966-4944-AF0B-C97D91F4F9E0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
