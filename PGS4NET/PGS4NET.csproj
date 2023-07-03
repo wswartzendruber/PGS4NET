@@ -21,11 +21,29 @@
     <PackageProjectUrl>$(RepositoryUrl)</PackageProjectUrl>
     <PackageIcon>PackageIcon.png</PackageIcon>
     <PackageReadmeFile>ReadMe.md</PackageReadmeFile>
-    <RepositoryUrl>https://github.com/wswartzendruber/RuneEncoding</RepositoryUrl>
+    <RepositoryUrl>https://github.com/wswartzendruber/PGS4NET</RepositoryUrl>
     <PackageTags>pgs;presentation;graphics;stream;subtitles;blu-ray;bdmv;bd;sup</PackageTags>
     <PackageLicenseExpression>MPL-2.0</PackageLicenseExpression>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <IsPackable>true</IsPackable>
+    <GenerateNuspecDependsOn>$(GenerateNuspecDependsOn);_ExcludeTargetFramework;_ExcludeTargetFrameworkDependency</GenerateNuspecDependsOn>
   </PropertyGroup>
+
+  <Target Name="_ExcludeTargetFramework" AfterTargets="_GetTargetFrameworksOutput" BeforeTargets="_WalkEachTargetPerFramework">
+    <ItemGroup>
+      <_TargetFrameworks Remove="net6.0" />
+    </ItemGroup>
+  </Target>
+
+  <Target Name="_ExcludeTargetFrameworkDependency" AfterTargets="_WalkEachTargetPerFramework" BeforeTargets="GenerateNuspec">
+    <ItemGroup>
+      <_FrameworksWithSuppressedDependencies Include="net6.0" />
+    </ItemGroup>
+  </Target>
+
+  <ItemGroup>
+    <None Include="PackageIcon.png" Pack="true" PackagePath="/" />
+    <None Include="ReadMe.md" Pack="true" PackagePath="/" />
+  </ItemGroup>
 
 </Project>
