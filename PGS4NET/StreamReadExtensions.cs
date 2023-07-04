@@ -8,6 +8,7 @@
  * SPDX-License-Identifier: MPL-2.0
  */
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -29,44 +30,43 @@ public static partial class StreamExtensions
     /// </exception>
     public static Segment ReadSegment(this Stream stream)
     {
-        var magicNumber = ReadUInt16BE(stream)
-            ?? throw new IOException("EOF while reading magic number.");
+        var headerBuffer = new byte[13];
+
+        if (stream.Read(headerBuffer, 0, headerBuffer.Length) != headerBuffer.Length)
+            throw new IOException("EOF while reading segment header.");
+
+        var magicNumber = ReadUInt16BE(headerBuffer, 0);
 
         if (magicNumber != 0x5047)
             throw new SegmentException("Unrecognized magic number.");
 
-        var pts = ReadUInt32BE(stream)
-            ?? throw new IOException("EOF while reading segment PTS.");
-        var dts = ReadUInt32BE(stream)
-            ?? throw new IOException("EOF while reading segment DTS.");
-        var kind = ReadUInt8(stream)
-            ?? throw new IOException("EOF while reading segment kind.");
-        var size = ReadUInt16BE(stream)
-            ?? throw new IOException("EOF while reading segment size.");
+        var pts = ReadUInt32BE(headerBuffer, 2);
+        var dts = ReadUInt32BE(headerBuffer, 6);
+        var kind = ReadUInt8(headerBuffer, 10);
+        var size = ReadUInt16BE(headerBuffer, 11);
+        var payloadBuffer = new byte[size];
+
+        if (stream.Read(payloadBuffer, 0, payloadBuffer.Length) != payloadBuffer.Length)
+            throw new IOException("EOF while reading segment payload.");
 
         return kind switch
         {
-            0x14 => ReadPDS(stream, pts, dts, size),
-            0x15 => ReadODS(stream, pts, dts, size),
-            0x16 => ReadPCS(stream, pts, dts),
-            0x17 => ReadWDS(stream, pts, dts),
+            0x14 => ParsePDS(payloadBuffer, pts, dts),
+            0x15 => ParseODS(payloadBuffer, pts, dts),
+            0x16 => ParsePCS(payloadBuffer, pts, dts),
+            0x17 => ParseWDS(payloadBuffer, pts, dts),
             0x80 => new EndSegment { PTS = pts, DTS = dts },
-            _ => throw new SegmentException("Unrecognized kind."),
+            _ => throw new SegmentException("Unrecognized segment kind."),
         };
     }
 
-    private static PresentationCompositionSegment ReadPCS(Stream stream, uint pts, uint dts)
+    private static PresentationCompositionSegment ParsePCS(byte[] buffer, uint pts, uint dts)
     {
-        var width = ReadUInt16BE(stream)
-            ?? throw new IOException("EOF while reading PCS width.");
-        var height = ReadUInt16BE(stream)
-            ?? throw new IOException("EOF while reading PCS height.");
-        var frameRate = ReadUInt8(stream)
-            ?? throw new IOException("EOF while reading PCS frame rate.");
-        var compositionNumber = ReadUInt16BE(stream)
-            ?? throw new IOException("EOF while reading PCS composition number.");
-        var parsedCompositionState = ReadUInt8(stream)
-            ?? throw new IOException("EOF while reading PCS composition state.");
+        var width = ReadUInt16BE(buffer, 0);
+        var height = ReadUInt16BE(buffer, 2);
+        var frameRate = ReadUInt8(buffer, 4);
+        var compositionNumber = ReadUInt16BE(buffer, 5);
+        var parsedCompositionState = ReadUInt8(buffer, 7);
         var compositionState = parsedCompositionState switch
         {
             0x00 => CompositionState.Normal,
@@ -74,57 +74,58 @@ public static partial class StreamExtensions
             0x80 => CompositionState.EpochStart,
             _ => throw new SegmentException("PCS has unrecognized composition state."),
         };
-        var parsedPaletteUpdateFlag = ReadUInt8(stream)
-            ?? throw new IOException("EOF while reading PCS palette update flag.");
+        var parsedPaletteUpdateFlag = ReadUInt8(buffer, 8);
         bool paletteUpdateOnly = parsedPaletteUpdateFlag switch
         {
             0x80 => true,
             0x00 => false,
             _ => throw new SegmentException("PCS has unrecognized palette update flag."),
         };
-        var paletteUpdateID = ReadUInt8(stream)
-            ?? throw new IOException("EOF while reading PCS palette update ID.");
-        var compositionObjectCount = ReadUInt8(stream)
-            ?? throw new IOException("EOF while reading PCS composition count.");
+        var paletteUpdateID = ReadUInt8(buffer, 9);
+        var compositionObjectCount = ReadUInt8(buffer, 10);
         var compositionObjects = new List<CompositionObject>();
+        var offset = 11;
 
         for (int i = 0; i < compositionObjectCount; i++)
         {
-            var objectID = ReadUInt16BE(stream)
-                ?? throw new IOException("EOF while reading PCS composition object ID.");
-            var windowID = ReadUInt8(stream)
-                ?? throw new IOException("EOF while reading PCS composition window ID.");
-            var flags = ReadUInt8(stream)
-                ?? throw new IOException("EOF while reading PCS composition flags.");
-            var x = ReadUInt16BE(stream)
-                ?? throw new IOException("EOF while reading PCS composition X value.");
-            var y = ReadUInt16BE(stream)
-                ?? throw new IOException("EOF while reading PCS composition Y value.");
+            var objectID = ReadUInt16BE(buffer, offset);
+            var windowID = ReadUInt8(buffer, offset + 2);
+            var flags = ReadUInt8(buffer, offset + 3);
+            var x = ReadUInt16BE(buffer, offset + 4);
+            var y = ReadUInt16BE(buffer, offset + 6);
             var forced = (flags & 0x40) != 0;
-            CroppedArea? croppedArea = ((flags & 0x80) != 0) ? new CroppedArea {
-                X = ReadUInt16BE(stream)
-                    ?? throw new IOException("EOF while reading PCS composition crop X value."),
-                Y = ReadUInt16BE(stream)
-                    ?? throw new IOException("EOF while reading PCS composition crop Y value."),
-                Width = ReadUInt16BE(stream)
-                    ?? throw new IOException("EOF while reading PCS composition crop width."),
-                Height = ReadUInt16BE(stream)
-                    ?? throw new IOException("EOF while reading PCS composition crop height."),
-            } : null;
+            CroppedArea? croppedArea;
 
-            compositionObjects.Add(
-                new CompositionObject {
-                    ObjectID = objectID,
-                    WindowID = windowID,
-                    X = x,
-                    Y = y,
-                    Forced = forced,
-                    Crop = croppedArea,
-                }
-            );
+            if ((flags & 0x80) != 0)
+            {
+                croppedArea = new CroppedArea
+                {
+                    X = ReadUInt16BE(buffer, offset + 8),
+                    Y = ReadUInt16BE(buffer, offset + 10),
+                    Width = ReadUInt16BE(buffer, offset + 12),
+                    Height = ReadUInt16BE(buffer, offset + 14),
+                };
+                offset += 16;
+            }
+            else
+            {
+                croppedArea = null;
+                offset += 8;
+            }
+
+            compositionObjects.Add(new CompositionObject
+            {
+                ObjectID = objectID,
+                WindowID = windowID,
+                X = x,
+                Y = y,
+                Forced = forced,
+                Crop = croppedArea,
+            });
         }
 
-        return new PresentationCompositionSegment {
+        return new PresentationCompositionSegment
+        {
             PTS = pts,
             DTS = dts,
             Width = width,
@@ -138,28 +139,23 @@ public static partial class StreamExtensions
         };
     }
 
-    private static WindowDefinitionSegment ReadWDS(Stream stream, uint pts, uint dts)
+    private static WindowDefinitionSegment ParseWDS(byte[] buffer, uint pts, uint dts)
     {
         var definitions = new List<WindowDefinition>();
-        var count = ReadUInt8(stream)
-            ?? throw new IOException("EOF while reading WDS definition count.");
+        var count = ReadUInt8(buffer, 0);
+        var offset = 1;
 
         for (int i = 0; i < count; i++)
         {
             definitions.Add(new WindowDefinition
             {
-                ID = ReadUInt8(stream)
-                    ?? throw new IOException("EOF while reading WDS definition ID."),
-                X = ReadUInt16BE(stream)
-                    ?? throw new IOException("EOF while reading WDS definition X value."),
-                Y = ReadUInt16BE(stream)
-                    ?? throw new IOException("EOF while reading WDS definition Y value."),
-                Width = ReadUInt16BE(stream)
-                    ?? throw new IOException("EOF while reading WDS definition width."),
-                Height = ReadUInt16BE(stream)
-                    ?? throw new IOException("EOF while reading WDS definition height."),
-            }
-            );
+                ID = ReadUInt8(buffer, offset),
+                X = ReadUInt16BE(buffer, offset + 1),
+                Y = ReadUInt16BE(buffer, offset + 3),
+                Width = ReadUInt16BE(buffer, offset + 5),
+                Height = ReadUInt16BE(buffer, offset + 7),
+            });
+            offset += 9;
         }
 
         return new WindowDefinitionSegment
@@ -170,32 +166,25 @@ public static partial class StreamExtensions
         };
     }
 
-    private static PaletteDefinitionSegment ReadPDS(Stream stream, uint pts, uint dts
-        , ushort size)
+    private static PaletteDefinitionSegment ParsePDS(byte[] buffer, uint pts, uint dts)
     {
-        var count = (size - 2) / 5;
-        var id = ReadUInt8(stream)
-            ?? throw new IOException("EOF while reading PDS ID.");
-        var version = ReadUInt8(stream)
-            ?? throw new IOException("EOF while reading PDS version.");
+        var count = (buffer.Length - 2) / 5;
+        var id = ReadUInt8(buffer, 0);
+        var version = ReadUInt8(buffer, 1);
         var entries = new List<PaletteEntry>();
+        var offset = 2;
 
         for (int i = 0; i < count; i++)
         {
             entries.Add(new PaletteEntry
             {
-                ID = ReadUInt8(stream)
-                    ?? throw new IOException("EOF while reading PDS entry ID."),
-                Y = ReadUInt8(stream)
-                    ?? throw new IOException("EOF while reading PDS entry Y value."),
-                Cr = ReadUInt8(stream)
-                    ?? throw new IOException("EOF while reading PDS entry Cr value."),
-                Cb = ReadUInt8(stream)
-                    ?? throw new IOException("EOF while reading PDS entry Cb value."),
-                Alpha = ReadUInt8(stream)
-                    ?? throw new IOException("EOF while reading PDS entry alpha value."),
-            }
-            );
+                ID = ReadUInt8(buffer, offset),
+                Y = ReadUInt8(buffer, offset + 1),
+                Cr = ReadUInt8(buffer, offset + 2),
+                Cb = ReadUInt8(buffer, offset + 3),
+                Alpha = ReadUInt8(buffer, offset + 4),
+            });
+            offset += 5;
         }
 
         return new PaletteDefinitionSegment
@@ -208,43 +197,35 @@ public static partial class StreamExtensions
         };
     }
 
-    private static ObjectDefinitionSegment ReadODS(Stream stream, uint pts, uint dts
-        , ushort size)
+    private static ObjectDefinitionSegment ParseODS(byte[] buffer, uint pts, uint dts)
     {
-        var id = ReadUInt16BE(stream)
-            ?? throw new IOException("EOF while reading ODS ID.");
-        var version = ReadUInt8(stream)
-            ?? throw new IOException("EOF while reading ODS version.");
-        var sequenceFlags = ReadUInt8(stream)
-            ?? throw new IOException("EOF while reading ODS sequence flags.");
+        var id = ReadUInt16BE(buffer, 0);
+        var version = ReadUInt8(buffer, 2);
+        var sequenceFlags = ReadUInt8(buffer, 3);
 
         return sequenceFlags switch
         {
-            0xC0 => ReadSODS(stream, pts, dts, id, version, size),
-            0x80 => ReadIODS(stream, pts, dts, id, version, size),
-            0x00 => ReadMODS(stream, pts, dts, id, version, size),
-            0x40 => ReadFODS(stream, pts, dts, id, version, size),
+            0xC0 => ParseSODS(buffer, pts, dts, id, version),
+            0x80 => ParseIODS(buffer, pts, dts, id, version),
+            0x00 => ParseMODS(buffer, pts, dts, id, version),
+            0x40 => ParseFODS(buffer, pts, dts, id, version),
             _ => throw new SegmentException("Unrecognized ODS sequence flags."),
         };
     }
 
-    private static SingleObjectDefinitionSegment ReadSODS(Stream stream, uint pts, uint dts
-        , ushort id, byte version, ushort size)
+    private static SingleObjectDefinitionSegment ParseSODS(byte[] buffer, uint pts, uint dts
+        , ushort id, byte version)
     {
-        var dataLength = ReadUInt24BE(stream)
-            ?? throw new IOException("EOF while reading S-ODS data length.");
+        var dataLength = ReadUInt24BE(buffer, 4);
 
-        if (dataLength != size - 7)
+        if (dataLength != buffer.Length - 7)
             throw new SegmentException("Unexpected S-ODS data length.");
 
-        var width = ReadUInt16BE(stream)
-            ?? throw new IOException("EOF while reading S-ODS width.");
-        var height = ReadUInt16BE(stream)
-            ?? throw new IOException("EOF while reading S-ODS height.");
-        var data = new byte[size - 11];
+        var width = ReadUInt16BE(buffer, 7);
+        var height = ReadUInt16BE(buffer, 9);
+        var data = new byte[buffer.Length - 11];
 
-        if (stream.Read(data, 0, data.Length) != data.Length)
-            throw new IOException("EOF while reading S-ODS image data.");
+        Array.Copy(buffer, 11, data, 0, data.Length);
 
         return new SingleObjectDefinitionSegment
         {
@@ -258,19 +239,15 @@ public static partial class StreamExtensions
         };
     }
 
-    private static InitialObjectDefinitionSegment ReadIODS(Stream stream, uint pts, uint dts
-        , ushort id, byte version, ushort size)
+    private static InitialObjectDefinitionSegment ParseIODS(byte[] buffer, uint pts, uint dts
+        , ushort id, byte version)
     {
-        var dataLength = ReadUInt24BE(stream)
-            ?? throw new IOException("EOF while reading I-ODS data length.");
-        var width = ReadUInt16BE(stream)
-            ?? throw new IOException("EOF while reading I-ODS width.");
-        var height = ReadUInt16BE(stream)
-            ?? throw new IOException("EOF while reading I-ODS height.");
-        var data = new byte[size - 11];
+        var dataLength = ReadUInt24BE(buffer, 4);
+        var width = ReadUInt16BE(buffer, 7);
+        var height = ReadUInt16BE(buffer, 9);
+        var data = new byte[buffer.Length - 11];
 
-        if (stream.Read(data, 0, data.Length) != data.Length)
-            throw new IOException("EOF while reading I-ODS image data.");
+        Array.Copy(buffer, 11, data, 0, data.Length);
 
         return new InitialObjectDefinitionSegment
         {
@@ -285,13 +262,12 @@ public static partial class StreamExtensions
         };
     }
 
-    private static MiddleObjectDefinitionSegment ReadMODS(Stream stream, uint pts, uint dts
-        , ushort id, byte version, ushort size)
+    private static MiddleObjectDefinitionSegment ParseMODS(byte[] buffer, uint pts, uint dts
+        , ushort id, byte version)
     {
-        var data = new byte[size - 4];
+        var data = new byte[buffer.Length - 4];
 
-        if (stream.Read(data, 0, data.Length) != data.Length)
-            throw new IOException("EOF while reading M-ODS image data.");
+        Array.Copy(buffer, 4, data, 0, data.Length);
 
         return new MiddleObjectDefinitionSegment
         {
@@ -303,13 +279,12 @@ public static partial class StreamExtensions
         };
     }
 
-    private static FinalObjectDefinitionSegment ReadFODS(Stream stream, uint pts, uint dts
-        , ushort id, byte version, ushort size)
+    private static FinalObjectDefinitionSegment ParseFODS(byte[] buffer, uint pts, uint dts
+        , ushort id, byte version)
     {
-        var data = new byte[size - 4];
+        var data = new byte[buffer.Length - 4];
 
-        if (stream.Read(data, 0, data.Length) != data.Length)
-            throw new IOException("EOF while reading M-ODS image data.");
+        Array.Copy(buffer, 4, data, 0, data.Length);
 
         return new FinalObjectDefinitionSegment
         {
@@ -321,52 +296,38 @@ public static partial class StreamExtensions
         };
     }
 
-    private static byte? ReadUInt8(Stream stream)
+    private static byte ReadUInt8(byte[] buffer, int offset)
     {
-        var byteRead = stream.ReadByte();
-
-        return (byteRead >= 0) ? (byte)byteRead : null;
+        return buffer[offset];
     }
 
-    private static ushort? ReadUInt16BE(this Stream stream)
+    private static ushort ReadUInt16BE(byte[] buffer, int offset)
     {
-        var buffer = new byte[2];
-        var bytesRead = stream.Read(buffer, 0, 2);
-
-        return (bytesRead == 2) ? (ushort)
+        return (ushort)
         (
-            buffer[0] << 8
-            | buffer[1]
-        )
-        : null;
+            buffer[offset] << 8
+            | buffer[offset + 1]
+        );
     }
 
-    private static uint? ReadUInt24BE(Stream stream)
+    private static uint ReadUInt24BE(byte[] buffer, int offset)
     {
-        var buffer = new byte[3];
-        var bytesRead = stream.Read(buffer, 0, 3);
-
-        return (bytesRead == 3) ? (uint)
+        return (uint)
         (
-            buffer[0] << 16
-            | buffer[1] << 8
-            | buffer[2]
-        )
-        : null;
+            buffer[offset] << 16
+            | buffer[offset + 1] << 8
+            | buffer[offset + 2]
+        );
     }
 
-    private static uint? ReadUInt32BE(Stream stream)
+    private static uint ReadUInt32BE(byte[] buffer, int offset)
     {
-        var buffer = new byte[4];
-        var bytesRead = stream.Read(buffer, 0, 4);
-
-        return (bytesRead == 4) ? (uint)
+        return (uint)
         (
-            buffer[0] << 24
-            | buffer[1] << 16
-            | buffer[2] << 8
-            | buffer[3]
-        )
-        : null;
+            buffer[offset] << 24
+            | buffer[offset + 1] << 16
+            | buffer[offset + 2] << 8
+            | buffer[offset + 3]
+        );
     }
 }
