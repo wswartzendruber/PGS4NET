@@ -44,6 +44,31 @@ public class SODSWriteTests
     }
 
     [Fact]
+    public void EmptyAsync()
+    {
+        using (var stream = new MemoryStream())
+        {
+            var sods = new SingleObjectDefinitionSegment
+            {
+                PTS = 0x01234567,
+                DTS = 0x12345678,
+                ID = 0xA0A1,
+                Version = 0xA2,
+                Width = 0x2143,
+                Height = 0x6587,
+                Data = new byte[0],
+            };
+
+            stream.WriteSegmentAsync(sods).Wait();
+
+            Assert.True(Enumerable.SequenceEqual(
+                SODS.Empty,
+                stream.ToArray()
+            ));
+        }
+    }
+
+    [Fact]
     public void Small()
     {
         using (var stream = new MemoryStream())
@@ -60,6 +85,31 @@ public class SODSWriteTests
             };
 
             stream.WriteSegment(sods);
+
+            Assert.True(Enumerable.SequenceEqual(
+                SODS.Small,
+                stream.ToArray()
+            ));
+        }
+    }
+
+    [Fact]
+    public void SmallAsync()
+    {
+        using (var stream = new MemoryStream())
+        {
+            var sods = new SingleObjectDefinitionSegment
+            {
+                PTS = 0x01234567,
+                DTS = 0x12345678,
+                ID = 0xA0A1,
+                Version = 0xA2,
+                Width = 0x2143,
+                Height = 0x6587,
+                Data = new byte[] { 0xE0, 0xE1, 0xE2, 0xE3 },
+            };
+
+            stream.WriteSegmentAsync(sods).Wait();
 
             Assert.True(Enumerable.SequenceEqual(
                 SODS.Small,

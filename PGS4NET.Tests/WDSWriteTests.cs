@@ -39,6 +39,26 @@ public class WDSWriteTests
     }
 
     [Fact]
+    public void NoWindowsAsync()
+    {
+        using (var stream = new MemoryStream())
+        {
+            var wds = new WindowDefinitionSegment
+            {
+                PTS = 0x01234567,
+                DTS = 0x12345678,
+            };
+
+            stream.WriteSegmentAsync(wds).Wait();
+
+            Assert.True(Enumerable.SequenceEqual(
+                WDS.NoWindows,
+                stream.ToArray()
+            ));
+        }
+    }
+
+    [Fact]
     public void OneWindow()
     {
         using (var stream = new MemoryStream())
@@ -61,6 +81,37 @@ public class WDSWriteTests
             };
 
             stream.WriteSegment(wds);
+
+            Assert.True(Enumerable.SequenceEqual(
+                WDS.OneWindow,
+                stream.ToArray()
+            ));
+        }
+    }
+
+    [Fact]
+    public void OneWindowAsync()
+    {
+        using (var stream = new MemoryStream())
+        {
+            var wds = new WindowDefinitionSegment
+            {
+                PTS = 0x01234567,
+                DTS = 0x12345678,
+                Definitions = new List<WindowDefinition>
+                {
+                    new WindowDefinition
+                    {
+                        ID = 0xEF,
+                        X = 0xA1B2,
+                        Y = 0xC3D4,
+                        Width = 0x2143,
+                        Height = 0x6587,
+                    },
+                },
+            };
+
+            stream.WriteSegmentAsync(wds).Wait();
 
             Assert.True(Enumerable.SequenceEqual(
                 WDS.OneWindow,
@@ -100,6 +151,45 @@ public class WDSWriteTests
             };
 
             stream.WriteSegment(wds);
+
+            Assert.True(Enumerable.SequenceEqual(
+                WDS.TwoWindows,
+                stream.ToArray()
+            ));
+        }
+    }
+
+    [Fact]
+    public void TwoWindowsAsync()
+    {
+        using (var stream = new MemoryStream())
+        {
+            var wds = new WindowDefinitionSegment
+            {
+                PTS = 0x01234567,
+                DTS = 0x12345678,
+                Definitions = new List<WindowDefinition>
+                {
+                    new WindowDefinition
+                    {
+                        ID = 0xEF,
+                        X = 0xA1B2,
+                        Y = 0xC3D4,
+                        Width = 0x2143,
+                        Height = 0x6587,
+                    },
+                    new WindowDefinition
+                    {
+                        ID = 0xFE,
+                        X = 0x1A2B,
+                        Y = 0x3C4D,
+                        Width = 0x1234,
+                        Height = 0x5678,
+                    },
+                },
+            };
+
+            stream.WriteSegmentAsync(wds).Wait();
 
             Assert.True(Enumerable.SequenceEqual(
                 WDS.TwoWindows,

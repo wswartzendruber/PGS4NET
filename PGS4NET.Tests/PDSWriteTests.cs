@@ -41,6 +41,28 @@ public class PDSWriteTests
     }
 
     [Fact]
+    public void NoEntriesAsync()
+    {
+        using (var stream = new MemoryStream())
+        {
+            var pds = new PaletteDefinitionSegment
+            {
+                PTS = 0x01234567,
+                DTS = 0x12345678,
+                ID = 0xA1,
+                Version = 0xA2,
+            };
+
+            stream.WriteSegmentAsync(pds).Wait();
+
+            Assert.True(Enumerable.SequenceEqual(
+                PDS.NoEntries,
+                stream.ToArray()
+            ));
+        }
+    }
+
+    [Fact]
     public void OneEntry()
     {
         using (var stream = new MemoryStream())
@@ -65,6 +87,39 @@ public class PDSWriteTests
             };
 
             stream.WriteSegment(pds);
+
+            Assert.True(Enumerable.SequenceEqual(
+                PDS.OneEntry,
+                stream.ToArray()
+            ));
+        }
+    }
+
+    [Fact]
+    public void OneEntryAsync()
+    {
+        using (var stream = new MemoryStream())
+        {
+            var pds = new PaletteDefinitionSegment
+            {
+                PTS = 0x01234567,
+                DTS = 0x12345678,
+                ID = 0xA1,
+                Version = 0xA2,
+                Entries = new List<PaletteEntry>
+                {
+                    new PaletteEntry
+                    {
+                        ID = 0xB1,
+                        Y = 0xB2,
+                        Cr = 0xB3,
+                        Cb = 0xB4,
+                        Alpha = 0xB5,
+                    },
+                },
+            };
+
+            stream.WriteSegmentAsync(pds).Wait();
 
             Assert.True(Enumerable.SequenceEqual(
                 PDS.OneEntry,
@@ -106,6 +161,47 @@ public class PDSWriteTests
             };
 
             stream.WriteSegment(pds);
+
+            Assert.True(Enumerable.SequenceEqual(
+                PDS.TwoEntries,
+                stream.ToArray()
+            ));
+        }
+    }
+
+    [Fact]
+    public void TwoEntriesAsync()
+    {
+        using (var stream = new MemoryStream())
+        {
+            var pds = new PaletteDefinitionSegment
+            {
+                PTS = 0x01234567,
+                DTS = 0x12345678,
+                ID = 0xA1,
+                Version = 0xA2,
+                Entries = new List<PaletteEntry>
+                {
+                    new PaletteEntry
+                    {
+                        ID = 0xB1,
+                        Y = 0xB2,
+                        Cr = 0xB3,
+                        Cb = 0xB4,
+                        Alpha = 0xB5,
+                    },
+                    new PaletteEntry
+                    {
+                        ID = 0xC1,
+                        Y = 0xC2,
+                        Cr = 0xC3,
+                        Cb = 0xC4,
+                        Alpha = 0xC5,
+                    },
+                },
+            };
+
+            stream.WriteSegmentAsync(pds).Wait();
 
             Assert.True(Enumerable.SequenceEqual(
                 PDS.TwoEntries,

@@ -45,6 +45,32 @@ public class IODSWriteTests
     }
 
     [Fact]
+    public void EmptyAsync()
+    {
+        using (var stream = new MemoryStream())
+        {
+            var iods = new InitialObjectDefinitionSegment
+            {
+                PTS = 0x01234567,
+                DTS = 0x12345678,
+                ID = 0xA0A1,
+                Version = 0xA2,
+                Length = 0xABCDEF,
+                Width = 0x2143,
+                Height = 0x6587,
+                Data = new byte[0],
+            };
+
+            stream.WriteSegmentAsync(iods).Wait();
+
+            Assert.True(Enumerable.SequenceEqual(
+                IODS.Empty,
+                stream.ToArray()
+            ));
+        }
+    }
+
+    [Fact]
     public void Small()
     {
         using (var stream = new MemoryStream())
@@ -62,6 +88,32 @@ public class IODSWriteTests
             };
 
             stream.WriteSegment(iods);
+
+            Assert.True(Enumerable.SequenceEqual(
+                IODS.Small,
+                stream.ToArray()
+            ));
+        }
+    }
+
+    [Fact]
+    public void SmallAsync()
+    {
+        using (var stream = new MemoryStream())
+        {
+            var iods = new InitialObjectDefinitionSegment
+            {
+                PTS = 0x01234567,
+                DTS = 0x12345678,
+                ID = 0xA0A1,
+                Version = 0xA2,
+                Length = 0xABCDEF,
+                Width = 0x2143,
+                Height = 0x6587,
+                Data = new byte[] { 0xE0, 0xE1, 0xE2, 0xE3 },
+            };
+
+            stream.WriteSegmentAsync(iods).Wait();
 
             Assert.True(Enumerable.SequenceEqual(
                 IODS.Small,

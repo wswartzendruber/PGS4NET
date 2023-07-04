@@ -37,4 +37,24 @@ public class ESWriteTests
             ));
         }
     }
+
+    [Fact]
+    public void SingleAsync()
+    {
+        using (var stream = new MemoryStream())
+        {
+            var es = new EndSegment
+            {
+                PTS = 0x01234567,
+                DTS = 0x12345678,
+            };
+
+            stream.WriteSegmentAsync(es).Wait();
+
+            Assert.True(Enumerable.SequenceEqual(
+                ES.Single,
+                stream.ToArray()
+            ));
+        }
+    }
 }

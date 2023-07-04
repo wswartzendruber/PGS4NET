@@ -42,6 +42,29 @@ public class MODSWriteTests
     }
 
     [Fact]
+    public void EmptyAsync()
+    {
+        using (var stream = new MemoryStream())
+        {
+            var mods = new MiddleObjectDefinitionSegment
+            {
+                PTS = 0x01234567,
+                DTS = 0x12345678,
+                ID = 0xA0A1,
+                Version = 0xA2,
+                Data = new byte[0],
+            };
+
+            stream.WriteSegmentAsync(mods).Wait();
+
+            Assert.True(Enumerable.SequenceEqual(
+                MODS.Empty,
+                stream.ToArray()
+            ));
+        }
+    }
+
+    [Fact]
     public void Small()
     {
         using (var stream = new MemoryStream())
@@ -56,6 +79,29 @@ public class MODSWriteTests
             };
 
             stream.WriteSegment(mods);
+
+            Assert.True(Enumerable.SequenceEqual(
+                MODS.Small,
+                stream.ToArray()
+            ));
+        }
+    }
+
+    [Fact]
+    public void SmallAsync()
+    {
+        using (var stream = new MemoryStream())
+        {
+            var mods = new MiddleObjectDefinitionSegment
+            {
+                PTS = 0x01234567,
+                DTS = 0x12345678,
+                ID = 0xA0A1,
+                Version = 0xA2,
+                Data = new byte[] { 0xE0, 0xE1, 0xE2, 0xE3 },
+            };
+
+            stream.WriteSegmentAsync(mods).Wait();
 
             Assert.True(Enumerable.SequenceEqual(
                 MODS.Small,

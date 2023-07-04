@@ -10,6 +10,7 @@
 
 using System;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace PGS4NET;
 
@@ -29,53 +30,123 @@ public static partial class StreamExtensions
     /// </exception>
     public static void WriteSegment(this Stream stream, Segment segment)
     {
-        WriteUInt16BE(stream, 0x5047);
+        using var buffer = new MemoryStream();
+
+        WriteUInt16BE(buffer, 0x5047);
 
         switch (segment)
         {
             case PresentationCompositionSegment pcs:
-                WriteTS(stream, segment);
-                WriteUInt8(stream, 0x16);
-                WritePCS(stream, pcs);
+                WriteTS(buffer, segment);
+                WriteUInt8(buffer, 0x16);
+                WritePCS(buffer, pcs);
                 break;
             case WindowDefinitionSegment wds:
-                WriteTS(stream, segment);
-                WriteUInt8(stream, 0x17);
-                WriteWDS(stream, wds);
+                WriteTS(buffer, segment);
+                WriteUInt8(buffer, 0x17);
+                WriteWDS(buffer, wds);
                 break;
             case PaletteDefinitionSegment pcs:
-                WriteTS(stream, segment);
-                WriteUInt8(stream, 0x14);
-                WritePDS(stream, pcs);
+                WriteTS(buffer, segment);
+                WriteUInt8(buffer, 0x14);
+                WritePDS(buffer, pcs);
                 break;
             case SingleObjectDefinitionSegment sods:
-                WriteTS(stream, segment);
-                WriteUInt8(stream, 0x15);
-                WriteSODS(stream, sods);
+                WriteTS(buffer, segment);
+                WriteUInt8(buffer, 0x15);
+                WriteSODS(buffer, sods);
                 break;
             case InitialObjectDefinitionSegment iods:
-                WriteTS(stream, segment);
-                WriteUInt8(stream, 0x15);
-                WriteIODS(stream, iods);
+                WriteTS(buffer, segment);
+                WriteUInt8(buffer, 0x15);
+                WriteIODS(buffer, iods);
                 break;
             case MiddleObjectDefinitionSegment mods:
-                WriteTS(stream, segment);
-                WriteUInt8(stream, 0x15);
-                WriteMODS(stream, mods);
+                WriteTS(buffer, segment);
+                WriteUInt8(buffer, 0x15);
+                WriteMODS(buffer, mods);
                 break;
             case FinalObjectDefinitionSegment fods:
-                WriteTS(stream, segment);
-                WriteUInt8(stream, 0x15);
-                WriteFODS(stream, fods);
+                WriteTS(buffer, segment);
+                WriteUInt8(buffer, 0x15);
+                WriteFODS(buffer, fods);
                 break;
             case EndSegment:
-                WriteTS(stream, segment);
-                WriteUInt8(stream, 0x80);
-                WriteUInt16BE(stream, 0);
+                WriteTS(buffer, segment);
+                WriteUInt8(buffer, 0x80);
+                WriteUInt16BE(buffer, 0);
                 break;
             default:
                 throw new ArgumentException("Segment type is not recognized.");
         }
+
+        buffer.Seek(0, SeekOrigin.Begin);
+        buffer.CopyTo(stream);
+    }
+
+    /// <summary>
+    ///     Asynchronously writes a <see cref="Segment" /> to a <see cref="Stream" />.
+    /// </summary>
+    /// <exception cref="SegmentException">
+    ///     Thrown when the flags inside of a segment are invalid.
+    /// </exception>
+    /// <exception cref="IOException">
+    ///     Thrown when an underlying IO error occurs while attempting to write a segment.
+    /// </exception>
+    public static async Task WriteSegmentAsync(this Stream stream, Segment segment)
+    {
+        using var buffer = new MemoryStream();
+
+        WriteUInt16BE(buffer, 0x5047);
+
+        switch (segment)
+        {
+            case PresentationCompositionSegment pcs:
+                WriteTS(buffer, segment);
+                WriteUInt8(buffer, 0x16);
+                WritePCS(buffer, pcs);
+                break;
+            case WindowDefinitionSegment wds:
+                WriteTS(buffer, segment);
+                WriteUInt8(buffer, 0x17);
+                WriteWDS(buffer, wds);
+                break;
+            case PaletteDefinitionSegment pcs:
+                WriteTS(buffer, segment);
+                WriteUInt8(buffer, 0x14);
+                WritePDS(buffer, pcs);
+                break;
+            case SingleObjectDefinitionSegment sods:
+                WriteTS(buffer, segment);
+                WriteUInt8(buffer, 0x15);
+                WriteSODS(buffer, sods);
+                break;
+            case InitialObjectDefinitionSegment iods:
+                WriteTS(buffer, segment);
+                WriteUInt8(buffer, 0x15);
+                WriteIODS(buffer, iods);
+                break;
+            case MiddleObjectDefinitionSegment mods:
+                WriteTS(buffer, segment);
+                WriteUInt8(buffer, 0x15);
+                WriteMODS(buffer, mods);
+                break;
+            case FinalObjectDefinitionSegment fods:
+                WriteTS(buffer, segment);
+                WriteUInt8(buffer, 0x15);
+                WriteFODS(buffer, fods);
+                break;
+            case EndSegment:
+                WriteTS(buffer, segment);
+                WriteUInt8(buffer, 0x80);
+                WriteUInt16BE(buffer, 0);
+                break;
+            default:
+                throw new ArgumentException("Segment type is not recognized.");
+        }
+
+        buffer.Seek(0, SeekOrigin.Begin);
+        await buffer.CopyToAsync(stream);
     }
 
     private static void WriteTS(Stream stream, Segment segment)
