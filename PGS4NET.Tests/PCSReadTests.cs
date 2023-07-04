@@ -46,6 +46,34 @@ public class PCSReadTests
     }
 
     [Fact]
+    public void EpochStart_NoPaletteUpdateID_NoObjects_Async()
+    {
+        using (var stream = new MemoryStream(PCS.EpochStart_NoPaletteUpdateID_NoObjects))
+        {
+            var segment = stream.ReadSegmentAsync().Result;
+
+            Assert.True(segment.PTS == 0x01234567);
+            Assert.True(segment.DTS == 0x12345678);
+
+            if (segment is PresentationCompositionSegment pcs)
+            {
+                Assert.True(pcs.Width == 0x2143);
+                Assert.True(pcs.Height == 0x6587);
+                Assert.True(pcs.FrameRate == 0x10);
+                Assert.True(pcs.Number == 0x6543);
+                Assert.True(pcs.State == CompositionState.EpochStart);
+                Assert.True(pcs.PaletteUpdateOnly == false);
+                Assert.True(pcs.PaletteUpdateID == 0xAB);
+                Assert.True(pcs.Objects.Count == 0);
+            }
+            else
+            {
+                Assert.True(false);
+            }
+        }
+    }
+
+    [Fact]
     public void AcquisitionPoint_NoPaletteUpdateID_NoObjects()
     {
         using (var stream = new MemoryStream(PCS.AcquisitionPoint_NoPaletteUpdateID_NoObjects))
@@ -74,11 +102,67 @@ public class PCSReadTests
     }
 
     [Fact]
+    public void AcquisitionPoint_NoPaletteUpdateID_NoObjects_Async()
+    {
+        using (var stream = new MemoryStream(PCS.AcquisitionPoint_NoPaletteUpdateID_NoObjects))
+        {
+            var segment = stream.ReadSegmentAsync().Result;
+
+            Assert.True(segment.PTS == 0x01234567);
+            Assert.True(segment.DTS == 0x12345678);
+
+            if (segment is PresentationCompositionSegment pcs)
+            {
+                Assert.True(pcs.Width == 0x2143);
+                Assert.True(pcs.Height == 0x6587);
+                Assert.True(pcs.FrameRate == 0x10);
+                Assert.True(pcs.Number == 0x6543);
+                Assert.True(pcs.State == CompositionState.AcquisitionPoint);
+                Assert.True(pcs.PaletteUpdateOnly == false);
+                Assert.True(pcs.PaletteUpdateID == 0xAB);
+                Assert.True(pcs.Objects.Count == 0);
+            }
+            else
+            {
+                Assert.True(false);
+            }
+        }
+    }
+
+    [Fact]
     public void Normal_NoPaletteUpdateID_NoObjects()
     {
         using (var stream = new MemoryStream(PCS.Normal_NoPaletteUpdateID_NoObjects))
         {
             var segment = stream.ReadSegment();
+
+            Assert.True(segment.PTS == 0x01234567);
+            Assert.True(segment.DTS == 0x12345678);
+
+            if (segment is PresentationCompositionSegment pcs)
+            {
+                Assert.True(pcs.Width == 0x2143);
+                Assert.True(pcs.Height == 0x6587);
+                Assert.True(pcs.FrameRate == 0x10);
+                Assert.True(pcs.Number == 0x6543);
+                Assert.True(pcs.State == CompositionState.Normal);
+                Assert.True(pcs.PaletteUpdateOnly == false);
+                Assert.True(pcs.PaletteUpdateID == 0xAB);
+                Assert.True(pcs.Objects.Count == 0);
+            }
+            else
+            {
+                Assert.True(false);
+            }
+        }
+    }
+
+    [Fact]
+    public void Normal_NoPaletteUpdateID_NoObjects_Async()
+    {
+        using (var stream = new MemoryStream(PCS.Normal_NoPaletteUpdateID_NoObjects))
+        {
+            var segment = stream.ReadSegmentAsync().Result;
 
             Assert.True(segment.PTS == 0x01234567);
             Assert.True(segment.DTS == 0x12345678);

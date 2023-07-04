@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace PGS4NET;
 
@@ -30,31 +31,72 @@ public static partial class StreamExtensions
     /// </exception>
     public static Segment ReadSegment(this Stream stream)
     {
-        var headerBuffer = new byte[13];
+        var header = new byte[13];
 
-        if (stream.Read(headerBuffer, 0, headerBuffer.Length) != headerBuffer.Length)
+        if (stream.Read(header, 0, header.Length) != header.Length)
             throw new IOException("EOF while reading segment header.");
 
-        var magicNumber = ReadUInt16BE(headerBuffer, 0);
+        var magicNumber = ReadUInt16BE(header, 0);
 
         if (magicNumber != 0x5047)
             throw new SegmentException("Unrecognized magic number.");
 
-        var pts = ReadUInt32BE(headerBuffer, 2);
-        var dts = ReadUInt32BE(headerBuffer, 6);
-        var kind = ReadUInt8(headerBuffer, 10);
-        var size = ReadUInt16BE(headerBuffer, 11);
-        var payloadBuffer = new byte[size];
+        var pts = ReadUInt32BE(header, 2);
+        var dts = ReadUInt32BE(header, 6);
+        var kind = ReadUInt8(header, 10);
+        var size = ReadUInt16BE(header, 11);
+        var payload = new byte[size];
 
-        if (stream.Read(payloadBuffer, 0, payloadBuffer.Length) != payloadBuffer.Length)
+        if (stream.Read(payload, 0, payload.Length) != payload.Length)
             throw new IOException("EOF while reading segment payload.");
 
         return kind switch
         {
-            0x14 => ParsePDS(payloadBuffer, pts, dts),
-            0x15 => ParseODS(payloadBuffer, pts, dts),
-            0x16 => ParsePCS(payloadBuffer, pts, dts),
-            0x17 => ParseWDS(payloadBuffer, pts, dts),
+            0x14 => ParsePDS(payload, pts, dts),
+            0x15 => ParseODS(payload, pts, dts),
+            0x16 => ParsePCS(payload, pts, dts),
+            0x17 => ParseWDS(payload, pts, dts),
+            0x80 => new EndSegment { PTS = pts, DTS = dts },
+            _ => throw new SegmentException("Unrecognized segment kind."),
+        };
+    }
+
+    /// <summary>
+    ///     Asynchronously reads the next PGS segment from a <see cref="Stream" />.
+    /// </summary>
+    /// <exception cref="SegmentException">
+    ///     Thrown when the flags inside of a segment are invalid.
+    /// </exception>
+    /// <exception cref="IOException">
+    ///     Thrown when an underlying IO error occurs while attempting to read a segment.
+    /// </exception>
+    public static async Task<Segment> ReadSegmentAsync(this Stream stream)
+    {
+        var header = new byte[13];
+
+        if (await stream.ReadAsync(header, 0, header.Length) != header.Length)
+            throw new IOException("EOF while reading segment header.");
+
+        var magicNumber = ReadUInt16BE(header, 0);
+
+        if (magicNumber != 0x5047)
+            throw new SegmentException("Unrecognized magic number.");
+
+        var pts = ReadUInt32BE(header, 2);
+        var dts = ReadUInt32BE(header, 6);
+        var kind = ReadUInt8(header, 10);
+        var size = ReadUInt16BE(header, 11);
+        var payload = new byte[size];
+
+        if (await stream.ReadAsync(payload, 0, payload.Length) != payload.Length)
+            throw new IOException("EOF while reading segment payload.");
+
+        return kind switch
+        {
+            0x14 => ParsePDS(payload, pts, dts),
+            0x15 => ParseODS(payload, pts, dts),
+            0x16 => ParsePCS(payload, pts, dts),
+            0x17 => ParseWDS(payload, pts, dts),
             0x80 => new EndSegment { PTS = pts, DTS = dts },
             _ => throw new SegmentException("Unrecognized segment kind."),
         };

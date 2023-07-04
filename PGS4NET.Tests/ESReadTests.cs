@@ -31,4 +31,19 @@ public class ESReadTests
                 Assert.True(false);
         }
     }
+
+    [Fact]
+    public void SingleAsync()
+    {
+        using (var stream = new MemoryStream(ES.Single))
+        {
+            var segment = stream.ReadSegmentAsync().Result;
+
+            Assert.True(segment.PTS == 0x01234567);
+            Assert.True(segment.DTS == 0x12345678);
+
+            if (segment is not EndSegment)
+                Assert.True(false);
+        }
+    }
 }
