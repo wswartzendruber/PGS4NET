@@ -13,7 +13,7 @@
 # Introduction
 
 This project aims to eventually provide a fully-functional Presentation Graphics Stream library
-for .NET Standard 2.0 and .NET 6.
+for .NET Standard 2.0.
 
 [See the main project's ReadMe for more information.](PGS4NET/ReadMe.md)
 
