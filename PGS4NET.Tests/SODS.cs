@@ -10,8 +10,6 @@
  * SPDX-License-Identifier: CC0-1.0
  */
 
-using PGS4NET;
-
 namespace PGS4NET.Tests;
 
 internal static class SODS

@@ -12,7 +12,6 @@
 
 using System.Collections.Generic;
 using System.IO;
-using PGS4NET;
 
 namespace PGS4NET.Tests;
 
