@@ -12,7 +12,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net6.0;netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <LangVersion>10.0</LangVersion>
     <Nullable>enable</Nullable>
     <Authors>William Swartzendruber</Authors>
@@ -26,20 +26,7 @@
     <PackageLicenseExpression>MPL-2.0</PackageLicenseExpression>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <IsPackable>true</IsPackable>
-    <GenerateNuspecDependsOn>$(GenerateNuspecDependsOn);_ExcludeTargetFramework;_ExcludeTargetFrameworkDependency</GenerateNuspecDependsOn>
   </PropertyGroup>
-
-  <Target Name="_ExcludeTargetFramework" AfterTargets="_GetTargetFrameworksOutput" BeforeTargets="_WalkEachTargetPerFramework">
-    <ItemGroup>
-      <_TargetFrameworks Remove="net6.0" />
-    </ItemGroup>
-  </Target>
-
-  <Target Name="_ExcludeTargetFrameworkDependency" AfterTargets="_WalkEachTargetPerFramework" BeforeTargets="GenerateNuspec">
-    <ItemGroup>
-      <_FrameworksWithSuppressedDependencies Include="net6.0" />
-    </ItemGroup>
-  </Target>
 
   <ItemGroup>
     <None Include="PackageIcon.png" Pack="true" PackagePath="/" />
