@@ -10,7 +10,7 @@
  * SPDX-License-Identifier: CC0-1.0
  */
 
-using PGS4NET;
+using PGS4NET.Segment;
 
 if (args.Length != 1)
     throw new ArgumentException("A single parameter with a PGS file must be passed.");
