@@ -183,7 +183,7 @@ public static partial class StreamExtensions
             WriteUInt16BE(ms, co.ObjectID);
             WriteUInt8(ms, co.WindowID);
             WriteUInt8(ms, (byte)(
-                (co.Crop.HasValue ? 0x80 : 0x00) | (co.Forced ? 0x40 : 0x00)
+                (co.Crop is not null ? 0x80 : 0x00) | (co.Forced ? 0x40 : 0x00)
             ));
             WriteUInt16BE(ms, co.X);
             WriteUInt16BE(ms, co.Y);
