@@ -29,7 +29,7 @@ public class SingleObjectDefinitionSegmentReadTests
 
             if (segment is SingleObjectDefinitionSegment sods)
             {
-                Assert.True(sods.ID == 0xA0A1);
+                Assert.True(sods.Id == 0xA0A1);
                 Assert.True(sods.Version == 0xA2);
                 Assert.True(sods.Width == 0x2143);
                 Assert.True(sods.Height == 0x6587);
@@ -54,7 +54,7 @@ public class SingleObjectDefinitionSegmentReadTests
 
             if (segment is SingleObjectDefinitionSegment sods)
             {
-                Assert.True(sods.ID == 0xA0A1);
+                Assert.True(sods.Id == 0xA0A1);
                 Assert.True(sods.Version == 0xA2);
                 Assert.True(sods.Width == 0x2143);
                 Assert.True(sods.Height == 0x6587);
@@ -79,7 +79,7 @@ public class SingleObjectDefinitionSegmentReadTests
 
             if (segment is SingleObjectDefinitionSegment sods)
             {
-                Assert.True(sods.ID == 0xA0A1);
+                Assert.True(sods.Id == 0xA0A1);
                 Assert.True(sods.Version == 0xA2);
                 Assert.True(sods.Width == 0x2143);
                 Assert.True(sods.Height == 0x6587);
@@ -108,7 +108,7 @@ public class SingleObjectDefinitionSegmentReadTests
 
             if (segment is SingleObjectDefinitionSegment sods)
             {
-                Assert.True(sods.ID == 0xA0A1);
+                Assert.True(sods.Id == 0xA0A1);
                 Assert.True(sods.Version == 0xA2);
                 Assert.True(sods.Width == 0x2143);
                 Assert.True(sods.Height == 0x6587);

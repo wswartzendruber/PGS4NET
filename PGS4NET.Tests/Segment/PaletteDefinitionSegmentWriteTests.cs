@@ -27,7 +27,7 @@ public class PaletteDefinitionSegmentWriteTests
             {
                 PTS = 0x01234567,
                 DTS = 0x12345678,
-                ID = 0xA1,
+                Id = 0xA1,
                 Version = 0xA2,
             };
 
@@ -49,7 +49,7 @@ public class PaletteDefinitionSegmentWriteTests
             {
                 PTS = 0x01234567,
                 DTS = 0x12345678,
-                ID = 0xA1,
+                Id = 0xA1,
                 Version = 0xA2,
             };
 
@@ -71,13 +71,13 @@ public class PaletteDefinitionSegmentWriteTests
             {
                 PTS = 0x01234567,
                 DTS = 0x12345678,
-                ID = 0xA1,
+                Id = 0xA1,
                 Version = 0xA2,
                 Entries = new List<PaletteEntry>
                 {
                     new PaletteEntry
                     {
-                        ID = 0xB1,
+                        Id = 0xB1,
                         Y = 0xB2,
                         Cr = 0xB3,
                         Cb = 0xB4,
@@ -104,13 +104,13 @@ public class PaletteDefinitionSegmentWriteTests
             {
                 PTS = 0x01234567,
                 DTS = 0x12345678,
-                ID = 0xA1,
+                Id = 0xA1,
                 Version = 0xA2,
                 Entries = new List<PaletteEntry>
                 {
                     new PaletteEntry
                     {
-                        ID = 0xB1,
+                        Id = 0xB1,
                         Y = 0xB2,
                         Cr = 0xB3,
                         Cb = 0xB4,
@@ -137,13 +137,13 @@ public class PaletteDefinitionSegmentWriteTests
             {
                 PTS = 0x01234567,
                 DTS = 0x12345678,
-                ID = 0xA1,
+                Id = 0xA1,
                 Version = 0xA2,
                 Entries = new List<PaletteEntry>
                 {
                     new PaletteEntry
                     {
-                        ID = 0xB1,
+                        Id = 0xB1,
                         Y = 0xB2,
                         Cr = 0xB3,
                         Cb = 0xB4,
@@ -151,7 +151,7 @@ public class PaletteDefinitionSegmentWriteTests
                     },
                     new PaletteEntry
                     {
-                        ID = 0xC1,
+                        Id = 0xC1,
                         Y = 0xC2,
                         Cr = 0xC3,
                         Cb = 0xC4,
@@ -178,13 +178,13 @@ public class PaletteDefinitionSegmentWriteTests
             {
                 PTS = 0x01234567,
                 DTS = 0x12345678,
-                ID = 0xA1,
+                Id = 0xA1,
                 Version = 0xA2,
                 Entries = new List<PaletteEntry>
                 {
                     new PaletteEntry
                     {
-                        ID = 0xB1,
+                        Id = 0xB1,
                         Y = 0xB2,
                         Cr = 0xB3,
                         Cb = 0xB4,
@@ -192,7 +192,7 @@ public class PaletteDefinitionSegmentWriteTests
                     },
                     new PaletteEntry
                     {
-                        ID = 0xC1,
+                        Id = 0xC1,
                         Y = 0xC2,
                         Cr = 0xC3,
                         Cb = 0xC4,

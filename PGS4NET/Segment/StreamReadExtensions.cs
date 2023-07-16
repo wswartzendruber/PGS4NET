@@ -199,7 +199,7 @@ public static partial class StreamExtensions
             Number = compositionNumber,
             State = compositionState,
             PaletteUpdateOnly = paletteUpdateOnly,
-            PaletteUpdateID = paletteUpdateID,
+            PaletteUpdateId = paletteUpdateID,
             Objects = compositionObjects,
         };
     }
@@ -215,7 +215,7 @@ public static partial class StreamExtensions
         {
             definitions.Add(new WindowDefinition
             {
-                ID = ReadUInt8(buffer, offset)
+                Id = ReadUInt8(buffer, offset)
                     ?? throw new IOException($"EOF reading WDS[{i}] ID."),
                 X = ReadUInt16BE(buffer, offset + 1)
                     ?? throw new IOException($"EOF reading WDS[{i}] X position."),
@@ -251,7 +251,7 @@ public static partial class StreamExtensions
         {
             entries.Add(new PaletteEntry
             {
-                ID = ReadUInt8(buffer, offset)
+                Id = ReadUInt8(buffer, offset)
                     ?? throw new IOException($"EOF reading PDS[{i}] ID."),
                 Y = ReadUInt8(buffer, offset + 1)
                     ?? throw new IOException($"EOF reading PDS[{i}] Y value."),
@@ -269,7 +269,7 @@ public static partial class StreamExtensions
         {
             PTS = pts,
             DTS = dts,
-            ID = id,
+            Id = id,
             Version = version,
             Entries = entries,
         };
@@ -315,7 +315,7 @@ public static partial class StreamExtensions
         {
             PTS = pts,
             DTS = dts,
-            ID = id,
+            Id = id,
             Version = version,
             Data = data,
             Width = width,
@@ -340,7 +340,7 @@ public static partial class StreamExtensions
         {
             PTS = pts,
             DTS = dts,
-            ID = id,
+            Id = id,
             Version = version,
             Data = data,
             Length = dataLength,
@@ -360,7 +360,7 @@ public static partial class StreamExtensions
         {
             PTS = pts,
             DTS = dts,
-            ID = id,
+            Id = id,
             Version = version,
             Data = data,
         };
@@ -377,7 +377,7 @@ public static partial class StreamExtensions
         {
             PTS = pts,
             DTS = dts,
-            ID = id,
+            Id = id,
             Version = version,
             Data = data,
         };

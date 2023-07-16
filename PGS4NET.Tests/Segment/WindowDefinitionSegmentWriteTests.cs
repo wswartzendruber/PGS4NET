@@ -71,7 +71,7 @@ public class WindowDefinitionSegmentWriteTests
                 {
                     new WindowDefinition
                     {
-                        ID = 0xEF,
+                        Id = 0xEF,
                         X = 0xA1B2,
                         Y = 0xC3D4,
                         Width = 0x2143,
@@ -102,7 +102,7 @@ public class WindowDefinitionSegmentWriteTests
                 {
                     new WindowDefinition
                     {
-                        ID = 0xEF,
+                        Id = 0xEF,
                         X = 0xA1B2,
                         Y = 0xC3D4,
                         Width = 0x2143,
@@ -133,7 +133,7 @@ public class WindowDefinitionSegmentWriteTests
                 {
                     new WindowDefinition
                     {
-                        ID = 0xEF,
+                        Id = 0xEF,
                         X = 0xA1B2,
                         Y = 0xC3D4,
                         Width = 0x2143,
@@ -141,7 +141,7 @@ public class WindowDefinitionSegmentWriteTests
                     },
                     new WindowDefinition
                     {
-                        ID = 0xFE,
+                        Id = 0xFE,
                         X = 0x1A2B,
                         Y = 0x3C4D,
                         Width = 0x1234,
@@ -172,7 +172,7 @@ public class WindowDefinitionSegmentWriteTests
                 {
                     new WindowDefinition
                     {
-                        ID = 0xEF,
+                        Id = 0xEF,
                         X = 0xA1B2,
                         Y = 0xC3D4,
                         Width = 0x2143,
@@ -180,7 +180,7 @@ public class WindowDefinitionSegmentWriteTests
                     },
                     new WindowDefinition
                     {
-                        ID = 0xFE,
+                        Id = 0xFE,
                         X = 0x1A2B,
                         Y = 0x3C4D,
                         Width = 0x1234,

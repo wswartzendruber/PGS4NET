@@ -26,7 +26,7 @@ public class PaletteDefinitionSegment : Segment
     /// <summary>
     ///     The ID of this pallete set within the epoch.
     /// </summary>
-    public byte ID;
+    public byte Id;
 
     /// <summary>
     ///     The version increment of this palette set.

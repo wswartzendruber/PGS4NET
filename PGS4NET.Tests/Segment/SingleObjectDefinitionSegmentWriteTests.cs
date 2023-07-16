@@ -27,7 +27,7 @@ public class SingleObjectDefinitionSegmentWriteTests
             {
                 PTS = 0x01234567,
                 DTS = 0x12345678,
-                ID = 0xA0A1,
+                Id = 0xA0A1,
                 Version = 0xA2,
                 Width = 0x2143,
                 Height = 0x6587,
@@ -52,7 +52,7 @@ public class SingleObjectDefinitionSegmentWriteTests
             {
                 PTS = 0x01234567,
                 DTS = 0x12345678,
-                ID = 0xA0A1,
+                Id = 0xA0A1,
                 Version = 0xA2,
                 Width = 0x2143,
                 Height = 0x6587,
@@ -77,7 +77,7 @@ public class SingleObjectDefinitionSegmentWriteTests
             {
                 PTS = 0x01234567,
                 DTS = 0x12345678,
-                ID = 0xA0A1,
+                Id = 0xA0A1,
                 Version = 0xA2,
                 Width = 0x2143,
                 Height = 0x6587,
@@ -102,7 +102,7 @@ public class SingleObjectDefinitionSegmentWriteTests
             {
                 PTS = 0x01234567,
                 DTS = 0x12345678,
-                ID = 0xA0A1,
+                Id = 0xA0A1,
                 Version = 0xA2,
                 Width = 0x2143,
                 Height = 0x6587,

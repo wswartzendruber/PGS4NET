@@ -18,7 +18,7 @@ public struct WindowDefinition
     /// <summary>
     ///     The ID of this window within the epoch.
     /// </summary>
-    public byte ID;
+    public byte Id;
 
     /// <summary>
     ///     The horizontal offset of the window’s top-left corner relative to the top-left

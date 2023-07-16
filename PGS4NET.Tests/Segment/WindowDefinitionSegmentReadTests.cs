@@ -72,7 +72,7 @@ public class WindowDefinitionSegmentReadTests
             if (segment is WindowDefinitionSegment wds)
             {
                 Assert.True(wds.Definitions.Count == 1);
-                Assert.True(wds.Definitions[0].ID == 0xEF);
+                Assert.True(wds.Definitions[0].Id == 0xEF);
                 Assert.True(wds.Definitions[0].X == 0xA1B2);
                 Assert.True(wds.Definitions[0].Y == 0xC3D4);
                 Assert.True(wds.Definitions[0].Width == 0x2143);
@@ -98,7 +98,7 @@ public class WindowDefinitionSegmentReadTests
             if (segment is WindowDefinitionSegment wds)
             {
                 Assert.True(wds.Definitions.Count == 1);
-                Assert.True(wds.Definitions[0].ID == 0xEF);
+                Assert.True(wds.Definitions[0].Id == 0xEF);
                 Assert.True(wds.Definitions[0].X == 0xA1B2);
                 Assert.True(wds.Definitions[0].Y == 0xC3D4);
                 Assert.True(wds.Definitions[0].Width == 0x2143);
@@ -124,12 +124,12 @@ public class WindowDefinitionSegmentReadTests
             if (segment is WindowDefinitionSegment wds)
             {
                 Assert.True(wds.Definitions.Count == 2);
-                Assert.True(wds.Definitions[0].ID == 0xEF);
+                Assert.True(wds.Definitions[0].Id == 0xEF);
                 Assert.True(wds.Definitions[0].X == 0xA1B2);
                 Assert.True(wds.Definitions[0].Y == 0xC3D4);
                 Assert.True(wds.Definitions[0].Width == 0x2143);
                 Assert.True(wds.Definitions[0].Height == 0x6587);
-                Assert.True(wds.Definitions[1].ID == 0xFE);
+                Assert.True(wds.Definitions[1].Id == 0xFE);
                 Assert.True(wds.Definitions[1].X == 0x1A2B);
                 Assert.True(wds.Definitions[1].Y == 0x3C4D);
                 Assert.True(wds.Definitions[1].Width == 0x1234);
@@ -155,12 +155,12 @@ public class WindowDefinitionSegmentReadTests
             if (segment is WindowDefinitionSegment wds)
             {
                 Assert.True(wds.Definitions.Count == 2);
-                Assert.True(wds.Definitions[0].ID == 0xEF);
+                Assert.True(wds.Definitions[0].Id == 0xEF);
                 Assert.True(wds.Definitions[0].X == 0xA1B2);
                 Assert.True(wds.Definitions[0].Y == 0xC3D4);
                 Assert.True(wds.Definitions[0].Width == 0x2143);
                 Assert.True(wds.Definitions[0].Height == 0x6587);
-                Assert.True(wds.Definitions[1].ID == 0xFE);
+                Assert.True(wds.Definitions[1].Id == 0xFE);
                 Assert.True(wds.Definitions[1].X == 0x1A2B);
                 Assert.True(wds.Definitions[1].Y == 0x3C4D);
                 Assert.True(wds.Definitions[1].Width == 0x1234);

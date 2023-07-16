@@ -36,7 +36,7 @@ public class PresentationCompositionSegmentReadTests
                 Assert.True(pcs.Number == 0x6543);
                 Assert.True(pcs.State == CompositionState.EpochStart);
                 Assert.True(pcs.PaletteUpdateOnly == false);
-                Assert.True(pcs.PaletteUpdateID == 0xAB);
+                Assert.True(pcs.PaletteUpdateId == 0xAB);
                 Assert.True(pcs.Objects.Count == 0);
             }
             else
@@ -65,7 +65,7 @@ public class PresentationCompositionSegmentReadTests
                 Assert.True(pcs.Number == 0x6543);
                 Assert.True(pcs.State == CompositionState.EpochStart);
                 Assert.True(pcs.PaletteUpdateOnly == false);
-                Assert.True(pcs.PaletteUpdateID == 0xAB);
+                Assert.True(pcs.PaletteUpdateId == 0xAB);
                 Assert.True(pcs.Objects.Count == 0);
             }
             else
@@ -94,7 +94,7 @@ public class PresentationCompositionSegmentReadTests
                 Assert.True(pcs.Number == 0x6543);
                 Assert.True(pcs.State == CompositionState.AcquisitionPoint);
                 Assert.True(pcs.PaletteUpdateOnly == false);
-                Assert.True(pcs.PaletteUpdateID == 0xAB);
+                Assert.True(pcs.PaletteUpdateId == 0xAB);
                 Assert.True(pcs.Objects.Count == 0);
             }
             else
@@ -123,7 +123,7 @@ public class PresentationCompositionSegmentReadTests
                 Assert.True(pcs.Number == 0x6543);
                 Assert.True(pcs.State == CompositionState.AcquisitionPoint);
                 Assert.True(pcs.PaletteUpdateOnly == false);
-                Assert.True(pcs.PaletteUpdateID == 0xAB);
+                Assert.True(pcs.PaletteUpdateId == 0xAB);
                 Assert.True(pcs.Objects.Count == 0);
             }
             else
@@ -152,7 +152,7 @@ public class PresentationCompositionSegmentReadTests
                 Assert.True(pcs.Number == 0x6543);
                 Assert.True(pcs.State == CompositionState.Normal);
                 Assert.True(pcs.PaletteUpdateOnly == false);
-                Assert.True(pcs.PaletteUpdateID == 0xAB);
+                Assert.True(pcs.PaletteUpdateId == 0xAB);
                 Assert.True(pcs.Objects.Count == 0);
             }
             else
@@ -181,7 +181,7 @@ public class PresentationCompositionSegmentReadTests
                 Assert.True(pcs.Number == 0x6543);
                 Assert.True(pcs.State == CompositionState.Normal);
                 Assert.True(pcs.PaletteUpdateOnly == false);
-                Assert.True(pcs.PaletteUpdateID == 0xAB);
+                Assert.True(pcs.PaletteUpdateId == 0xAB);
                 Assert.True(pcs.Objects.Count == 0);
             }
             else
@@ -210,7 +210,7 @@ public class PresentationCompositionSegmentReadTests
                 Assert.True(pcs.Number == 0x6543);
                 Assert.True(pcs.State == CompositionState.Normal);
                 Assert.True(pcs.PaletteUpdateOnly == true);
-                Assert.True(pcs.PaletteUpdateID == 0xAB);
+                Assert.True(pcs.PaletteUpdateId == 0xAB);
                 Assert.True(pcs.Objects.Count == 0);
             }
             else
@@ -239,7 +239,7 @@ public class PresentationCompositionSegmentReadTests
                 Assert.True(pcs.Number == 0x6543);
                 Assert.True(pcs.State == CompositionState.Normal);
                 Assert.True(pcs.PaletteUpdateOnly == false);
-                Assert.True(pcs.PaletteUpdateID == 0xAB);
+                Assert.True(pcs.PaletteUpdateId == 0xAB);
                 Assert.True(pcs.Objects.Count == 1);
                 Assert.True(pcs.Objects[0].ObjectID == 0xABCD);
                 Assert.True(pcs.Objects[0].WindowID == 0xEF);
@@ -274,7 +274,7 @@ public class PresentationCompositionSegmentReadTests
                 Assert.True(pcs.Number == 0x6543);
                 Assert.True(pcs.State == CompositionState.Normal);
                 Assert.True(pcs.PaletteUpdateOnly == false);
-                Assert.True(pcs.PaletteUpdateID == 0xAB);
+                Assert.True(pcs.PaletteUpdateId == 0xAB);
                 Assert.True(pcs.Objects.Count == 1);
                 Assert.True(pcs.Objects[0].ObjectID == 0xABCD);
                 Assert.True(pcs.Objects[0].WindowID == 0xEF);
@@ -312,7 +312,7 @@ public class PresentationCompositionSegmentReadTests
                 Assert.True(pcs.Number == 0x6543);
                 Assert.True(pcs.State == CompositionState.Normal);
                 Assert.True(pcs.PaletteUpdateOnly == false);
-                Assert.True(pcs.PaletteUpdateID == 0xAB);
+                Assert.True(pcs.PaletteUpdateId == 0xAB);
                 Assert.True(pcs.Objects.Count == 3);
                 Assert.True(pcs.Objects[0].ObjectID == 0xABCD);
                 Assert.True(pcs.Objects[0].WindowID == 0xEF);

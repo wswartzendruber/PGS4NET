@@ -19,7 +19,7 @@ public abstract class ObjectDefinitionSegment : Segment
     ///     The ID of this object, which may be redefined within an epoch. All portions of any
     ///     single object should have the same ID.
     /// </summary>
-    public ushort ID;
+    public ushort Id;
 
     /// <summary>
     ///     The version increment of this object. All portions of any single object should have

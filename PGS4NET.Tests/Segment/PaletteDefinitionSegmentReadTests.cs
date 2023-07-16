@@ -29,7 +29,7 @@ public class PaletteDefinitionSegmentReadTests
 
             if (segment is PaletteDefinitionSegment pds)
             {
-                Assert.True(pds.ID == 0xA1);
+                Assert.True(pds.Id == 0xA1);
                 Assert.True(pds.Version == 0xA2);
                 Assert.True(pds.Entries.Count == 0);
             }
@@ -52,7 +52,7 @@ public class PaletteDefinitionSegmentReadTests
 
             if (segment is PaletteDefinitionSegment pds)
             {
-                Assert.True(pds.ID == 0xA1);
+                Assert.True(pds.Id == 0xA1);
                 Assert.True(pds.Version == 0xA2);
                 Assert.True(pds.Entries.Count == 0);
             }
@@ -75,10 +75,10 @@ public class PaletteDefinitionSegmentReadTests
 
             if (segment is PaletteDefinitionSegment pds)
             {
-                Assert.True(pds.ID == 0xA1);
+                Assert.True(pds.Id == 0xA1);
                 Assert.True(pds.Version == 0xA2);
                 Assert.True(pds.Entries.Count == 1);
-                Assert.True(pds.Entries[0].ID == 0xB1);
+                Assert.True(pds.Entries[0].Id == 0xB1);
                 Assert.True(pds.Entries[0].Y == 0xB2);
                 Assert.True(pds.Entries[0].Cr == 0xB3);
                 Assert.True(pds.Entries[0].Cb == 0xB4);
@@ -103,10 +103,10 @@ public class PaletteDefinitionSegmentReadTests
 
             if (segment is PaletteDefinitionSegment pds)
             {
-                Assert.True(pds.ID == 0xA1);
+                Assert.True(pds.Id == 0xA1);
                 Assert.True(pds.Version == 0xA2);
                 Assert.True(pds.Entries.Count == 1);
-                Assert.True(pds.Entries[0].ID == 0xB1);
+                Assert.True(pds.Entries[0].Id == 0xB1);
                 Assert.True(pds.Entries[0].Y == 0xB2);
                 Assert.True(pds.Entries[0].Cr == 0xB3);
                 Assert.True(pds.Entries[0].Cb == 0xB4);
@@ -131,15 +131,15 @@ public class PaletteDefinitionSegmentReadTests
 
             if (segment is PaletteDefinitionSegment pds)
             {
-                Assert.True(pds.ID == 0xA1);
+                Assert.True(pds.Id == 0xA1);
                 Assert.True(pds.Version == 0xA2);
                 Assert.True(pds.Entries.Count == 2);
-                Assert.True(pds.Entries[0].ID == 0xB1);
+                Assert.True(pds.Entries[0].Id == 0xB1);
                 Assert.True(pds.Entries[0].Y == 0xB2);
                 Assert.True(pds.Entries[0].Cr == 0xB3);
                 Assert.True(pds.Entries[0].Cb == 0xB4);
                 Assert.True(pds.Entries[0].Alpha == 0xB5);
-                Assert.True(pds.Entries[1].ID == 0xC1);
+                Assert.True(pds.Entries[1].Id == 0xC1);
                 Assert.True(pds.Entries[1].Y == 0xC2);
                 Assert.True(pds.Entries[1].Cr == 0xC3);
                 Assert.True(pds.Entries[1].Cb == 0xC4);
@@ -164,15 +164,15 @@ public class PaletteDefinitionSegmentReadTests
 
             if (segment is PaletteDefinitionSegment pds)
             {
-                Assert.True(pds.ID == 0xA1);
+                Assert.True(pds.Id == 0xA1);
                 Assert.True(pds.Version == 0xA2);
                 Assert.True(pds.Entries.Count == 2);
-                Assert.True(pds.Entries[0].ID == 0xB1);
+                Assert.True(pds.Entries[0].Id == 0xB1);
                 Assert.True(pds.Entries[0].Y == 0xB2);
                 Assert.True(pds.Entries[0].Cr == 0xB3);
                 Assert.True(pds.Entries[0].Cb == 0xB4);
                 Assert.True(pds.Entries[0].Alpha == 0xB5);
-                Assert.True(pds.Entries[1].ID == 0xC1);
+                Assert.True(pds.Entries[1].Id == 0xC1);
                 Assert.True(pds.Entries[1].Y == 0xC2);
                 Assert.True(pds.Entries[1].Cr == 0xC3);
                 Assert.True(pds.Entries[1].Cb == 0xC4);

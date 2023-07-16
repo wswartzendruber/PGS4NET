@@ -29,7 +29,7 @@ public class MiddleObjectDefinitionSegmentReadTests
 
             if (segment is MiddleObjectDefinitionSegment mods)
             {
-                Assert.True(mods.ID == 0xA0A1);
+                Assert.True(mods.Id == 0xA0A1);
                 Assert.True(mods.Version == 0xA2);
                 Assert.True(mods.Data.Length == 0);
             }
@@ -52,7 +52,7 @@ public class MiddleObjectDefinitionSegmentReadTests
 
             if (segment is MiddleObjectDefinitionSegment mods)
             {
-                Assert.True(mods.ID == 0xA0A1);
+                Assert.True(mods.Id == 0xA0A1);
                 Assert.True(mods.Version == 0xA2);
                 Assert.True(mods.Data.Length == 0);
             }
@@ -75,7 +75,7 @@ public class MiddleObjectDefinitionSegmentReadTests
 
             if (segment is MiddleObjectDefinitionSegment mods)
             {
-                Assert.True(mods.ID == 0xA0A1);
+                Assert.True(mods.Id == 0xA0A1);
                 Assert.True(mods.Version == 0xA2);
                 Assert.True(mods.Data.Length == 4);
                 Assert.True(mods.Data[0] == 0xE0);
@@ -102,7 +102,7 @@ public class MiddleObjectDefinitionSegmentReadTests
 
             if (segment is MiddleObjectDefinitionSegment mods)
             {
-                Assert.True(mods.ID == 0xA0A1);
+                Assert.True(mods.Id == 0xA0A1);
                 Assert.True(mods.Version == 0xA2);
                 Assert.True(mods.Data.Length == 4);
                 Assert.True(mods.Data[0] == 0xE0);

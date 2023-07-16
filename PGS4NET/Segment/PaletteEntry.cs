@@ -22,7 +22,7 @@ public struct PaletteEntry
     /// <summary>
     ///     The ID of this palette entry, which should be unique within an epoch.
     /// </summary>
-    public byte ID;
+    public byte Id;
 
     /// <summary>
     ///     The range-limited, gamma-corrected luminosity value of this entry. Black is

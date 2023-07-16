@@ -27,7 +27,7 @@ public class InitialObjectDefinitionSegmentWriteTests
             {
                 PTS = 0x01234567,
                 DTS = 0x12345678,
-                ID = 0xA0A1,
+                Id = 0xA0A1,
                 Version = 0xA2,
                 Length = 0xABCDEF,
                 Width = 0x2143,
@@ -53,7 +53,7 @@ public class InitialObjectDefinitionSegmentWriteTests
             {
                 PTS = 0x01234567,
                 DTS = 0x12345678,
-                ID = 0xA0A1,
+                Id = 0xA0A1,
                 Version = 0xA2,
                 Length = 0xABCDEF,
                 Width = 0x2143,
@@ -79,7 +79,7 @@ public class InitialObjectDefinitionSegmentWriteTests
             {
                 PTS = 0x01234567,
                 DTS = 0x12345678,
-                ID = 0xA0A1,
+                Id = 0xA0A1,
                 Version = 0xA2,
                 Length = 0xABCDEF,
                 Width = 0x2143,
@@ -105,7 +105,7 @@ public class InitialObjectDefinitionSegmentWriteTests
             {
                 PTS = 0x01234567,
                 DTS = 0x12345678,
-                ID = 0xA0A1,
+                Id = 0xA0A1,
                 Version = 0xA2,
                 Length = 0xABCDEF,
                 Width = 0x2143,

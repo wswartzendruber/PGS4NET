@@ -32,7 +32,7 @@ public class PresentationCompositionSegmentWriteTests
                 Number = 0x6543,
                 State = CompositionState.EpochStart,
                 PaletteUpdateOnly = false,
-                PaletteUpdateID = 0xAB,
+                PaletteUpdateId = 0xAB,
             };
 
             stream.WriteSegment(pcs);
@@ -59,7 +59,7 @@ public class PresentationCompositionSegmentWriteTests
                 Number = 0x6543,
                 State = CompositionState.EpochStart,
                 PaletteUpdateOnly = false,
-                PaletteUpdateID = 0xAB,
+                PaletteUpdateId = 0xAB,
             };
 
             stream.WriteSegmentAsync(pcs).Wait();
@@ -86,7 +86,7 @@ public class PresentationCompositionSegmentWriteTests
                 Number = 0x6543,
                 State = CompositionState.AcquisitionPoint,
                 PaletteUpdateOnly = false,
-                PaletteUpdateID = 0xAB,
+                PaletteUpdateId = 0xAB,
             };
 
             stream.WriteSegment(pcs);
@@ -113,7 +113,7 @@ public class PresentationCompositionSegmentWriteTests
                 Number = 0x6543,
                 State = CompositionState.AcquisitionPoint,
                 PaletteUpdateOnly = false,
-                PaletteUpdateID = 0xAB,
+                PaletteUpdateId = 0xAB,
             };
 
             stream.WriteSegmentAsync(pcs).Wait();
@@ -140,7 +140,7 @@ public class PresentationCompositionSegmentWriteTests
                 Number = 0x6543,
                 State = CompositionState.Normal,
                 PaletteUpdateOnly = false,
-                PaletteUpdateID = 0xAB,
+                PaletteUpdateId = 0xAB,
             };
 
             stream.WriteSegment(pcs);
@@ -167,7 +167,7 @@ public class PresentationCompositionSegmentWriteTests
                 Number = 0x6543,
                 State = CompositionState.Normal,
                 PaletteUpdateOnly = false,
-                PaletteUpdateID = 0xAB,
+                PaletteUpdateId = 0xAB,
             };
 
             stream.WriteSegmentAsync(pcs).Wait();
@@ -194,7 +194,7 @@ public class PresentationCompositionSegmentWriteTests
                 Number = 0x6543,
                 State = CompositionState.Normal,
                 PaletteUpdateOnly = true,
-                PaletteUpdateID = 0xAB,
+                PaletteUpdateId = 0xAB,
             };
 
             stream.WriteSegment(pcs);
@@ -221,7 +221,7 @@ public class PresentationCompositionSegmentWriteTests
                 Number = 0x6543,
                 State = CompositionState.Normal,
                 PaletteUpdateOnly = true,
-                PaletteUpdateID = 0xAB,
+                PaletteUpdateId = 0xAB,
             };
 
             stream.WriteSegmentAsync(pcs).Wait();
@@ -248,7 +248,7 @@ public class PresentationCompositionSegmentWriteTests
                 Number = 0x6543,
                 State = CompositionState.Normal,
                 PaletteUpdateOnly = false,
-                PaletteUpdateID = 0xAB,
+                PaletteUpdateId = 0xAB,
                 Objects = new List<CompositionObject>
                 {
                     new CompositionObject
@@ -287,7 +287,7 @@ public class PresentationCompositionSegmentWriteTests
                 Number = 0x6543,
                 State = CompositionState.Normal,
                 PaletteUpdateOnly = false,
-                PaletteUpdateID = 0xAB,
+                PaletteUpdateId = 0xAB,
                 Objects = new List<CompositionObject>
                 {
                     new CompositionObject
@@ -326,7 +326,7 @@ public class PresentationCompositionSegmentWriteTests
                 Number = 0x6543,
                 State = CompositionState.Normal,
                 PaletteUpdateOnly = false,
-                PaletteUpdateID = 0xAB,
+                PaletteUpdateId = 0xAB,
                 Objects = new List<CompositionObject>
                 {
                     new CompositionObject
@@ -371,7 +371,7 @@ public class PresentationCompositionSegmentWriteTests
                 Number = 0x6543,
                 State = CompositionState.Normal,
                 PaletteUpdateOnly = false,
-                PaletteUpdateID = 0xAB,
+                PaletteUpdateId = 0xAB,
                 Objects = new List<CompositionObject>
                 {
                     new CompositionObject
@@ -416,7 +416,7 @@ public class PresentationCompositionSegmentWriteTests
                 Number = 0x6543,
                 State = CompositionState.Normal,
                 PaletteUpdateOnly = false,
-                PaletteUpdateID = 0xAB,
+                PaletteUpdateId = 0xAB,
                 Objects = new List<CompositionObject>
                 {
                     new CompositionObject
@@ -485,7 +485,7 @@ public class PresentationCompositionSegmentWriteTests
                 Number = 0x6543,
                 State = CompositionState.Normal,
                 PaletteUpdateOnly = false,
-                PaletteUpdateID = 0xAB,
+                PaletteUpdateId = 0xAB,
                 Objects = new List<CompositionObject>
                 {
                     new CompositionObject

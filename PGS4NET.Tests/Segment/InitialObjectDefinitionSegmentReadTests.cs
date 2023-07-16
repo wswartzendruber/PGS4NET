@@ -29,7 +29,7 @@ public class InitialObjectDefinitionSegmentReadTests
 
             if (segment is InitialObjectDefinitionSegment iods)
             {
-                Assert.True(iods.ID == 0xA0A1);
+                Assert.True(iods.Id == 0xA0A1);
                 Assert.True(iods.Version == 0xA2);
                 Assert.True(iods.Length == 0xABCDEF);
                 Assert.True(iods.Width == 0x2143);
@@ -55,7 +55,7 @@ public class InitialObjectDefinitionSegmentReadTests
 
             if (segment is InitialObjectDefinitionSegment iods)
             {
-                Assert.True(iods.ID == 0xA0A1);
+                Assert.True(iods.Id == 0xA0A1);
                 Assert.True(iods.Version == 0xA2);
                 Assert.True(iods.Length == 0xABCDEF);
                 Assert.True(iods.Width == 0x2143);
@@ -81,7 +81,7 @@ public class InitialObjectDefinitionSegmentReadTests
 
             if (segment is InitialObjectDefinitionSegment iods)
             {
-                Assert.True(iods.ID == 0xA0A1);
+                Assert.True(iods.Id == 0xA0A1);
                 Assert.True(iods.Version == 0xA2);
                 Assert.True(iods.Length == 0xABCDEF);
                 Assert.True(iods.Width == 0x2143);
@@ -111,7 +111,7 @@ public class InitialObjectDefinitionSegmentReadTests
 
             if (segment is InitialObjectDefinitionSegment iods)
             {
-                Assert.True(iods.ID == 0xA0A1);
+                Assert.True(iods.Id == 0xA0A1);
                 Assert.True(iods.Version == 0xA2);
                 Assert.True(iods.Length == 0xABCDEF);
                 Assert.True(iods.Width == 0x2143);

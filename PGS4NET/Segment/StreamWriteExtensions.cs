@@ -171,7 +171,7 @@ public static partial class StreamExtensions
             _ => throw new ArgumentException("PCS has unrecognized composition state."),
         });
         WriteUInt8(ms, (byte)(pcs.PaletteUpdateOnly ? 0x80 : 0x00));
-        WriteUInt8(ms, pcs.PaletteUpdateID);
+        WriteUInt8(ms, pcs.PaletteUpdateId);
 
         if (pcs.Objects.Count < 256)
             WriteUInt8(ms, (byte)pcs.Objects.Count);
@@ -212,7 +212,7 @@ public static partial class StreamExtensions
 
         foreach (var wd in wds.Definitions)
         {
-            WriteUInt8(ms, wd.ID);
+            WriteUInt8(ms, wd.Id);
             WriteUInt16BE(ms, wd.X);
             WriteUInt16BE(ms, wd.Y);
             WriteUInt16BE(ms, wd.Width);
@@ -227,12 +227,12 @@ public static partial class StreamExtensions
     {
         using var ms = new MemoryStream();
 
-        WriteUInt8(ms, pds.ID);
+        WriteUInt8(ms, pds.Id);
         WriteUInt8(ms, pds.Version);
 
         foreach (var entry in pds.Entries)
         {
-            WriteUInt8(ms, entry.ID);
+            WriteUInt8(ms, entry.Id);
             WriteUInt8(ms, entry.Y);
             WriteUInt8(ms, entry.Cr);
             WriteUInt8(ms, entry.Cb);
@@ -251,7 +251,7 @@ public static partial class StreamExtensions
 
         using var ms = new MemoryStream();
 
-        WriteUInt16BE(ms, sods.ID);
+        WriteUInt16BE(ms, sods.Id);
         WriteUInt8(ms, sods.Version);
         WriteUInt8(ms, 0xC0);
         WriteUInt24BE(ms, dataLength);
@@ -271,7 +271,7 @@ public static partial class StreamExtensions
 
         using var ms = new MemoryStream();
 
-        WriteUInt16BE(ms, iods.ID);
+        WriteUInt16BE(ms, iods.Id);
         WriteUInt8(ms, iods.Version);
         WriteUInt8(ms, 0x80);
         WriteUInt24BE(ms, iods.Length);
@@ -289,7 +289,7 @@ public static partial class StreamExtensions
 
         using var ms = new MemoryStream();
 
-        WriteUInt16BE(ms, mods.ID);
+        WriteUInt16BE(ms, mods.Id);
         WriteUInt8(ms, mods.Version);
         WriteUInt8(ms, 0x00);
         ms.Write(mods.Data, 0, mods.Data.Length);
@@ -305,7 +305,7 @@ public static partial class StreamExtensions
 
         using var ms = new MemoryStream();
 
-        WriteUInt16BE(ms, fods.ID);
+        WriteUInt16BE(ms, fods.Id);
         WriteUInt8(ms, fods.Version);
         WriteUInt8(ms, 0x40);
         ms.Write(fods.Data, 0, fods.Data.Length);

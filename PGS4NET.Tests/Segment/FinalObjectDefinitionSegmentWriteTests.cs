@@ -27,7 +27,7 @@ public class FinalObjectDefinitionSegmentWriteTests
             {
                 PTS = 0x01234567,
                 DTS = 0x12345678,
-                ID = 0xA0A1,
+                Id = 0xA0A1,
                 Version = 0xA2,
                 Data = new byte[0],
             };
@@ -50,7 +50,7 @@ public class FinalObjectDefinitionSegmentWriteTests
             {
                 PTS = 0x01234567,
                 DTS = 0x12345678,
-                ID = 0xA0A1,
+                Id = 0xA0A1,
                 Version = 0xA2,
                 Data = new byte[0],
             };
@@ -73,7 +73,7 @@ public class FinalObjectDefinitionSegmentWriteTests
             {
                 PTS = 0x01234567,
                 DTS = 0x12345678,
-                ID = 0xA0A1,
+                Id = 0xA0A1,
                 Version = 0xA2,
                 Data = new byte[] { 0xE0, 0xE1, 0xE2, 0xE3 },
             };
@@ -96,7 +96,7 @@ public class FinalObjectDefinitionSegmentWriteTests
             {
                 PTS = 0x01234567,
                 DTS = 0x12345678,
-                ID = 0xA0A1,
+                Id = 0xA0A1,
                 Version = 0xA2,
                 Data = new byte[] { 0xE0, 0xE1, 0xE2, 0xE3 },
             };

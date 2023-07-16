@@ -45,14 +45,14 @@ public class PresentationCompositionSegment : Segment
     public CompositionState State;
 
     /// <summary>
-    ///     If set, <see cref="PaletteUpdateID" /> indicates the palette for updating.
+    ///     If set, <see cref="PaletteUpdateId" /> indicates the palette for updating.
     /// </summary>
     public bool PaletteUpdateOnly;
 
     /// <summary>
     ///     The palette ID to use when rendering the bitmap.
     /// </summary>
-    public byte PaletteUpdateID;
+    public byte PaletteUpdateId;
 
     /// <summary>
     ///     Maps an epoch’s objects (or areas within them) to its windows.

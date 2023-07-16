@@ -29,7 +29,7 @@ public class FinalObjectDefinitionSegmentReadTests
 
             if (segment is FinalObjectDefinitionSegment fods)
             {
-                Assert.True(fods.ID == 0xA0A1);
+                Assert.True(fods.Id == 0xA0A1);
                 Assert.True(fods.Version == 0xA2);
                 Assert.True(fods.Data.Length == 0);
             }
@@ -52,7 +52,7 @@ public class FinalObjectDefinitionSegmentReadTests
 
             if (segment is FinalObjectDefinitionSegment fods)
             {
-                Assert.True(fods.ID == 0xA0A1);
+                Assert.True(fods.Id == 0xA0A1);
                 Assert.True(fods.Version == 0xA2);
                 Assert.True(fods.Data.Length == 0);
             }
@@ -75,7 +75,7 @@ public class FinalObjectDefinitionSegmentReadTests
 
             if (segment is FinalObjectDefinitionSegment fods)
             {
-                Assert.True(fods.ID == 0xA0A1);
+                Assert.True(fods.Id == 0xA0A1);
                 Assert.True(fods.Version == 0xA2);
                 Assert.True(fods.Data.Length == 4);
                 Assert.True(fods.Data[0] == 0xE0);
@@ -102,7 +102,7 @@ public class FinalObjectDefinitionSegmentReadTests
 
             if (segment is FinalObjectDefinitionSegment fods)
             {
-                Assert.True(fods.ID == 0xA0A1);
+                Assert.True(fods.Id == 0xA0A1);
                 Assert.True(fods.Version == 0xA2);
                 Assert.True(fods.Data.Length == 4);
                 Assert.True(fods.Data[0] == 0xE0);
