@@ -12,7 +12,7 @@
 
 namespace PGS4NET.Tests.Segment;
 
-internal static class PCS
+internal static class PresentationCompositionSegmentData
 {
     internal static byte[] EpochStart_NoPaletteUpdateID_NoObjects = new byte[]
     {

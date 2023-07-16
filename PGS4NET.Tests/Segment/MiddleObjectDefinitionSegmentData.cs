@@ -12,7 +12,7 @@
 
 namespace PGS4NET.Tests.Segment;
 
-internal static class MODS
+internal static class MiddleObjectDefinitionSegmentData
 {
     internal static byte[] Empty = new byte[]
     {

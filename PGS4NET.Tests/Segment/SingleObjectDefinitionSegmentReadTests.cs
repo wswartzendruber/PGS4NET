@@ -15,12 +15,12 @@ using PGS4NET.Segment;
 
 namespace PGS4NET.Tests.Segment;
 
-public class SODSReadTests
+public class SingleObjectDefinitionSegmentReadTests
 {
     [Fact]
     public void Empty()
     {
-        using (var stream = new MemoryStream(SODS.Empty))
+        using (var stream = new MemoryStream(SingleObjectDefinitionSegmentData.Empty))
         {
             var segment = stream.ReadSegment();
 
@@ -45,7 +45,7 @@ public class SODSReadTests
     [Fact]
     public void EmptyASync()
     {
-        using (var stream = new MemoryStream(SODS.Empty))
+        using (var stream = new MemoryStream(SingleObjectDefinitionSegmentData.Empty))
         {
             var segment = stream.ReadSegmentAsync().Result;
 
@@ -70,7 +70,7 @@ public class SODSReadTests
     [Fact]
     public void Small()
     {
-        using (var stream = new MemoryStream(SODS.Small))
+        using (var stream = new MemoryStream(SingleObjectDefinitionSegmentData.Small))
         {
             var segment = stream.ReadSegment();
 
@@ -99,7 +99,7 @@ public class SODSReadTests
     [Fact]
     public void SmallAsync()
     {
-        using (var stream = new MemoryStream(SODS.Small))
+        using (var stream = new MemoryStream(SingleObjectDefinitionSegmentData.Small))
         {
             var segment = stream.ReadSegmentAsync().Result;
 

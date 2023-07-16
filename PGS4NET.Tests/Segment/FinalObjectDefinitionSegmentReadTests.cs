@@ -15,12 +15,12 @@ using PGS4NET.Segment;
 
 namespace PGS4NET.Tests.Segment;
 
-public class FODSReadTests
+public class FinalObjectDefinitionSegmentReadTests
 {
     [Fact]
     public void Empty()
     {
-        using (var stream = new MemoryStream(FODS.Empty))
+        using (var stream = new MemoryStream(FinalObjectDefinitionSegmentData.Empty))
         {
             var segment = stream.ReadSegment();
 
@@ -43,7 +43,7 @@ public class FODSReadTests
     [Fact]
     public void EmptyAsync()
     {
-        using (var stream = new MemoryStream(FODS.Empty))
+        using (var stream = new MemoryStream(FinalObjectDefinitionSegmentData.Empty))
         {
             var segment = stream.ReadSegmentAsync().Result;
 
@@ -66,7 +66,7 @@ public class FODSReadTests
     [Fact]
     public void Small()
     {
-        using (var stream = new MemoryStream(FODS.Small))
+        using (var stream = new MemoryStream(FinalObjectDefinitionSegmentData.Small))
         {
             var segment = stream.ReadSegment();
 
@@ -93,7 +93,7 @@ public class FODSReadTests
     [Fact]
     public void SmallAsync()
     {
-        using (var stream = new MemoryStream(FODS.Small))
+        using (var stream = new MemoryStream(FinalObjectDefinitionSegmentData.Small))
         {
             var segment = stream.ReadSegmentAsync().Result;
 

@@ -12,7 +12,7 @@
 
 namespace PGS4NET.Tests.Segment;
 
-internal static class ES
+internal static class EndSegmentData
 {
     internal static byte[] Single = new byte[]
     {

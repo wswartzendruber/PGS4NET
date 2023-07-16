@@ -16,26 +16,29 @@ using PGS4NET.Segment;
 
 namespace PGS4NET.Tests.Segment;
 
-public class MODSWriteTests
+public class InitialObjectDefinitionSegmentWriteTests
 {
     [Fact]
     public void Empty()
     {
         using (var stream = new MemoryStream())
         {
-            var mods = new MiddleObjectDefinitionSegment
+            var iods = new InitialObjectDefinitionSegment
             {
                 PTS = 0x01234567,
                 DTS = 0x12345678,
                 ID = 0xA0A1,
                 Version = 0xA2,
+                Length = 0xABCDEF,
+                Width = 0x2143,
+                Height = 0x6587,
                 Data = new byte[0],
             };
 
-            stream.WriteSegment(mods);
+            stream.WriteSegment(iods);
 
             Assert.True(Enumerable.SequenceEqual(
-                MODS.Empty,
+                InitialObjectDefinitionSegmentData.Empty,
                 stream.ToArray()
             ));
         }
@@ -46,19 +49,22 @@ public class MODSWriteTests
     {
         using (var stream = new MemoryStream())
         {
-            var mods = new MiddleObjectDefinitionSegment
+            var iods = new InitialObjectDefinitionSegment
             {
                 PTS = 0x01234567,
                 DTS = 0x12345678,
                 ID = 0xA0A1,
                 Version = 0xA2,
+                Length = 0xABCDEF,
+                Width = 0x2143,
+                Height = 0x6587,
                 Data = new byte[0],
             };
 
-            stream.WriteSegmentAsync(mods).Wait();
+            stream.WriteSegmentAsync(iods).Wait();
 
             Assert.True(Enumerable.SequenceEqual(
-                MODS.Empty,
+                InitialObjectDefinitionSegmentData.Empty,
                 stream.ToArray()
             ));
         }
@@ -69,19 +75,22 @@ public class MODSWriteTests
     {
         using (var stream = new MemoryStream())
         {
-            var mods = new MiddleObjectDefinitionSegment
+            var iods = new InitialObjectDefinitionSegment
             {
                 PTS = 0x01234567,
                 DTS = 0x12345678,
                 ID = 0xA0A1,
                 Version = 0xA2,
+                Length = 0xABCDEF,
+                Width = 0x2143,
+                Height = 0x6587,
                 Data = new byte[] { 0xE0, 0xE1, 0xE2, 0xE3 },
             };
 
-            stream.WriteSegment(mods);
+            stream.WriteSegment(iods);
 
             Assert.True(Enumerable.SequenceEqual(
-                MODS.Small,
+                InitialObjectDefinitionSegmentData.Small,
                 stream.ToArray()
             ));
         }
@@ -92,19 +101,22 @@ public class MODSWriteTests
     {
         using (var stream = new MemoryStream())
         {
-            var mods = new MiddleObjectDefinitionSegment
+            var iods = new InitialObjectDefinitionSegment
             {
                 PTS = 0x01234567,
                 DTS = 0x12345678,
                 ID = 0xA0A1,
                 Version = 0xA2,
+                Length = 0xABCDEF,
+                Width = 0x2143,
+                Height = 0x6587,
                 Data = new byte[] { 0xE0, 0xE1, 0xE2, 0xE3 },
             };
 
-            stream.WriteSegmentAsync(mods).Wait();
+            stream.WriteSegmentAsync(iods).Wait();
 
             Assert.True(Enumerable.SequenceEqual(
-                MODS.Small,
+                InitialObjectDefinitionSegmentData.Small,
                 stream.ToArray()
             ));
         }

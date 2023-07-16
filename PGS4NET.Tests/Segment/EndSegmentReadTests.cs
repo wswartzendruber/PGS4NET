@@ -15,12 +15,12 @@ using PGS4NET.Segment;
 
 namespace PGS4NET.Tests.Segment;
 
-public class ESReadTests
+public class EndSegmentReadTests
 {
     [Fact]
     public void Single()
     {
-        using (var stream = new MemoryStream(ES.Single))
+        using (var stream = new MemoryStream(EndSegmentData.Single))
         {
             var segment = stream.ReadSegment();
 
@@ -35,7 +35,7 @@ public class ESReadTests
     [Fact]
     public void SingleAsync()
     {
-        using (var stream = new MemoryStream(ES.Single))
+        using (var stream = new MemoryStream(EndSegmentData.Single))
         {
             var segment = stream.ReadSegmentAsync().Result;
 

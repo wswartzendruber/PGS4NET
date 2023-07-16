@@ -12,7 +12,7 @@
 
 namespace PGS4NET.Tests.Segment;
 
-internal static class WDS
+internal static class WindowDefinitionSegmentData
 {
     internal static byte[] NoWindows = new byte[]
     {

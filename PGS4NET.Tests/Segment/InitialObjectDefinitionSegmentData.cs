@@ -12,7 +12,7 @@
 
 namespace PGS4NET.Tests.Segment;
 
-internal static class IODS
+internal static class InitialObjectDefinitionSegmentData
 {
     internal static byte[] Empty = new byte[]
     {

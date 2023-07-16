@@ -12,7 +12,7 @@
 
 namespace PGS4NET.Tests.Segment;
 
-internal static class SODS
+internal static class FinalObjectDefinitionSegmentData
 {
     internal static byte[] Empty = new byte[]
     {
@@ -20,13 +20,10 @@ internal static class SODS
         0x01, 0x23, 0x45, 0x67, // PTS
         0x12, 0x34, 0x56, 0x78, // DTS
         0x15,                   // Type
-        0x00, 0x0B,             // Size
+        0x00, 0x04,             // Size
         0xA0, 0xA1,             // ID
         0xA2,                   // Version
-        0xC0,                   // Sequence flags
-        0x00, 0x00, 0x04,       // Data length
-        0x21, 0x43,             // Width
-        0x65, 0x87,             // Height
+        0x40,                   // Sequence flags
     };
 
     internal static byte[] Small = new byte[]
@@ -35,13 +32,10 @@ internal static class SODS
         0x01, 0x23, 0x45, 0x67, // PTS
         0x12, 0x34, 0x56, 0x78, // DTS
         0x15,                   // Type
-        0x00, 0x0F,             // Size
+        0x00, 0x08,             // Size
         0xA0, 0xA1,             // ID
         0xA2,                   // Version
-        0xC0,                   // Sequence flags
-        0x00, 0x00, 0x08,       // Data length
-        0x21, 0x43,             // Width
-        0x65, 0x87,             // Height
+        0x40,                   // Sequence flags
         0xE0, 0xE1, 0xE2, 0xE3, // Data
     };
 }

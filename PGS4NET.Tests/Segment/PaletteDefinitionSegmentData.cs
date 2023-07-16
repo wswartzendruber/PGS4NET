@@ -12,7 +12,7 @@
 
 namespace PGS4NET.Tests.Segment;
 
-internal static class PDS
+internal static class PaletteDefinitionSegmentData
 {
     internal static byte[] NoEntries = new byte[]
     {

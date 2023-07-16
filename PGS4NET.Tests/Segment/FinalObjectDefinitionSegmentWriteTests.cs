@@ -16,7 +16,7 @@ using PGS4NET.Segment;
 
 namespace PGS4NET.Tests.Segment;
 
-public class FODSWriteTests
+public class FinalObjectDefinitionSegmentWriteTests
 {
     [Fact]
     public void Empty()
@@ -35,7 +35,7 @@ public class FODSWriteTests
             stream.WriteSegment(fods);
 
             Assert.True(Enumerable.SequenceEqual(
-                FODS.Empty,
+                FinalObjectDefinitionSegmentData.Empty,
                 stream.ToArray()
             ));
         }
@@ -58,7 +58,7 @@ public class FODSWriteTests
             stream.WriteSegmentAsync(fods).Wait();
 
             Assert.True(Enumerable.SequenceEqual(
-                FODS.Empty,
+                FinalObjectDefinitionSegmentData.Empty,
                 stream.ToArray()
             ));
         }
@@ -81,7 +81,7 @@ public class FODSWriteTests
             stream.WriteSegment(fods);
 
             Assert.True(Enumerable.SequenceEqual(
-                FODS.Small,
+                FinalObjectDefinitionSegmentData.Small,
                 stream.ToArray()
             ));
         }
@@ -104,7 +104,7 @@ public class FODSWriteTests
             stream.WriteSegmentAsync(fods).Wait();
 
             Assert.True(Enumerable.SequenceEqual(
-                FODS.Small,
+                FinalObjectDefinitionSegmentData.Small,
                 stream.ToArray()
             ));
         }

@@ -16,28 +16,26 @@ using PGS4NET.Segment;
 
 namespace PGS4NET.Tests.Segment;
 
-public class SODSWriteTests
+public class MiddleObjectDefinitionSegmentWriteTests
 {
     [Fact]
     public void Empty()
     {
         using (var stream = new MemoryStream())
         {
-            var sods = new SingleObjectDefinitionSegment
+            var mods = new MiddleObjectDefinitionSegment
             {
                 PTS = 0x01234567,
                 DTS = 0x12345678,
                 ID = 0xA0A1,
                 Version = 0xA2,
-                Width = 0x2143,
-                Height = 0x6587,
                 Data = new byte[0],
             };
 
-            stream.WriteSegment(sods);
+            stream.WriteSegment(mods);
 
             Assert.True(Enumerable.SequenceEqual(
-                SODS.Empty,
+                MiddleObjectDefinitionSegmentData.Empty,
                 stream.ToArray()
             ));
         }
@@ -48,21 +46,19 @@ public class SODSWriteTests
     {
         using (var stream = new MemoryStream())
         {
-            var sods = new SingleObjectDefinitionSegment
+            var mods = new MiddleObjectDefinitionSegment
             {
                 PTS = 0x01234567,
                 DTS = 0x12345678,
                 ID = 0xA0A1,
                 Version = 0xA2,
-                Width = 0x2143,
-                Height = 0x6587,
                 Data = new byte[0],
             };
 
-            stream.WriteSegmentAsync(sods).Wait();
+            stream.WriteSegmentAsync(mods).Wait();
 
             Assert.True(Enumerable.SequenceEqual(
-                SODS.Empty,
+                MiddleObjectDefinitionSegmentData.Empty,
                 stream.ToArray()
             ));
         }
@@ -73,21 +69,19 @@ public class SODSWriteTests
     {
         using (var stream = new MemoryStream())
         {
-            var sods = new SingleObjectDefinitionSegment
+            var mods = new MiddleObjectDefinitionSegment
             {
                 PTS = 0x01234567,
                 DTS = 0x12345678,
                 ID = 0xA0A1,
                 Version = 0xA2,
-                Width = 0x2143,
-                Height = 0x6587,
                 Data = new byte[] { 0xE0, 0xE1, 0xE2, 0xE3 },
             };
 
-            stream.WriteSegment(sods);
+            stream.WriteSegment(mods);
 
             Assert.True(Enumerable.SequenceEqual(
-                SODS.Small,
+                MiddleObjectDefinitionSegmentData.Small,
                 stream.ToArray()
             ));
         }
@@ -98,21 +92,19 @@ public class SODSWriteTests
     {
         using (var stream = new MemoryStream())
         {
-            var sods = new SingleObjectDefinitionSegment
+            var mods = new MiddleObjectDefinitionSegment
             {
                 PTS = 0x01234567,
                 DTS = 0x12345678,
                 ID = 0xA0A1,
                 Version = 0xA2,
-                Width = 0x2143,
-                Height = 0x6587,
                 Data = new byte[] { 0xE0, 0xE1, 0xE2, 0xE3 },
             };
 
-            stream.WriteSegmentAsync(sods).Wait();
+            stream.WriteSegmentAsync(mods).Wait();
 
             Assert.True(Enumerable.SequenceEqual(
-                SODS.Small,
+                MiddleObjectDefinitionSegmentData.Small,
                 stream.ToArray()
             ));
         }

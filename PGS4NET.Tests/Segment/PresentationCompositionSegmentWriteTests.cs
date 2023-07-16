@@ -15,7 +15,7 @@ using PGS4NET.Segment;
 
 namespace PGS4NET.Tests.Segment;
 
-public class PCSWriteTests
+public class PresentationCompositionSegmentWriteTests
 {
     [Fact]
     public void EpochStart_NoPaletteUpdateID_NoObjects()
@@ -38,7 +38,7 @@ public class PCSWriteTests
             stream.WriteSegment(pcs);
 
             Assert.True(Enumerable.SequenceEqual(
-                PCS.EpochStart_NoPaletteUpdateID_NoObjects,
+                PresentationCompositionSegmentData.EpochStart_NoPaletteUpdateID_NoObjects,
                 stream.ToArray()
             ));
         }
@@ -65,7 +65,7 @@ public class PCSWriteTests
             stream.WriteSegmentAsync(pcs).Wait();
 
             Assert.True(Enumerable.SequenceEqual(
-                PCS.EpochStart_NoPaletteUpdateID_NoObjects,
+                PresentationCompositionSegmentData.EpochStart_NoPaletteUpdateID_NoObjects,
                 stream.ToArray()
             ));
         }
@@ -92,7 +92,7 @@ public class PCSWriteTests
             stream.WriteSegment(pcs);
 
             Assert.True(Enumerable.SequenceEqual(
-                PCS.AcquisitionPoint_NoPaletteUpdateID_NoObjects,
+                PresentationCompositionSegmentData.AcquisitionPoint_NoPaletteUpdateID_NoObjects,
                 stream.ToArray()
             ));
         }
@@ -119,7 +119,7 @@ public class PCSWriteTests
             stream.WriteSegmentAsync(pcs).Wait();
 
             Assert.True(Enumerable.SequenceEqual(
-                PCS.AcquisitionPoint_NoPaletteUpdateID_NoObjects,
+                PresentationCompositionSegmentData.AcquisitionPoint_NoPaletteUpdateID_NoObjects,
                 stream.ToArray()
             ));
         }
@@ -146,7 +146,7 @@ public class PCSWriteTests
             stream.WriteSegment(pcs);
 
             Assert.True(Enumerable.SequenceEqual(
-                PCS.Normal_NoPaletteUpdateID_NoObjects,
+                PresentationCompositionSegmentData.Normal_NoPaletteUpdateID_NoObjects,
                 stream.ToArray()
             ));
         }
@@ -173,7 +173,7 @@ public class PCSWriteTests
             stream.WriteSegmentAsync(pcs).Wait();
 
             Assert.True(Enumerable.SequenceEqual(
-                PCS.Normal_NoPaletteUpdateID_NoObjects,
+                PresentationCompositionSegmentData.Normal_NoPaletteUpdateID_NoObjects,
                 stream.ToArray()
             ));
         }
@@ -200,7 +200,7 @@ public class PCSWriteTests
             stream.WriteSegment(pcs);
 
             Assert.True(Enumerable.SequenceEqual(
-                PCS.Normal_PaletteUpdateID_NoObjects,
+                PresentationCompositionSegmentData.Normal_PaletteUpdateID_NoObjects,
                 stream.ToArray()
             ));
         }
@@ -227,7 +227,7 @@ public class PCSWriteTests
             stream.WriteSegmentAsync(pcs).Wait();
 
             Assert.True(Enumerable.SequenceEqual(
-                PCS.Normal_PaletteUpdateID_NoObjects,
+                PresentationCompositionSegmentData.Normal_PaletteUpdateID_NoObjects,
                 stream.ToArray()
             ));
         }
@@ -266,7 +266,7 @@ public class PCSWriteTests
             stream.WriteSegment(pcs);
 
             Assert.True(Enumerable.SequenceEqual(
-                PCS.Normal_NoPaletteUpdateID_OneObjectForced,
+                PresentationCompositionSegmentData.Normal_NoPaletteUpdateID_OneObjectForced,
                 stream.ToArray()
             ));
         }
@@ -305,7 +305,7 @@ public class PCSWriteTests
             stream.WriteSegmentAsync(pcs).Wait();
 
             Assert.True(Enumerable.SequenceEqual(
-                PCS.Normal_NoPaletteUpdateID_OneObjectForced,
+                PresentationCompositionSegmentData.Normal_NoPaletteUpdateID_OneObjectForced,
                 stream.ToArray()
             ));
         }
@@ -350,7 +350,7 @@ public class PCSWriteTests
             stream.WriteSegment(pcs);
 
             Assert.True(Enumerable.SequenceEqual(
-                PCS.Normal_NoPaletteUpdateID_OneObjectCropped,
+                PresentationCompositionSegmentData.Normal_NoPaletteUpdateID_OneObjectCropped,
                 stream.ToArray()
             ));
         }
@@ -395,7 +395,7 @@ public class PCSWriteTests
             stream.WriteSegmentAsync(pcs).Wait();
 
             Assert.True(Enumerable.SequenceEqual(
-                PCS.Normal_NoPaletteUpdateID_OneObjectCropped,
+                PresentationCompositionSegmentData.Normal_NoPaletteUpdateID_OneObjectCropped,
                 stream.ToArray()
             ));
         }
@@ -464,7 +464,7 @@ public class PCSWriteTests
             stream.WriteSegment(pcs);
 
             Assert.True(Enumerable.SequenceEqual(
-                PCS.Normal_NoPaletteUpdateID_ThreeObjectsMixed,
+                PresentationCompositionSegmentData.Normal_NoPaletteUpdateID_ThreeObjectsMixed,
                 stream.ToArray()
             ));
         }
@@ -533,7 +533,7 @@ public class PCSWriteTests
             stream.WriteSegmentAsync(pcs).Wait();
 
             Assert.True(Enumerable.SequenceEqual(
-                PCS.Normal_NoPaletteUpdateID_ThreeObjectsMixed,
+                PresentationCompositionSegmentData.Normal_NoPaletteUpdateID_ThreeObjectsMixed,
                 stream.ToArray()
             ));
         }

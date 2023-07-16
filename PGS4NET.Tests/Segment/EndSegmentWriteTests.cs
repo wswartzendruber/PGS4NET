@@ -16,7 +16,7 @@ using PGS4NET.Segment;
 
 namespace PGS4NET.Tests.Segment;
 
-public class ESWriteTests
+public class EndSegmentWriteTests
 {
     [Fact]
     public void Single()
@@ -32,7 +32,7 @@ public class ESWriteTests
             stream.WriteSegment(es);
 
             Assert.True(Enumerable.SequenceEqual(
-                ES.Single,
+                EndSegmentData.Single,
                 stream.ToArray()
             ));
         }
@@ -52,7 +52,7 @@ public class ESWriteTests
             stream.WriteSegmentAsync(es).Wait();
 
             Assert.True(Enumerable.SequenceEqual(
-                ES.Single,
+                EndSegmentData.Single,
                 stream.ToArray()
             ));
         }

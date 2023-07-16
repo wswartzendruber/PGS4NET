@@ -16,7 +16,7 @@ using PGS4NET.Segment;
 
 namespace PGS4NET.Tests.Segment;
 
-public class WDSWriteTests
+public class WindowDefinitionSegmentWriteTests
 {
     [Fact]
     public void NoWindows()
@@ -32,7 +32,7 @@ public class WDSWriteTests
             stream.WriteSegment(wds);
 
             Assert.True(Enumerable.SequenceEqual(
-                WDS.NoWindows,
+                WindowDefinitionSegmentData.NoWindows,
                 stream.ToArray()
             ));
         }
@@ -52,7 +52,7 @@ public class WDSWriteTests
             stream.WriteSegmentAsync(wds).Wait();
 
             Assert.True(Enumerable.SequenceEqual(
-                WDS.NoWindows,
+                WindowDefinitionSegmentData.NoWindows,
                 stream.ToArray()
             ));
         }
@@ -83,7 +83,7 @@ public class WDSWriteTests
             stream.WriteSegment(wds);
 
             Assert.True(Enumerable.SequenceEqual(
-                WDS.OneWindow,
+                WindowDefinitionSegmentData.OneWindow,
                 stream.ToArray()
             ));
         }
@@ -114,7 +114,7 @@ public class WDSWriteTests
             stream.WriteSegmentAsync(wds).Wait();
 
             Assert.True(Enumerable.SequenceEqual(
-                WDS.OneWindow,
+                WindowDefinitionSegmentData.OneWindow,
                 stream.ToArray()
             ));
         }
@@ -153,7 +153,7 @@ public class WDSWriteTests
             stream.WriteSegment(wds);
 
             Assert.True(Enumerable.SequenceEqual(
-                WDS.TwoWindows,
+                WindowDefinitionSegmentData.TwoWindows,
                 stream.ToArray()
             ));
         }
@@ -192,7 +192,7 @@ public class WDSWriteTests
             stream.WriteSegmentAsync(wds).Wait();
 
             Assert.True(Enumerable.SequenceEqual(
-                WDS.TwoWindows,
+                WindowDefinitionSegmentData.TwoWindows,
                 stream.ToArray()
             ));
         }

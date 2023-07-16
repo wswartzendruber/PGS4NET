@@ -16,7 +16,7 @@ using PGS4NET.Segment;
 
 namespace PGS4NET.Tests.Segment;
 
-public class PDSWriteTests
+public class PaletteDefinitionSegmentWriteTests
 {
     [Fact]
     public void NoEntries()
@@ -34,7 +34,7 @@ public class PDSWriteTests
             stream.WriteSegment(pds);
 
             Assert.True(Enumerable.SequenceEqual(
-                PDS.NoEntries,
+                PaletteDefinitionSegmentData.NoEntries,
                 stream.ToArray()
             ));
         }
@@ -56,7 +56,7 @@ public class PDSWriteTests
             stream.WriteSegmentAsync(pds).Wait();
 
             Assert.True(Enumerable.SequenceEqual(
-                PDS.NoEntries,
+                PaletteDefinitionSegmentData.NoEntries,
                 stream.ToArray()
             ));
         }
@@ -89,7 +89,7 @@ public class PDSWriteTests
             stream.WriteSegment(pds);
 
             Assert.True(Enumerable.SequenceEqual(
-                PDS.OneEntry,
+                PaletteDefinitionSegmentData.OneEntry,
                 stream.ToArray()
             ));
         }
@@ -122,7 +122,7 @@ public class PDSWriteTests
             stream.WriteSegmentAsync(pds).Wait();
 
             Assert.True(Enumerable.SequenceEqual(
-                PDS.OneEntry,
+                PaletteDefinitionSegmentData.OneEntry,
                 stream.ToArray()
             ));
         }
@@ -163,7 +163,7 @@ public class PDSWriteTests
             stream.WriteSegment(pds);
 
             Assert.True(Enumerable.SequenceEqual(
-                PDS.TwoEntries,
+                PaletteDefinitionSegmentData.TwoEntries,
                 stream.ToArray()
             ));
         }
@@ -204,7 +204,7 @@ public class PDSWriteTests
             stream.WriteSegmentAsync(pds).Wait();
 
             Assert.True(Enumerable.SequenceEqual(
-                PDS.TwoEntries,
+                PaletteDefinitionSegmentData.TwoEntries,
                 stream.ToArray()
             ));
         }

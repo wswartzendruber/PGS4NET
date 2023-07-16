@@ -15,12 +15,12 @@ using PGS4NET.Segment;
 
 namespace PGS4NET.Tests.Segment;
 
-public class WDSReadTests
+public class WindowDefinitionSegmentReadTests
 {
     [Fact]
     public void NoWindows()
     {
-        using (var stream = new MemoryStream(WDS.NoWindows))
+        using (var stream = new MemoryStream(WindowDefinitionSegmentData.NoWindows))
         {
             var segment = stream.ReadSegment();
 
@@ -41,7 +41,7 @@ public class WDSReadTests
     [Fact]
     public void NoWindowsAsync()
     {
-        using (var stream = new MemoryStream(WDS.NoWindows))
+        using (var stream = new MemoryStream(WindowDefinitionSegmentData.NoWindows))
         {
             var segment = stream.ReadSegmentAsync().Result;
 
@@ -62,7 +62,7 @@ public class WDSReadTests
     [Fact]
     public void OneWindow()
     {
-        using (var stream = new MemoryStream(WDS.OneWindow))
+        using (var stream = new MemoryStream(WindowDefinitionSegmentData.OneWindow))
         {
             var segment = stream.ReadSegment();
 
@@ -88,7 +88,7 @@ public class WDSReadTests
     [Fact]
     public void OneWindowAsync()
     {
-        using (var stream = new MemoryStream(WDS.OneWindow))
+        using (var stream = new MemoryStream(WindowDefinitionSegmentData.OneWindow))
         {
             var segment = stream.ReadSegmentAsync().Result;
 
@@ -114,7 +114,7 @@ public class WDSReadTests
     [Fact]
     public void TwoWindows()
     {
-        using (var stream = new MemoryStream(WDS.TwoWindows))
+        using (var stream = new MemoryStream(WindowDefinitionSegmentData.TwoWindows))
         {
             var segment = stream.ReadSegment();
 
@@ -145,7 +145,7 @@ public class WDSReadTests
     [Fact]
     public void TwoWindowsAsync()
     {
-        using (var stream = new MemoryStream(WDS.TwoWindows))
+        using (var stream = new MemoryStream(WindowDefinitionSegmentData.TwoWindows))
         {
             var segment = stream.ReadSegmentAsync().Result;
 

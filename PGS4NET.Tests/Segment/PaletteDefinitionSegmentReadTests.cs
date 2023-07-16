@@ -15,12 +15,12 @@ using PGS4NET.Segment;
 
 namespace PGS4NET.Tests.Segment;
 
-public class PDSReadTests
+public class PaletteDefinitionSegmentReadTests
 {
     [Fact]
     public void NoEntries()
     {
-        using (var stream = new MemoryStream(PDS.NoEntries))
+        using (var stream = new MemoryStream(PaletteDefinitionSegmentData.NoEntries))
         {
             var segment = stream.ReadSegment();
 
@@ -43,7 +43,7 @@ public class PDSReadTests
     [Fact]
     public void NoEntriesAsync()
     {
-        using (var stream = new MemoryStream(PDS.NoEntries))
+        using (var stream = new MemoryStream(PaletteDefinitionSegmentData.NoEntries))
         {
             var segment = stream.ReadSegmentAsync().Result;
 
@@ -66,7 +66,7 @@ public class PDSReadTests
     [Fact]
     public void OneEntry()
     {
-        using (var stream = new MemoryStream(PDS.OneEntry))
+        using (var stream = new MemoryStream(PaletteDefinitionSegmentData.OneEntry))
         {
             var segment = stream.ReadSegment();
 
@@ -94,7 +94,7 @@ public class PDSReadTests
     [Fact]
     public void OneEntryAsync()
     {
-        using (var stream = new MemoryStream(PDS.OneEntry))
+        using (var stream = new MemoryStream(PaletteDefinitionSegmentData.OneEntry))
         {
             var segment = stream.ReadSegmentAsync().Result;
 
@@ -122,7 +122,7 @@ public class PDSReadTests
     [Fact]
     public void TwoEntries()
     {
-        using (var stream = new MemoryStream(PDS.TwoEntries))
+        using (var stream = new MemoryStream(PaletteDefinitionSegmentData.TwoEntries))
         {
             var segment = stream.ReadSegment();
 
@@ -155,7 +155,7 @@ public class PDSReadTests
     [Fact]
     public void TwoEntriesAsync()
     {
-        using (var stream = new MemoryStream(PDS.TwoEntries))
+        using (var stream = new MemoryStream(PaletteDefinitionSegmentData.TwoEntries))
         {
             var segment = stream.ReadSegmentAsync().Result;
 

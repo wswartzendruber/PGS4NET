@@ -15,12 +15,12 @@ using PGS4NET.Segment;
 
 namespace PGS4NET.Tests.Segment;
 
-public class IODSReadTests
+public class InitialObjectDefinitionSegmentReadTests
 {
     [Fact]
     public void Empty()
     {
-        using (var stream = new MemoryStream(IODS.Empty))
+        using (var stream = new MemoryStream(InitialObjectDefinitionSegmentData.Empty))
         {
             var segment = stream.ReadSegment();
 
@@ -46,7 +46,7 @@ public class IODSReadTests
     [Fact]
     public void EmptyAsync()
     {
-        using (var stream = new MemoryStream(IODS.Empty))
+        using (var stream = new MemoryStream(InitialObjectDefinitionSegmentData.Empty))
         {
             var segment = stream.ReadSegmentAsync().Result;
 
@@ -72,7 +72,7 @@ public class IODSReadTests
     [Fact]
     public void Small()
     {
-        using (var stream = new MemoryStream(IODS.Small))
+        using (var stream = new MemoryStream(InitialObjectDefinitionSegmentData.Small))
         {
             var segment = stream.ReadSegment();
 
@@ -102,7 +102,7 @@ public class IODSReadTests
     [Fact]
     public void SmallAsync()
     {
-        using (var stream = new MemoryStream(IODS.Small))
+        using (var stream = new MemoryStream(InitialObjectDefinitionSegmentData.Small))
         {
             var segment = stream.ReadSegmentAsync().Result;
 
