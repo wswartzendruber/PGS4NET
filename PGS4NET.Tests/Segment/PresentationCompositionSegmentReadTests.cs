@@ -20,7 +20,8 @@ public class PresentationCompositionSegmentReadTests
     [Fact]
     public void EpochStart_NoPaletteUpdateID_NoObjects()
     {
-        using (var stream = new MemoryStream(PresentationCompositionSegmentData.EpochStart_NoPaletteUpdateID_NoObjects))
+        using (var stream = new MemoryStream
+            (PresentationCompositionSegmentData.EpochStart_NoPaletteUpdateID_NoObjects))
         {
             var segment = stream.ReadSegment();
 
@@ -48,7 +49,8 @@ public class PresentationCompositionSegmentReadTests
     [Fact]
     public void EpochStart_NoPaletteUpdateID_NoObjects_Async()
     {
-        using (var stream = new MemoryStream(PresentationCompositionSegmentData.EpochStart_NoPaletteUpdateID_NoObjects))
+        using (var stream = new MemoryStream
+            (PresentationCompositionSegmentData.EpochStart_NoPaletteUpdateID_NoObjects))
         {
             var segment = stream.ReadSegmentAsync().Result;
 
@@ -76,7 +78,8 @@ public class PresentationCompositionSegmentReadTests
     [Fact]
     public void AcquisitionPoint_NoPaletteUpdateID_NoObjects()
     {
-        using (var stream = new MemoryStream(PresentationCompositionSegmentData.AcquisitionPoint_NoPaletteUpdateID_NoObjects))
+        using (var stream = new MemoryStream
+            (PresentationCompositionSegmentData.AcquisitionPoint_NoPaletteUpdateID_NoObjects))
         {
             var segment = stream.ReadSegment();
 
@@ -104,7 +107,8 @@ public class PresentationCompositionSegmentReadTests
     [Fact]
     public void AcquisitionPoint_NoPaletteUpdateID_NoObjects_Async()
     {
-        using (var stream = new MemoryStream(PresentationCompositionSegmentData.AcquisitionPoint_NoPaletteUpdateID_NoObjects))
+        using (var stream = new MemoryStream
+            (PresentationCompositionSegmentData.AcquisitionPoint_NoPaletteUpdateID_NoObjects))
         {
             var segment = stream.ReadSegmentAsync().Result;
 
@@ -132,7 +136,8 @@ public class PresentationCompositionSegmentReadTests
     [Fact]
     public void Normal_NoPaletteUpdateID_NoObjects()
     {
-        using (var stream = new MemoryStream(PresentationCompositionSegmentData.Normal_NoPaletteUpdateID_NoObjects))
+        using (var stream = new MemoryStream
+            (PresentationCompositionSegmentData.Normal_NoPaletteUpdateID_NoObjects))
         {
             var segment = stream.ReadSegment();
 
@@ -160,7 +165,8 @@ public class PresentationCompositionSegmentReadTests
     [Fact]
     public void Normal_NoPaletteUpdateID_NoObjects_Async()
     {
-        using (var stream = new MemoryStream(PresentationCompositionSegmentData.Normal_NoPaletteUpdateID_NoObjects))
+        using (var stream = new MemoryStream
+            (PresentationCompositionSegmentData.Normal_NoPaletteUpdateID_NoObjects))
         {
             var segment = stream.ReadSegmentAsync().Result;
 
@@ -188,7 +194,8 @@ public class PresentationCompositionSegmentReadTests
     [Fact]
     public void Normal_PaletteUpdateID_NoObjects()
     {
-        using (var stream = new MemoryStream(PresentationCompositionSegmentData.Normal_PaletteUpdateID_NoObjects))
+        using (var stream = new MemoryStream
+            (PresentationCompositionSegmentData.Normal_PaletteUpdateID_NoObjects))
         {
             var segment = stream.ReadSegment();
 
@@ -216,7 +223,8 @@ public class PresentationCompositionSegmentReadTests
     [Fact]
     public void Normal_NoPaletteUpdateID_OneObjectForced()
     {
-        using (var stream = new MemoryStream(PresentationCompositionSegmentData.Normal_NoPaletteUpdateID_OneObjectForced))
+        using (var stream = new MemoryStream
+            (PresentationCompositionSegmentData.Normal_NoPaletteUpdateID_OneObjectForced))
         {
             var segment = stream.ReadSegment();
 
@@ -250,7 +258,8 @@ public class PresentationCompositionSegmentReadTests
     [Fact]
     public void Normal_NoPaletteUpdateID_OneObjectCropped()
     {
-        using (var stream = new MemoryStream(PresentationCompositionSegmentData.Normal_NoPaletteUpdateID_OneObjectCropped))
+        using (var stream = new MemoryStream
+            (PresentationCompositionSegmentData.Normal_NoPaletteUpdateID_OneObjectCropped))
         {
             var segment = stream.ReadSegment();
 
@@ -287,7 +296,8 @@ public class PresentationCompositionSegmentReadTests
     [Fact]
     public void Normal_NoPaletteUpdateID_ThreeObjectsMixed()
     {
-        using (var stream = new MemoryStream(PresentationCompositionSegmentData.Normal_NoPaletteUpdateID_ThreeObjectsMixed))
+        using (var stream = new MemoryStream
+            (PresentationCompositionSegmentData.Normal_NoPaletteUpdateID_ThreeObjectsMixed))
         {
             var segment = stream.ReadSegment();
 
