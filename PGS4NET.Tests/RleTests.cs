@@ -10,7 +10,7 @@
  * SPDX-License-Identifier: CC0-1.0
  */
 
-namespace PGS4NET.Tests.Segment;
+namespace PGS4NET.Tests;
 
 public class RleTests
 {
