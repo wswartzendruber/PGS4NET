@@ -8,7 +8,9 @@
  * SPDX-License-Identifier: MPL-2.0
  */
 
-namespace PGS4NET.Segment;
+using PGS4NET.Segments;
+
+namespace PGS4NET.DisplaySets;
 
 /// <summary>
 ///     Defines a palette entry within a palette set.
@@ -19,11 +21,6 @@ namespace PGS4NET.Segment;
 /// </remarks>
 public struct PaletteEntry
 {
-    /// <summary>
-    ///     The ID of this palette entry, which should be unique within an epoch.
-    /// </summary>
-    public byte Id;
-
     /// <summary>
     ///     The range-limited, gamma-corrected luminosity value of this entry. Black is
     ///     represented by a value of <c>16</c> while white is represented by a value of

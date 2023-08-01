@@ -10,7 +10,7 @@
 
 using System;
 
-namespace PGS4NET.DisplaySet;
+namespace PGS4NET.DisplaySets;
 
 /// <summary>
 ///     Represents a display set error.

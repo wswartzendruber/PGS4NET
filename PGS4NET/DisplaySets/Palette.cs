@@ -9,9 +9,9 @@
  */
 
 using System.Collections.Generic;
-using PGS4NET.Segment;
+using PGS4NET.Segments;
 
-namespace PGS4NET.DisplaySet;
+namespace PGS4NET.DisplaySets;
 
 /// <summary>
 ///     Defines a palette within a display set.

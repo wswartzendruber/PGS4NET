@@ -9,9 +9,9 @@
  */
 
 using System.Collections.Generic;
-using PGS4NET.Segment;
+using PGS4NET.Segments;
 
-namespace PGS4NET.DisplaySet;
+namespace PGS4NET.DisplaySets;
 
 /// <summary>
 ///     A display set (DS) is a collection of segments. Multiple DS's come together to form an
@@ -23,13 +23,13 @@ public class DisplaySet
     ///     The timestamp indicating when composition decoding should start. In practice, this
     ///     is the time at which the composition is displayed.
     /// </summary>
-    public uint PTS;
+    public uint Pts;
 
     /// <summary>
     ///     The timestamp indicating when the composition should be displayed. In practice, this
     ///     value is always zero.
     /// </summary>
-    public uint DTS;
+    public uint Dts;
 
     /// <summary>
     ///     The width of the screen in pixels. This value should be consistent within a

@@ -8,18 +8,15 @@
  * SPDX-License-Identifier: MPL-2.0
  */
 
-namespace PGS4NET.Segment;
+using PGS4NET.Segments;
+
+namespace PGS4NET.DisplaySets;
 
 /// <summary>
 ///     Defines a window within the screen.
 /// </summary>
-public struct WindowDefinition
+public struct Window
 {
-    /// <summary>
-    ///     The ID of this window within the epoch.
-    /// </summary>
-    public byte Id;
-
     /// <summary>
     ///     The horizontal offset of the window’s top-left corner relative to the top-left
     ///     corner of the screen.
@@ -33,12 +30,12 @@ public struct WindowDefinition
     public ushort Y;
 
     /// <summary>
-    ///     The width of the window.
+    ///     The width of the window in pixels.
     /// </summary>
     public ushort Width;
 
     /// <summary>
-    ///     The height of the window.
+    ///     The height of the window in pixels.
     /// </summary>
     public ushort Height;
 }

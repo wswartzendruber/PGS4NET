@@ -9,9 +9,9 @@
  */
 
 using System.Collections.Generic;
-using PGS4NET.Segment;
+using PGS4NET.Segments;
 
-namespace PGS4NET.DisplaySet;
+namespace PGS4NET.DisplaySets;
 
 /// <summary>
 ///     Defines an object within a display set.
@@ -32,5 +32,5 @@ public class DisplayObject
     ///     The line data of this object. Each value refers to a palette entry.
     ///     <c>lines[2][4]</c> would refer to the fifth pixel on the third line.
     /// </summary>
-    public byte[] Data = new byte[0];
+    public IList<IList<byte>> Lines = new List<IList<byte>>();
 }
