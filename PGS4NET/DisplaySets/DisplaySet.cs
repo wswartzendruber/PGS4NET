@@ -59,6 +59,11 @@ public class DisplaySet
     public byte PaletteUpdateId;
 
     /// <summary>
+    ///     The collection of windows referenced by this DS.
+    /// </summary>
+    public IDictionary<byte, Window> Windows = new Dictionary<byte, Window>();
+
+    /// <summary>
     ///     The collection of palettes referenced by this DS.
     /// </summary>
     public IDictionary<VersionedId<byte>, Palette> Palettes

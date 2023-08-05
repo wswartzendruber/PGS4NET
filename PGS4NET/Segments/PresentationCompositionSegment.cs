@@ -57,5 +57,5 @@ public class PresentationCompositionSegment : Segment
     /// <summary>
     ///     Maps an epoch’s objects (or areas within them) to its windows.
     /// </summary>
-    public IList<CompositionObject> Objects = new List<CompositionObject>();
+    public IList<CompositionObject> CompositionObjects = new List<CompositionObject>();
 }

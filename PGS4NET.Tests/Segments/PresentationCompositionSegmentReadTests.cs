@@ -37,7 +37,7 @@ public class PresentationCompositionSegmentReadTests
                 Assert.True(pcs.State == CompositionState.EpochStart);
                 Assert.True(pcs.PaletteUpdateOnly == false);
                 Assert.True(pcs.PaletteUpdateId == 0xAB);
-                Assert.True(pcs.Objects.Count == 0);
+                Assert.True(pcs.CompositionObjects.Count == 0);
             }
             else
             {
@@ -66,7 +66,7 @@ public class PresentationCompositionSegmentReadTests
                 Assert.True(pcs.State == CompositionState.EpochStart);
                 Assert.True(pcs.PaletteUpdateOnly == false);
                 Assert.True(pcs.PaletteUpdateId == 0xAB);
-                Assert.True(pcs.Objects.Count == 0);
+                Assert.True(pcs.CompositionObjects.Count == 0);
             }
             else
             {
@@ -95,7 +95,7 @@ public class PresentationCompositionSegmentReadTests
                 Assert.True(pcs.State == CompositionState.AcquisitionPoint);
                 Assert.True(pcs.PaletteUpdateOnly == false);
                 Assert.True(pcs.PaletteUpdateId == 0xAB);
-                Assert.True(pcs.Objects.Count == 0);
+                Assert.True(pcs.CompositionObjects.Count == 0);
             }
             else
             {
@@ -124,7 +124,7 @@ public class PresentationCompositionSegmentReadTests
                 Assert.True(pcs.State == CompositionState.AcquisitionPoint);
                 Assert.True(pcs.PaletteUpdateOnly == false);
                 Assert.True(pcs.PaletteUpdateId == 0xAB);
-                Assert.True(pcs.Objects.Count == 0);
+                Assert.True(pcs.CompositionObjects.Count == 0);
             }
             else
             {
@@ -153,7 +153,7 @@ public class PresentationCompositionSegmentReadTests
                 Assert.True(pcs.State == CompositionState.Normal);
                 Assert.True(pcs.PaletteUpdateOnly == false);
                 Assert.True(pcs.PaletteUpdateId == 0xAB);
-                Assert.True(pcs.Objects.Count == 0);
+                Assert.True(pcs.CompositionObjects.Count == 0);
             }
             else
             {
@@ -182,7 +182,7 @@ public class PresentationCompositionSegmentReadTests
                 Assert.True(pcs.State == CompositionState.Normal);
                 Assert.True(pcs.PaletteUpdateOnly == false);
                 Assert.True(pcs.PaletteUpdateId == 0xAB);
-                Assert.True(pcs.Objects.Count == 0);
+                Assert.True(pcs.CompositionObjects.Count == 0);
             }
             else
             {
@@ -211,7 +211,7 @@ public class PresentationCompositionSegmentReadTests
                 Assert.True(pcs.State == CompositionState.Normal);
                 Assert.True(pcs.PaletteUpdateOnly == true);
                 Assert.True(pcs.PaletteUpdateId == 0xAB);
-                Assert.True(pcs.Objects.Count == 0);
+                Assert.True(pcs.CompositionObjects.Count == 0);
             }
             else
             {
@@ -240,13 +240,13 @@ public class PresentationCompositionSegmentReadTests
                 Assert.True(pcs.State == CompositionState.Normal);
                 Assert.True(pcs.PaletteUpdateOnly == false);
                 Assert.True(pcs.PaletteUpdateId == 0xAB);
-                Assert.True(pcs.Objects.Count == 1);
-                Assert.True(pcs.Objects[0].ObjectID == 0xABCD);
-                Assert.True(pcs.Objects[0].WindowID == 0xEF);
-                Assert.True(pcs.Objects[0].X == 0x1A2B);
-                Assert.True(pcs.Objects[0].Y == 0x3C4D);
-                Assert.True(pcs.Objects[0].Forced == true);
-                Assert.True(pcs.Objects[0].Crop == null);
+                Assert.True(pcs.CompositionObjects.Count == 1);
+                Assert.True(pcs.CompositionObjects[0].ObjectId == 0xABCD);
+                Assert.True(pcs.CompositionObjects[0].WindowId == 0xEF);
+                Assert.True(pcs.CompositionObjects[0].X == 0x1A2B);
+                Assert.True(pcs.CompositionObjects[0].Y == 0x3C4D);
+                Assert.True(pcs.CompositionObjects[0].Forced == true);
+                Assert.True(pcs.CompositionObjects[0].Crop == null);
             }
             else
             {
@@ -275,16 +275,16 @@ public class PresentationCompositionSegmentReadTests
                 Assert.True(pcs.State == CompositionState.Normal);
                 Assert.True(pcs.PaletteUpdateOnly == false);
                 Assert.True(pcs.PaletteUpdateId == 0xAB);
-                Assert.True(pcs.Objects.Count == 1);
-                Assert.True(pcs.Objects[0].ObjectID == 0xABCD);
-                Assert.True(pcs.Objects[0].WindowID == 0xEF);
-                Assert.True(pcs.Objects[0].X == 0x1A2B);
-                Assert.True(pcs.Objects[0].Y == 0x3C4D);
-                Assert.True(pcs.Objects[0].Forced == false);
-                Assert.True(pcs.Objects[0].Crop?.X == 0xA1A2);
-                Assert.True(pcs.Objects[0].Crop?.Y == 0xA3A4);
-                Assert.True(pcs.Objects[0].Crop?.Width == 0xA5A6);
-                Assert.True(pcs.Objects[0].Crop?.Height == 0xA7A8);
+                Assert.True(pcs.CompositionObjects.Count == 1);
+                Assert.True(pcs.CompositionObjects[0].ObjectId == 0xABCD);
+                Assert.True(pcs.CompositionObjects[0].WindowId == 0xEF);
+                Assert.True(pcs.CompositionObjects[0].X == 0x1A2B);
+                Assert.True(pcs.CompositionObjects[0].Y == 0x3C4D);
+                Assert.True(pcs.CompositionObjects[0].Forced == false);
+                Assert.True(pcs.CompositionObjects[0].Crop?.X == 0xA1A2);
+                Assert.True(pcs.CompositionObjects[0].Crop?.Y == 0xA3A4);
+                Assert.True(pcs.CompositionObjects[0].Crop?.Width == 0xA5A6);
+                Assert.True(pcs.CompositionObjects[0].Crop?.Height == 0xA7A8);
             }
             else
             {
@@ -313,31 +313,31 @@ public class PresentationCompositionSegmentReadTests
                 Assert.True(pcs.State == CompositionState.Normal);
                 Assert.True(pcs.PaletteUpdateOnly == false);
                 Assert.True(pcs.PaletteUpdateId == 0xAB);
-                Assert.True(pcs.Objects.Count == 3);
-                Assert.True(pcs.Objects[0].ObjectID == 0xABCD);
-                Assert.True(pcs.Objects[0].WindowID == 0xEF);
-                Assert.True(pcs.Objects[0].X == 0x1A2B);
-                Assert.True(pcs.Objects[0].Y == 0x3C4D);
-                Assert.True(pcs.Objects[0].Forced == false);
-                Assert.True(pcs.Objects[0].Crop?.X == 0xA1A2);
-                Assert.True(pcs.Objects[0].Crop?.Y == 0xA3A4);
-                Assert.True(pcs.Objects[0].Crop?.Width == 0xA5A6);
-                Assert.True(pcs.Objects[0].Crop?.Height == 0xA7A8);
-                Assert.True(pcs.Objects[1].ObjectID == 0xABCD);
-                Assert.True(pcs.Objects[1].WindowID == 0xEF);
-                Assert.True(pcs.Objects[1].X == 0x1A2B);
-                Assert.True(pcs.Objects[1].Y == 0x3C4D);
-                Assert.True(pcs.Objects[1].Forced == true);
-                Assert.True(pcs.Objects[1].Crop == null);
-                Assert.True(pcs.Objects[2].ObjectID == 0xABCD);
-                Assert.True(pcs.Objects[2].WindowID == 0xEF);
-                Assert.True(pcs.Objects[2].X == 0x1A2B);
-                Assert.True(pcs.Objects[2].Y == 0x3C4D);
-                Assert.True(pcs.Objects[2].Forced == true);
-                Assert.True(pcs.Objects[2].Crop?.X == 0xA1A2);
-                Assert.True(pcs.Objects[2].Crop?.Y == 0xA3A4);
-                Assert.True(pcs.Objects[2].Crop?.Width == 0xA5A6);
-                Assert.True(pcs.Objects[2].Crop?.Height == 0xA7A8);
+                Assert.True(pcs.CompositionObjects.Count == 3);
+                Assert.True(pcs.CompositionObjects[0].ObjectId == 0xABCD);
+                Assert.True(pcs.CompositionObjects[0].WindowId == 0xEF);
+                Assert.True(pcs.CompositionObjects[0].X == 0x1A2B);
+                Assert.True(pcs.CompositionObjects[0].Y == 0x3C4D);
+                Assert.True(pcs.CompositionObjects[0].Forced == false);
+                Assert.True(pcs.CompositionObjects[0].Crop?.X == 0xA1A2);
+                Assert.True(pcs.CompositionObjects[0].Crop?.Y == 0xA3A4);
+                Assert.True(pcs.CompositionObjects[0].Crop?.Width == 0xA5A6);
+                Assert.True(pcs.CompositionObjects[0].Crop?.Height == 0xA7A8);
+                Assert.True(pcs.CompositionObjects[1].ObjectId == 0xABCD);
+                Assert.True(pcs.CompositionObjects[1].WindowId == 0xEF);
+                Assert.True(pcs.CompositionObjects[1].X == 0x1A2B);
+                Assert.True(pcs.CompositionObjects[1].Y == 0x3C4D);
+                Assert.True(pcs.CompositionObjects[1].Forced == true);
+                Assert.True(pcs.CompositionObjects[1].Crop == null);
+                Assert.True(pcs.CompositionObjects[2].ObjectId == 0xABCD);
+                Assert.True(pcs.CompositionObjects[2].WindowId == 0xEF);
+                Assert.True(pcs.CompositionObjects[2].X == 0x1A2B);
+                Assert.True(pcs.CompositionObjects[2].Y == 0x3C4D);
+                Assert.True(pcs.CompositionObjects[2].Forced == true);
+                Assert.True(pcs.CompositionObjects[2].Crop?.X == 0xA1A2);
+                Assert.True(pcs.CompositionObjects[2].Crop?.Y == 0xA3A4);
+                Assert.True(pcs.CompositionObjects[2].Crop?.Width == 0xA5A6);
+                Assert.True(pcs.CompositionObjects[2].Crop?.Height == 0xA7A8);
             }
             else
             {

@@ -8,6 +8,7 @@
  * SPDX-License-Identifier: MPL-2.0
  */
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using PGS4NET.Segments;
@@ -30,38 +31,6 @@ public static partial class StreamExtensions
     /// </exception>
     public static DisplaySet ReadDisplaySet(this Stream stream)
     {
-        var segments = new List<Segment>();
-        var end = false;
-
-        if (stream.ReadSegment() is PresentationCompositionSegment initialSegment)
-        {
-            segments.Add(initialSegment);
-        }
-        else
-        {
-            throw new DisplaySetException("Missing PCS.");
-        }
-
-        while (!end)
-        {
-            var nextSegment = stream.ReadSegment();
-
-            switch (nextSegment)
-            {
-                case PresentationCompositionSegment:
-                    throw new DisplaySetException("Unexpected PCS.");
-                case EndSegment:
-                    segments.Add(nextSegment);
-                    end = true;
-                    break;
-                default:
-                    segments.Add(nextSegment);
-                    break;
-            }
-        }
-
-        using var enumerator = segments.GetEnumerator();
-
-        return enumerator.BuildDisplaySet();
+        throw new NotImplementedException();
     }
 }

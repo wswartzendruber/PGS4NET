@@ -173,15 +173,15 @@ public static partial class StreamExtensions
         WriteUInt8(ms, (byte)(pcs.PaletteUpdateOnly ? 0x80 : 0x00));
         WriteUInt8(ms, pcs.PaletteUpdateId);
 
-        if (pcs.Objects.Count < 256)
-            WriteUInt8(ms, (byte)pcs.Objects.Count);
+        if (pcs.CompositionObjects.Count < 256)
+            WriteUInt8(ms, (byte)pcs.CompositionObjects.Count);
         else
             throw new SegmentException("PCS defines too many composition objects.");
 
-        foreach (var co in pcs.Objects)
+        foreach (var co in pcs.CompositionObjects)
         {
-            WriteUInt16BE(ms, co.ObjectID);
-            WriteUInt8(ms, co.WindowID);
+            WriteUInt16BE(ms, co.ObjectId);
+            WriteUInt8(ms, co.WindowId);
             WriteUInt8(ms, (byte)(
                 (co.Crop is not null ? 0x80 : 0x00) | (co.Forced ? 0x40 : 0x00)
             ));

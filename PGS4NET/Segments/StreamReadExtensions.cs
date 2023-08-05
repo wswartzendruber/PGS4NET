@@ -180,8 +180,8 @@ public static partial class StreamExtensions
 
             compositionObjects.Add(new CompositionObject
             {
-                ObjectID = objectID,
-                WindowID = windowID,
+                ObjectId = objectID,
+                WindowId = windowID,
                 X = x,
                 Y = y,
                 Forced = forced,
@@ -200,7 +200,7 @@ public static partial class StreamExtensions
             State = compositionState,
             PaletteUpdateOnly = paletteUpdateOnly,
             PaletteUpdateId = paletteUpdateID,
-            Objects = compositionObjects,
+            CompositionObjects = compositionObjects,
         };
     }
 

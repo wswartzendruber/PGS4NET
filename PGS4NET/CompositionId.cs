@@ -11,9 +11,9 @@
 namespace PGS4NET;
 
 /// <summary>
-///     Defines a compound ID, combining an object and window identifier.
+///     Defines a composition ID, combining an object and window identifier.
 /// </summary>
-public struct CompoundId
+public struct CompositionId
 {
     /// <summary>
     ///     The object ID.

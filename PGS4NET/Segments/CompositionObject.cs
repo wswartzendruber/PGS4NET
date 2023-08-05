@@ -18,12 +18,12 @@ public struct CompositionObject
     /// <summary>
     ///     The ID of the object within the epoch.
     /// </summary>
-    public ushort ObjectID;
+    public ushort ObjectId;
 
     /// <summary>
     ///     The ID of the window within the epoch.
     /// </summary>
-    public byte WindowID;
+    public byte WindowId;
 
     /// <summary>
     ///     The horizontal offset of the object’s top-left corner relative to the top-left

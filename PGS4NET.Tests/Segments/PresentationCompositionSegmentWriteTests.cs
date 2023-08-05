@@ -249,12 +249,12 @@ public class PresentationCompositionSegmentWriteTests
                 State = CompositionState.Normal,
                 PaletteUpdateOnly = false,
                 PaletteUpdateId = 0xAB,
-                Objects = new List<CompositionObject>
+                CompositionObjects = new List<CompositionObject>
                 {
                     new CompositionObject
                     {
-                        ObjectID = 0xABCD,
-                        WindowID = 0xEF,
+                        ObjectId = 0xABCD,
+                        WindowId = 0xEF,
                         X = 0x1A2B,
                         Y = 0x3C4D,
                         Forced = true,
@@ -288,12 +288,12 @@ public class PresentationCompositionSegmentWriteTests
                 State = CompositionState.Normal,
                 PaletteUpdateOnly = false,
                 PaletteUpdateId = 0xAB,
-                Objects = new List<CompositionObject>
+                CompositionObjects = new List<CompositionObject>
                 {
                     new CompositionObject
                     {
-                        ObjectID = 0xABCD,
-                        WindowID = 0xEF,
+                        ObjectId = 0xABCD,
+                        WindowId = 0xEF,
                         X = 0x1A2B,
                         Y = 0x3C4D,
                         Forced = true,
@@ -327,12 +327,12 @@ public class PresentationCompositionSegmentWriteTests
                 State = CompositionState.Normal,
                 PaletteUpdateOnly = false,
                 PaletteUpdateId = 0xAB,
-                Objects = new List<CompositionObject>
+                CompositionObjects = new List<CompositionObject>
                 {
                     new CompositionObject
                     {
-                        ObjectID = 0xABCD,
-                        WindowID = 0xEF,
+                        ObjectId = 0xABCD,
+                        WindowId = 0xEF,
                         X = 0x1A2B,
                         Y = 0x3C4D,
                         Forced = false,
@@ -372,12 +372,12 @@ public class PresentationCompositionSegmentWriteTests
                 State = CompositionState.Normal,
                 PaletteUpdateOnly = false,
                 PaletteUpdateId = 0xAB,
-                Objects = new List<CompositionObject>
+                CompositionObjects = new List<CompositionObject>
                 {
                     new CompositionObject
                     {
-                        ObjectID = 0xABCD,
-                        WindowID = 0xEF,
+                        ObjectId = 0xABCD,
+                        WindowId = 0xEF,
                         X = 0x1A2B,
                         Y = 0x3C4D,
                         Forced = false,
@@ -417,12 +417,12 @@ public class PresentationCompositionSegmentWriteTests
                 State = CompositionState.Normal,
                 PaletteUpdateOnly = false,
                 PaletteUpdateId = 0xAB,
-                Objects = new List<CompositionObject>
+                CompositionObjects = new List<CompositionObject>
                 {
                     new CompositionObject
                     {
-                        ObjectID = 0xABCD,
-                        WindowID = 0xEF,
+                        ObjectId = 0xABCD,
+                        WindowId = 0xEF,
                         X = 0x1A2B,
                         Y = 0x3C4D,
                         Forced = false,
@@ -436,8 +436,8 @@ public class PresentationCompositionSegmentWriteTests
                     },
                     new CompositionObject
                     {
-                        ObjectID = 0xABCD,
-                        WindowID = 0xEF,
+                        ObjectId = 0xABCD,
+                        WindowId = 0xEF,
                         X = 0x1A2B,
                         Y = 0x3C4D,
                         Forced = true,
@@ -445,8 +445,8 @@ public class PresentationCompositionSegmentWriteTests
                     },
                     new CompositionObject
                     {
-                        ObjectID = 0xABCD,
-                        WindowID = 0xEF,
+                        ObjectId = 0xABCD,
+                        WindowId = 0xEF,
                         X = 0x1A2B,
                         Y = 0x3C4D,
                         Forced = true,
@@ -486,12 +486,12 @@ public class PresentationCompositionSegmentWriteTests
                 State = CompositionState.Normal,
                 PaletteUpdateOnly = false,
                 PaletteUpdateId = 0xAB,
-                Objects = new List<CompositionObject>
+                CompositionObjects = new List<CompositionObject>
                 {
                     new CompositionObject
                     {
-                        ObjectID = 0xABCD,
-                        WindowID = 0xEF,
+                        ObjectId = 0xABCD,
+                        WindowId = 0xEF,
                         X = 0x1A2B,
                         Y = 0x3C4D,
                         Forced = false,
@@ -505,8 +505,8 @@ public class PresentationCompositionSegmentWriteTests
                     },
                     new CompositionObject
                     {
-                        ObjectID = 0xABCD,
-                        WindowID = 0xEF,
+                        ObjectId = 0xABCD,
+                        WindowId = 0xEF,
                         X = 0x1A2B,
                         Y = 0x3C4D,
                         Forced = true,
@@ -514,8 +514,8 @@ public class PresentationCompositionSegmentWriteTests
                     },
                     new CompositionObject
                     {
-                        ObjectID = 0xABCD,
-                        WindowID = 0xEF,
+                        ObjectId = 0xABCD,
+                        WindowId = 0xEF,
                         X = 0x1A2B,
                         Y = 0x3C4D,
                         Forced = true,

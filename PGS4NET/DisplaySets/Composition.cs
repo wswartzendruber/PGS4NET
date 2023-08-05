@@ -32,6 +32,6 @@ public class Composition
     ///     A collection of composition objects, each mapped according to its compound ID
     ///     (object ID + window ID).
     /// </summary>
-    public IDictionary<CompoundId, CompositionObject> Objects
-        = new Dictionary<CompoundId, CompositionObject>();
+    public IDictionary<CompositionId, CompositionObject> CompositionObjects
+        = new Dictionary<CompositionId, CompositionObject>();
 }
