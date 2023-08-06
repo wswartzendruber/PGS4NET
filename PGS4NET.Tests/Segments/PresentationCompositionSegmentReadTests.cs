@@ -47,7 +47,7 @@ public class PresentationCompositionSegmentReadTests
     [Fact]
     public async Task EpochStart_NoPaletteUpdateID_NoObjects_Async()
     {
-        await using var reader = new SegmentReader(new MemoryStream(
+        using var reader = new SegmentReader(new MemoryStream(
             PresentationCompositionSegmentData.EpochStart_NoPaletteUpdateID_NoObjects));
         var segment = await reader.ReadAsync() ?? throw new NullReferenceException();
 
@@ -101,7 +101,7 @@ public class PresentationCompositionSegmentReadTests
     [Fact]
     public async Task AcquisitionPoint_NoPaletteUpdateID_NoObjects_Async()
     {
-        await using var reader = new SegmentReader(new MemoryStream(
+        using var reader = new SegmentReader(new MemoryStream(
             PresentationCompositionSegmentData.AcquisitionPoint_NoPaletteUpdateID_NoObjects));
         var segment = await reader.ReadAsync() ?? throw new NullReferenceException();
 
@@ -155,7 +155,7 @@ public class PresentationCompositionSegmentReadTests
     [Fact]
     public async Task Normal_NoPaletteUpdateID_NoObjects_Async()
     {
-        await using var reader = new SegmentReader(new MemoryStream(
+        using var reader = new SegmentReader(new MemoryStream(
             PresentationCompositionSegmentData.Normal_NoPaletteUpdateID_NoObjects));
         var segment = await reader.ReadAsync() ?? throw new NullReferenceException();
 

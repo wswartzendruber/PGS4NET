@@ -42,7 +42,7 @@ public class FinalObjectDefinitionSegmentReadTests
     [Fact]
     public async Task EmptyAsync()
     {
-        await using var reader
+        using var reader
             = new SegmentReader(new MemoryStream(FinalObjectDefinitionSegmentData.Empty));
         var segment = await reader.ReadAsync() ?? throw new NullReferenceException();
 
@@ -90,7 +90,7 @@ public class FinalObjectDefinitionSegmentReadTests
     [Fact]
     public async Task SmallAsync()
     {
-        await using var reader
+        using var reader
             = new SegmentReader(new MemoryStream(FinalObjectDefinitionSegmentData.Small));
         var segment = await reader.ReadAsync() ?? throw new NullReferenceException();
 

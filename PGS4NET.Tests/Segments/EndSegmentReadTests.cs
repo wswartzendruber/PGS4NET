@@ -33,7 +33,7 @@ public class EndSegmentReadTests
     [Fact]
     public async Task SingleAsync()
     {
-        await using var reader = new SegmentReader(new MemoryStream(EndSegmentData.Single));
+        using var reader = new SegmentReader(new MemoryStream(EndSegmentData.Single));
         var segment = await reader.ReadAsync() ?? throw new NullReferenceException();
 
         Assert.True(segment.Pts == 0x01234567);

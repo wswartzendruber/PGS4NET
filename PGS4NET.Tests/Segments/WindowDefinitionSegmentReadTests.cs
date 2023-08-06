@@ -40,7 +40,7 @@ public class WindowDefinitionSegmentReadTests
     [Fact]
     public async Task NoWindowsAsync()
     {
-        await using var reader
+        using var reader
             = new SegmentReader(new MemoryStream(WindowDefinitionSegmentData.NoWindows));
         var segment = await reader.ReadAsync() ?? throw new NullReferenceException();
 
@@ -85,7 +85,7 @@ public class WindowDefinitionSegmentReadTests
     [Fact]
     public async Task OneWindowAsync()
     {
-        await using var reader
+        using var reader
             = new SegmentReader(new MemoryStream(WindowDefinitionSegmentData.OneWindow));
         var segment = await reader.ReadAsync() ?? throw new NullReferenceException();
 
@@ -140,7 +140,7 @@ public class WindowDefinitionSegmentReadTests
     [Fact]
     public async Task TwoWindowsAsync()
     {
-        await using var reader
+        using var reader
             = new SegmentReader(new MemoryStream(WindowDefinitionSegmentData.TwoWindows));
         var segment = await reader.ReadAsync() ?? throw new NullReferenceException();
 

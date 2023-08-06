@@ -42,7 +42,7 @@ public class PaletteDefinitionSegmentReadTests
     [Fact]
     public async Task NoEntriesAsync()
     {
-        await using var reader
+        using var reader
             = new SegmentReader(new MemoryStream(PaletteDefinitionSegmentData.NoEntries));
         var segment = await reader.ReadAsync() ?? throw new NullReferenceException();
 
@@ -91,7 +91,7 @@ public class PaletteDefinitionSegmentReadTests
     [Fact]
     public async Task OneEntryAsync()
     {
-        await using var reader
+        using var reader
             = new SegmentReader(new MemoryStream(PaletteDefinitionSegmentData.OneEntry));
         var segment = await reader.ReadAsync() ?? throw new NullReferenceException();
 
@@ -150,7 +150,7 @@ public class PaletteDefinitionSegmentReadTests
     [Fact]
     public async Task TwoEntriesAsync()
     {
-        await using var reader
+        using var reader
             = new SegmentReader(new MemoryStream(PaletteDefinitionSegmentData.TwoEntries));
         var segment = await reader.ReadAsync() ?? throw new NullReferenceException();
 
