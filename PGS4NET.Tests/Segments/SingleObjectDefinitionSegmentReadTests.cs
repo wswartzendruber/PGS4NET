@@ -20,108 +20,104 @@ public class SingleObjectDefinitionSegmentReadTests
     [Fact]
     public void Empty()
     {
-        using (var stream = new MemoryStream(SingleObjectDefinitionSegmentData.Empty))
+        using var reader
+            = new SegmentReader(new MemoryStream(SingleObjectDefinitionSegmentData.Empty));
+        var segment = reader.Read() ?? throw new NullReferenceException();
+
+        Assert.True(segment.Pts == 0x01234567);
+        Assert.True(segment.Dts == 0x12345678);
+
+        if (segment is SingleObjectDefinitionSegment sods)
         {
-            var segment = stream.ReadSegment();
-
-            Assert.True(segment.Pts == 0x01234567);
-            Assert.True(segment.Dts == 0x12345678);
-
-            if (segment is SingleObjectDefinitionSegment sods)
-            {
-                Assert.True(sods.Id == 0xA0A1);
-                Assert.True(sods.Version == 0xA2);
-                Assert.True(sods.Width == 0x2143);
-                Assert.True(sods.Height == 0x6587);
-                Assert.True(sods.Data.Length == 0);
-            }
-            else
-            {
-                Assert.True(false);
-            }
+            Assert.True(sods.Id == 0xA0A1);
+            Assert.True(sods.Version == 0xA2);
+            Assert.True(sods.Width == 0x2143);
+            Assert.True(sods.Height == 0x6587);
+            Assert.True(sods.Data.Length == 0);
+        }
+        else
+        {
+            Assert.True(false);
         }
     }
 
     [Fact]
-    public void EmptyASync()
+    public async Task EmptyAsync()
     {
-        using (var stream = new MemoryStream(SingleObjectDefinitionSegmentData.Empty))
+        await using var reader
+            = new SegmentReader(new MemoryStream(SingleObjectDefinitionSegmentData.Empty));
+        var segment = await reader.ReadAsync() ?? throw new NullReferenceException();
+
+        Assert.True(segment.Pts == 0x01234567);
+        Assert.True(segment.Dts == 0x12345678);
+
+        if (segment is SingleObjectDefinitionSegment sods)
         {
-            var segment = stream.ReadSegmentAsync().Result;
-
-            Assert.True(segment.Pts == 0x01234567);
-            Assert.True(segment.Dts == 0x12345678);
-
-            if (segment is SingleObjectDefinitionSegment sods)
-            {
-                Assert.True(sods.Id == 0xA0A1);
-                Assert.True(sods.Version == 0xA2);
-                Assert.True(sods.Width == 0x2143);
-                Assert.True(sods.Height == 0x6587);
-                Assert.True(sods.Data.Length == 0);
-            }
-            else
-            {
-                Assert.True(false);
-            }
+            Assert.True(sods.Id == 0xA0A1);
+            Assert.True(sods.Version == 0xA2);
+            Assert.True(sods.Width == 0x2143);
+            Assert.True(sods.Height == 0x6587);
+            Assert.True(sods.Data.Length == 0);
+        }
+        else
+        {
+            Assert.True(false);
         }
     }
 
     [Fact]
     public void Small()
     {
-        using (var stream = new MemoryStream(SingleObjectDefinitionSegmentData.Small))
+        using var reader
+            = new SegmentReader(new MemoryStream(SingleObjectDefinitionSegmentData.Small));
+        var segment = reader.Read() ?? throw new NullReferenceException();
+
+        Assert.True(segment.Pts == 0x01234567);
+        Assert.True(segment.Dts == 0x12345678);
+
+        if (segment is SingleObjectDefinitionSegment sods)
         {
-            var segment = stream.ReadSegment();
-
-            Assert.True(segment.Pts == 0x01234567);
-            Assert.True(segment.Dts == 0x12345678);
-
-            if (segment is SingleObjectDefinitionSegment sods)
-            {
-                Assert.True(sods.Id == 0xA0A1);
-                Assert.True(sods.Version == 0xA2);
-                Assert.True(sods.Width == 0x2143);
-                Assert.True(sods.Height == 0x6587);
-                Assert.True(sods.Data.Length == 4);
-                Assert.True(sods.Data[0] == 0xE0);
-                Assert.True(sods.Data[1] == 0xE1);
-                Assert.True(sods.Data[2] == 0xE2);
-                Assert.True(sods.Data[3] == 0xE3);
-            }
-            else
-            {
-                Assert.True(false);
-            }
+            Assert.True(sods.Id == 0xA0A1);
+            Assert.True(sods.Version == 0xA2);
+            Assert.True(sods.Width == 0x2143);
+            Assert.True(sods.Height == 0x6587);
+            Assert.True(sods.Data.Length == 4);
+            Assert.True(sods.Data[0] == 0xE0);
+            Assert.True(sods.Data[1] == 0xE1);
+            Assert.True(sods.Data[2] == 0xE2);
+            Assert.True(sods.Data[3] == 0xE3);
+        }
+        else
+        {
+            Assert.True(false);
         }
     }
 
     [Fact]
-    public void SmallAsync()
+    public async Task SmallAsync()
     {
-        using (var stream = new MemoryStream(SingleObjectDefinitionSegmentData.Small))
+        await using var reader
+            = new SegmentReader(new MemoryStream(SingleObjectDefinitionSegmentData.Small));
+        var segment = await reader.ReadAsync() ?? throw new NullReferenceException();
+
+        Assert.True(segment.Pts == 0x01234567);
+        Assert.True(segment.Dts == 0x12345678);
+
+        if (segment is SingleObjectDefinitionSegment sods)
         {
-            var segment = stream.ReadSegmentAsync().Result;
-
-            Assert.True(segment.Pts == 0x01234567);
-            Assert.True(segment.Dts == 0x12345678);
-
-            if (segment is SingleObjectDefinitionSegment sods)
-            {
-                Assert.True(sods.Id == 0xA0A1);
-                Assert.True(sods.Version == 0xA2);
-                Assert.True(sods.Width == 0x2143);
-                Assert.True(sods.Height == 0x6587);
-                Assert.True(sods.Data.Length == 4);
-                Assert.True(sods.Data[0] == 0xE0);
-                Assert.True(sods.Data[1] == 0xE1);
-                Assert.True(sods.Data[2] == 0xE2);
-                Assert.True(sods.Data[3] == 0xE3);
-            }
-            else
-            {
-                Assert.True(false);
-            }
+            Assert.True(sods.Id == 0xA0A1);
+            Assert.True(sods.Version == 0xA2);
+            Assert.True(sods.Width == 0x2143);
+            Assert.True(sods.Height == 0x6587);
+            Assert.True(sods.Data.Length == 4);
+            Assert.True(sods.Data[0] == 0xE0);
+            Assert.True(sods.Data[1] == 0xE1);
+            Assert.True(sods.Data[2] == 0xE2);
+            Assert.True(sods.Data[3] == 0xE3);
+        }
+        else
+        {
+            Assert.True(false);
         }
     }
 }

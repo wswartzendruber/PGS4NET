@@ -20,100 +20,96 @@ public class FinalObjectDefinitionSegmentReadTests
     [Fact]
     public void Empty()
     {
-        using (var stream = new MemoryStream(FinalObjectDefinitionSegmentData.Empty))
+        using var reader
+            = new SegmentReader(new MemoryStream(FinalObjectDefinitionSegmentData.Empty));
+        var segment = reader.Read() ?? throw new NullReferenceException();
+
+        Assert.True(segment.Pts == 0x01234567);
+        Assert.True(segment.Dts == 0x12345678);
+
+        if (segment is FinalObjectDefinitionSegment fods)
         {
-            var segment = stream.ReadSegment();
-
-            Assert.True(segment.Pts == 0x01234567);
-            Assert.True(segment.Dts == 0x12345678);
-
-            if (segment is FinalObjectDefinitionSegment fods)
-            {
-                Assert.True(fods.Id == 0xA0A1);
-                Assert.True(fods.Version == 0xA2);
-                Assert.True(fods.Data.Length == 0);
-            }
-            else
-            {
-                Assert.True(false);
-            }
+            Assert.True(fods.Id == 0xA0A1);
+            Assert.True(fods.Version == 0xA2);
+            Assert.True(fods.Data.Length == 0);
+        }
+        else
+        {
+            Assert.True(false);
         }
     }
 
     [Fact]
-    public void EmptyAsync()
+    public async Task EmptyAsync()
     {
-        using (var stream = new MemoryStream(FinalObjectDefinitionSegmentData.Empty))
+        await using var reader
+            = new SegmentReader(new MemoryStream(FinalObjectDefinitionSegmentData.Empty));
+        var segment = await reader.ReadAsync() ?? throw new NullReferenceException();
+
+        Assert.True(segment.Pts == 0x01234567);
+        Assert.True(segment.Dts == 0x12345678);
+
+        if (segment is FinalObjectDefinitionSegment fods)
         {
-            var segment = stream.ReadSegmentAsync().Result;
-
-            Assert.True(segment.Pts == 0x01234567);
-            Assert.True(segment.Dts == 0x12345678);
-
-            if (segment is FinalObjectDefinitionSegment fods)
-            {
-                Assert.True(fods.Id == 0xA0A1);
-                Assert.True(fods.Version == 0xA2);
-                Assert.True(fods.Data.Length == 0);
-            }
-            else
-            {
-                Assert.True(false);
-            }
+            Assert.True(fods.Id == 0xA0A1);
+            Assert.True(fods.Version == 0xA2);
+            Assert.True(fods.Data.Length == 0);
+        }
+        else
+        {
+            Assert.True(false);
         }
     }
 
     [Fact]
     public void Small()
     {
-        using (var stream = new MemoryStream(FinalObjectDefinitionSegmentData.Small))
+        using var reader
+            = new SegmentReader(new MemoryStream(FinalObjectDefinitionSegmentData.Small));
+        var segment = reader.Read() ?? throw new NullReferenceException();
+
+        Assert.True(segment.Pts == 0x01234567);
+        Assert.True(segment.Dts == 0x12345678);
+
+        if (segment is FinalObjectDefinitionSegment fods)
         {
-            var segment = stream.ReadSegment();
-
-            Assert.True(segment.Pts == 0x01234567);
-            Assert.True(segment.Dts == 0x12345678);
-
-            if (segment is FinalObjectDefinitionSegment fods)
-            {
-                Assert.True(fods.Id == 0xA0A1);
-                Assert.True(fods.Version == 0xA2);
-                Assert.True(fods.Data.Length == 4);
-                Assert.True(fods.Data[0] == 0xE0);
-                Assert.True(fods.Data[1] == 0xE1);
-                Assert.True(fods.Data[2] == 0xE2);
-                Assert.True(fods.Data[3] == 0xE3);
-            }
-            else
-            {
-                Assert.True(false);
-            }
+            Assert.True(fods.Id == 0xA0A1);
+            Assert.True(fods.Version == 0xA2);
+            Assert.True(fods.Data.Length == 4);
+            Assert.True(fods.Data[0] == 0xE0);
+            Assert.True(fods.Data[1] == 0xE1);
+            Assert.True(fods.Data[2] == 0xE2);
+            Assert.True(fods.Data[3] == 0xE3);
+        }
+        else
+        {
+            Assert.True(false);
         }
     }
 
     [Fact]
-    public void SmallAsync()
+    public async Task SmallAsync()
     {
-        using (var stream = new MemoryStream(FinalObjectDefinitionSegmentData.Small))
+        await using var reader
+            = new SegmentReader(new MemoryStream(FinalObjectDefinitionSegmentData.Small));
+        var segment = await reader.ReadAsync() ?? throw new NullReferenceException();
+
+        Assert.True(segment.Pts == 0x01234567);
+        Assert.True(segment.Dts == 0x12345678);
+
+        if (segment is FinalObjectDefinitionSegment fods)
         {
-            var segment = stream.ReadSegmentAsync().Result;
-
-            Assert.True(segment.Pts == 0x01234567);
-            Assert.True(segment.Dts == 0x12345678);
-
-            if (segment is FinalObjectDefinitionSegment fods)
-            {
-                Assert.True(fods.Id == 0xA0A1);
-                Assert.True(fods.Version == 0xA2);
-                Assert.True(fods.Data.Length == 4);
-                Assert.True(fods.Data[0] == 0xE0);
-                Assert.True(fods.Data[1] == 0xE1);
-                Assert.True(fods.Data[2] == 0xE2);
-                Assert.True(fods.Data[3] == 0xE3);
-            }
-            else
-            {
-                Assert.True(false);
-            }
+            Assert.True(fods.Id == 0xA0A1);
+            Assert.True(fods.Version == 0xA2);
+            Assert.True(fods.Data.Length == 4);
+            Assert.True(fods.Data[0] == 0xE0);
+            Assert.True(fods.Data[1] == 0xE1);
+            Assert.True(fods.Data[2] == 0xE2);
+            Assert.True(fods.Data[3] == 0xE3);
+        }
+        else
+        {
+            Assert.True(false);
         }
     }
 }

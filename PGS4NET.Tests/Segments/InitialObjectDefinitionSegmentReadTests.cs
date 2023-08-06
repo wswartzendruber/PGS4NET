@@ -20,112 +20,108 @@ public class InitialObjectDefinitionSegmentReadTests
     [Fact]
     public void Empty()
     {
-        using (var stream = new MemoryStream(InitialObjectDefinitionSegmentData.Empty))
+        using var reader
+            = new SegmentReader(new MemoryStream(InitialObjectDefinitionSegmentData.Empty));
+        var segment = reader.Read() ?? throw new NullReferenceException();
+
+        Assert.True(segment.Pts == 0x01234567);
+        Assert.True(segment.Dts == 0x12345678);
+
+        if (segment is InitialObjectDefinitionSegment iods)
         {
-            var segment = stream.ReadSegment();
-
-            Assert.True(segment.Pts == 0x01234567);
-            Assert.True(segment.Dts == 0x12345678);
-
-            if (segment is InitialObjectDefinitionSegment iods)
-            {
-                Assert.True(iods.Id == 0xA0A1);
-                Assert.True(iods.Version == 0xA2);
-                Assert.True(iods.Length == 0xABCDEF);
-                Assert.True(iods.Width == 0x2143);
-                Assert.True(iods.Height == 0x6587);
-                Assert.True(iods.Data.Length == 0);
-            }
-            else
-            {
-                Assert.True(false);
-            }
+            Assert.True(iods.Id == 0xA0A1);
+            Assert.True(iods.Version == 0xA2);
+            Assert.True(iods.Length == 0xABCDEF);
+            Assert.True(iods.Width == 0x2143);
+            Assert.True(iods.Height == 0x6587);
+            Assert.True(iods.Data.Length == 0);
+        }
+        else
+        {
+            Assert.True(false);
         }
     }
 
     [Fact]
-    public void EmptyAsync()
+    public async Task EmptyAsync()
     {
-        using (var stream = new MemoryStream(InitialObjectDefinitionSegmentData.Empty))
+        await using var reader
+            = new SegmentReader(new MemoryStream(InitialObjectDefinitionSegmentData.Empty));
+        var segment = await reader.ReadAsync() ?? throw new NullReferenceException();
+
+        Assert.True(segment.Pts == 0x01234567);
+        Assert.True(segment.Dts == 0x12345678);
+
+        if (segment is InitialObjectDefinitionSegment iods)
         {
-            var segment = stream.ReadSegmentAsync().Result;
-
-            Assert.True(segment.Pts == 0x01234567);
-            Assert.True(segment.Dts == 0x12345678);
-
-            if (segment is InitialObjectDefinitionSegment iods)
-            {
-                Assert.True(iods.Id == 0xA0A1);
-                Assert.True(iods.Version == 0xA2);
-                Assert.True(iods.Length == 0xABCDEF);
-                Assert.True(iods.Width == 0x2143);
-                Assert.True(iods.Height == 0x6587);
-                Assert.True(iods.Data.Length == 0);
-            }
-            else
-            {
-                Assert.True(false);
-            }
+            Assert.True(iods.Id == 0xA0A1);
+            Assert.True(iods.Version == 0xA2);
+            Assert.True(iods.Length == 0xABCDEF);
+            Assert.True(iods.Width == 0x2143);
+            Assert.True(iods.Height == 0x6587);
+            Assert.True(iods.Data.Length == 0);
+        }
+        else
+        {
+            Assert.True(false);
         }
     }
 
     [Fact]
     public void Small()
     {
-        using (var stream = new MemoryStream(InitialObjectDefinitionSegmentData.Small))
+        using var reader
+            = new SegmentReader(new MemoryStream(InitialObjectDefinitionSegmentData.Small));
+        var segment = reader.Read() ?? throw new NullReferenceException();
+
+        Assert.True(segment.Pts == 0x01234567);
+        Assert.True(segment.Dts == 0x12345678);
+
+        if (segment is InitialObjectDefinitionSegment iods)
         {
-            var segment = stream.ReadSegment();
-
-            Assert.True(segment.Pts == 0x01234567);
-            Assert.True(segment.Dts == 0x12345678);
-
-            if (segment is InitialObjectDefinitionSegment iods)
-            {
-                Assert.True(iods.Id == 0xA0A1);
-                Assert.True(iods.Version == 0xA2);
-                Assert.True(iods.Length == 0xABCDEF);
-                Assert.True(iods.Width == 0x2143);
-                Assert.True(iods.Height == 0x6587);
-                Assert.True(iods.Data.Length == 4);
-                Assert.True(iods.Data[0] == 0xE0);
-                Assert.True(iods.Data[1] == 0xE1);
-                Assert.True(iods.Data[2] == 0xE2);
-                Assert.True(iods.Data[3] == 0xE3);
-            }
-            else
-            {
-                Assert.True(false);
-            }
+            Assert.True(iods.Id == 0xA0A1);
+            Assert.True(iods.Version == 0xA2);
+            Assert.True(iods.Length == 0xABCDEF);
+            Assert.True(iods.Width == 0x2143);
+            Assert.True(iods.Height == 0x6587);
+            Assert.True(iods.Data.Length == 4);
+            Assert.True(iods.Data[0] == 0xE0);
+            Assert.True(iods.Data[1] == 0xE1);
+            Assert.True(iods.Data[2] == 0xE2);
+            Assert.True(iods.Data[3] == 0xE3);
+        }
+        else
+        {
+            Assert.True(false);
         }
     }
 
     [Fact]
-    public void SmallAsync()
+    public async Task SmallAsync()
     {
-        using (var stream = new MemoryStream(InitialObjectDefinitionSegmentData.Small))
+        await using var reader
+            = new SegmentReader(new MemoryStream(InitialObjectDefinitionSegmentData.Small));
+        var segment = await reader.ReadAsync() ?? throw new NullReferenceException();
+
+        Assert.True(segment.Pts == 0x01234567);
+        Assert.True(segment.Dts == 0x12345678);
+
+        if (segment is InitialObjectDefinitionSegment iods)
         {
-            var segment = stream.ReadSegmentAsync().Result;
-
-            Assert.True(segment.Pts == 0x01234567);
-            Assert.True(segment.Dts == 0x12345678);
-
-            if (segment is InitialObjectDefinitionSegment iods)
-            {
-                Assert.True(iods.Id == 0xA0A1);
-                Assert.True(iods.Version == 0xA2);
-                Assert.True(iods.Length == 0xABCDEF);
-                Assert.True(iods.Width == 0x2143);
-                Assert.True(iods.Height == 0x6587);
-                Assert.True(iods.Data.Length == 4);
-                Assert.True(iods.Data[0] == 0xE0);
-                Assert.True(iods.Data[1] == 0xE1);
-                Assert.True(iods.Data[2] == 0xE2);
-                Assert.True(iods.Data[3] == 0xE3);
-            }
-            else
-            {
-                Assert.True(false);
-            }
+            Assert.True(iods.Id == 0xA0A1);
+            Assert.True(iods.Version == 0xA2);
+            Assert.True(iods.Length == 0xABCDEF);
+            Assert.True(iods.Width == 0x2143);
+            Assert.True(iods.Height == 0x6587);
+            Assert.True(iods.Data.Length == 4);
+            Assert.True(iods.Data[0] == 0xE0);
+            Assert.True(iods.Data[1] == 0xE1);
+            Assert.True(iods.Data[2] == 0xE2);
+            Assert.True(iods.Data[3] == 0xE3);
+        }
+        else
+        {
+            Assert.True(false);
         }
     }
 }

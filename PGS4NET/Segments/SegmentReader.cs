@@ -16,24 +16,50 @@ using System.Threading.Tasks;
 namespace PGS4NET.Segments;
 
 /// <summary>
-///     Contains extensions against <see cref="Stream" /> for reading PGS segments.
+///     Represents a PGS segment reader that can read through the segments encoded in a
+///     <see cref="Stream" />.
 /// </summary>
-public static partial class StreamExtensions
+#if NETSTANDARD2_1
+public class SegmentReader : IDisposable, IAsyncDisposable
+#else
+public class SegmentReader : IDisposable
+#endif
 {
+    private readonly Stream Input;
+    private readonly bool LeaveOpen;
+
     /// <summary>
-    ///     Reads the next PGS segment from a <see cref="Stream" />.
+    ///     Initializes a new instance that will read PGS segments from the encoded
+    ///     <paramref name="input" /> <see cref="Stream" />.
     /// </summary>
+    public SegmentReader(Stream input, bool leaveOpen = false)
+    {
+        Input = input;
+        LeaveOpen = leaveOpen;
+    }
+
+    /// <summary>
+    ///     Reads the next PGS segment from the input stream.
+    /// </summary>
+    /// <returns>
+    ///     The next PGS segment from the input stream or <see langword="null" /> if the end of
+    ///     the stream has been reached.
+    /// </returns>
     /// <exception cref="SegmentException">
     ///     Thrown when the flags inside of a segment are invalid.
     /// </exception>
     /// <exception cref="IOException">
     ///     Thrown when an underlying IO error occurs while attempting to read a segment.
     /// </exception>
-    public static Segment ReadSegment(this Stream stream)
+    public Segment? Read()
     {
         var headerBuffer = new byte[13];
+        var headerBytesRead = Input.Read(headerBuffer, 0, headerBuffer.Length);
 
-        stream.Read(headerBuffer, 0, headerBuffer.Length);
+        if (headerBytesRead == 0)
+            return null;
+        else if (headerBytesRead != headerBuffer.Length)
+            throw new IOException("EOF reading segment header.");
 
         var magicNumber = ReadUInt16BE(headerBuffer, 0)
             ?? throw new IOException("EOF reading segment magic number.");
@@ -42,16 +68,18 @@ public static partial class StreamExtensions
             throw new SegmentException("Unrecognized segment magic number.");
 
         var pts = ReadUInt32BE(headerBuffer, 2)
-            ?? throw new IOException("EOF reading segment Pts.");
+            ?? throw new IOException("EOF reading segment PTS.");
         var dts = ReadUInt32BE(headerBuffer, 6)
-            ?? throw new IOException("EOF reading segment Dts.");
+            ?? throw new IOException("EOF reading segment DTS.");
         var kind = ReadUInt8(headerBuffer, 10)
             ?? throw new IOException("EOF reading segment kind.");
         var size = ReadUInt16BE(headerBuffer, 11)
             ?? throw new IOException("EOF reading segment size.");
         var payloadBuffer = new byte[size];
+        var payloadBytesRead = Input.Read(payloadBuffer, 0, payloadBuffer.Length);
 
-        stream.Read(payloadBuffer, 0, payloadBuffer.Length);
+        if (payloadBytesRead != payloadBuffer.Length)
+            throw new IOException("EOF reading segment body.");
 
         return kind switch
         {
@@ -65,19 +93,27 @@ public static partial class StreamExtensions
     }
 
     /// <summary>
-    ///     Asynchronously reads the next PGS segment from a <see cref="Stream" />.
+    ///     Asynchronously reads the next PGS segment from the input stream.
     /// </summary>
+    /// <returns>
+    ///     The next PGS segment from the input stream or <see langword="null" /> if the end of
+    ///     the stream has been reached.
+    /// </returns>
     /// <exception cref="SegmentException">
     ///     Thrown when the flags inside of a segment are invalid.
     /// </exception>
     /// <exception cref="IOException">
     ///     Thrown when an underlying IO error occurs while attempting to read a segment.
     /// </exception>
-    public static async Task<Segment> ReadSegmentAsync(this Stream stream)
+    public async Task<Segment?> ReadAsync()
     {
         var headerBuffer = new byte[13];
+        var headerBytesRead = await Input.ReadAsync(headerBuffer, 0, headerBuffer.Length);
 
-        await stream.ReadAsync(headerBuffer, 0, headerBuffer.Length);
+        if (headerBytesRead == 0)
+            return null;
+        else if (headerBytesRead != headerBuffer.Length)
+            throw new IOException("EOF reading segment header.");
 
         var magicNumber = ReadUInt16BE(headerBuffer, 0)
             ?? throw new IOException("EOF reading segment magic number.");
@@ -86,16 +122,18 @@ public static partial class StreamExtensions
             throw new SegmentException("Unrecognized segment magic number.");
 
         var pts = ReadUInt32BE(headerBuffer, 2)
-            ?? throw new IOException("EOF reading segment Pts.");
+            ?? throw new IOException("EOF reading segment PTS.");
         var dts = ReadUInt32BE(headerBuffer, 6)
-            ?? throw new IOException("EOF reading segment Dts.");
+            ?? throw new IOException("EOF reading segment DTS.");
         var kind = ReadUInt8(headerBuffer, 10)
             ?? throw new IOException("EOF reading segment kind.");
         var size = ReadUInt16BE(headerBuffer, 11)
             ?? throw new IOException("EOF reading segment size.");
         var payloadBuffer = new byte[size];
+        var payloadBytesRead = await Input.ReadAsync(payloadBuffer, 0, payloadBuffer.Length);
 
-        await stream.ReadAsync(payloadBuffer, 0, payloadBuffer.Length);
+        if (payloadBytesRead != payloadBuffer.Length)
+            throw new IOException("EOF reading segment body.");
 
         return kind switch
         {
@@ -107,6 +145,28 @@ public static partial class StreamExtensions
             _ => throw new SegmentException("Unrecognized segment kind."),
         };
     }
+
+    /// <summary>
+    ///     Disposes the stream passed in as the constructor's <c>input</c> parameter if
+    ///     <c>leaveOpen</c> was left as false. Otherwise, does nothing.
+    /// </summary>
+    public void Dispose()
+    {
+        if (!LeaveOpen)
+            Input.Dispose();
+    }
+
+#if NETSTANDARD2_1
+    /// <summary>
+    ///     Asynchronously disposes the stream passed in as the constructor's <c>input</c>
+    ///     parameter if <c>leaveOpen</c> was left as false. Otherwise, does nothing.
+    /// </summary>
+    public async ValueTask DisposeAsync()
+    {
+        if (!LeaveOpen)
+            await Input.DisposeAsync();
+    }
+#endif
 
     private static PresentationCompositionSegment ParsePCS(byte[] buffer, uint pts, uint dts)
     {

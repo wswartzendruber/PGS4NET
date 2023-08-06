@@ -20,329 +20,309 @@ public class PresentationCompositionSegmentReadTests
     [Fact]
     public void EpochStart_NoPaletteUpdateID_NoObjects()
     {
-        using (var stream = new MemoryStream
-            (PresentationCompositionSegmentData.EpochStart_NoPaletteUpdateID_NoObjects))
+        using var reader = new SegmentReader(new MemoryStream(
+            PresentationCompositionSegmentData.EpochStart_NoPaletteUpdateID_NoObjects));
+        var segment = reader.Read() ?? throw new NullReferenceException();
+
+        Assert.True(segment.Pts == 0x01234567);
+        Assert.True(segment.Dts == 0x12345678);
+
+        if (segment is PresentationCompositionSegment pcs)
         {
-            var segment = stream.ReadSegment();
-
-            Assert.True(segment.Pts == 0x01234567);
-            Assert.True(segment.Dts == 0x12345678);
-
-            if (segment is PresentationCompositionSegment pcs)
-            {
-                Assert.True(pcs.Width == 0x2143);
-                Assert.True(pcs.Height == 0x6587);
-                Assert.True(pcs.FrameRate == 0x10);
-                Assert.True(pcs.Number == 0x6543);
-                Assert.True(pcs.State == CompositionState.EpochStart);
-                Assert.True(pcs.PaletteUpdateOnly == false);
-                Assert.True(pcs.PaletteUpdateId == 0xAB);
-                Assert.True(pcs.CompositionObjects.Count == 0);
-            }
-            else
-            {
-                Assert.True(false);
-            }
+            Assert.True(pcs.Width == 0x2143);
+            Assert.True(pcs.Height == 0x6587);
+            Assert.True(pcs.FrameRate == 0x10);
+            Assert.True(pcs.Number == 0x6543);
+            Assert.True(pcs.State == CompositionState.EpochStart);
+            Assert.True(pcs.PaletteUpdateOnly == false);
+            Assert.True(pcs.PaletteUpdateId == 0xAB);
+            Assert.True(pcs.CompositionObjects.Count == 0);
+        }
+        else
+        {
+            Assert.True(false);
         }
     }
 
     [Fact]
-    public void EpochStart_NoPaletteUpdateID_NoObjects_Async()
+    public async Task EpochStart_NoPaletteUpdateID_NoObjects_Async()
     {
-        using (var stream = new MemoryStream
-            (PresentationCompositionSegmentData.EpochStart_NoPaletteUpdateID_NoObjects))
+        await using var reader = new SegmentReader(new MemoryStream(
+            PresentationCompositionSegmentData.EpochStart_NoPaletteUpdateID_NoObjects));
+        var segment = await reader.ReadAsync() ?? throw new NullReferenceException();
+
+        Assert.True(segment.Pts == 0x01234567);
+        Assert.True(segment.Dts == 0x12345678);
+
+        if (segment is PresentationCompositionSegment pcs)
         {
-            var segment = stream.ReadSegmentAsync().Result;
-
-            Assert.True(segment.Pts == 0x01234567);
-            Assert.True(segment.Dts == 0x12345678);
-
-            if (segment is PresentationCompositionSegment pcs)
-            {
-                Assert.True(pcs.Width == 0x2143);
-                Assert.True(pcs.Height == 0x6587);
-                Assert.True(pcs.FrameRate == 0x10);
-                Assert.True(pcs.Number == 0x6543);
-                Assert.True(pcs.State == CompositionState.EpochStart);
-                Assert.True(pcs.PaletteUpdateOnly == false);
-                Assert.True(pcs.PaletteUpdateId == 0xAB);
-                Assert.True(pcs.CompositionObjects.Count == 0);
-            }
-            else
-            {
-                Assert.True(false);
-            }
+            Assert.True(pcs.Width == 0x2143);
+            Assert.True(pcs.Height == 0x6587);
+            Assert.True(pcs.FrameRate == 0x10);
+            Assert.True(pcs.Number == 0x6543);
+            Assert.True(pcs.State == CompositionState.EpochStart);
+            Assert.True(pcs.PaletteUpdateOnly == false);
+            Assert.True(pcs.PaletteUpdateId == 0xAB);
+            Assert.True(pcs.CompositionObjects.Count == 0);
+        }
+        else
+        {
+            Assert.True(false);
         }
     }
 
     [Fact]
     public void AcquisitionPoint_NoPaletteUpdateID_NoObjects()
     {
-        using (var stream = new MemoryStream
-            (PresentationCompositionSegmentData.AcquisitionPoint_NoPaletteUpdateID_NoObjects))
+        using var reader = new SegmentReader(new MemoryStream(
+            PresentationCompositionSegmentData.AcquisitionPoint_NoPaletteUpdateID_NoObjects));
+        var segment = reader.Read() ?? throw new NullReferenceException();
+
+        Assert.True(segment.Pts == 0x01234567);
+        Assert.True(segment.Dts == 0x12345678);
+
+        if (segment is PresentationCompositionSegment pcs)
         {
-            var segment = stream.ReadSegment();
-
-            Assert.True(segment.Pts == 0x01234567);
-            Assert.True(segment.Dts == 0x12345678);
-
-            if (segment is PresentationCompositionSegment pcs)
-            {
-                Assert.True(pcs.Width == 0x2143);
-                Assert.True(pcs.Height == 0x6587);
-                Assert.True(pcs.FrameRate == 0x10);
-                Assert.True(pcs.Number == 0x6543);
-                Assert.True(pcs.State == CompositionState.AcquisitionPoint);
-                Assert.True(pcs.PaletteUpdateOnly == false);
-                Assert.True(pcs.PaletteUpdateId == 0xAB);
-                Assert.True(pcs.CompositionObjects.Count == 0);
-            }
-            else
-            {
-                Assert.True(false);
-            }
+            Assert.True(pcs.Width == 0x2143);
+            Assert.True(pcs.Height == 0x6587);
+            Assert.True(pcs.FrameRate == 0x10);
+            Assert.True(pcs.Number == 0x6543);
+            Assert.True(pcs.State == CompositionState.AcquisitionPoint);
+            Assert.True(pcs.PaletteUpdateOnly == false);
+            Assert.True(pcs.PaletteUpdateId == 0xAB);
+            Assert.True(pcs.CompositionObjects.Count == 0);
+        }
+        else
+        {
+            Assert.True(false);
         }
     }
 
     [Fact]
-    public void AcquisitionPoint_NoPaletteUpdateID_NoObjects_Async()
+    public async Task AcquisitionPoint_NoPaletteUpdateID_NoObjects_Async()
     {
-        using (var stream = new MemoryStream
-            (PresentationCompositionSegmentData.AcquisitionPoint_NoPaletteUpdateID_NoObjects))
+        await using var reader = new SegmentReader(new MemoryStream(
+            PresentationCompositionSegmentData.AcquisitionPoint_NoPaletteUpdateID_NoObjects));
+        var segment = await reader.ReadAsync() ?? throw new NullReferenceException();
+
+        Assert.True(segment.Pts == 0x01234567);
+        Assert.True(segment.Dts == 0x12345678);
+
+        if (segment is PresentationCompositionSegment pcs)
         {
-            var segment = stream.ReadSegmentAsync().Result;
-
-            Assert.True(segment.Pts == 0x01234567);
-            Assert.True(segment.Dts == 0x12345678);
-
-            if (segment is PresentationCompositionSegment pcs)
-            {
-                Assert.True(pcs.Width == 0x2143);
-                Assert.True(pcs.Height == 0x6587);
-                Assert.True(pcs.FrameRate == 0x10);
-                Assert.True(pcs.Number == 0x6543);
-                Assert.True(pcs.State == CompositionState.AcquisitionPoint);
-                Assert.True(pcs.PaletteUpdateOnly == false);
-                Assert.True(pcs.PaletteUpdateId == 0xAB);
-                Assert.True(pcs.CompositionObjects.Count == 0);
-            }
-            else
-            {
-                Assert.True(false);
-            }
+            Assert.True(pcs.Width == 0x2143);
+            Assert.True(pcs.Height == 0x6587);
+            Assert.True(pcs.FrameRate == 0x10);
+            Assert.True(pcs.Number == 0x6543);
+            Assert.True(pcs.State == CompositionState.AcquisitionPoint);
+            Assert.True(pcs.PaletteUpdateOnly == false);
+            Assert.True(pcs.PaletteUpdateId == 0xAB);
+            Assert.True(pcs.CompositionObjects.Count == 0);
+        }
+        else
+        {
+            Assert.True(false);
         }
     }
 
     [Fact]
     public void Normal_NoPaletteUpdateID_NoObjects()
     {
-        using (var stream = new MemoryStream
-            (PresentationCompositionSegmentData.Normal_NoPaletteUpdateID_NoObjects))
+        using var reader = new SegmentReader(new MemoryStream(
+            PresentationCompositionSegmentData.Normal_NoPaletteUpdateID_NoObjects));
+        var segment = reader.Read() ?? throw new NullReferenceException();
+
+        Assert.True(segment.Pts == 0x01234567);
+        Assert.True(segment.Dts == 0x12345678);
+
+        if (segment is PresentationCompositionSegment pcs)
         {
-            var segment = stream.ReadSegment();
-
-            Assert.True(segment.Pts == 0x01234567);
-            Assert.True(segment.Dts == 0x12345678);
-
-            if (segment is PresentationCompositionSegment pcs)
-            {
-                Assert.True(pcs.Width == 0x2143);
-                Assert.True(pcs.Height == 0x6587);
-                Assert.True(pcs.FrameRate == 0x10);
-                Assert.True(pcs.Number == 0x6543);
-                Assert.True(pcs.State == CompositionState.Normal);
-                Assert.True(pcs.PaletteUpdateOnly == false);
-                Assert.True(pcs.PaletteUpdateId == 0xAB);
-                Assert.True(pcs.CompositionObjects.Count == 0);
-            }
-            else
-            {
-                Assert.True(false);
-            }
+            Assert.True(pcs.Width == 0x2143);
+            Assert.True(pcs.Height == 0x6587);
+            Assert.True(pcs.FrameRate == 0x10);
+            Assert.True(pcs.Number == 0x6543);
+            Assert.True(pcs.State == CompositionState.Normal);
+            Assert.True(pcs.PaletteUpdateOnly == false);
+            Assert.True(pcs.PaletteUpdateId == 0xAB);
+            Assert.True(pcs.CompositionObjects.Count == 0);
+        }
+        else
+        {
+            Assert.True(false);
         }
     }
 
     [Fact]
-    public void Normal_NoPaletteUpdateID_NoObjects_Async()
+    public async Task Normal_NoPaletteUpdateID_NoObjects_Async()
     {
-        using (var stream = new MemoryStream
-            (PresentationCompositionSegmentData.Normal_NoPaletteUpdateID_NoObjects))
+        await using var reader = new SegmentReader(new MemoryStream(
+            PresentationCompositionSegmentData.Normal_NoPaletteUpdateID_NoObjects));
+        var segment = await reader.ReadAsync() ?? throw new NullReferenceException();
+
+        Assert.True(segment.Pts == 0x01234567);
+        Assert.True(segment.Dts == 0x12345678);
+
+        if (segment is PresentationCompositionSegment pcs)
         {
-            var segment = stream.ReadSegmentAsync().Result;
-
-            Assert.True(segment.Pts == 0x01234567);
-            Assert.True(segment.Dts == 0x12345678);
-
-            if (segment is PresentationCompositionSegment pcs)
-            {
-                Assert.True(pcs.Width == 0x2143);
-                Assert.True(pcs.Height == 0x6587);
-                Assert.True(pcs.FrameRate == 0x10);
-                Assert.True(pcs.Number == 0x6543);
-                Assert.True(pcs.State == CompositionState.Normal);
-                Assert.True(pcs.PaletteUpdateOnly == false);
-                Assert.True(pcs.PaletteUpdateId == 0xAB);
-                Assert.True(pcs.CompositionObjects.Count == 0);
-            }
-            else
-            {
-                Assert.True(false);
-            }
+            Assert.True(pcs.Width == 0x2143);
+            Assert.True(pcs.Height == 0x6587);
+            Assert.True(pcs.FrameRate == 0x10);
+            Assert.True(pcs.Number == 0x6543);
+            Assert.True(pcs.State == CompositionState.Normal);
+            Assert.True(pcs.PaletteUpdateOnly == false);
+            Assert.True(pcs.PaletteUpdateId == 0xAB);
+            Assert.True(pcs.CompositionObjects.Count == 0);
+        }
+        else
+        {
+            Assert.True(false);
         }
     }
 
     [Fact]
     public void Normal_PaletteUpdateID_NoObjects()
     {
-        using (var stream = new MemoryStream
-            (PresentationCompositionSegmentData.Normal_PaletteUpdateID_NoObjects))
+        using var reader = new SegmentReader(new MemoryStream(
+            PresentationCompositionSegmentData.Normal_PaletteUpdateID_NoObjects));
+        var segment = reader.Read() ?? throw new NullReferenceException();
+
+        Assert.True(segment.Pts == 0x01234567);
+        Assert.True(segment.Dts == 0x12345678);
+
+        if (segment is PresentationCompositionSegment pcs)
         {
-            var segment = stream.ReadSegment();
-
-            Assert.True(segment.Pts == 0x01234567);
-            Assert.True(segment.Dts == 0x12345678);
-
-            if (segment is PresentationCompositionSegment pcs)
-            {
-                Assert.True(pcs.Width == 0x2143);
-                Assert.True(pcs.Height == 0x6587);
-                Assert.True(pcs.FrameRate == 0x10);
-                Assert.True(pcs.Number == 0x6543);
-                Assert.True(pcs.State == CompositionState.Normal);
-                Assert.True(pcs.PaletteUpdateOnly == true);
-                Assert.True(pcs.PaletteUpdateId == 0xAB);
-                Assert.True(pcs.CompositionObjects.Count == 0);
-            }
-            else
-            {
-                Assert.True(false);
-            }
+            Assert.True(pcs.Width == 0x2143);
+            Assert.True(pcs.Height == 0x6587);
+            Assert.True(pcs.FrameRate == 0x10);
+            Assert.True(pcs.Number == 0x6543);
+            Assert.True(pcs.State == CompositionState.Normal);
+            Assert.True(pcs.PaletteUpdateOnly == true);
+            Assert.True(pcs.PaletteUpdateId == 0xAB);
+            Assert.True(pcs.CompositionObjects.Count == 0);
+        }
+        else
+        {
+            Assert.True(false);
         }
     }
 
     [Fact]
     public void Normal_NoPaletteUpdateID_OneObjectForced()
     {
-        using (var stream = new MemoryStream
-            (PresentationCompositionSegmentData.Normal_NoPaletteUpdateID_OneObjectForced))
+        using var reader = new SegmentReader(new MemoryStream(
+            PresentationCompositionSegmentData.Normal_NoPaletteUpdateID_OneObjectForced));
+        var segment = reader.Read() ?? throw new NullReferenceException();
+
+        Assert.True(segment.Pts == 0x01234567);
+        Assert.True(segment.Dts == 0x12345678);
+
+        if (segment is PresentationCompositionSegment pcs)
         {
-            var segment = stream.ReadSegment();
-
-            Assert.True(segment.Pts == 0x01234567);
-            Assert.True(segment.Dts == 0x12345678);
-
-            if (segment is PresentationCompositionSegment pcs)
-            {
-                Assert.True(pcs.Width == 0x2143);
-                Assert.True(pcs.Height == 0x6587);
-                Assert.True(pcs.FrameRate == 0x10);
-                Assert.True(pcs.Number == 0x6543);
-                Assert.True(pcs.State == CompositionState.Normal);
-                Assert.True(pcs.PaletteUpdateOnly == false);
-                Assert.True(pcs.PaletteUpdateId == 0xAB);
-                Assert.True(pcs.CompositionObjects.Count == 1);
-                Assert.True(pcs.CompositionObjects[0].ObjectId == 0xABCD);
-                Assert.True(pcs.CompositionObjects[0].WindowId == 0xEF);
-                Assert.True(pcs.CompositionObjects[0].X == 0x1A2B);
-                Assert.True(pcs.CompositionObjects[0].Y == 0x3C4D);
-                Assert.True(pcs.CompositionObjects[0].Forced == true);
-                Assert.True(pcs.CompositionObjects[0].Crop == null);
-            }
-            else
-            {
-                Assert.True(false);
-            }
+            Assert.True(pcs.Width == 0x2143);
+            Assert.True(pcs.Height == 0x6587);
+            Assert.True(pcs.FrameRate == 0x10);
+            Assert.True(pcs.Number == 0x6543);
+            Assert.True(pcs.State == CompositionState.Normal);
+            Assert.True(pcs.PaletteUpdateOnly == false);
+            Assert.True(pcs.PaletteUpdateId == 0xAB);
+            Assert.True(pcs.CompositionObjects.Count == 1);
+            Assert.True(pcs.CompositionObjects[0].ObjectId == 0xABCD);
+            Assert.True(pcs.CompositionObjects[0].WindowId == 0xEF);
+            Assert.True(pcs.CompositionObjects[0].X == 0x1A2B);
+            Assert.True(pcs.CompositionObjects[0].Y == 0x3C4D);
+            Assert.True(pcs.CompositionObjects[0].Forced == true);
+            Assert.True(pcs.CompositionObjects[0].Crop == null);
+        }
+        else
+        {
+            Assert.True(false);
         }
     }
 
     [Fact]
     public void Normal_NoPaletteUpdateID_OneObjectCropped()
     {
-        using (var stream = new MemoryStream
-            (PresentationCompositionSegmentData.Normal_NoPaletteUpdateID_OneObjectCropped))
+        using var reader = new SegmentReader(new MemoryStream(
+            PresentationCompositionSegmentData.Normal_NoPaletteUpdateID_OneObjectCropped));
+        var segment = reader.Read() ?? throw new NullReferenceException();
+
+        Assert.True(segment.Pts == 0x01234567);
+        Assert.True(segment.Dts == 0x12345678);
+
+        if (segment is PresentationCompositionSegment pcs)
         {
-            var segment = stream.ReadSegment();
-
-            Assert.True(segment.Pts == 0x01234567);
-            Assert.True(segment.Dts == 0x12345678);
-
-            if (segment is PresentationCompositionSegment pcs)
-            {
-                Assert.True(pcs.Width == 0x2143);
-                Assert.True(pcs.Height == 0x6587);
-                Assert.True(pcs.FrameRate == 0x10);
-                Assert.True(pcs.Number == 0x6543);
-                Assert.True(pcs.State == CompositionState.Normal);
-                Assert.True(pcs.PaletteUpdateOnly == false);
-                Assert.True(pcs.PaletteUpdateId == 0xAB);
-                Assert.True(pcs.CompositionObjects.Count == 1);
-                Assert.True(pcs.CompositionObjects[0].ObjectId == 0xABCD);
-                Assert.True(pcs.CompositionObjects[0].WindowId == 0xEF);
-                Assert.True(pcs.CompositionObjects[0].X == 0x1A2B);
-                Assert.True(pcs.CompositionObjects[0].Y == 0x3C4D);
-                Assert.True(pcs.CompositionObjects[0].Forced == false);
-                Assert.True(pcs.CompositionObjects[0].Crop?.X == 0xA1A2);
-                Assert.True(pcs.CompositionObjects[0].Crop?.Y == 0xA3A4);
-                Assert.True(pcs.CompositionObjects[0].Crop?.Width == 0xA5A6);
-                Assert.True(pcs.CompositionObjects[0].Crop?.Height == 0xA7A8);
-            }
-            else
-            {
-                Assert.True(false);
-            }
+            Assert.True(pcs.Width == 0x2143);
+            Assert.True(pcs.Height == 0x6587);
+            Assert.True(pcs.FrameRate == 0x10);
+            Assert.True(pcs.Number == 0x6543);
+            Assert.True(pcs.State == CompositionState.Normal);
+            Assert.True(pcs.PaletteUpdateOnly == false);
+            Assert.True(pcs.PaletteUpdateId == 0xAB);
+            Assert.True(pcs.CompositionObjects.Count == 1);
+            Assert.True(pcs.CompositionObjects[0].ObjectId == 0xABCD);
+            Assert.True(pcs.CompositionObjects[0].WindowId == 0xEF);
+            Assert.True(pcs.CompositionObjects[0].X == 0x1A2B);
+            Assert.True(pcs.CompositionObjects[0].Y == 0x3C4D);
+            Assert.True(pcs.CompositionObjects[0].Forced == false);
+            Assert.True(pcs.CompositionObjects[0].Crop?.X == 0xA1A2);
+            Assert.True(pcs.CompositionObjects[0].Crop?.Y == 0xA3A4);
+            Assert.True(pcs.CompositionObjects[0].Crop?.Width == 0xA5A6);
+            Assert.True(pcs.CompositionObjects[0].Crop?.Height == 0xA7A8);
+        }
+        else
+        {
+            Assert.True(false);
         }
     }
 
     [Fact]
     public void Normal_NoPaletteUpdateID_ThreeObjectsMixed()
     {
-        using (var stream = new MemoryStream
-            (PresentationCompositionSegmentData.Normal_NoPaletteUpdateID_ThreeObjectsMixed))
+        using var reader = new SegmentReader(new MemoryStream(
+            PresentationCompositionSegmentData.Normal_NoPaletteUpdateID_ThreeObjectsMixed));
+        var segment = reader.Read() ?? throw new NullReferenceException();
+
+        Assert.True(segment.Pts == 0x01234567);
+        Assert.True(segment.Dts == 0x12345678);
+
+        if (segment is PresentationCompositionSegment pcs)
         {
-            var segment = stream.ReadSegment();
-
-            Assert.True(segment.Pts == 0x01234567);
-            Assert.True(segment.Dts == 0x12345678);
-
-            if (segment is PresentationCompositionSegment pcs)
-            {
-                Assert.True(pcs.Width == 0x2143);
-                Assert.True(pcs.Height == 0x6587);
-                Assert.True(pcs.FrameRate == 0x10);
-                Assert.True(pcs.Number == 0x6543);
-                Assert.True(pcs.State == CompositionState.Normal);
-                Assert.True(pcs.PaletteUpdateOnly == false);
-                Assert.True(pcs.PaletteUpdateId == 0xAB);
-                Assert.True(pcs.CompositionObjects.Count == 3);
-                Assert.True(pcs.CompositionObjects[0].ObjectId == 0xABCD);
-                Assert.True(pcs.CompositionObjects[0].WindowId == 0xEF);
-                Assert.True(pcs.CompositionObjects[0].X == 0x1A2B);
-                Assert.True(pcs.CompositionObjects[0].Y == 0x3C4D);
-                Assert.True(pcs.CompositionObjects[0].Forced == false);
-                Assert.True(pcs.CompositionObjects[0].Crop?.X == 0xA1A2);
-                Assert.True(pcs.CompositionObjects[0].Crop?.Y == 0xA3A4);
-                Assert.True(pcs.CompositionObjects[0].Crop?.Width == 0xA5A6);
-                Assert.True(pcs.CompositionObjects[0].Crop?.Height == 0xA7A8);
-                Assert.True(pcs.CompositionObjects[1].ObjectId == 0xABCD);
-                Assert.True(pcs.CompositionObjects[1].WindowId == 0xEF);
-                Assert.True(pcs.CompositionObjects[1].X == 0x1A2B);
-                Assert.True(pcs.CompositionObjects[1].Y == 0x3C4D);
-                Assert.True(pcs.CompositionObjects[1].Forced == true);
-                Assert.True(pcs.CompositionObjects[1].Crop == null);
-                Assert.True(pcs.CompositionObjects[2].ObjectId == 0xABCD);
-                Assert.True(pcs.CompositionObjects[2].WindowId == 0xEF);
-                Assert.True(pcs.CompositionObjects[2].X == 0x1A2B);
-                Assert.True(pcs.CompositionObjects[2].Y == 0x3C4D);
-                Assert.True(pcs.CompositionObjects[2].Forced == true);
-                Assert.True(pcs.CompositionObjects[2].Crop?.X == 0xA1A2);
-                Assert.True(pcs.CompositionObjects[2].Crop?.Y == 0xA3A4);
-                Assert.True(pcs.CompositionObjects[2].Crop?.Width == 0xA5A6);
-                Assert.True(pcs.CompositionObjects[2].Crop?.Height == 0xA7A8);
-            }
-            else
-            {
-                Assert.True(false);
-            }
+            Assert.True(pcs.Width == 0x2143);
+            Assert.True(pcs.Height == 0x6587);
+            Assert.True(pcs.FrameRate == 0x10);
+            Assert.True(pcs.Number == 0x6543);
+            Assert.True(pcs.State == CompositionState.Normal);
+            Assert.True(pcs.PaletteUpdateOnly == false);
+            Assert.True(pcs.PaletteUpdateId == 0xAB);
+            Assert.True(pcs.CompositionObjects.Count == 3);
+            Assert.True(pcs.CompositionObjects[0].ObjectId == 0xABCD);
+            Assert.True(pcs.CompositionObjects[0].WindowId == 0xEF);
+            Assert.True(pcs.CompositionObjects[0].X == 0x1A2B);
+            Assert.True(pcs.CompositionObjects[0].Y == 0x3C4D);
+            Assert.True(pcs.CompositionObjects[0].Forced == false);
+            Assert.True(pcs.CompositionObjects[0].Crop?.X == 0xA1A2);
+            Assert.True(pcs.CompositionObjects[0].Crop?.Y == 0xA3A4);
+            Assert.True(pcs.CompositionObjects[0].Crop?.Width == 0xA5A6);
+            Assert.True(pcs.CompositionObjects[0].Crop?.Height == 0xA7A8);
+            Assert.True(pcs.CompositionObjects[1].ObjectId == 0xABCD);
+            Assert.True(pcs.CompositionObjects[1].WindowId == 0xEF);
+            Assert.True(pcs.CompositionObjects[1].X == 0x1A2B);
+            Assert.True(pcs.CompositionObjects[1].Y == 0x3C4D);
+            Assert.True(pcs.CompositionObjects[1].Forced == true);
+            Assert.True(pcs.CompositionObjects[1].Crop == null);
+            Assert.True(pcs.CompositionObjects[2].ObjectId == 0xABCD);
+            Assert.True(pcs.CompositionObjects[2].WindowId == 0xEF);
+            Assert.True(pcs.CompositionObjects[2].X == 0x1A2B);
+            Assert.True(pcs.CompositionObjects[2].Y == 0x3C4D);
+            Assert.True(pcs.CompositionObjects[2].Forced == true);
+            Assert.True(pcs.CompositionObjects[2].Crop?.X == 0xA1A2);
+            Assert.True(pcs.CompositionObjects[2].Crop?.Y == 0xA3A4);
+            Assert.True(pcs.CompositionObjects[2].Crop?.Width == 0xA5A6);
+            Assert.True(pcs.CompositionObjects[2].Crop?.Height == 0xA7A8);
+        }
+        else
+        {
+            Assert.True(false);
         }
     }
 }

@@ -20,30 +20,26 @@ public class EndSegmentReadTests
     [Fact]
     public void Single()
     {
-        using (var stream = new MemoryStream(EndSegmentData.Single))
-        {
-            var segment = stream.ReadSegment();
+        using var reader = new SegmentReader(new MemoryStream(EndSegmentData.Single));
+        var segment = reader.Read() ?? throw new NullReferenceException();
 
-            Assert.True(segment.Pts == 0x01234567);
-            Assert.True(segment.Dts == 0x12345678);
+        Assert.True(segment.Pts == 0x01234567);
+        Assert.True(segment.Dts == 0x12345678);
 
-            if (segment is not EndSegment)
-                Assert.True(false);
-        }
+        if (segment is not EndSegment)
+            Assert.True(false);
     }
 
     [Fact]
-    public void SingleAsync()
+    public async Task SingleAsync()
     {
-        using (var stream = new MemoryStream(EndSegmentData.Single))
-        {
-            var segment = stream.ReadSegmentAsync().Result;
+        await using var reader = new SegmentReader(new MemoryStream(EndSegmentData.Single));
+        var segment = await reader.ReadAsync() ?? throw new NullReferenceException();
 
-            Assert.True(segment.Pts == 0x01234567);
-            Assert.True(segment.Dts == 0x12345678);
+        Assert.True(segment.Pts == 0x01234567);
+        Assert.True(segment.Dts == 0x12345678);
 
-            if (segment is not EndSegment)
-                Assert.True(false);
-        }
+        if (segment is not EndSegment)
+            Assert.True(false);
     }
 }

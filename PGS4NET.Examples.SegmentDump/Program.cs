@@ -15,12 +15,10 @@ using PGS4NET.Segments;
 if (args.Length != 1)
     throw new ArgumentException("A single parameter with a PGS file must be passed.");
 
-using var pgsStream = new FileStream(args[0], FileMode.Open);
+await using var reader = new SegmentReader(new FileStream(args[0], FileMode.Open));
 
-while (pgsStream.Position < pgsStream.Length)
+for (Segment? segment = reader.Read(); segment is not null; segment = reader.Read())
 {
-    var segment = pgsStream.ReadSegment();
-
     switch (segment)
     {
         case PresentationCompositionSegment:
