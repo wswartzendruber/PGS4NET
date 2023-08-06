@@ -21,180 +21,174 @@ public class WindowDefinitionSegmentWriteTests
     [Fact]
     public void NoWindows()
     {
-        using (var stream = new MemoryStream())
+        using var stream = new MemoryStream();
+        using var writer = new SegmentWriter(stream);
+        var wds = new WindowDefinitionSegment
         {
-            var wds = new WindowDefinitionSegment
-            {
-                Pts = 0x01234567,
-                Dts = 0x12345678,
-            };
+            Pts = 0x01234567,
+            Dts = 0x12345678,
+        };
 
-            stream.WriteSegment(wds);
+        writer.Write(wds);
 
-            Assert.True(Enumerable.SequenceEqual(
-                WindowDefinitionSegmentData.NoWindows,
-                stream.ToArray()
-            ));
-        }
+        Assert.True(Enumerable.SequenceEqual(
+            WindowDefinitionSegmentData.NoWindows,
+            stream.ToArray()
+        ));
     }
 
     [Fact]
-    public void NoWindowsAsync()
+    public async Task NoWindowsAsync()
     {
-        using (var stream = new MemoryStream())
+        using var stream = new MemoryStream();
+        using var writer = new SegmentWriter(stream);
+        var wds = new WindowDefinitionSegment
         {
-            var wds = new WindowDefinitionSegment
-            {
-                Pts = 0x01234567,
-                Dts = 0x12345678,
-            };
+            Pts = 0x01234567,
+            Dts = 0x12345678,
+        };
 
-            stream.WriteSegmentAsync(wds).Wait();
+        await writer.WriteAsync(wds);
 
-            Assert.True(Enumerable.SequenceEqual(
-                WindowDefinitionSegmentData.NoWindows,
-                stream.ToArray()
-            ));
-        }
+        Assert.True(Enumerable.SequenceEqual(
+            WindowDefinitionSegmentData.NoWindows,
+            stream.ToArray()
+        ));
     }
 
     [Fact]
     public void OneWindow()
     {
-        using (var stream = new MemoryStream())
+        using var stream = new MemoryStream();
+        using var writer = new SegmentWriter(stream);
+        var wds = new WindowDefinitionSegment
         {
-            var wds = new WindowDefinitionSegment
+            Pts = 0x01234567,
+            Dts = 0x12345678,
+            Definitions = new List<WindowDefinitionEntry>
             {
-                Pts = 0x01234567,
-                Dts = 0x12345678,
-                Definitions = new List<WindowDefinitionEntry>
+                new WindowDefinitionEntry
                 {
-                    new WindowDefinitionEntry
-                    {
-                        Id = 0xEF,
-                        X = 0xA1B2,
-                        Y = 0xC3D4,
-                        Width = 0x2143,
-                        Height = 0x6587,
-                    },
+                    Id = 0xEF,
+                    X = 0xA1B2,
+                    Y = 0xC3D4,
+                    Width = 0x2143,
+                    Height = 0x6587,
                 },
-            };
+            },
+        };
 
-            stream.WriteSegment(wds);
+        writer.Write(wds);
 
-            Assert.True(Enumerable.SequenceEqual(
-                WindowDefinitionSegmentData.OneWindow,
-                stream.ToArray()
-            ));
-        }
+        Assert.True(Enumerable.SequenceEqual(
+            WindowDefinitionSegmentData.OneWindow,
+            stream.ToArray()
+        ));
     }
 
     [Fact]
-    public void OneWindowAsync()
+    public async Task OneWindowAsync()
     {
-        using (var stream = new MemoryStream())
+        using var stream = new MemoryStream();
+        using var writer = new SegmentWriter(stream);
+        var wds = new WindowDefinitionSegment
         {
-            var wds = new WindowDefinitionSegment
+            Pts = 0x01234567,
+            Dts = 0x12345678,
+            Definitions = new List<WindowDefinitionEntry>
             {
-                Pts = 0x01234567,
-                Dts = 0x12345678,
-                Definitions = new List<WindowDefinitionEntry>
+                new WindowDefinitionEntry
                 {
-                    new WindowDefinitionEntry
-                    {
-                        Id = 0xEF,
-                        X = 0xA1B2,
-                        Y = 0xC3D4,
-                        Width = 0x2143,
-                        Height = 0x6587,
-                    },
+                    Id = 0xEF,
+                    X = 0xA1B2,
+                    Y = 0xC3D4,
+                    Width = 0x2143,
+                    Height = 0x6587,
                 },
-            };
+            },
+        };
 
-            stream.WriteSegmentAsync(wds).Wait();
+        await writer.WriteAsync(wds);
 
-            Assert.True(Enumerable.SequenceEqual(
-                WindowDefinitionSegmentData.OneWindow,
-                stream.ToArray()
-            ));
-        }
+        Assert.True(Enumerable.SequenceEqual(
+            WindowDefinitionSegmentData.OneWindow,
+            stream.ToArray()
+        ));
     }
 
     [Fact]
     public void TwoWindows()
     {
-        using (var stream = new MemoryStream())
+        using var stream = new MemoryStream();
+        using var writer = new SegmentWriter(stream);
+        var wds = new WindowDefinitionSegment
         {
-            var wds = new WindowDefinitionSegment
+            Pts = 0x01234567,
+            Dts = 0x12345678,
+            Definitions = new List<WindowDefinitionEntry>
             {
-                Pts = 0x01234567,
-                Dts = 0x12345678,
-                Definitions = new List<WindowDefinitionEntry>
+                new WindowDefinitionEntry
                 {
-                    new WindowDefinitionEntry
-                    {
-                        Id = 0xEF,
-                        X = 0xA1B2,
-                        Y = 0xC3D4,
-                        Width = 0x2143,
-                        Height = 0x6587,
-                    },
-                    new WindowDefinitionEntry
-                    {
-                        Id = 0xFE,
-                        X = 0x1A2B,
-                        Y = 0x3C4D,
-                        Width = 0x1234,
-                        Height = 0x5678,
-                    },
+                    Id = 0xEF,
+                    X = 0xA1B2,
+                    Y = 0xC3D4,
+                    Width = 0x2143,
+                    Height = 0x6587,
                 },
-            };
+                new WindowDefinitionEntry
+                {
+                    Id = 0xFE,
+                    X = 0x1A2B,
+                    Y = 0x3C4D,
+                    Width = 0x1234,
+                    Height = 0x5678,
+                },
+            },
+        };
 
-            stream.WriteSegment(wds);
+        writer.Write(wds);
 
-            Assert.True(Enumerable.SequenceEqual(
-                WindowDefinitionSegmentData.TwoWindows,
-                stream.ToArray()
-            ));
-        }
+        Assert.True(Enumerable.SequenceEqual(
+            WindowDefinitionSegmentData.TwoWindows,
+            stream.ToArray()
+        ));
     }
 
     [Fact]
-    public void TwoWindowsAsync()
+    public async Task TwoWindowsAsync()
     {
-        using (var stream = new MemoryStream())
+        using var stream = new MemoryStream();
+        using var writer = new SegmentWriter(stream);
+        var wds = new WindowDefinitionSegment
         {
-            var wds = new WindowDefinitionSegment
+            Pts = 0x01234567,
+            Dts = 0x12345678,
+            Definitions = new List<WindowDefinitionEntry>
             {
-                Pts = 0x01234567,
-                Dts = 0x12345678,
-                Definitions = new List<WindowDefinitionEntry>
+                new WindowDefinitionEntry
                 {
-                    new WindowDefinitionEntry
-                    {
-                        Id = 0xEF,
-                        X = 0xA1B2,
-                        Y = 0xC3D4,
-                        Width = 0x2143,
-                        Height = 0x6587,
-                    },
-                    new WindowDefinitionEntry
-                    {
-                        Id = 0xFE,
-                        X = 0x1A2B,
-                        Y = 0x3C4D,
-                        Width = 0x1234,
-                        Height = 0x5678,
-                    },
+                    Id = 0xEF,
+                    X = 0xA1B2,
+                    Y = 0xC3D4,
+                    Width = 0x2143,
+                    Height = 0x6587,
                 },
-            };
+                new WindowDefinitionEntry
+                {
+                    Id = 0xFE,
+                    X = 0x1A2B,
+                    Y = 0x3C4D,
+                    Width = 0x1234,
+                    Height = 0x5678,
+                },
+            },
+        };
 
-            stream.WriteSegmentAsync(wds).Wait();
+        await writer.WriteAsync(wds);
 
-            Assert.True(Enumerable.SequenceEqual(
-                WindowDefinitionSegmentData.TwoWindows,
-                stream.ToArray()
-            ));
-        }
+        Assert.True(Enumerable.SequenceEqual(
+            WindowDefinitionSegmentData.TwoWindows,
+            stream.ToArray()
+        ));
     }
 }

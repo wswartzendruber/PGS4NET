@@ -21,192 +21,186 @@ public class PaletteDefinitionSegmentWriteTests
     [Fact]
     public void NoEntries()
     {
-        using (var stream = new MemoryStream())
+        using var stream = new MemoryStream();
+        using var writer = new SegmentWriter(stream);
+        var pds = new PaletteDefinitionSegment
         {
-            var pds = new PaletteDefinitionSegment
-            {
-                Pts = 0x01234567,
-                Dts = 0x12345678,
-                Id = 0xA1,
-                Version = 0xA2,
-            };
+            Pts = 0x01234567,
+            Dts = 0x12345678,
+            Id = 0xA1,
+            Version = 0xA2,
+        };
 
-            stream.WriteSegment(pds);
+        writer.Write(pds);
 
-            Assert.True(Enumerable.SequenceEqual(
-                PaletteDefinitionSegmentData.NoEntries,
-                stream.ToArray()
-            ));
-        }
+        Assert.True(Enumerable.SequenceEqual(
+            PaletteDefinitionSegmentData.NoEntries,
+            stream.ToArray()
+        ));
     }
 
     [Fact]
-    public void NoEntriesAsync()
+    public async Task NoEntriesAsync()
     {
-        using (var stream = new MemoryStream())
+        using var stream = new MemoryStream();
+        using var writer = new SegmentWriter(stream);
+        var pds = new PaletteDefinitionSegment
         {
-            var pds = new PaletteDefinitionSegment
-            {
-                Pts = 0x01234567,
-                Dts = 0x12345678,
-                Id = 0xA1,
-                Version = 0xA2,
-            };
+            Pts = 0x01234567,
+            Dts = 0x12345678,
+            Id = 0xA1,
+            Version = 0xA2,
+        };
 
-            stream.WriteSegmentAsync(pds).Wait();
+        await writer.WriteAsync(pds);
 
-            Assert.True(Enumerable.SequenceEqual(
-                PaletteDefinitionSegmentData.NoEntries,
-                stream.ToArray()
-            ));
-        }
+        Assert.True(Enumerable.SequenceEqual(
+            PaletteDefinitionSegmentData.NoEntries,
+            stream.ToArray()
+        ));
     }
 
     [Fact]
     public void OneEntry()
     {
-        using (var stream = new MemoryStream())
+        using var stream = new MemoryStream();
+        using var writer = new SegmentWriter(stream);
+        var pds = new PaletteDefinitionSegment
         {
-            var pds = new PaletteDefinitionSegment
+            Pts = 0x01234567,
+            Dts = 0x12345678,
+            Id = 0xA1,
+            Version = 0xA2,
+            Entries = new List<PaletteDefinitionEntry>
             {
-                Pts = 0x01234567,
-                Dts = 0x12345678,
-                Id = 0xA1,
-                Version = 0xA2,
-                Entries = new List<PaletteDefinitionEntry>
+                new PaletteDefinitionEntry
                 {
-                    new PaletteDefinitionEntry
-                    {
-                        Id = 0xB1,
-                        Y = 0xB2,
-                        Cr = 0xB3,
-                        Cb = 0xB4,
-                        Alpha = 0xB5,
-                    },
+                    Id = 0xB1,
+                    Y = 0xB2,
+                    Cr = 0xB3,
+                    Cb = 0xB4,
+                    Alpha = 0xB5,
                 },
-            };
+            },
+        };
 
-            stream.WriteSegment(pds);
+        writer.Write(pds);
 
-            Assert.True(Enumerable.SequenceEqual(
-                PaletteDefinitionSegmentData.OneEntry,
-                stream.ToArray()
-            ));
-        }
+        Assert.True(Enumerable.SequenceEqual(
+            PaletteDefinitionSegmentData.OneEntry,
+            stream.ToArray()
+        ));
     }
 
     [Fact]
-    public void OneEntryAsync()
+    public async Task OneEntryAsync()
     {
-        using (var stream = new MemoryStream())
+        using var stream = new MemoryStream();
+        using var writer = new SegmentWriter(stream);
+        var pds = new PaletteDefinitionSegment
         {
-            var pds = new PaletteDefinitionSegment
+            Pts = 0x01234567,
+            Dts = 0x12345678,
+            Id = 0xA1,
+            Version = 0xA2,
+            Entries = new List<PaletteDefinitionEntry>
             {
-                Pts = 0x01234567,
-                Dts = 0x12345678,
-                Id = 0xA1,
-                Version = 0xA2,
-                Entries = new List<PaletteDefinitionEntry>
+                new PaletteDefinitionEntry
                 {
-                    new PaletteDefinitionEntry
-                    {
-                        Id = 0xB1,
-                        Y = 0xB2,
-                        Cr = 0xB3,
-                        Cb = 0xB4,
-                        Alpha = 0xB5,
-                    },
+                    Id = 0xB1,
+                    Y = 0xB2,
+                    Cr = 0xB3,
+                    Cb = 0xB4,
+                    Alpha = 0xB5,
                 },
-            };
+            },
+        };
 
-            stream.WriteSegmentAsync(pds).Wait();
+        await writer.WriteAsync(pds);
 
-            Assert.True(Enumerable.SequenceEqual(
-                PaletteDefinitionSegmentData.OneEntry,
-                stream.ToArray()
-            ));
-        }
+        Assert.True(Enumerable.SequenceEqual(
+            PaletteDefinitionSegmentData.OneEntry,
+            stream.ToArray()
+        ));
     }
 
     [Fact]
     public void TwoEntries()
     {
-        using (var stream = new MemoryStream())
+        using var stream = new MemoryStream();
+        using var writer = new SegmentWriter(stream);
+        var pds = new PaletteDefinitionSegment
         {
-            var pds = new PaletteDefinitionSegment
+            Pts = 0x01234567,
+            Dts = 0x12345678,
+            Id = 0xA1,
+            Version = 0xA2,
+            Entries = new List<PaletteDefinitionEntry>
             {
-                Pts = 0x01234567,
-                Dts = 0x12345678,
-                Id = 0xA1,
-                Version = 0xA2,
-                Entries = new List<PaletteDefinitionEntry>
+                new PaletteDefinitionEntry
                 {
-                    new PaletteDefinitionEntry
-                    {
-                        Id = 0xB1,
-                        Y = 0xB2,
-                        Cr = 0xB3,
-                        Cb = 0xB4,
-                        Alpha = 0xB5,
-                    },
-                    new PaletteDefinitionEntry
-                    {
-                        Id = 0xC1,
-                        Y = 0xC2,
-                        Cr = 0xC3,
-                        Cb = 0xC4,
-                        Alpha = 0xC5,
-                    },
+                    Id = 0xB1,
+                    Y = 0xB2,
+                    Cr = 0xB3,
+                    Cb = 0xB4,
+                    Alpha = 0xB5,
                 },
-            };
+                new PaletteDefinitionEntry
+                {
+                    Id = 0xC1,
+                    Y = 0xC2,
+                    Cr = 0xC3,
+                    Cb = 0xC4,
+                    Alpha = 0xC5,
+                },
+            },
+        };
 
-            stream.WriteSegment(pds);
+        writer.Write(pds);
 
-            Assert.True(Enumerable.SequenceEqual(
-                PaletteDefinitionSegmentData.TwoEntries,
-                stream.ToArray()
-            ));
-        }
+        Assert.True(Enumerable.SequenceEqual(
+            PaletteDefinitionSegmentData.TwoEntries,
+            stream.ToArray()
+        ));
     }
 
     [Fact]
-    public void TwoEntriesAsync()
+    public async Task TwoEntriesAsync()
     {
-        using (var stream = new MemoryStream())
+        using var stream = new MemoryStream();
+        using var writer = new SegmentWriter(stream);
+        var pds = new PaletteDefinitionSegment
         {
-            var pds = new PaletteDefinitionSegment
+            Pts = 0x01234567,
+            Dts = 0x12345678,
+            Id = 0xA1,
+            Version = 0xA2,
+            Entries = new List<PaletteDefinitionEntry>
             {
-                Pts = 0x01234567,
-                Dts = 0x12345678,
-                Id = 0xA1,
-                Version = 0xA2,
-                Entries = new List<PaletteDefinitionEntry>
+                new PaletteDefinitionEntry
                 {
-                    new PaletteDefinitionEntry
-                    {
-                        Id = 0xB1,
-                        Y = 0xB2,
-                        Cr = 0xB3,
-                        Cb = 0xB4,
-                        Alpha = 0xB5,
-                    },
-                    new PaletteDefinitionEntry
-                    {
-                        Id = 0xC1,
-                        Y = 0xC2,
-                        Cr = 0xC3,
-                        Cb = 0xC4,
-                        Alpha = 0xC5,
-                    },
+                    Id = 0xB1,
+                    Y = 0xB2,
+                    Cr = 0xB3,
+                    Cb = 0xB4,
+                    Alpha = 0xB5,
                 },
-            };
+                new PaletteDefinitionEntry
+                {
+                    Id = 0xC1,
+                    Y = 0xC2,
+                    Cr = 0xC3,
+                    Cb = 0xC4,
+                    Alpha = 0xC5,
+                },
+            },
+        };
 
-            stream.WriteSegmentAsync(pds).Wait();
+        await writer.WriteAsync(pds);
 
-            Assert.True(Enumerable.SequenceEqual(
-                PaletteDefinitionSegmentData.TwoEntries,
-                stream.ToArray()
-            ));
-        }
+        Assert.True(Enumerable.SequenceEqual(
+            PaletteDefinitionSegmentData.TwoEntries,
+            stream.ToArray()
+        ));
     }
 }

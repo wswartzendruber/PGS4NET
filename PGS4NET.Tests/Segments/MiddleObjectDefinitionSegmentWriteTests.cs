@@ -21,92 +21,88 @@ public class MiddleObjectDefinitionSegmentWriteTests
     [Fact]
     public void Empty()
     {
-        using (var stream = new MemoryStream())
+        using var stream = new MemoryStream();
+        using var writer = new SegmentWriter(stream);
+        var mods = new MiddleObjectDefinitionSegment
         {
-            var mods = new MiddleObjectDefinitionSegment
-            {
-                Pts = 0x01234567,
-                Dts = 0x12345678,
-                Id = 0xA0A1,
-                Version = 0xA2,
-                Data = new byte[0],
-            };
+            Pts = 0x01234567,
+            Dts = 0x12345678,
+            Id = 0xA0A1,
+            Version = 0xA2,
+            Data = new byte[0],
+        };
 
-            stream.WriteSegment(mods);
+        writer.Write(mods);
 
-            Assert.True(Enumerable.SequenceEqual(
-                MiddleObjectDefinitionSegmentData.Empty,
-                stream.ToArray()
-            ));
-        }
+        Assert.True(Enumerable.SequenceEqual(
+            MiddleObjectDefinitionSegmentData.Empty,
+            stream.ToArray()
+        ));
     }
 
     [Fact]
-    public void EmptyAsync()
+    public async Task EmptyAsync()
     {
-        using (var stream = new MemoryStream())
+        using var stream = new MemoryStream();
+        using var writer = new SegmentWriter(stream);
+        var mods = new MiddleObjectDefinitionSegment
         {
-            var mods = new MiddleObjectDefinitionSegment
-            {
-                Pts = 0x01234567,
-                Dts = 0x12345678,
-                Id = 0xA0A1,
-                Version = 0xA2,
-                Data = new byte[0],
-            };
+            Pts = 0x01234567,
+            Dts = 0x12345678,
+            Id = 0xA0A1,
+            Version = 0xA2,
+            Data = new byte[0],
+        };
 
-            stream.WriteSegmentAsync(mods).Wait();
+        await writer.WriteAsync(mods);
 
-            Assert.True(Enumerable.SequenceEqual(
-                MiddleObjectDefinitionSegmentData.Empty,
-                stream.ToArray()
-            ));
-        }
+        Assert.True(Enumerable.SequenceEqual(
+            MiddleObjectDefinitionSegmentData.Empty,
+            stream.ToArray()
+        ));
     }
 
     [Fact]
     public void Small()
     {
-        using (var stream = new MemoryStream())
+        using var stream = new MemoryStream();
+        using var writer = new SegmentWriter(stream);
+        var mods = new MiddleObjectDefinitionSegment
         {
-            var mods = new MiddleObjectDefinitionSegment
-            {
-                Pts = 0x01234567,
-                Dts = 0x12345678,
-                Id = 0xA0A1,
-                Version = 0xA2,
-                Data = new byte[] { 0xE0, 0xE1, 0xE2, 0xE3 },
-            };
+            Pts = 0x01234567,
+            Dts = 0x12345678,
+            Id = 0xA0A1,
+            Version = 0xA2,
+            Data = new byte[] { 0xE0, 0xE1, 0xE2, 0xE3 },
+        };
 
-            stream.WriteSegment(mods);
+        writer.Write(mods);
 
-            Assert.True(Enumerable.SequenceEqual(
-                MiddleObjectDefinitionSegmentData.Small,
-                stream.ToArray()
-            ));
-        }
+        Assert.True(Enumerable.SequenceEqual(
+            MiddleObjectDefinitionSegmentData.Small,
+            stream.ToArray()
+        ));
     }
 
     [Fact]
-    public void SmallAsync()
+    public async Task SmallAsync()
     {
-        using (var stream = new MemoryStream())
+        using var stream = new MemoryStream();
+        using var writer = new SegmentWriter(stream);
+        var mods = new MiddleObjectDefinitionSegment
         {
-            var mods = new MiddleObjectDefinitionSegment
-            {
-                Pts = 0x01234567,
-                Dts = 0x12345678,
-                Id = 0xA0A1,
-                Version = 0xA2,
-                Data = new byte[] { 0xE0, 0xE1, 0xE2, 0xE3 },
-            };
+            Pts = 0x01234567,
+            Dts = 0x12345678,
+            Id = 0xA0A1,
+            Version = 0xA2,
+            Data = new byte[] { 0xE0, 0xE1, 0xE2, 0xE3 },
+        };
 
-            stream.WriteSegmentAsync(mods).Wait();
+        await writer.WriteAsync(mods);
 
-            Assert.True(Enumerable.SequenceEqual(
-                MiddleObjectDefinitionSegmentData.Small,
-                stream.ToArray()
-            ));
-        }
+        Assert.True(Enumerable.SequenceEqual(
+            MiddleObjectDefinitionSegmentData.Small,
+            stream.ToArray()
+        ));
     }
 }

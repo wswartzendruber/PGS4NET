@@ -21,100 +21,96 @@ public class SingleObjectDefinitionSegmentWriteTests
     [Fact]
     public void Empty()
     {
-        using (var stream = new MemoryStream())
+        using var stream = new MemoryStream();
+        using var writer = new SegmentWriter(stream);
+        var sods = new SingleObjectDefinitionSegment
         {
-            var sods = new SingleObjectDefinitionSegment
-            {
-                Pts = 0x01234567,
-                Dts = 0x12345678,
-                Id = 0xA0A1,
-                Version = 0xA2,
-                Width = 0x2143,
-                Height = 0x6587,
-                Data = new byte[0],
-            };
+            Pts = 0x01234567,
+            Dts = 0x12345678,
+            Id = 0xA0A1,
+            Version = 0xA2,
+            Width = 0x2143,
+            Height = 0x6587,
+            Data = new byte[0],
+        };
 
-            stream.WriteSegment(sods);
+        writer.Write(sods);
 
-            Assert.True(Enumerable.SequenceEqual(
-                SingleObjectDefinitionSegmentData.Empty,
-                stream.ToArray()
-            ));
-        }
+        Assert.True(Enumerable.SequenceEqual(
+            SingleObjectDefinitionSegmentData.Empty,
+            stream.ToArray()
+        ));
     }
 
     [Fact]
-    public void EmptyAsync()
+    public async Task EmptyAsync()
     {
-        using (var stream = new MemoryStream())
+        using var stream = new MemoryStream();
+        using var writer = new SegmentWriter(stream);
+        var sods = new SingleObjectDefinitionSegment
         {
-            var sods = new SingleObjectDefinitionSegment
-            {
-                Pts = 0x01234567,
-                Dts = 0x12345678,
-                Id = 0xA0A1,
-                Version = 0xA2,
-                Width = 0x2143,
-                Height = 0x6587,
-                Data = new byte[0],
-            };
+            Pts = 0x01234567,
+            Dts = 0x12345678,
+            Id = 0xA0A1,
+            Version = 0xA2,
+            Width = 0x2143,
+            Height = 0x6587,
+            Data = new byte[0],
+        };
 
-            stream.WriteSegmentAsync(sods).Wait();
+        await writer.WriteAsync(sods);
 
-            Assert.True(Enumerable.SequenceEqual(
-                SingleObjectDefinitionSegmentData.Empty,
-                stream.ToArray()
-            ));
-        }
+        Assert.True(Enumerable.SequenceEqual(
+            SingleObjectDefinitionSegmentData.Empty,
+            stream.ToArray()
+        ));
     }
 
     [Fact]
     public void Small()
     {
-        using (var stream = new MemoryStream())
+        using var stream = new MemoryStream();
+        using var writer = new SegmentWriter(stream);
+        var sods = new SingleObjectDefinitionSegment
         {
-            var sods = new SingleObjectDefinitionSegment
-            {
-                Pts = 0x01234567,
-                Dts = 0x12345678,
-                Id = 0xA0A1,
-                Version = 0xA2,
-                Width = 0x2143,
-                Height = 0x6587,
-                Data = new byte[] { 0xE0, 0xE1, 0xE2, 0xE3 },
-            };
+            Pts = 0x01234567,
+            Dts = 0x12345678,
+            Id = 0xA0A1,
+            Version = 0xA2,
+            Width = 0x2143,
+            Height = 0x6587,
+            Data = new byte[] { 0xE0, 0xE1, 0xE2, 0xE3 },
+        };
 
-            stream.WriteSegment(sods);
+        writer.Write(sods);
 
-            Assert.True(Enumerable.SequenceEqual(
-                SingleObjectDefinitionSegmentData.Small,
-                stream.ToArray()
-            ));
-        }
+        Assert.True(Enumerable.SequenceEqual(
+            SingleObjectDefinitionSegmentData.Small,
+            stream.ToArray()
+        ));
     }
 
     [Fact]
-    public void SmallAsync()
+    public async Task SmallAsync()
     {
-        using (var stream = new MemoryStream())
+        using var stream = new MemoryStream();
+        using var writer = new SegmentWriter(stream);
+        var sods = new SingleObjectDefinitionSegment
         {
-            var sods = new SingleObjectDefinitionSegment
-            {
-                Pts = 0x01234567,
-                Dts = 0x12345678,
-                Id = 0xA0A1,
-                Version = 0xA2,
-                Width = 0x2143,
-                Height = 0x6587,
-                Data = new byte[] { 0xE0, 0xE1, 0xE2, 0xE3 },
-            };
+            Pts = 0x01234567,
+            Dts = 0x12345678,
+            Id = 0xA0A1,
+            Version = 0xA2,
+            Width = 0x2143,
+            Height = 0x6587,
+            Data = new byte[] { 0xE0, 0xE1, 0xE2, 0xE3 },
+        };
 
-            stream.WriteSegmentAsync(sods).Wait();
+        await writer.WriteAsync(sods);
 
-            Assert.True(Enumerable.SequenceEqual(
-                SingleObjectDefinitionSegmentData.Small,
-                stream.ToArray()
-            ));
-        }
+        Assert.True(Enumerable.SequenceEqual(
+            SingleObjectDefinitionSegmentData.Small,
+            stream.ToArray()
+        ));
     }
 }

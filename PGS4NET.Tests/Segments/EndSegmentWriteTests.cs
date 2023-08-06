@@ -21,40 +21,38 @@ public class EndSegmentWriteTests
     [Fact]
     public void Single()
     {
-        using (var stream = new MemoryStream())
+        using var stream = new MemoryStream();
+        using var writer = new SegmentWriter(stream);
+        var es = new EndSegment
         {
-            var es = new EndSegment
-            {
-                Pts = 0x01234567,
-                Dts = 0x12345678,
-            };
+            Pts = 0x01234567,
+            Dts = 0x12345678,
+        };
 
-            stream.WriteSegment(es);
+        writer.Write(es);
 
-            Assert.True(Enumerable.SequenceEqual(
-                EndSegmentData.Single,
-                stream.ToArray()
-            ));
-        }
+        Assert.True(Enumerable.SequenceEqual(
+            EndSegmentData.Single,
+            stream.ToArray()
+        ));
     }
 
     [Fact]
-    public void SingleAsync()
+    public async Task SingleAsync()
     {
-        using (var stream = new MemoryStream())
+        using var stream = new MemoryStream();
+        using var writer = new SegmentWriter(stream);
+        var es = new EndSegment
         {
-            var es = new EndSegment
-            {
-                Pts = 0x01234567,
-                Dts = 0x12345678,
-            };
+            Pts = 0x01234567,
+            Dts = 0x12345678,
+        };
 
-            stream.WriteSegmentAsync(es).Wait();
+        await writer.WriteAsync(es);
 
-            Assert.True(Enumerable.SequenceEqual(
-                EndSegmentData.Single,
-                stream.ToArray()
-            ));
-        }
+        Assert.True(Enumerable.SequenceEqual(
+            EndSegmentData.Single,
+            stream.ToArray()
+        ));
     }
 }

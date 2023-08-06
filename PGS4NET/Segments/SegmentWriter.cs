@@ -15,20 +15,38 @@ using System.Threading.Tasks;
 namespace PGS4NET.Segments;
 
 /// <summary>
-///     Contains extensions against <see cref="Stream" /> for writing PGS segments.
+///     Represents a PGS segment writer that can write segments out to a <see cref="Stream" />.
 /// </summary>
-public static partial class StreamExtensions
+#if NETSTANDARD2_1
+public class SegmentWriter : IDisposable, IAsyncDisposable
+#else
+public class SegmentWriter : IDisposable
+#endif
 {
+    private readonly Stream Output;
+    private readonly bool LeaveOpen;
+
     /// <summary>
-    ///     Writes a <see cref="Segment" /> to a <see cref="Stream" />.
+    ///     Initializes a new instance that will write PGS segments to the
+    ///     <paramref name="output" /> <see cref="Stream" />.
+    /// </summary>
+    public SegmentWriter(Stream output, bool leaveOpen = false)
+    {
+        Output = output;
+        LeaveOpen = leaveOpen;
+    }
+
+    /// <summary>
+    ///     Writes a <see cref="Segment" /> to the output stream.
     /// </summary>
     /// <exception cref="SegmentException">
-    ///     Thrown when the flags inside of a segment are invalid.
+    ///     Thrown when the flags inside of a <see cref="Segment" /> are invalid.
     /// </exception>
     /// <exception cref="IOException">
-    ///     Thrown when an underlying IO error occurs while attempting to write a segment.
+    ///     Thrown when an underlying IO error occurs while attempting to write a
+    ///     <see cref="Segment" />.
     /// </exception>
-    public static void WriteSegment(this Stream stream, Segment segment)
+    public void Write(Segment segment)
     {
         using var buffer = new MemoryStream();
 
@@ -81,19 +99,20 @@ public static partial class StreamExtensions
         }
 
         buffer.Seek(0, SeekOrigin.Begin);
-        buffer.CopyTo(stream);
+        buffer.CopyTo(Output);
     }
 
     /// <summary>
-    ///     Asynchronously writes a <see cref="Segment" /> to a <see cref="Stream" />.
+    ///     Asynchronously writes a <see cref="Segment" /> to the output stream.
     /// </summary>
     /// <exception cref="SegmentException">
-    ///     Thrown when the flags inside of a segment are invalid.
+    ///     Thrown when the flags inside of a <see cref="Segment" /> are invalid.
     /// </exception>
     /// <exception cref="IOException">
-    ///     Thrown when an underlying IO error occurs while attempting to write a segment.
+    ///     Thrown when an underlying IO error occurs while attempting to write a
+    ///     <see cref="Segment" />.
     /// </exception>
-    public static async Task WriteSegmentAsync(this Stream stream, Segment segment)
+    public async Task WriteAsync(Segment segment)
     {
         using var buffer = new MemoryStream();
 
@@ -146,8 +165,30 @@ public static partial class StreamExtensions
         }
 
         buffer.Seek(0, SeekOrigin.Begin);
-        await buffer.CopyToAsync(stream);
+        await buffer.CopyToAsync(Output);
     }
+
+    /// <summary>
+    ///     Disposes the stream passed in as the constructor's <c>output</c> parameter if
+    ///     <c>leaveOpen</c> was left as false. Otherwise, does nothing.
+    /// </summary>
+    public void Dispose()
+    {
+        if (!LeaveOpen)
+            Output.Dispose();
+    }
+
+#if NETSTANDARD2_1
+    /// <summary>
+    ///     Asynchronously disposes the stream passed in as the constructor's <c>output</c>
+    ///     parameter if <c>leaveOpen</c> was left as false. Otherwise, does nothing.
+    /// </summary>
+    public async ValueTask DisposeAsync()
+    {
+        if (!LeaveOpen)
+            await Output.DisposeAsync();
+    }
+#endif
 
     private static void WriteTS(Stream stream, Segment segment)
     {
