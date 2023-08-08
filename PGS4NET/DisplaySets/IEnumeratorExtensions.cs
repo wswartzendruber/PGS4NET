@@ -283,15 +283,6 @@ public static partial class IEnumeratorExtensions
                         CompositionObjects = compositionObjects,
                     };
 
-                    if (pcs.PaletteUpdateOnly)
-                    {
-                        if (!palettes.Keys.Any(vid => vid.Id == pcs.PaletteUpdateId))
-                        {
-                            throw new DisplaySetException("Palette update references unknown "
-                                + $"palette ID: {pcs.PaletteUpdateId}");
-                        }
-                    }
-
                     return new DisplaySet
                     {
                         Pts = pcs.Pts,
