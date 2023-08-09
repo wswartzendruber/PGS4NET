@@ -1,4 +1,4 @@
-﻿/*
+﻿﻿/*
  * Copyright 2023 William Swartzendruber
  *
  * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a
@@ -15,195 +15,154 @@ using System.Threading.Tasks;
 namespace PGS4NET.Segments;
 
 /// <summary>
-///     Represents a PGS segment writer that can write segments out to a <see cref="Stream" />.
+///     Contains extensions against <see cref="Stream" /> for writing PGS segments.
 /// </summary>
-#if NETSTANDARD2_1
-public class SegmentWriter : IDisposable, IAsyncDisposable
-#else
-public class SegmentWriter : IDisposable
-#endif
+public static partial class StreamExtensions
 {
-    private readonly Stream Output;
-    private readonly bool LeaveOpen;
-
     /// <summary>
-    ///     Initializes a new instance that will write PGS segments to the
-    ///     <paramref name="output" /> <see cref="Stream" />.
-    /// </summary>
-    public SegmentWriter(Stream output, bool leaveOpen = false)
-    {
-        Output = output;
-        LeaveOpen = leaveOpen;
-    }
-
-    /// <summary>
-    ///     Writes a <see cref="Segment" /> to the output stream.
+    ///     Writes a <see cref="Segment" /> to a <see cref="Stream" />.
     /// </summary>
     /// <exception cref="SegmentException">
-    ///     Thrown when the flags inside of a <see cref="Segment" /> are invalid.
+    ///     Thrown when the flags inside of a segment are invalid.
     /// </exception>
     /// <exception cref="IOException">
-    ///     Thrown when an underlying IO error occurs while attempting to write a
-    ///     <see cref="Segment" />.
+    ///     Thrown when an underlying IO error occurs while attempting to write a segment.
     /// </exception>
-    public void Write(Segment segment)
+    public static void WriteSegment(this Stream stream, Segment segment)
     {
         using var buffer = new MemoryStream();
 
-        WriteUInt16BE(buffer, 0x5047);
+        WriteUInt16Be(buffer, 0x5047);
 
         switch (segment)
         {
             case PresentationCompositionSegment pcs:
-                WriteTS(buffer, segment);
+                WriteTs(buffer, segment);
                 WriteUInt8(buffer, 0x16);
-                WritePCS(buffer, pcs);
+                WritePcs(buffer, pcs);
                 break;
             case WindowDefinitionSegment wds:
-                WriteTS(buffer, segment);
+                WriteTs(buffer, segment);
                 WriteUInt8(buffer, 0x17);
-                WriteWDS(buffer, wds);
+                WriteWds(buffer, wds);
                 break;
             case PaletteDefinitionSegment pcs:
-                WriteTS(buffer, segment);
+                WriteTs(buffer, segment);
                 WriteUInt8(buffer, 0x14);
-                WritePDS(buffer, pcs);
+                WritePds(buffer, pcs);
                 break;
             case SingleObjectDefinitionSegment sods:
-                WriteTS(buffer, segment);
+                WriteTs(buffer, segment);
                 WriteUInt8(buffer, 0x15);
-                WriteSODS(buffer, sods);
+                WriteSods(buffer, sods);
                 break;
             case InitialObjectDefinitionSegment iods:
-                WriteTS(buffer, segment);
+                WriteTs(buffer, segment);
                 WriteUInt8(buffer, 0x15);
-                WriteIODS(buffer, iods);
+                WriteIods(buffer, iods);
                 break;
             case MiddleObjectDefinitionSegment mods:
-                WriteTS(buffer, segment);
+                WriteTs(buffer, segment);
                 WriteUInt8(buffer, 0x15);
-                WriteMODS(buffer, mods);
+                WriteMods(buffer, mods);
                 break;
             case FinalObjectDefinitionSegment fods:
-                WriteTS(buffer, segment);
+                WriteTs(buffer, segment);
                 WriteUInt8(buffer, 0x15);
-                WriteFODS(buffer, fods);
+                WriteFods(buffer, fods);
                 break;
             case EndSegment:
-                WriteTS(buffer, segment);
+                WriteTs(buffer, segment);
                 WriteUInt8(buffer, 0x80);
-                WriteUInt16BE(buffer, 0);
+                WriteUInt16Be(buffer, 0);
                 break;
             default:
                 throw new ArgumentException("Segment type is not recognized.");
         }
 
         buffer.Seek(0, SeekOrigin.Begin);
-        buffer.CopyTo(Output);
+        buffer.CopyTo(stream);
     }
 
     /// <summary>
-    ///     Asynchronously writes a <see cref="Segment" /> to the output stream.
+    ///     Asynchronously writes a <see cref="Segment" /> to a <see cref="Stream" />.
     /// </summary>
     /// <exception cref="SegmentException">
-    ///     Thrown when the flags inside of a <see cref="Segment" /> are invalid.
+    ///     Thrown when the flags inside of a segment are invalid.
     /// </exception>
     /// <exception cref="IOException">
-    ///     Thrown when an underlying IO error occurs while attempting to write a
-    ///     <see cref="Segment" />.
+    ///     Thrown when an underlying IO error occurs while attempting to write a segment.
     /// </exception>
-    public async Task WriteAsync(Segment segment)
+    public static async Task WriteSegmentAsync(this Stream stream, Segment segment)
     {
         using var buffer = new MemoryStream();
 
-        WriteUInt16BE(buffer, 0x5047);
+        WriteUInt16Be(buffer, 0x5047);
 
         switch (segment)
         {
             case PresentationCompositionSegment pcs:
-                WriteTS(buffer, segment);
+                WriteTs(buffer, segment);
                 WriteUInt8(buffer, 0x16);
-                WritePCS(buffer, pcs);
+                WritePcs(buffer, pcs);
                 break;
             case WindowDefinitionSegment wds:
-                WriteTS(buffer, segment);
+                WriteTs(buffer, segment);
                 WriteUInt8(buffer, 0x17);
-                WriteWDS(buffer, wds);
+                WriteWds(buffer, wds);
                 break;
             case PaletteDefinitionSegment pcs:
-                WriteTS(buffer, segment);
+                WriteTs(buffer, segment);
                 WriteUInt8(buffer, 0x14);
-                WritePDS(buffer, pcs);
+                WritePds(buffer, pcs);
                 break;
             case SingleObjectDefinitionSegment sods:
-                WriteTS(buffer, segment);
+                WriteTs(buffer, segment);
                 WriteUInt8(buffer, 0x15);
-                WriteSODS(buffer, sods);
+                WriteSods(buffer, sods);
                 break;
             case InitialObjectDefinitionSegment iods:
-                WriteTS(buffer, segment);
+                WriteTs(buffer, segment);
                 WriteUInt8(buffer, 0x15);
-                WriteIODS(buffer, iods);
+                WriteIods(buffer, iods);
                 break;
             case MiddleObjectDefinitionSegment mods:
-                WriteTS(buffer, segment);
+                WriteTs(buffer, segment);
                 WriteUInt8(buffer, 0x15);
-                WriteMODS(buffer, mods);
+                WriteMods(buffer, mods);
                 break;
             case FinalObjectDefinitionSegment fods:
-                WriteTS(buffer, segment);
+                WriteTs(buffer, segment);
                 WriteUInt8(buffer, 0x15);
-                WriteFODS(buffer, fods);
+                WriteFods(buffer, fods);
                 break;
             case EndSegment:
-                WriteTS(buffer, segment);
+                WriteTs(buffer, segment);
                 WriteUInt8(buffer, 0x80);
-                WriteUInt16BE(buffer, 0);
+                WriteUInt16Be(buffer, 0);
                 break;
             default:
                 throw new ArgumentException("Segment type is not recognized.");
         }
 
         buffer.Seek(0, SeekOrigin.Begin);
-        await buffer.CopyToAsync(Output);
+        await buffer.CopyToAsync(stream);
     }
 
-    /// <summary>
-    ///     Disposes the stream passed in as the constructor's <c>output</c> parameter if
-    ///     <c>leaveOpen</c> was left as false. Otherwise, does nothing.
-    /// </summary>
-    public void Dispose()
+    private static void WriteTs(Stream stream, Segment segment)
     {
-        if (!LeaveOpen)
-            Output.Dispose();
+        WriteUInt32Be(stream, segment.Pts);
+        WriteUInt32Be(stream, segment.Dts);
     }
 
-#if NETSTANDARD2_1
-    /// <summary>
-    ///     Asynchronously disposes the stream passed in as the constructor's <c>output</c>
-    ///     parameter if <c>leaveOpen</c> was left as false. Otherwise, does nothing.
-    /// </summary>
-    public async ValueTask DisposeAsync()
-    {
-        if (!LeaveOpen)
-            await Output.DisposeAsync();
-    }
-#endif
-
-    private static void WriteTS(Stream stream, Segment segment)
-    {
-        WriteUInt32BE(stream, segment.Pts);
-        WriteUInt32BE(stream, segment.Dts);
-    }
-
-    private static void WritePCS(Stream stream, PresentationCompositionSegment pcs)
+    private static void WritePcs(Stream stream, PresentationCompositionSegment pcs)
     {
         using var ms = new MemoryStream();
 
-        WriteUInt16BE(ms, pcs.Width);
-        WriteUInt16BE(ms, pcs.Height);
+        WriteUInt16Be(ms, pcs.Width);
+        WriteUInt16Be(ms, pcs.Height);
         WriteUInt8(ms, pcs.FrameRate);
-        WriteUInt16BE(ms, pcs.Number);
+        WriteUInt16Be(ms, pcs.Number);
         WriteUInt8(ms, pcs.State switch
         {
             CompositionState.Normal => 0x00,
@@ -221,28 +180,28 @@ public class SegmentWriter : IDisposable
 
         foreach (var co in pcs.CompositionObjects)
         {
-            WriteUInt16BE(ms, co.ObjectId);
+            WriteUInt16Be(ms, co.ObjectId);
             WriteUInt8(ms, co.WindowId);
             WriteUInt8(ms, (byte)(
                 (co.Crop is not null ? 0x80 : 0x00) | (co.Forced ? 0x40 : 0x00)
             ));
-            WriteUInt16BE(ms, co.X);
-            WriteUInt16BE(ms, co.Y);
+            WriteUInt16Be(ms, co.X);
+            WriteUInt16Be(ms, co.Y);
 
             if (co.Crop is CroppedArea ca)
             {
-                WriteUInt16BE(ms, ca.X);
-                WriteUInt16BE(ms, ca.Y);
-                WriteUInt16BE(ms, ca.Width);
-                WriteUInt16BE(ms, ca.Height);
+                WriteUInt16Be(ms, ca.X);
+                WriteUInt16Be(ms, ca.Y);
+                WriteUInt16Be(ms, ca.Width);
+                WriteUInt16Be(ms, ca.Height);
             }
         }
 
-        WriteUInt16BE(stream, (ushort)ms.Length);
+        WriteUInt16Be(stream, (ushort)ms.Length);
         ms.WriteTo(stream);
     }
 
-    private static void WriteWDS(Stream stream, WindowDefinitionSegment wds)
+    private static void WriteWds(Stream stream, WindowDefinitionSegment wds)
     {
         using var ms = new MemoryStream();
 
@@ -254,17 +213,17 @@ public class SegmentWriter : IDisposable
         foreach (var wd in wds.Definitions)
         {
             WriteUInt8(ms, wd.Id);
-            WriteUInt16BE(ms, wd.X);
-            WriteUInt16BE(ms, wd.Y);
-            WriteUInt16BE(ms, wd.Width);
-            WriteUInt16BE(ms, wd.Height);
+            WriteUInt16Be(ms, wd.X);
+            WriteUInt16Be(ms, wd.Y);
+            WriteUInt16Be(ms, wd.Width);
+            WriteUInt16Be(ms, wd.Height);
         }
 
-        WriteUInt16BE(stream, (ushort)ms.Length);
+        WriteUInt16Be(stream, (ushort)ms.Length);
         ms.WriteTo(stream);
     }
 
-    private static void WritePDS(Stream stream, PaletteDefinitionSegment pds)
+    private static void WritePds(Stream stream, PaletteDefinitionSegment pds)
     {
         using var ms = new MemoryStream();
 
@@ -280,11 +239,11 @@ public class SegmentWriter : IDisposable
             WriteUInt8(ms, entry.Alpha);
         }
 
-        WriteUInt16BE(stream, (ushort)ms.Length);
+        WriteUInt16Be(stream, (ushort)ms.Length);
         ms.WriteTo(stream);
     }
 
-    private static void WriteSODS(Stream stream, SingleObjectDefinitionSegment sods)
+    private static void WriteSods(Stream stream, SingleObjectDefinitionSegment sods)
     {
         var dataLength = (sods.Data.Length <= 65_524)
             ? (uint)sods.Data.Length + 4
@@ -292,18 +251,18 @@ public class SegmentWriter : IDisposable
 
         using var ms = new MemoryStream();
 
-        WriteUInt16BE(ms, sods.Id);
+        WriteUInt16Be(ms, sods.Id);
         WriteUInt8(ms, sods.Version);
         WriteUInt8(ms, 0xC0);
-        WriteUInt24BE(ms, dataLength);
-        WriteUInt16BE(ms, sods.Width);
-        WriteUInt16BE(ms, sods.Height);
+        WriteUInt24Be(ms, dataLength);
+        WriteUInt16Be(ms, sods.Width);
+        WriteUInt16Be(ms, sods.Height);
         ms.Write(sods.Data, 0, sods.Data.Length);
-        WriteUInt16BE(stream, (ushort)ms.Length);
+        WriteUInt16Be(stream, (ushort)ms.Length);
         ms.WriteTo(stream);
     }
 
-    private static void WriteIODS(Stream stream, InitialObjectDefinitionSegment iods)
+    private static void WriteIods(Stream stream, InitialObjectDefinitionSegment iods)
     {
         if (iods.Length > 16_777_216)
             throw new SegmentException("I-ODS declared data length exceeds 16,777,216.");
@@ -312,46 +271,46 @@ public class SegmentWriter : IDisposable
 
         using var ms = new MemoryStream();
 
-        WriteUInt16BE(ms, iods.Id);
+        WriteUInt16Be(ms, iods.Id);
         WriteUInt8(ms, iods.Version);
         WriteUInt8(ms, 0x80);
-        WriteUInt24BE(ms, iods.Length);
-        WriteUInt16BE(ms, iods.Width);
-        WriteUInt16BE(ms, iods.Height);
+        WriteUInt24Be(ms, iods.Length);
+        WriteUInt16Be(ms, iods.Width);
+        WriteUInt16Be(ms, iods.Height);
         ms.Write(iods.Data, 0, iods.Data.Length);
-        WriteUInt16BE(stream, (ushort)ms.Length);
+        WriteUInt16Be(stream, (ushort)ms.Length);
         ms.WriteTo(stream);
     }
 
-    private static void WriteMODS(Stream stream, MiddleObjectDefinitionSegment mods)
+    private static void WriteMods(Stream stream, MiddleObjectDefinitionSegment mods)
     {
         if (mods.Data.Length > 65_531)
             throw new SegmentException("M-ODS contained data length exceeds 65,531.");
 
         using var ms = new MemoryStream();
 
-        WriteUInt16BE(ms, mods.Id);
+        WriteUInt16Be(ms, mods.Id);
         WriteUInt8(ms, mods.Version);
         WriteUInt8(ms, 0x00);
         ms.Write(mods.Data, 0, mods.Data.Length);
 
-        WriteUInt16BE(stream, (ushort)ms.Length);
+        WriteUInt16Be(stream, (ushort)ms.Length);
         ms.WriteTo(stream);
     }
 
-    private static void WriteFODS(Stream stream, FinalObjectDefinitionSegment fods)
+    private static void WriteFods(Stream stream, FinalObjectDefinitionSegment fods)
     {
         if (fods.Data.Length > 65_531)
             throw new SegmentException("F-ODS contained data length exceeds 65,531.");
 
         using var ms = new MemoryStream();
 
-        WriteUInt16BE(ms, fods.Id);
+        WriteUInt16Be(ms, fods.Id);
         WriteUInt8(ms, fods.Version);
         WriteUInt8(ms, 0x40);
         ms.Write(fods.Data, 0, fods.Data.Length);
 
-        WriteUInt16BE(stream, (ushort)ms.Length);
+        WriteUInt16Be(stream, (ushort)ms.Length);
         ms.WriteTo(stream);
     }
 
@@ -360,20 +319,20 @@ public class SegmentWriter : IDisposable
         stream.WriteByte(value);
     }
 
-    private static void WriteUInt16BE(Stream stream, ushort value)
+    private static void WriteUInt16Be(Stream stream, ushort value)
     {
         stream.WriteByte((byte)(value >> 8));
         stream.WriteByte((byte)value);
     }
 
-    private static void WriteUInt24BE(Stream stream, uint value)
+    private static void WriteUInt24Be(Stream stream, uint value)
     {
         stream.WriteByte((byte)(value >> 16));
         stream.WriteByte((byte)(value >> 8));
         stream.WriteByte((byte)value);
     }
 
-    private static void WriteUInt32BE(Stream stream, uint value)
+    private static void WriteUInt32Be(Stream stream, uint value)
     {
         stream.WriteByte((byte)(value >> 24));
         stream.WriteByte((byte)(value >> 16));

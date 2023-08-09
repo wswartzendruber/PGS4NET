@@ -373,14 +373,13 @@ public class SegmentTests
     {
         foreach (var testBuffer in SegmentBuffers)
         {
-            using var reader = new SegmentReader(new MemoryStream(testBuffer));
-            var segment = reader.Read() ?? throw new ArgumentNullException();
-            using var stream = new MemoryStream();
-            using var writer = new SegmentWriter(stream);
+            using var testStream = new MemoryStream(testBuffer);
+            using var resultStream = new MemoryStream();
 
-            writer.Write(segment);
+            resultStream.WriteSegment(testStream.ReadSegment()
+                ?? throw new InvalidOperationException());
 
-            Assert.True(stream.ToArray().SequenceEqual(testBuffer));
+            Assert.True(resultStream.ToArray().SequenceEqual(testBuffer));
         }
     }
 
@@ -389,32 +388,13 @@ public class SegmentTests
     {
         foreach (var testBuffer in SegmentBuffers)
         {
-            using var reader = new SegmentReader(new MemoryStream(testBuffer));
-            var segment = reader.Read() ?? throw new ArgumentNullException();
-            using var stream = new MemoryStream();
-            using var writer = new SegmentWriter(stream);
+            using var testStream = new MemoryStream(testBuffer);
+            using var resultStream = new MemoryStream();
 
-            await writer.WriteAsync(segment);
+            await resultStream.WriteSegmentAsync(await testStream.ReadSegmentAsync()
+                ?? throw new InvalidOperationException());
 
-            Assert.True(stream.ToArray().SequenceEqual(testBuffer));
+            Assert.True(resultStream.ToArray().SequenceEqual(testBuffer));
         }
     }
-
-#if TEST_NETSTANDARD2_1
-    [Fact]
-    public async Task CycleSegmentsAsyncAwait()
-    {
-        foreach (var testBuffer in SegmentBuffers)
-        {
-            await using var reader = new SegmentReader(new MemoryStream(testBuffer));
-            var segment = reader.Read() ?? throw new ArgumentNullException();
-            await using var stream = new MemoryStream();
-            await using var writer = new SegmentWriter(stream);
-
-            await writer.WriteAsync(segment);
-
-            Assert.True(stream.ToArray().SequenceEqual(testBuffer));
-        }
-    }
-#endif
 }

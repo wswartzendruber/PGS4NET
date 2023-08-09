@@ -15,9 +15,9 @@ using PGS4NET.Segments;
 if (args.Length != 1)
     throw new ArgumentException("A single parameter with a PGS file must be passed.");
 
-await using var reader = new SegmentReader(new FileStream(args[0], FileMode.Open));
+using var stream = new FileStream(args[0], FileMode.Open);
 
-for (Segment? segment = reader.Read(); segment is not null; segment = reader.Read())
+while (stream.ReadSegment() is Segment segment)
 {
     switch (segment)
     {
