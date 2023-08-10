@@ -9,6 +9,7 @@
  */
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -19,6 +20,38 @@ namespace PGS4NET.Segments;
 /// </summary>
 public static partial class StreamExtensions
 {
+    /// <summary>
+    ///     Writes a collection of <see cref="Segment" /> objects to a <see cref="Stream" />.
+    /// </summary>
+    /// <exception cref="SegmentException">
+    ///     Thrown when the flags inside of a segment are invalid.
+    /// </exception>
+    /// <exception cref="IOException">
+    ///     Thrown when an underlying IO error occurs while attempting to write a segment.
+    /// </exception>
+    public static void WriteAllSegments(this Stream stream, IEnumerable<Segment> segments)
+    {
+        foreach (var segment in segments)
+            stream.WriteSegment(segment);
+    }
+
+    /// <summary>
+    ///     Asynchronously writes a collection of <see cref="Segment" /> objects to a
+    ///     <see cref="Stream" />.
+    /// </summary>
+    /// <exception cref="SegmentException">
+    ///     Thrown when the flags inside of a segment are invalid.
+    /// </exception>
+    /// <exception cref="IOException">
+    ///     Thrown when an underlying IO error occurs while attempting to write a segment.
+    /// </exception>
+    public static async Task WriteAllSegmentsAsync(this Stream stream
+        , IEnumerable<Segment> segments)
+    {
+        foreach (var segment in segments)
+            await stream.WriteSegmentAsync(segment);
+    }
+
     /// <summary>
     ///     Writes a <see cref="Segment" /> to a <see cref="Stream" />.
     /// </summary>

@@ -397,4 +397,48 @@ public class SegmentTests
             Assert.True(resultStream.ToArray().SequenceEqual(testBuffer));
         }
     }
+
+    [Fact]
+    public void CycleAllSegments()
+    {
+        var byteCount = 0;
+        using var inputStream = new MemoryStream();
+        using var outputStream = new MemoryStream();
+
+        foreach (var testBuffer in SegmentBuffers)
+        {
+            inputStream.Write(testBuffer, 0, testBuffer.Length);
+            byteCount += testBuffer.Length;
+        }
+        inputStream.Position = 0;
+
+        var segments = inputStream.ReadAllSegments();
+
+        outputStream.WriteAllSegments(segments);
+
+        Assert.True(outputStream.ToArray().SequenceEqual(inputStream.ToArray()));
+        Assert.True(byteCount == outputStream.Position);
+    }
+
+    [Fact]
+    public async Task CycleAllSegmentsAsync()
+    {
+        var byteCount = 0;
+        using var inputStream = new MemoryStream();
+        using var outputStream = new MemoryStream();
+
+        foreach (var testBuffer in SegmentBuffers)
+        {
+            await inputStream.WriteAsync(testBuffer, 0, testBuffer.Length);
+            byteCount += testBuffer.Length;
+        }
+        inputStream.Position = 0;
+
+        var segments = await inputStream.ReadAllSegmentsAsync();
+
+        await outputStream.WriteAllSegmentsAsync(segments);
+
+        Assert.True(outputStream.ToArray().SequenceEqual(inputStream.ToArray()));
+        Assert.True(byteCount == outputStream.Position);
+    }
 }

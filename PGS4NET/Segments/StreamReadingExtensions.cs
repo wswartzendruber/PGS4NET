@@ -21,6 +21,48 @@ namespace PGS4NET.Segments;
 public static partial class StreamExtensions
 {
     /// <summary>
+    ///     Reads all PGS segments from a <see cref="Stream" />. The stream is assumed to
+    ///     contain only PGS segments and trailing data that is not a segment will cause an
+    ///     exception to be thrown.
+    /// </summary>
+    /// <exception cref="SegmentException">
+    ///     Thrown when the flags inside of a segment are invalid.
+    /// </exception>
+    /// <exception cref="IOException">
+    ///     Thrown when an underlying IO error occurs while attempting to read a segment.
+    /// </exception>
+    public static IList<Segment> ReadAllSegments(this Stream stream)
+    {
+        var returnValue = new List<Segment>();
+
+        while (stream.ReadSegment() is Segment segment)
+            returnValue.Add(segment);
+
+        return returnValue;
+    }
+
+    /// <summary>
+    ///     Asynchronously reads all PGS segments from a <see cref="Stream" />. The stream is
+    ///     assumed to contain only PGS segments and trailing data that is not a segment will
+    ///     cause an exception to be thrown.
+    /// </summary>
+    /// <exception cref="SegmentException">
+    ///     Thrown when the flags inside of a segment are invalid.
+    /// </exception>
+    /// <exception cref="IOException">
+    ///     Thrown when an underlying IO error occurs while attempting to read a segment.
+    /// </exception>
+    public static async Task<IList<Segment>> ReadAllSegmentsAsync(this Stream stream)
+    {
+        var returnValue = new List<Segment>();
+
+        while (await stream.ReadSegmentAsync() is Segment segment)
+            returnValue.Add(segment);
+
+        return returnValue;
+    }
+
+    /// <summary>
     ///     Reads the next PGS segment from a <see cref="Stream" />.
     /// </summary>
     /// <exception cref="SegmentException">
