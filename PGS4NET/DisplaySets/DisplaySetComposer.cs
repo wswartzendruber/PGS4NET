@@ -9,17 +9,14 @@
  */
 
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using PGS4NET.Segments;
 
 namespace PGS4NET.DisplaySets;
 
 /// <summary>
-///     Contains extensions against <see cref="IEnumerator{Segment}" /> for reading PGS display
-///     sets.
+///     Statefully composes display sets using sequentially input segments.
 /// </summary>
-public static partial class IEnumeratorExtensions
+public class DisplaySetComposer
 {
     private static readonly DisplaySetException DuplicateObjectVid
         = new("Duplicate object VID.");
@@ -34,30 +31,35 @@ public static partial class IEnumeratorExtensions
     private static readonly DisplaySetException InvalidObjectSequence
         = new("Invalid object sequence state.");
 
+    private InitialObjectDefinitionSegment? InitialObject = null;
+    private List<MiddleObjectDefinitionSegment> MiddleObjects = new();
+    private Dictionary<byte, Window> Windows = new();
+    private Dictionary<VersionedId<byte>, Palette> Palettes = new();
+    private Dictionary<VersionedId<ushort>, DisplayObject> DisplayObjects = new();
+    private Dictionary<CompositionId, CompositionObject> CompositionObjects = new();
+    private PresentationCompositionSegment? Pcs = null;
+
     /// <summary>
-    ///     Builds a PGS display set from an enumerator over a collection of segments. The
-    ///     enumerator will be advanced in order to parse the first segment. Advancement will
-    ///     stop after the end segment (ES) is reached or an error occurs.
+    ///     Inputs the next <see cref="Segment" /> into the composer, returning a new
+    ///     <see cref="DisplaySet" /> instance if one can be composed, or
+    ///     <see langword="null" /> if more segments are required.
     /// </summary>
     /// <exception cref="DisplaySetException">
-    ///     Thrown when a sequence of segments cannot form a display set.
+    ///     Thrown when a combination of otherwise valid PGS segments cannot be combined into a
+    ///     display set.
     /// </exception>
-    public static DisplaySet BuildDisplaySet(this IEnumerator<Segment> segments)
+    public DisplaySet? Input(Segment segment)
     {
-        InitialObjectDefinitionSegment? initialObject = null;
-        List<MiddleObjectDefinitionSegment> middleObjects = new();
-        Dictionary<byte, Window> windows = new();
-        Dictionary<VersionedId<byte>, Palette> palettes = new();
-        Dictionary<VersionedId<ushort>, DisplayObject> displayObjects = new();
-        Dictionary<CompositionId, CompositionObject> compositionObjects = new();
-        PresentationCompositionSegment pcs = segments.MoveNext()
-            ? segments.Current as PresentationCompositionSegment
-                ?? throw new DisplaySetException("Initial segment not PCS.")
-            : throw new DisplaySetException("Initial segment not present.");
-
-        while (segments.MoveNext())
+        if (Pcs is null)
         {
-            switch (segments.Current)
+            Pcs = segment as PresentationCompositionSegment
+                ?? throw new DisplaySetException("Starting segment not PCS.");
+
+            return null;
+        }
+        else
+        {
+            switch (segment)
             {
                 case PresentationCompositionSegment:
                 {
@@ -65,17 +67,17 @@ public static partial class IEnumeratorExtensions
                 }
                 case WindowDefinitionSegment wds:
                 {
-                    if (wds.Pts != pcs.Pts)
+                    if (wds.Pts != Pcs.Pts)
                         throw InconsistentPts;
-                    if (wds.Dts != pcs.Dts)
+                    if (wds.Dts != Pcs.Dts)
                         throw InconsistentDts;
 
                     foreach (var wd in wds.Definitions)
                     {
-                        if (windows.ContainsKey(wd.Id))
+                        if (Windows.ContainsKey(wd.Id))
                             throw new DisplaySetException($"Duplicate window ID: {wd.Id}");
 
-                        windows[wd.Id] = new Window
+                        Windows[wd.Id] = new Window
                         {
                             X = wd.X,
                             Y = wd.Y,
@@ -88,9 +90,9 @@ public static partial class IEnumeratorExtensions
                 }
                 case PaletteDefinitionSegment pds:
                 {
-                    if (pds.Pts != pcs.Pts)
+                    if (pds.Pts != Pcs.Pts)
                         throw InconsistentPts;
-                    if (pds.Dts != pcs.Dts)
+                    if (pds.Dts != Pcs.Dts)
                         throw InconsistentDts;
 
                     var vid = new VersionedId<byte>
@@ -99,7 +101,7 @@ public static partial class IEnumeratorExtensions
                         Version = pds.Version,
                     };
 
-                    if (palettes.ContainsKey(vid))
+                    if (Palettes.ContainsKey(vid))
                     {
                         throw new DisplaySetException($"Duplicate palette VID: {vid}");
                     }
@@ -117,7 +119,7 @@ public static partial class IEnumeratorExtensions
                         };
                     }
 
-                    palettes[vid] = new Palette
+                    Palettes[vid] = new Palette
                     {
                         Entries = entries,
                     };
@@ -126,12 +128,12 @@ public static partial class IEnumeratorExtensions
                 }
                 case SingleObjectDefinitionSegment sods:
                 {
-                    if (sods.Pts != pcs.Pts)
+                    if (sods.Pts != Pcs.Pts)
                         throw InconsistentPts;
-                    if (sods.Dts != pcs.Dts)
+                    if (sods.Dts != Pcs.Dts)
                         throw InconsistentDts;
 
-                    if (initialObject is null)
+                    if (InitialObject is null)
                     {
                         var vid = new VersionedId<ushort>
                         {
@@ -139,10 +141,10 @@ public static partial class IEnumeratorExtensions
                             Version = sods.Version,
                         };
 
-                        if (displayObjects.ContainsKey(vid))
+                        if (DisplayObjects.ContainsKey(vid))
                             throw DuplicateObjectVid;
 
-                        displayObjects[vid] = new DisplayObject
+                        DisplayObjects[vid] = new DisplayObject
                         {
                             Width = sods.Width,
                             Height = sods.Height,
@@ -158,12 +160,12 @@ public static partial class IEnumeratorExtensions
                 };
                 case InitialObjectDefinitionSegment iods:
                 {
-                    if (iods.Pts != pcs.Pts)
+                    if (iods.Pts != Pcs.Pts)
                         throw InconsistentPts;
-                    if (iods.Dts != pcs.Dts)
+                    if (iods.Dts != Pcs.Dts)
                         throw InconsistentDts;
 
-                    if (initialObject is null)
+                    if (InitialObject is null)
                     {
                         var vid = new VersionedId<ushort>
                         {
@@ -171,10 +173,10 @@ public static partial class IEnumeratorExtensions
                             Version = iods.Version,
                         };
 
-                        if (displayObjects.ContainsKey(vid))
+                        if (DisplayObjects.ContainsKey(vid))
                             throw DuplicateObjectVid;
 
-                        initialObject = iods;
+                        InitialObject = iods;
                     }
                     else
                     {
@@ -185,19 +187,19 @@ public static partial class IEnumeratorExtensions
                 }
                 case MiddleObjectDefinitionSegment mods:
                 {
-                    if (mods.Pts != pcs.Pts)
+                    if (mods.Pts != Pcs.Pts)
                         throw InconsistentPts;
-                    if (mods.Dts != pcs.Dts)
+                    if (mods.Dts != Pcs.Dts)
                         throw InconsistentDts;
 
-                    if (initialObject is not null)
+                    if (InitialObject is not null)
                     {
-                        if (mods.Id != initialObject.Id)
+                        if (mods.Id != InitialObject.Id)
                             throw InconsistentObjectId;
-                        if (mods.Version != initialObject.Version)
+                        if (mods.Version != InitialObject.Version)
                             throw InconsistentObjectVersion;
 
-                        middleObjects.Add(mods);
+                        MiddleObjects.Add(mods);
                     }
                     else
                     {
@@ -208,16 +210,16 @@ public static partial class IEnumeratorExtensions
                 }
                 case FinalObjectDefinitionSegment fods:
                 {
-                    if (fods.Pts != pcs.Pts)
+                    if (fods.Pts != Pcs.Pts)
                         throw InconsistentPts;
-                    if (fods.Dts != pcs.Dts)
+                    if (fods.Dts != Pcs.Dts)
                         throw InconsistentDts;
 
-                    if (initialObject is not null)
+                    if (InitialObject is not null)
                     {
-                        if (fods.Id != initialObject.Id)
+                        if (fods.Id != InitialObject.Id)
                             throw InconsistentObjectId;
-                        if (fods.Version != initialObject.Version)
+                        if (fods.Version != InitialObject.Version)
                             throw InconsistentObjectVersion;
 
                         var vid = new VersionedId<ushort>
@@ -227,20 +229,20 @@ public static partial class IEnumeratorExtensions
                         };
                         var data = new List<byte>();
 
-                        data.AddRange(initialObject.Data);
-                        foreach (var middleObject in middleObjects)
+                        data.AddRange(InitialObject.Data);
+                        foreach (var middleObject in MiddleObjects)
                             data.AddRange(middleObject.Data);
                         data.AddRange(fods.Data);
 
-                        displayObjects[vid] = new DisplayObject
+                        DisplayObjects[vid] = new DisplayObject
                         {
-                            Width = initialObject.Width,
-                            Height = initialObject.Height,
+                            Width = InitialObject.Width,
+                            Height = InitialObject.Height,
                             Lines = Rle.Decompress(data),
                         };
 
-                        initialObject = null;
-                        middleObjects.Clear();
+                        InitialObject = null;
+                        MiddleObjects.Clear();
                     }
                     else
                     {
@@ -251,15 +253,15 @@ public static partial class IEnumeratorExtensions
                 }
                 case EndSegment es:
                 {
-                    if (initialObject is not null)
+                    if (InitialObject is not null)
                         throw new DisplaySetException("Incomplete object sequence.");
 
-                    if (es.Pts != pcs.Pts)
+                    if (es.Pts != Pcs.Pts)
                         throw InconsistentPts;
-                    if (es.Dts != pcs.Dts)
+                    if (es.Dts != Pcs.Dts)
                         throw InconsistentDts;
 
-                    foreach (var compositionObject in pcs.CompositionObjects)
+                    foreach (var compositionObject in Pcs.CompositionObjects)
                     {
                         var cid = new CompositionId
                         {
@@ -267,7 +269,7 @@ public static partial class IEnumeratorExtensions
                             WindowId = compositionObject.WindowId,
                         };
 
-                        compositionObjects[cid] = new CompositionObject
+                        CompositionObjects[cid] = new CompositionObject
                         {
                             X = compositionObject.X,
                             Y = compositionObject.Y,
@@ -278,23 +280,25 @@ public static partial class IEnumeratorExtensions
 
                     var composition = new Composition
                     {
-                        Number = pcs.Number,
-                        State = pcs.State,
-                        CompositionObjects = compositionObjects,
+                        Number = Pcs.Number,
+                        State = Pcs.State,
+                        CompositionObjects = CompositionObjects,
                     };
+
+                    Reset();
 
                     return new DisplaySet
                     {
-                        Pts = pcs.Pts,
-                        Dts = pcs.Dts,
-                        Width = pcs.Width,
-                        Height = pcs.Height,
-                        FrameRate = pcs.FrameRate,
-                        PaletteUpdateOnly = pcs.PaletteUpdateOnly,
-                        PaletteUpdateId = pcs.PaletteUpdateId,
-                        Windows = windows,
-                        Palettes = palettes,
-                        DisplayObjects = displayObjects,
+                        Pts = Pcs.Pts,
+                        Dts = Pcs.Dts,
+                        Width = Pcs.Width,
+                        Height = Pcs.Height,
+                        FrameRate = Pcs.FrameRate,
+                        PaletteUpdateOnly = Pcs.PaletteUpdateOnly,
+                        PaletteUpdateId = Pcs.PaletteUpdateId,
+                        Windows = Windows,
+                        Palettes = Palettes,
+                        DisplayObjects = DisplayObjects,
                         Composition = composition,
                     };
                 }
@@ -305,6 +309,20 @@ public static partial class IEnumeratorExtensions
             }
         }
 
-        throw new DisplaySetException("EOF encountered before ES.");
+        return null;
+    }
+
+    /// <summary>
+    ///     Resets the composer's internal state.
+    /// </summary>
+    public void Reset()
+    {
+        InitialObject = null;
+        MiddleObjects = new();
+        Windows = new();
+        Palettes = new();
+        DisplayObjects = new();
+        CompositionObjects = new();
+        Pcs = null;
     }
 }
