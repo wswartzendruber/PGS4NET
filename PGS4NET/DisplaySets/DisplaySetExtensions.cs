@@ -121,7 +121,7 @@ public static partial class DisplaySetExtensions
         }
 
         if (read)
-            throw new DisplaySetException("EOF during display set composition.");
+            throw new DisplaySetException("EOF with incomplete display set.");
 
         return null;
     }
