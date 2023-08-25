@@ -8,6 +8,7 @@
  * SPDX-License-Identifier: MPL-2.0
  */
 
+using System;
 using System.Collections.Generic;
 using PGS4NET.Segments;
 
@@ -408,7 +409,79 @@ public class DisplaySetComposer
             });
         }
 
-        // TODO: Object processing
+        foreach (var displayObject in displaySet.DisplayObjects)
+        {
+            var data = Rle.Compress(displayObject.Value.Lines);
+
+            if (data.Length > InitialObjectDefinitionSegment.MaxDataSize)
+            {
+                var index = 0;
+                var size = data.Length;
+                var iodsBuffer = new byte[InitialObjectDefinitionSegment.MaxDataSize];
+
+                Array.Copy(data, iodsBuffer, iodsBuffer.Length);
+
+                returnValue.Add(new InitialObjectDefinitionSegment
+                {
+                    Pts = displaySet.Pts,
+                    Dts = displaySet.Dts,
+                    Id = displayObject.Key.Id,
+                    Version = displayObject.Key.Version,
+                    Data = iodsBuffer,
+                    Length = (uint)data.Length + 4,
+                    Width = displayObject.Value.Width,
+                    Height = displayObject.Value.Height,
+                });
+
+                index += InitialObjectDefinitionSegment.MaxDataSize;
+                size -= InitialObjectDefinitionSegment.MaxDataSize;
+
+                while (size > MiddleObjectDefinitionSegment.MaxDataSize)
+                {
+                    var modsBuffer = new byte[MiddleObjectDefinitionSegment.MaxDataSize];
+
+                    Array.Copy(data, index, modsBuffer, 0, modsBuffer.Length);
+
+                    returnValue.Add(new MiddleObjectDefinitionSegment
+                    {
+                        Pts = displaySet.Pts,
+                        Dts = displaySet.Dts,
+                        Id = displayObject.Key.Id,
+                        Version = displayObject.Key.Version,
+                        Data = modsBuffer,
+                    });
+
+                    index += MiddleObjectDefinitionSegment.MaxDataSize;
+                    size -= MiddleObjectDefinitionSegment.MaxDataSize;
+                }
+
+                var fodsBuffer = new byte[size];
+
+                Array.Copy(data, index, fodsBuffer, 0, fodsBuffer.Length);
+
+                returnValue.Add(new FinalObjectDefinitionSegment
+                {
+                    Pts = displaySet.Pts,
+                    Dts = displaySet.Dts,
+                    Id = displayObject.Key.Id,
+                    Version = displayObject.Key.Version,
+                    Data = fodsBuffer,
+                });
+            }
+            else
+            {
+                returnValue.Add(new SingleObjectDefinitionSegment
+                {
+                    Pts = displaySet.Pts,
+                    Dts = displaySet.Dts,
+                    Id = displayObject.Key.Id,
+                    Version = displayObject.Key.Version,
+                    Data = data,
+                    Width = displayObject.Value.Width,
+                    Height = displayObject.Value.Height,
+                });
+            }
+        }
 
         returnValue.Add(new EndSegment
         {

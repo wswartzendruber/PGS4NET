@@ -16,6 +16,11 @@ namespace PGS4NET.Segments;
 public class InitialObjectDefinitionSegment : ObjectDefinitionSegment
 {
     /// <summary>
+    ///     The maximum data length this object type can hold.
+    /// </summary>
+    public const int MaxDataSize = 65_508;
+
+    /// <summary>
     ///     The declared length of this object’s data buffer, including all follow-on portions.
     /// </summary>
     public uint Length;

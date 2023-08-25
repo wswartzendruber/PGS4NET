@@ -15,4 +15,8 @@ namespace PGS4NET.Segments;
 /// </summary>
 public class MiddleObjectDefinitionSegment : ObjectDefinitionSegment
 {
+    /// <summary>
+    ///     The maximum data length this object type can hold.
+    /// </summary>
+    public const int MaxDataSize = 65_515;
 }

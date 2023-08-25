@@ -35,7 +35,7 @@ public static class Rle
     /// <returns>
     ///     An RLE-compressed byte sequence.
     /// </returns>
-    public static IList<byte> Compress(IList<IList<byte>> input)
+    public static byte[] Compress(IList<IList<byte>> input)
     {
         var output = new List<byte>();
         byte value = 0x00;
@@ -66,7 +66,7 @@ public static class Rle
             output.Add(0x00);
         }
 
-        return output;
+        return output.ToArray();
     }
 
     /// <summary>
