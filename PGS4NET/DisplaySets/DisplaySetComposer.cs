@@ -14,7 +14,8 @@ using PGS4NET.Segments;
 namespace PGS4NET.DisplaySets;
 
 /// <summary>
-///     Statefully composes display sets using sequentially input segments.
+///     Statefully composes display sets using sequentially input segments. Also supports
+///     immediate display set decomposition into segments.
 /// </summary>
 public class DisplaySetComposer
 {
@@ -36,7 +37,7 @@ public class DisplaySetComposer
     private Dictionary<byte, Window> Windows = new();
     private Dictionary<VersionedId<byte>, Palette> Palettes = new();
     private Dictionary<VersionedId<ushort>, DisplayObject> DisplayObjects = new();
-    private Dictionary<CompositionId, CompositionObject> CompositionObjects = new();
+    private Dictionary<CompositionId, Composition> Compositions = new();
     private PresentationCompositionSegment? Pcs = null;
 
     /// <summary>
@@ -269,7 +270,7 @@ public class DisplaySetComposer
                             WindowId = compositionObject.WindowId,
                         };
 
-                        CompositionObjects[cid] = new CompositionObject
+                        Compositions[cid] = new Composition
                         {
                             X = compositionObject.X,
                             Y = compositionObject.Y,
@@ -278,16 +279,7 @@ public class DisplaySetComposer
                         };
                     }
 
-                    var composition = new Composition
-                    {
-                        Number = Pcs.Number,
-                        State = Pcs.State,
-                        CompositionObjects = CompositionObjects,
-                    };
-
-                    Reset();
-
-                    return new DisplaySet
+                    var returnValue = new DisplaySet
                     {
                         Pts = Pcs.Pts,
                         Dts = Pcs.Dts,
@@ -299,8 +291,14 @@ public class DisplaySetComposer
                         Windows = Windows,
                         Palettes = Palettes,
                         DisplayObjects = DisplayObjects,
-                        Composition = composition,
+                        CompositionNumber = Pcs.Number,
+                        CompositionState = Pcs.State,
+                        Compositions = Compositions,
                     };
+
+                    Reset();
+
+                    return returnValue;
                 }
                 default:
                 {
@@ -322,7 +320,102 @@ public class DisplaySetComposer
         Windows = new();
         Palettes = new();
         DisplayObjects = new();
-        CompositionObjects = new();
+        Compositions = new();
         Pcs = null;
+    }
+
+    /// <summary>
+    ///     Decomposes a single display set into a collection of segments.
+    /// </summary>
+    public static IList<Segment> Decompose(DisplaySet displaySet)
+    {
+        var returnValue = new List<Segment>();
+        var compositionObjects = new List<CompositionObject>();
+
+        foreach (var item in displaySet.Compositions)
+        {
+            compositionObjects.Add(new CompositionObject
+            {
+                ObjectId = item.Key.ObjectId,
+                WindowId = item.Key.WindowId,
+                X = item.Value.X,
+                Y = item.Value.Y,
+                Forced = item.Value.Forced,
+            });
+        }
+
+        returnValue.Add(new PresentationCompositionSegment
+        {
+            Pts = displaySet.Pts,
+            Dts = displaySet.Dts,
+            Width = displaySet.Width,
+            Height = displaySet.Height,
+            FrameRate = displaySet.FrameRate,
+            Number = displaySet.CompositionNumber,
+            State = displaySet.CompositionState,
+            PaletteUpdateOnly = displaySet.PaletteUpdateOnly,
+            PaletteUpdateId = displaySet.PaletteUpdateId,
+            CompositionObjects = compositionObjects,
+        });
+
+        if (displaySet.Windows.Count > 0)
+        {
+            var windowEntries = new List<WindowDefinitionEntry>();
+
+            foreach (var window in displaySet.Windows)
+            {
+                windowEntries.Add(new WindowDefinitionEntry
+                {
+                    Id = window.Key,
+                    X = window.Value.X,
+                    Y = window.Value.Y,
+                    Width = window.Value.Width,
+                    Height = window.Value.Height,
+                });
+            }
+
+            returnValue.Add(new WindowDefinitionSegment
+            {
+                Pts = displaySet.Pts,
+                Dts = displaySet.Dts,
+                Definitions = windowEntries,
+            });
+        }
+
+        foreach (var palette in displaySet.Palettes)
+        {
+            var paletteEntries = new List<PaletteDefinitionEntry>();
+
+            foreach (var paletteEntry in palette.Value.Entries)
+            {
+                paletteEntries.Add(new PaletteDefinitionEntry
+                {
+                    Id = paletteEntry.Key,
+                    Y = paletteEntry.Value.Y,
+                    Cr = paletteEntry.Value.Cr,
+                    Cb = paletteEntry.Value.Cb,
+                    Alpha = paletteEntry.Value.Alpha,
+                });
+            }
+
+            returnValue.Add(new PaletteDefinitionSegment
+            {
+                Pts = displaySet.Pts,
+                Dts = displaySet.Dts,
+                Id = palette.Key.Id,
+                Version = palette.Key.Version,
+                Entries = paletteEntries,
+            });
+        }
+
+        // TODO: Object processing
+
+        returnValue.Add(new EndSegment
+        {
+            Pts = displaySet.Pts,
+            Dts = displaySet.Dts,
+        });
+
+        return returnValue;
     }
 }

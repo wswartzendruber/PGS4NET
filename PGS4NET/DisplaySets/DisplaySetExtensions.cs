@@ -18,7 +18,7 @@ namespace PGS4NET.DisplaySets;
 /// <summary>
 ///     Contains extensions against different classes for intuitively handling display sets.
 /// </summary>
-public static partial class DisplaySetExtensions
+public static class DisplaySetExtensions
 {
     /// <summary>
     ///     Reads all display sets from a <see cref="Stream" />. The stream is assumed to
@@ -73,6 +73,9 @@ public static partial class DisplaySetExtensions
     /// <summary>
     ///     Reads the next display set from a <see cref="Stream" />.
     /// </summary>
+    /// <exception cref="DisplaySetException">
+    ///     Thrown when a sequence of segments cannot form a display set.
+    /// </exception>
     /// <exception cref="SegmentException">
     ///     Thrown when the flags inside of a segment are invalid.
     /// </exception>
@@ -101,6 +104,9 @@ public static partial class DisplaySetExtensions
     /// <summary>
     ///     Asynchronously reads the next display set from a <see cref="Stream" />.
     /// </summary>
+    /// <exception cref="DisplaySetException">
+    ///     Thrown when a sequence of segments cannot form a display set.
+    /// </exception>
     /// <exception cref="SegmentException">
     ///     Thrown when the flags inside of a segment are invalid.
     /// </exception>

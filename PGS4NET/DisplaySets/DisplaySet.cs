@@ -76,7 +76,19 @@ public class DisplaySet
         = new Dictionary<VersionedId<ushort>, DisplayObject>();
 
     /// <summary>
-    ///     Defines the composition of objects into windows.
+    ///     Starting at zero, this increments each time graphics are updated within an epoch.
     /// </summary>
-    public Composition Composition = new Composition();
+    public ushort CompositionNumber;
+
+    /// <summary>
+    ///     Defines the role of this DS within the larger epoch.
+    /// </summary>
+    public CompositionState CompositionState;
+
+    /// <summary>
+    ///     A collection of composition objects, each mapped according to its compound ID
+    ///     (object ID + window ID).
+    /// </summary>
+    public IDictionary<CompositionId, Composition> Compositions
+        = new Dictionary<CompositionId, Composition>();
 }

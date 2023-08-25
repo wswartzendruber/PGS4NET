@@ -8,30 +8,35 @@
  * SPDX-License-Identifier: MPL-2.0
  */
 
-using System.Collections.Generic;
-using PGS4NET.Segments;
-
 namespace PGS4NET.DisplaySets;
 
 /// <summary>
-///     Represents a composition of objects into windows.
+///     Defines a mapping between an object (or an area of one) and a window within an epoch.
 /// </summary>
-public class Composition
+public struct Composition
 {
     /// <summary>
-    ///     Starting at zero, this increments each time graphics are updated within an epoch.
+    ///     The horizontal offset of the object’s top-left corner relative to the top-left
+    ///     corner of the screen. If the object is cropped, then this applies only to the
+    ///     visible area.
     /// </summary>
-    public ushort Number;
+    public ushort X;
 
     /// <summary>
-    ///     Defines the role of this DS within the larger epoch.
+    ///     The vertical offset of the object’s top-left corner relative to the top-left corner
+    ///     of the screen. If the object is cropped, then this applies only to the visible area.
     /// </summary>
-    public CompositionState State;
+    public ushort Y;
 
     /// <summary>
-    ///     A collection of composition objects, each mapped according to its compound ID
-    ///     (object ID + window ID).
+    ///     Whether or not the composition object is forced. This is typically used to translate
+    ///     foreign dialogue or text that appears.
     /// </summary>
-    public IDictionary<CompositionId, CompositionObject> CompositionObjects
-        = new Dictionary<CompositionId, CompositionObject>();
+    public bool Forced;
+
+    /// <summary>
+    ///     If set, defines the visible area of the object. Otherwise, the entire object is
+    ///     shown.
+    /// </summary>
+    public CroppedArea? Crop;
 }
