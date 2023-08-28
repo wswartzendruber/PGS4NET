@@ -71,7 +71,8 @@ public static class DisplaySetExtensions
     }
 
     /// <summary>
-    ///     Reads the next display set from a <see cref="Stream" />.
+    ///     Reads the next display set from a <see cref="Stream" /> by reading a series of
+    ///     segments and composing them.
     /// </summary>
     /// <exception cref="DisplaySetException">
     ///     Thrown when a sequence of segments cannot form a display set.
@@ -102,7 +103,8 @@ public static class DisplaySetExtensions
     }
 
     /// <summary>
-    ///     Asynchronously reads the next display set from a <see cref="Stream" />.
+    ///     Asynchronously reads the next display set from a <see cref="Stream" /> by reading
+    ///     a series of segments and composing them.
     /// </summary>
     /// <exception cref="DisplaySetException">
     ///     Thrown when a sequence of segments cannot form a display set.
@@ -133,10 +135,13 @@ public static class DisplaySetExtensions
     }
 
     /// <summary>
-    ///     Builds a collection of display sets from a collection of segments.
+    ///     Composes a collection of segments into a collection of display sets.
     /// </summary>
     /// <exception cref="DisplaySetException">
     ///     Thrown when a sequence of segments cannot form a display set.
+    /// </exception>
+    /// <exception cref="SegmentException">
+    ///     Thrown when the flags inside of a segment are invalid.
     /// </exception>
     public static IList<DisplaySet> ToDisplaySetList(this IEnumerable<Segment> segments)
     {
@@ -150,5 +155,43 @@ public static class DisplaySetExtensions
         }
 
         return returnValue;
+    }
+
+    /// <summary>
+    ///     Decomposes a collection of display sets into a collection of segments.
+    /// </summary>
+    /// <exception cref="DisplaySetException">
+    ///     Thrown when a display set cannot be transformed into a collection of segments.
+    /// </exception>
+    /// <exception cref="SegmentException">
+    ///     Thrown when the flags inside of a segment cannot be formed into a bitstream.
+    /// </exception>
+    public static IList<Segment> ToSegmentList(this IEnumerable<DisplaySet> displaySets)
+    {
+        var returnValue = new List<Segment>();
+
+        foreach (var displaySet in displaySets)
+            returnValue.AddRange(DisplaySetComposer.Decompose(displaySet));
+
+        return returnValue;
+    }
+
+    /// <summary>
+    ///     Decomposes a display set into a collection of segments and then writes each one to
+    ///     a <see cref="Stream" />.
+    /// </summary>
+    /// <exception cref="DisplaySetException">
+    ///     Thrown when a display set cannot be transformed into a collection of segments.
+    /// </exception>
+    /// <exception cref="SegmentException">
+    ///     Thrown when the flags inside of a segment cannot be formed into a bitstream.
+    /// </exception>
+    /// <exception cref="IOException">
+    ///     Thrown when an underlying IO error occurs while attempting to write a segment.
+    /// </exception>
+    public static void WriteDisplaySet(this Stream stream, DisplaySet displaySet)
+    {
+        foreach (var segment in DisplaySetComposer.Decompose(displaySet))
+            stream.WriteSegment(segment);
     }
 }
