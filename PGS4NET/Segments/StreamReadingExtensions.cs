@@ -65,6 +65,10 @@ public static partial class StreamExtensions
     /// <summary>
     ///     Reads the next PGS segment from a <see cref="Stream" />.
     /// </summary>
+    /// <returns>
+    ///     The <see cref="Segment" /> that was read from the <see cref="Stream" />, or
+    ///     <see langword="null" /> if the stream is already at its end.
+    /// </returns>
     /// <exception cref="SegmentException">
     ///     Thrown when the flags inside of a segment are invalid.
     /// </exception>
