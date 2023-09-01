@@ -13,7 +13,7 @@ using System.Collections.Generic;
 namespace PGS4NET.Segments;
 
 /// <summary>
-///     Defines a set of palette entries within an epoch.
+///     Defines palette definition segment (PDS), consisting of multiple palette entries.
 /// </summary>
 /// <remarks>
 ///     Palette entries can be broken apart into sets so that they can be modified as a group

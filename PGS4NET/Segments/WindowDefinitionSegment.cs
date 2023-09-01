@@ -13,7 +13,11 @@ namespace PGS4NET.Segments;
 using System.Collections.Generic;
 
 /// <summary>
-///     Defines a Window Definition Segment (WDS).
+///     Defines a window definition segment (WDS), consisting of multiple window entries.
+/// <remarks>
+/// </remarks>
+///     A WDS lists window regions that are to be used within an epoch. Each display set that
+///     has a WDS should only have one, where the single WDS has multiple windows defined.
 /// </summary>
 public class WindowDefinitionSegment : Segment
 {

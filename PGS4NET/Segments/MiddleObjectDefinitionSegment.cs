@@ -11,7 +11,8 @@
 namespace PGS4NET.Segments;
 
 /// <summary>
-///     Defines a middle portion of an object within an epoch.
+///     Defines a middle object definition segment (M-ODS), a middle portion of an object within
+///     an epoch.
 /// </summary>
 public class MiddleObjectDefinitionSegment : ObjectDefinitionSegment
 {

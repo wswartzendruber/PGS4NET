@@ -11,7 +11,7 @@
 namespace PGS4NET.Segments;
 
 /// <summary>
-///     Defines the end of a display set (DS).
+///     Defines an end segment (ES), the end of a display set.
 /// </summary>
 public class EndSegment : Segment
 {

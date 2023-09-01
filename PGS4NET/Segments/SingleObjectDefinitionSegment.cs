@@ -11,7 +11,7 @@
 namespace PGS4NET.Segments;
 
 /// <summary>
-///     Defines a complete object within an epoch.
+///     Defines a single object definition segment (S-ODS), a complete object within an epoch.
 /// </summary>
 public class SingleObjectDefinitionSegment : ObjectDefinitionSegment
 {

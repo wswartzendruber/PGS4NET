@@ -13,8 +13,11 @@ using System.Collections.Generic;
 namespace PGS4NET.Segments;
 
 /// <summary>
-///     Defines a Presentation Composition Segment (PCS).
+///     Defines a presentation composition segment (PCS).
 /// </summary>
+/// <remarks>
+///     A PCS marks the beginning of a new display set.
+/// </remarks>
 public class PresentationCompositionSegment : Segment
 {
     /// <summary>

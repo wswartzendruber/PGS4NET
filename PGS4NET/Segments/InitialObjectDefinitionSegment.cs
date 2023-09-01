@@ -11,7 +11,8 @@
 namespace PGS4NET.Segments;
 
 /// <summary>
-///     Defines the initial portion of an object within an epoch.
+///     Defines an initial object definition segment (I-ODS), the initial portion of an object
+///     within an epoch.
 /// </summary>
 public class InitialObjectDefinitionSegment : ObjectDefinitionSegment
 {

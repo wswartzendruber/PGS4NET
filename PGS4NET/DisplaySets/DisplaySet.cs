@@ -14,9 +14,17 @@ using PGS4NET.Segments;
 namespace PGS4NET.DisplaySets;
 
 /// <summary>
-///     A display set (DS) is a collection of segments. Multiple DS's come together to form an
-///     epoch.
+///     A collection of segments that, when taken together, perform an operation.
 /// </summary>
+/// <remarks>
+///     A display set is principally responsible for performing four distinct functions:
+///     <list type="number">
+///         <item>Define and apply a new composition to the screen.</item>
+///         <item>Repeat an existing composition (allows for player seeking).</item>
+///         <item>Modify a composition that is already on the screen.</item>
+///         <item>Remove a composition from the screen.</item>
+///     </list>
+/// </remarks>
 public class DisplaySet
 {
     /// <summary>

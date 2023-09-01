@@ -11,7 +11,7 @@
 namespace PGS4NET.Segments;
 
 /// <summary>
-///     Represents the common aspects shared by all types of object definition segments.
+///     Represents the common aspects shared by all types of object definition segments (ODS).
 /// </summary>
 public abstract class ObjectDefinitionSegment : Segment
 {

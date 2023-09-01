@@ -11,7 +11,8 @@
 namespace PGS4NET.Segments;
 
 /// <summary>
-///     Defines the final portion of an object within an epoch.
+///     Defines a final object definition segment (F-ODS), the final portion of an object within
+///     an epoch.
 /// </summary>
 public class FinalObjectDefinitionSegment : ObjectDefinitionSegment
 {
