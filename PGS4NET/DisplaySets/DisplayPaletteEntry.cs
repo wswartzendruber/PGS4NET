@@ -19,7 +19,7 @@ namespace PGS4NET.DisplaySets;
 ///     The role of a palette entry is to define or update exact pixel color, as later
 ///     referenced by any objects also defined within an epoch.
 /// </remarks>
-public struct PaletteEntry
+public struct DisplayPaletteEntry
 {
     /// <summary>
     ///     The range-limited, gamma-corrected luminosity value of this entry. Black is

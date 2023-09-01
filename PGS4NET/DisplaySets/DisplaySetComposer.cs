@@ -35,10 +35,10 @@ public class DisplaySetComposer
 
     private InitialObjectDefinitionSegment? InitialObject = null;
     private List<MiddleObjectDefinitionSegment> MiddleObjects = new();
-    private Dictionary<byte, Window> Windows = new();
-    private Dictionary<VersionedId<byte>, Palette> Palettes = new();
+    private Dictionary<byte, DisplayWindow> Windows = new();
+    private Dictionary<VersionedId<byte>, DisplayPalette> Palettes = new();
     private Dictionary<VersionedId<ushort>, DisplayObject> DisplayObjects = new();
-    private Dictionary<CompositionId, Composition> Compositions = new();
+    private Dictionary<CompositionId, DisplayComposition> Compositions = new();
     private PresentationCompositionSegment? Pcs = null;
 
     /// <summary>
@@ -79,7 +79,7 @@ public class DisplaySetComposer
                         if (Windows.ContainsKey(wd.Id))
                             throw new DisplaySetException($"Duplicate window ID: {wd.Id}");
 
-                        Windows[wd.Id] = new Window
+                        Windows[wd.Id] = new DisplayWindow
                         {
                             X = wd.X,
                             Y = wd.Y,
@@ -108,11 +108,11 @@ public class DisplaySetComposer
                         throw new DisplaySetException($"Duplicate palette VID: {vid}");
                     }
 
-                    var entries = new Dictionary<byte, PaletteEntry>();
+                    var entries = new Dictionary<byte, DisplayPaletteEntry>();
 
                     foreach (var entry in pds.Entries)
                     {
-                        entries[entry.Id] = new PaletteEntry
+                        entries[entry.Id] = new DisplayPaletteEntry
                         {
                             Y = entry.Y,
                             Cr = entry.Cr,
@@ -121,7 +121,7 @@ public class DisplaySetComposer
                         };
                     }
 
-                    Palettes[vid] = new Palette
+                    Palettes[vid] = new DisplayPalette
                     {
                         Entries = entries,
                     };
@@ -271,7 +271,7 @@ public class DisplaySetComposer
                             WindowId = compositionObject.WindowId,
                         };
 
-                        Compositions[cid] = new Composition
+                        Compositions[cid] = new DisplayComposition
                         {
                             X = compositionObject.X,
                             Y = compositionObject.Y,

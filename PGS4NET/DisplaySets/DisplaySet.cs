@@ -61,13 +61,13 @@ public class DisplaySet
     /// <summary>
     ///     The collection of windows referenced by this DS.
     /// </summary>
-    public IDictionary<byte, Window> Windows = new Dictionary<byte, Window>();
+    public IDictionary<byte, DisplayWindow> Windows = new Dictionary<byte, DisplayWindow>();
 
     /// <summary>
     ///     The collection of palettes referenced by this DS.
     /// </summary>
-    public IDictionary<VersionedId<byte>, Palette> Palettes
-        = new Dictionary<VersionedId<byte>, Palette>();
+    public IDictionary<VersionedId<byte>, DisplayPalette> Palettes
+        = new Dictionary<VersionedId<byte>, DisplayPalette>();
 
     /// <summary>
     ///     The collection of objects referenced by this DS.
@@ -89,6 +89,6 @@ public class DisplaySet
     ///     A collection of composition objects, each mapped according to its compound ID
     ///     (object ID + window ID).
     /// </summary>
-    public IDictionary<CompositionId, Composition> Compositions
-        = new Dictionary<CompositionId, Composition>();
+    public IDictionary<CompositionId, DisplayComposition> Compositions
+        = new Dictionary<CompositionId, DisplayComposition>();
 }

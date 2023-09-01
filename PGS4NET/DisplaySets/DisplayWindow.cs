@@ -15,7 +15,7 @@ namespace PGS4NET.DisplaySets;
 /// <summary>
 ///     Defines a window within the screen.
 /// </summary>
-public struct Window
+public struct DisplayWindow
 {
     /// <summary>
     ///     The horizontal offset of the window’s top-left corner relative to the top-left

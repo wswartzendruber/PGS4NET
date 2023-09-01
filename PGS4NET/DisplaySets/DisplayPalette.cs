@@ -16,10 +16,11 @@ namespace PGS4NET.DisplaySets;
 /// <summary>
 ///     Defines a palette within a display set.
 /// </summary>
-public class Palette
+public class DisplayPalette
 {
     /// <summary>
     ///     The entries within this palette, each mapped according to its ID.
     /// </summary>
-    public IDictionary<byte, PaletteEntry> Entries = new Dictionary<byte, PaletteEntry>();
+    public IDictionary<byte, DisplayPaletteEntry> Entries
+        = new Dictionary<byte, DisplayPaletteEntry>();
 }
