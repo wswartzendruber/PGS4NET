@@ -16,24 +16,47 @@ The purpose of this library is to someday facilitate intuitive interaction with 
 Graphics Stream (PGS) subtitles, often times referred to as SUP subtitles due to their file
 extension.
 
-In it's current, early state, it only supports reading and writing individual segments.
+In its current, early state, it supports reading and writing both display sets and segments.
+Epoch composition is not yet implemented.
 
-## Example
+## Examples
 
-Basic use is illustrated below as seen in the `PGS4NET.Examples.SegmentDump` project:
+### Display Sets
+
+Reading display sets is illustrated below as seen in the `PGS4NET.Examples.DisplaySetDump`
+project:
 
 ```csharp
-using PGS4NET;
+using PGS4NET.DisplaySets;
 
 if (args.Length != 1)
     throw new ArgumentException("A single parameter with a PGS file must be passed.");
 
-using var pgsStream = new FileStream(args[0], FileMode.Open);
+using var stream = new FileStream(args[0], FileMode.Open);
 
-while (pgsStream.Position < pgsStream.Length)
+while (stream.ReadDisplaySet() is DisplaySet displaySet)
 {
-    var segment = pgsStream.ReadSegment();
+    Console.WriteLine($"Read display set with PTS = {displaySet.Pts}");
+}
+```
 
+Display sets can be written out to streams via the `WriteDisplaySet` extension method on the
+`System.IO.Stream` class.
+
+### Segments
+
+Reading segments is illustrated below as seen in the `PGS4NET.Examples.SegmentDump` project:
+
+```csharp
+using PGS4NET.Segments;
+
+if (args.Length != 1)
+    throw new ArgumentException("A single parameter with a PGS file must be passed.");
+
+using var stream = new FileStream(args[0], FileMode.Open);
+
+while (stream.ReadSegment() is Segment segment)
+{
     switch (segment)
     {
         case PresentationCompositionSegment:
