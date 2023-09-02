@@ -25,6 +25,7 @@ public class Failures
         if (stream.ReadDisplaySet() is not null)
             throw new Exception("Returned display set is not null.");
     }
+
     [Fact]
     public async Task EmptyStreamAsync()
     {
@@ -32,6 +33,94 @@ public class Failures
 
         if (await stream.ReadDisplaySetAsync() is not null)
             throw new Exception("Returned display set is not null.");
+    }
+
+    [Fact]
+    public void IncompleteAll()
+    {
+        using var stream = new MemoryStream();
+        var pcs = new PresentationCompositionSegment();
+
+        stream.WriteSegment(pcs);
+        stream.Position = 0;
+
+        try
+        {
+            stream.ReadAllDisplaySets();
+
+            throw new Exception("Successfully read an incomplete display set.");
+        }
+        catch (DisplaySetException dse)
+        {
+            if (dse.Message != "EOF during display set composition.")
+                throw new Exception("Expected specific error message on composition.");
+        }
+    }
+
+    [Fact]
+    public async Task IncompleteAllAsync()
+    {
+        using var stream = new MemoryStream();
+        var pcs = new PresentationCompositionSegment();
+
+        stream.WriteSegment(pcs);
+        stream.Position = 0;
+
+        try
+        {
+            await stream.ReadAllDisplaySetsAsync();
+
+            throw new Exception("Successfully read an incomplete display set.");
+        }
+        catch (DisplaySetException dse)
+        {
+            if (dse.Message != "EOF during display set composition.")
+                throw new Exception("Expected specific error message on composition.");
+        }
+    }
+
+    [Fact]
+    public void IncompleteSingle()
+    {
+        using var stream = new MemoryStream();
+        var pcs = new PresentationCompositionSegment();
+
+        stream.WriteSegment(pcs);
+        stream.Position = 0;
+
+        try
+        {
+            stream.ReadDisplaySet();
+
+            throw new Exception("Successfully read an incomplete display set.");
+        }
+        catch (DisplaySetException dse)
+        {
+            if (dse.Message != "EOF during display set composition.")
+                throw new Exception("Expected specific error message on composition.");
+        }
+    }
+
+    [Fact]
+    public async Task IncompleteSingleAsync()
+    {
+        using var stream = new MemoryStream();
+        var pcs = new PresentationCompositionSegment();
+
+        stream.WriteSegment(pcs);
+        stream.Position = 0;
+
+        try
+        {
+            await stream.ReadDisplaySetAsync();
+
+            throw new Exception("Successfully read an incomplete display set.");
+        }
+        catch (DisplaySetException dse)
+        {
+            if (dse.Message != "EOF during display set composition.")
+                throw new Exception("Expected specific error message on composition.");
+        }
     }
 
     [Fact]
@@ -123,6 +212,50 @@ public class Failures
         {
             if (ioe.Message != "EOF reading segment header.")
                 throw new Exception("Expected specific error message on header EOF.");
+        }
+    }
+
+    [Fact]
+    public void IncompleteCollection1()
+    {
+        var segments = new List<Segment>
+        {
+            new PresentationCompositionSegment(),
+        };
+
+        try
+        {
+            segments.ToDisplaySetList();
+
+            throw new Exception("Successfully read an incomplete display set.");
+        }
+        catch (DisplaySetException dse)
+        {
+            if (dse.Message != "Incomplete display set from trailing segments.")
+                throw new Exception("Expected specific error message on composition.");
+        }
+    }
+
+    [Fact]
+    public void IncompleteCollection2()
+    {
+        var segments = new List<Segment>
+        {
+            new PresentationCompositionSegment(),
+            new EndSegment(),
+            new PresentationCompositionSegment(),
+        };
+
+        try
+        {
+            segments.ToDisplaySetList();
+
+            throw new Exception("Successfully read an incomplete display set.");
+        }
+        catch (DisplaySetException dse)
+        {
+            if (dse.Message != "Incomplete display set from trailing segments.")
+                throw new Exception("Expected specific error message on composition.");
         }
     }
 }

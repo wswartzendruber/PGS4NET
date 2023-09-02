@@ -178,14 +178,23 @@ public static partial class DisplaySetExtensions
     /// </exception>
     public static IList<DisplaySet> ToDisplaySetList(this IEnumerable<Segment> segments)
     {
+        var pending = false;
         var returnValue = new List<DisplaySet>();
         var composer = new DisplaySetComposer();
 
         foreach (var segment in segments)
         {
+            pending = true;
+
             if (composer.Input(segment) is DisplaySet displaySet)
+            {
+                pending = false;
                 returnValue.Add(displaySet);
+            }
         }
+
+        if (pending)
+            throw new DisplaySetException("Incomplete display set from trailing segments.");
 
         return returnValue;
     }

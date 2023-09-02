@@ -78,6 +78,15 @@ public class RoundTrip
         AssertAllDisplaySetsEqual(displaySetsOut, displaySetsIn);
     }
 
+    [Fact]
+    public void CycleAllDisplaySetsCollection()
+    {
+        var displaySetsIn = new List<DisplaySet>(DisplaySetInstances.Instances.Values);
+        var displaySetsOut = displaySetsIn.ToSegmentList().ToDisplaySetList();
+
+        AssertAllDisplaySetsEqual(displaySetsIn, displaySetsOut);
+    }
+
     private static void AssertAllDisplaySetsEqual(IList<DisplaySet> first
         , IList<DisplaySet> second)
     {
