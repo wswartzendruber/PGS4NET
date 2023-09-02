@@ -25,6 +25,10 @@ public static partial class StreamExtensions
     ///     contain only PGS segments and trailing data that is not a segment will cause an
     ///     exception to be thrown.
     /// </summary>
+    /// <returns>
+    ///     A collection <see cref="Segments" />s that was read from the <see cref="Stream" />,
+    ///     or an empty collection if the stream was already at its end.
+    /// </returns>
     /// <exception cref="SegmentException">
     ///     Thrown when the flags inside of a segment are invalid.
     /// </exception>
@@ -46,6 +50,10 @@ public static partial class StreamExtensions
     ///     assumed to contain only PGS segments and trailing data that is not a segment will
     ///     cause an exception to be thrown.
     /// </summary>
+    /// <returns>
+    ///     A collection <see cref="Segments" />s that was read from the <see cref="Stream" />,
+    ///     or an empty collection if the stream was already at its end.
+    /// </returns>
     /// <exception cref="SegmentException">
     ///     Thrown when the flags inside of a segment are invalid.
     /// </exception>
@@ -67,7 +75,7 @@ public static partial class StreamExtensions
     /// </summary>
     /// <returns>
     ///     The <see cref="Segment" /> that was read from the <see cref="Stream" />, or
-    ///     <see langword="null" /> if the stream is already at its end.
+    ///     <see langword="null" /> if the stream was already at its end.
     /// </returns>
     /// <exception cref="SegmentException">
     ///     Thrown when the flags inside of a segment are invalid.
@@ -119,6 +127,10 @@ public static partial class StreamExtensions
     /// <summary>
     ///     Asynchronously reads the next PGS segment from a <see cref="Stream" />.
     /// </summary>
+    /// <returns>
+    ///     The <see cref="Segment" /> that was read from the <see cref="Stream" />, or
+    ///     <see langword="null" /> if the stream was already at its end.
+    /// </returns>
     /// <exception cref="SegmentException">
     ///     Thrown when the flags inside of a segment are invalid.
     /// </exception>

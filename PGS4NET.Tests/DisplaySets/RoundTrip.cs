@@ -19,16 +19,18 @@ public class RoundTrip
     [Fact]
     public void CycleSegments()
     {
-        using var stream = new MemoryStream();
-        var inDisplaySet = DisplaySetInstances.Instances["defaults"];
+        foreach (var instance in DisplaySetInstances.Instances)
+        {
+            using var stream = new MemoryStream();
 
-        stream.WriteDisplaySet(inDisplaySet);
-        stream.Position = 0;
+            stream.WriteDisplaySet(instance.Value);
+            stream.Position = 0;
 
-        var outDisplaySet = stream.ReadDisplaySet()
-            ?? throw new NullReferenceException("Display set could not be read.");
+            var outDisplaySet = stream.ReadDisplaySet()
+                ?? throw new NullReferenceException("Display set could not be read.");
 
-        AssertDisplaySetsEqual("defaults", inDisplaySet, outDisplaySet);
+            AssertDisplaySetsEqual(instance.Key, instance.Value, outDisplaySet);
+        }
     }
 
     private static void AssertDisplaySetsEqual(string name, DisplaySet first, DisplaySet second)
