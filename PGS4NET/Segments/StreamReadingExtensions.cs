@@ -21,10 +21,14 @@ namespace PGS4NET.Segments;
 public static partial class StreamExtensions
 {
     /// <summary>
-    ///     Reads all PGS segments from a <see cref="Stream" />. The stream is assumed to
-    ///     contain only PGS segments and trailing data that is not a segment will cause an
-    ///     exception to be thrown.
+    ///     Reads all segments from a <see cref="Stream" /> until the end of the stream is
+    ///     reached.
     /// </summary>
+    /// <remarks>
+    ///     This method works by reading through all segments in the <see cref="Stream" />. The
+    ///     stream is assumed to contain only segments and any trailing data that cannot form a
+    ///     segment will cause an exception to be thrown.
+    /// </remarks>
     /// <returns>
     ///     A collection <see cref="Segments" />s that was read from the <see cref="Stream" />,
     ///     or an empty collection if the stream was already at its end.
@@ -46,10 +50,14 @@ public static partial class StreamExtensions
     }
 
     /// <summary>
-    ///     Asynchronously reads all PGS segments from a <see cref="Stream" />. The stream is
-    ///     assumed to contain only PGS segments and trailing data that is not a segment will
-    ///     cause an exception to be thrown.
+    ///     Asynchronously reads all segments from a <see cref="Stream" /> until the end of the
+    ///     stream is reached.
     /// </summary>
+    /// <remarks>
+    ///     This method works by reading through all segments in the <see cref="Stream" />. The
+    ///     stream is assumed to contain only segments and any trailing data that cannot form a
+    ///     segment will cause an exception to be thrown.
+    /// </remarks>
     /// <returns>
     ///     A collection <see cref="Segments" />s that was read from the <see cref="Stream" />,
     ///     or an empty collection if the stream was already at its end.
@@ -71,7 +79,7 @@ public static partial class StreamExtensions
     }
 
     /// <summary>
-    ///     Reads the next PGS segment from a <see cref="Stream" />.
+    ///     Reads the next segment from a <see cref="Stream" />.
     /// </summary>
     /// <returns>
     ///     The <see cref="Segment" /> that was read from the <see cref="Stream" />, or
@@ -125,7 +133,7 @@ public static partial class StreamExtensions
     }
 
     /// <summary>
-    ///     Asynchronously reads the next PGS segment from a <see cref="Stream" />.
+    ///     Asynchronously reads the next segment from a <see cref="Stream" />.
     /// </summary>
     /// <returns>
     ///     The <see cref="Segment" /> that was read from the <see cref="Stream" />, or
