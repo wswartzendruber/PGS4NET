@@ -80,7 +80,7 @@ public class DisplaySet
     /// <summary>
     ///     The collection of objects referenced by this DS.
     /// </summary>
-    public IDictionary<VersionedId<ushort>, DisplayObject> DisplayObjects
+    public IDictionary<VersionedId<ushort>, DisplayObject> Objects
         = new Dictionary<VersionedId<ushort>, DisplayObject>();
 
     /// <summary>

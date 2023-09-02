@@ -21,8 +21,8 @@ namespace PGS4NET.DisplaySets;
 public static partial class DisplaySetExtensions
 {
     /// <summary>
-    ///     Reads all the display sets from a <see cref="Stream" /> until the end of the stream
-    ///     is reached.
+    ///     Reads all display sets from a <see cref="Stream" /> until the end of the stream is
+    ///     reached.
     /// </summary>
     /// <remarks>
     ///     This method works by reading through all segments in the <see cref="Stream" />,

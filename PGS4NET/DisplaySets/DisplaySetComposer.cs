@@ -37,7 +37,7 @@ public class DisplaySetComposer
     private List<MiddleObjectDefinitionSegment> MiddleObjects = new();
     private Dictionary<byte, DisplayWindow> Windows = new();
     private Dictionary<VersionedId<byte>, DisplayPalette> Palettes = new();
-    private Dictionary<VersionedId<ushort>, DisplayObject> DisplayObjects = new();
+    private Dictionary<VersionedId<ushort>, DisplayObject> Objects = new();
     private Dictionary<CompositionId, DisplayComposition> Compositions = new();
     private PresentationCompositionSegment? Pcs = null;
 
@@ -143,10 +143,10 @@ public class DisplaySetComposer
                             Version = sods.Version,
                         };
 
-                        if (DisplayObjects.ContainsKey(vid))
+                        if (Objects.ContainsKey(vid))
                             throw DuplicateObjectVid;
 
-                        DisplayObjects[vid] = new DisplayObject
+                        Objects[vid] = new DisplayObject
                         {
                             Width = sods.Width,
                             Height = sods.Height,
@@ -175,7 +175,7 @@ public class DisplaySetComposer
                             Version = iods.Version,
                         };
 
-                        if (DisplayObjects.ContainsKey(vid))
+                        if (Objects.ContainsKey(vid))
                             throw DuplicateObjectVid;
 
                         InitialObject = iods;
@@ -236,7 +236,7 @@ public class DisplaySetComposer
                             data.AddRange(middleObject.Data);
                         data.AddRange(fods.Data);
 
-                        DisplayObjects[vid] = new DisplayObject
+                        Objects[vid] = new DisplayObject
                         {
                             Width = InitialObject.Width,
                             Height = InitialObject.Height,
@@ -291,7 +291,7 @@ public class DisplaySetComposer
                         PaletteUpdateId = Pcs.PaletteUpdateId,
                         Windows = Windows,
                         Palettes = Palettes,
-                        DisplayObjects = DisplayObjects,
+                        Objects = Objects,
                         CompositionNumber = Pcs.Number,
                         CompositionState = Pcs.State,
                         Compositions = Compositions,
@@ -320,7 +320,7 @@ public class DisplaySetComposer
         MiddleObjects = new();
         Windows = new();
         Palettes = new();
-        DisplayObjects = new();
+        Objects = new();
         Compositions = new();
         Pcs = null;
     }
@@ -409,7 +409,7 @@ public class DisplaySetComposer
             });
         }
 
-        foreach (var displayObject in displaySet.DisplayObjects)
+        foreach (var displayObject in displaySet.Objects)
         {
             var data = Rle.Compress(displayObject.Value.Lines);
 
