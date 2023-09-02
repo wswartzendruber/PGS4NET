@@ -47,6 +47,33 @@ public static partial class DisplaySetExtensions
     }
 
     /// <summary>
+    ///     Asynchronously writes all <see cref="DisplaySet" />s in a collection to a
+    ///     <see cref="Stream" />.
+    /// </summary>
+    /// <remarks>
+    ///     This method works by decomposing each <see cref="DisplaySet" /> into a sequence of
+    ///     <see cref="Segment" />s and then writing each of those to the <see cref="Stream" />.
+    /// </remarks>
+    /// <exception cref="DisplaySetException">
+    ///     Thrown when a <see cref="DisplaySet" /> cannot be decomposed into a collection of
+    ///     <see cref="Segment" />s.
+    /// </exception>
+    /// <exception cref="SegmentException">
+    ///     Thrown when the properties of a <see cref="Segment" /> cannot be written to a
+    ///     <see cref="Stream" />.
+    /// </exception>
+    /// <exception cref="IOException">
+    ///     Thrown when an underlying IO error occurs while attempting to write a
+    ///     <see cref="Segment" />.
+    /// </exception>
+    public static async Task WriteAllDisplaySetsAsync(this Stream stream
+        , IEnumerable<DisplaySet> displaySets)
+    {
+        foreach (var displaySet in displaySets)
+            await stream.WriteDisplaySetAsync(displaySet);
+    }
+
+    /// <summary>
     ///     Writes a <see cref="DisplaySet" /> to a <see cref="Stream" />.
     /// </summary>
     /// <remarks>
@@ -69,6 +96,31 @@ public static partial class DisplaySetExtensions
     {
         foreach (var segment in DisplaySetComposer.Decompose(displaySet))
             stream.WriteSegment(segment);
+    }
+
+    /// <summary>
+    ///     Asynchronously writes a <see cref="DisplaySet" /> to a <see cref="Stream" />.
+    /// </summary>
+    /// <remarks>
+    ///     This method works by decomposing the <see cref="DisplaySet" /> into a sequence of
+    ///     <see cref="Segment" />s and then writing each one to the <see cref="Stream" />.
+    /// </remarks>
+    /// <exception cref="DisplaySetException">
+    ///     Thrown when a <see cref="DisplaySet" /> cannot be decomposed into a collection of
+    ///     <see cref="Segment" />s.
+    /// </exception>
+    /// <exception cref="SegmentException">
+    ///     Thrown when the properties of a <see cref="Segment" /> cannot be written to a
+    ///     <see cref="Stream" />.
+    /// </exception>
+    /// <exception cref="IOException">
+    ///     Thrown when an underlying IO error occurs while attempting to write a
+    ///     <see cref="Segment" />.
+    /// </exception>
+    public static async Task WriteDisplaySetAsync(this Stream stream, DisplaySet displaySet)
+    {
+        foreach (var segment in DisplaySetComposer.Decompose(displaySet))
+            await stream.WriteSegmentAsync(segment);
     }
 
     /// <summary>

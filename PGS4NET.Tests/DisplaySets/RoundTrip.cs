@@ -17,7 +17,7 @@ namespace PGS4NET.Tests.DisplaySets;
 public class RoundTrip
 {
     [Fact]
-    public void CycleSegments()
+    public void CycleDisplaySets()
     {
         foreach (var instance in DisplaySetInstances.Instances)
         {
@@ -31,6 +31,61 @@ public class RoundTrip
 
             AssertDisplaySetsEqual(instance.Key, instance.Value, outDisplaySet);
         }
+    }
+
+    [Fact]
+    public async Task CycleDisplaySetsAsync()
+    {
+        foreach (var instance in DisplaySetInstances.Instances)
+        {
+            using var stream = new MemoryStream();
+
+            await stream.WriteDisplaySetAsync(instance.Value);
+            stream.Position = 0;
+
+            var outDisplaySet = await stream.ReadDisplaySetAsync()
+                ?? throw new NullReferenceException("Display set could not be read.");
+
+            AssertDisplaySetsEqual(instance.Key, instance.Value, outDisplaySet);
+        }
+    }
+
+    [Fact]
+    public void CycleAllDisplaySets()
+    {
+        using var stream = new MemoryStream();
+        var displaySetsOut = new List<DisplaySet>(DisplaySetInstances.Instances.Values);
+
+        stream.WriteAllDisplaySets(displaySetsOut);
+        stream.Position = 0;
+
+        var displaySetsIn = stream.ReadAllDisplaySets();
+
+        AssertAllDisplaySetsEqual(displaySetsOut, displaySetsIn);
+    }
+
+    [Fact]
+    public async Task CycleAllDisplaySetsAsync()
+    {
+        using var stream = new MemoryStream();
+        var displaySetsOut = new List<DisplaySet>(DisplaySetInstances.Instances.Values);
+
+        await stream.WriteAllDisplaySetsAsync(displaySetsOut);
+        stream.Position = 0;
+
+        var displaySetsIn = await stream.ReadAllDisplaySetsAsync();
+
+        AssertAllDisplaySetsEqual(displaySetsOut, displaySetsIn);
+    }
+
+    private static void AssertAllDisplaySetsEqual(IList<DisplaySet> first
+        , IList<DisplaySet> second)
+    {
+        if (first.Count != second.Count)
+            throw new Exception("First and second display set collections differ in size.");
+
+        for (int i = 0; i < first.Count; i++)
+            AssertDisplaySetsEqual(i.ToString(), first[i], second[i]);
     }
 
     private static void AssertDisplaySetsEqual(string name, DisplaySet first, DisplaySet second)

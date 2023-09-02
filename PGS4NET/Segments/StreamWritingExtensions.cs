@@ -21,13 +21,15 @@ namespace PGS4NET.Segments;
 public static partial class StreamExtensions
 {
     /// <summary>
-    ///     Writes a collection of <see cref="Segment" /> objects to a <see cref="Stream" />.
+    ///     Writes all <see cref="Segment" />s in a collection to a <see cref="Stream" />.
     /// </summary>
     /// <exception cref="SegmentException">
-    ///     Thrown when the flags inside of a segment are invalid.
+    ///     Thrown when the properties of a <see cref="Segment" /> cannot be written to a
+    ///     <see cref="Stream" />.
     /// </exception>
     /// <exception cref="IOException">
-    ///     Thrown when an underlying IO error occurs while attempting to write a segment.
+    ///     Thrown when an underlying IO error occurs while attempting to write a
+    ///     <see cref="Segment" />.
     /// </exception>
     public static void WriteAllSegments(this Stream stream, IEnumerable<Segment> segments)
     {
@@ -36,14 +38,16 @@ public static partial class StreamExtensions
     }
 
     /// <summary>
-    ///     Asynchronously writes a collection of <see cref="Segment" /> objects to a
+    ///     Asynchronously writes all <see cref="Segment" />s in a collection to a
     ///     <see cref="Stream" />.
     /// </summary>
     /// <exception cref="SegmentException">
-    ///     Thrown when the flags inside of a segment are invalid.
+    ///     Thrown when the properties of a <see cref="Segment" /> cannot be written to a
+    ///     <see cref="Stream" />.
     /// </exception>
     /// <exception cref="IOException">
-    ///     Thrown when an underlying IO error occurs while attempting to write a segment.
+    ///     Thrown when an underlying IO error occurs while attempting to write a
+    ///     <see cref="Segment" />.
     /// </exception>
     public static async Task WriteAllSegmentsAsync(this Stream stream
         , IEnumerable<Segment> segments)
@@ -56,10 +60,12 @@ public static partial class StreamExtensions
     ///     Writes a <see cref="Segment" /> to a <see cref="Stream" />.
     /// </summary>
     /// <exception cref="SegmentException">
-    ///     Thrown when the flags inside of a segment are invalid.
+    ///     Thrown when the properties of a <see cref="Segment" /> cannot be written to a
+    ///     <see cref="Stream" />.
     /// </exception>
     /// <exception cref="IOException">
-    ///     Thrown when an underlying IO error occurs while attempting to write a segment.
+    ///     Thrown when an underlying IO error occurs while attempting to write a
+    ///     <see cref="Segment" />.
     /// </exception>
     public static void WriteSegment(this Stream stream, Segment segment)
     {
@@ -121,10 +127,12 @@ public static partial class StreamExtensions
     ///     Asynchronously writes a <see cref="Segment" /> to a <see cref="Stream" />.
     /// </summary>
     /// <exception cref="SegmentException">
-    ///     Thrown when the flags inside of a segment are invalid.
+    ///     Thrown when the properties of a <see cref="Segment" /> cannot be written to a
+    ///     <see cref="Stream" />.
     /// </exception>
     /// <exception cref="IOException">
-    ///     Thrown when an underlying IO error occurs while attempting to write a segment.
+    ///     Thrown when an underlying IO error occurs while attempting to write a
+    ///     <see cref="Segment" />.
     /// </exception>
     public static async Task WriteSegmentAsync(this Stream stream, Segment segment)
     {

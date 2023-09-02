@@ -10,9 +10,10 @@
  * SPDX-License-Identifier: CC0-1.0
  */
 
+using PGS4NET.DisplaySets;
 using PGS4NET.Segments;
 
-namespace PGS4NET.Tests.Segments;
+namespace PGS4NET.Tests.DisplaySets;
 
 public class Failures
 {
@@ -21,17 +22,16 @@ public class Failures
     {
         using var stream = new MemoryStream();
 
-        if (stream.ReadSegment() is not null)
-            throw new Exception("Returned segment is not null.");
+        if (stream.ReadDisplaySet() is not null)
+            throw new Exception("Returned display set is not null.");
     }
-
     [Fact]
     public async Task EmptyStreamAsync()
     {
         using var stream = new MemoryStream();
 
-        if (await stream.ReadSegmentAsync() is not null)
-            throw new Exception("Returned segment is not null.");
+        if (await stream.ReadDisplaySetAsync() is not null)
+            throw new Exception("Returned display set is not null.");
     }
 
     [Fact]
@@ -44,9 +44,9 @@ public class Failures
 
         try
         {
-            stream.ReadSegment();
+            stream.ReadDisplaySet();
 
-            throw new Exception("Successfully read a segment with a trailing null byte.");
+            throw new Exception("Successfully read a display set with a trailing null byte.");
         }
         catch (IOException ioe)
         {
@@ -65,9 +65,9 @@ public class Failures
 
         try
         {
-            await stream.ReadSegmentAsync();
+            await stream.ReadDisplaySetAsync();
 
-            throw new Exception("Successfully read a segment with a trailing null byte.");
+            throw new Exception("Successfully read a display set with a trailing null byte.");
         }
         catch (IOException ioe)
         {
@@ -80,17 +80,19 @@ public class Failures
     public void TrailingNullByte()
     {
         using var stream = new MemoryStream();
-        var buffer = SegmentBuffers.Buffers["pcs-es"];
+        var pcs = new PresentationCompositionSegment();
+        var es = new EndSegment();
 
-        stream.Write(buffer);
+        stream.WriteSegment(pcs);
+        stream.WriteSegment(es);
         stream.WriteByte(0x00);
         stream.Position = 0;
 
         try
         {
-            stream.ReadAllSegments();
+            stream.ReadAllDisplaySets();
 
-            throw new Exception("Successfully read a segment with a trailing null byte.");
+            throw new Exception("Successfully read a display set with a trailing null byte.");
         }
         catch (IOException ioe)
         {
@@ -103,17 +105,19 @@ public class Failures
     public async Task TrailingNullByteAsync()
     {
         using var stream = new MemoryStream();
-        var buffer = SegmentBuffers.Buffers["pcs-es"];
+        var pcs = new PresentationCompositionSegment();
+        var es = new EndSegment();
 
-        stream.Write(buffer);
+        stream.WriteSegment(pcs);
+        stream.WriteSegment(es);
         stream.WriteByte(0x00);
         stream.Position = 0;
 
         try
         {
-            await stream.ReadAllSegmentsAsync();
+            await stream.ReadAllDisplaySetsAsync();
 
-            throw new Exception("Successfully read a segment with a trailing null byte.");
+            throw new Exception("Successfully read a display set with a trailing null byte.");
         }
         catch (IOException ioe)
         {
