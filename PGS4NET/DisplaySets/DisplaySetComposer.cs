@@ -342,6 +342,7 @@ public class DisplaySetComposer
                 X = item.Value.X,
                 Y = item.Value.Y,
                 Forced = item.Value.Forced,
+                Crop = item.Value.Crop,
             });
         }
 
