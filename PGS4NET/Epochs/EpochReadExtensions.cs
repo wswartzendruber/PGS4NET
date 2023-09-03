@@ -11,17 +11,18 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using PGS4NET.DisplaySets;
 using PGS4NET.Segments;
 
-namespace PGS4NET.DisplaySets;
+namespace PGS4NET.Epochs;
 
 /// <summary>
-///     Contains extensions against different classes for intuitively handling display sets.
+///     Contains extensions against different classes for intuitively handling epochs.
 /// </summary>
-public static partial class DisplaySetExtensions
+public static partial class EpochExtensions
 {
     /// <summary>
-    ///     Reads all <see cref="DisplaySet" />s from a <paramref name="stream" />.
+    ///     Reads all <see cref="Epoch" />s from a <paramref name="stream" />.
     /// </summary>
     /// <remarks>
     ///     Internally, this method:
@@ -34,19 +35,29 @@ public static partial class DisplaySetExtensions
     ///         </item>
     ///         <item>
     ///             <description>
-    ///                 Adds the composed <see cref="DisplaySet" /> to the return collection.
+    ///                 Composes enough <see cref="DisplaySet" />s until an <see cref="Epoch" />
+    ///                 can be composed.
+    ///             </description>
+    ///         </item>
+    ///         <item>
+    ///             <description>
+    ///                 Adds the composed <see cref="Epoch" /> to the return collection.
     ///             </description>
     ///         </item>
     ///     </list>
     ///     The entire <paramref name="stream" /> is read in this manner until its end is
     ///     reached. Any trailing data that cannot ultimately form a complete
-    ///     <see cref="DisplaySet" /> causes an exception to be thrown.
+    ///     <see cref="Epoch" /> causes an exception to be thrown.
     /// </remarks>
     /// <returns>
-    ///     A collection <see cref="DisplaySet" />s that was read from the
+    ///     A collection <see cref="Epoch" />s that was read from the
     ///     <paramref name="stream" />, or an empty collection if the stream was already at its
     ///     end.
     /// </returns>
+    /// <exception cref="EpochException">
+    ///     Thrown when a combination of individually valid <see cref="DisplaySet" />s cannot be
+    ///     composed into an <see cref="Epoch" />.
+    /// </exception>
     /// <exception cref="DisplaySetException">
     ///     Thrown when a combination of individually valid <see cref="Segment" />s cannot be
     ///     composed into a <see cref="DisplaySet" />.
@@ -58,19 +69,135 @@ public static partial class DisplaySetExtensions
     ///     Thrown when an underlying IO error occurs while attempting to read a segment from
     ///     the <paramref name="stream" />.
     /// </exception>
-    public static IList<DisplaySet> ReadAllDisplaySets(this Stream stream)
+    public static IList<Epoch> ReadAllEpochs(this Stream stream)
     {
-        var returnValue = new List<DisplaySet>();
+        var returnValue = new List<Epoch>();
+
+        while (stream.ReadEpoch() is Epoch epoch)
+            returnValue.Add(epoch);
+
+        return returnValue;
+    }
+
+    /// <summary>
+    ///     Asynchronously reads all <see cref="Epoch" />s from a <paramref name="stream" />.
+    /// </summary>
+    /// <remarks>
+    ///     Internally, this method:
+    ///     <list type="number">
+    ///         <item>
+    ///             <description>
+    ///                 Reads <see cref="Segment" />s from the <paramref name="stream" /> until
+    ///                 a <see cref="DisplaySet" /> can be composed.
+    ///             </description>
+    ///         </item>
+    ///         <item>
+    ///             <description>
+    ///                 Composes enough <see cref="DisplaySet" />s until an <see cref="Epoch" />
+    ///                 can be composed.
+    ///             </description>
+    ///         </item>
+    ///         <item>
+    ///             <description>
+    ///                 Adds the composed <see cref="Epoch" /> to the return collection.
+    ///             </description>
+    ///         </item>
+    ///     </list>
+    ///     The entire <paramref name="stream" /> is read in this manner until its end is
+    ///     reached. Any trailing data that cannot ultimately form a complete
+    ///     <see cref="Epoch" /> causes an exception to be thrown.
+    /// </remarks>
+    /// <returns>
+    ///     A collection <see cref="Epoch" />s that was read from the
+    ///     <paramref name="stream" />, or an empty collection if the stream was already at its
+    ///     end.
+    /// </returns>
+    /// <exception cref="EpochException">
+    ///     Thrown when a combination of individually valid <see cref="DisplaySet" />s cannot be
+    ///     composed into an <see cref="Epoch" />.
+    /// </exception>
+    /// <exception cref="DisplaySetException">
+    ///     Thrown when a combination of individually valid <see cref="Segment" />s cannot be
+    ///     composed into a <see cref="DisplaySet" />.
+    /// </exception>
+    /// <exception cref="SegmentException">
+    ///     Thrown when the flags inside of a segment's buffer are invalid.
+    /// </exception>
+    /// <exception cref="IOException">
+    ///     Thrown when an underlying IO error occurs while attempting to read a segment from
+    ///     the <paramref name="stream" />.
+    /// </exception>
+    public static async Task<IList<Epoch>> ReadAllEpochsAsync(this Stream stream)
+    {
+        var returnValue = new List<Epoch>();
+
+        while (await stream.ReadEpochAsync() is Epoch epoch)
+            returnValue.Add(epoch);
+
+        return returnValue;
+    }
+
+    /// <summary>
+    ///     Reads an <see cref="Epoch" /> from a <paramref name="stream" />.
+    /// </summary>
+    /// <remarks>
+    ///     Internally, this method:
+    ///     <list type="number">
+    ///         <item>
+    ///             <description>
+    ///                 Reads <see cref="Segment" />s from the <paramref name="stream" /> until
+    ///                 a <see cref="DisplaySet" /> can be composed.
+    ///             </description>
+    ///         </item>
+    ///         <item>
+    ///             <description>
+    ///                 Composes enough <see cref="DisplaySet" />s until an <see cref="Epoch" />
+    ///                 can be composed.
+    ///             </description>
+    ///         </item>
+    ///     </list>
+    ///     Only the data necessary to compose an <see cref="Epoch" /> is read from the
+    ///     <paramref name="stream" />.
+    /// </remarks>
+    /// <returns>
+    ///     The <see cref="Epoch" /> that was read from the <paramref name="stream" />.
+    /// </returns>
+    /// <exception cref="EpochException">
+    ///     Thrown when a combination of individually valid <see cref="DisplaySet" />s cannot be
+    ///     composed into an <see cref="Epoch" />.
+    /// </exception>
+    /// <exception cref="DisplaySetException">
+    ///     Thrown when a combination of individually valid <see cref="Segment" />s cannot be
+    ///     composed into a <see cref="DisplaySet" />.
+    /// </exception>
+    /// <exception cref="SegmentException">
+    ///     Thrown when the flags inside of a segment's buffer are invalid.
+    /// </exception>
+    /// <exception cref="IOException">
+    ///     Thrown when an underlying IO error occurs while attempting to read a segment from
+    ///     the <paramref name="stream" />.
+    /// </exception>
+    public static Epoch? ReadEpoch(this Stream stream)
+    {
+        var read = false;
+        var composer = new EpochComposer();
 
         while (stream.ReadDisplaySet() is DisplaySet displaySet)
-            returnValue.Add(displaySet);
+        {
+            read = true;
 
-        return returnValue;
+            if (composer.Input(displaySet) is Epoch epoch)
+                return epoch;
+        }
+
+        if (read)
+            throw new EpochException("EOF during epoch composition.");
+
+        return null;
     }
 
     /// <summary>
-    ///     Asynchronously reads all <see cref="DisplaySet" />s from a
-    ///     <paramref name="stream" />.
+    ///     Asynchronously reads an <see cref="Epoch" /> from a <paramref name="stream" />.
     /// </summary>
     /// <remarks>
     ///     Internally, this method:
@@ -83,19 +210,21 @@ public static partial class DisplaySetExtensions
     ///         </item>
     ///         <item>
     ///             <description>
-    ///                 Adds the composed <see cref="DisplaySet" /> to the return collection.
+    ///                 Composes enough <see cref="DisplaySet" />s until an <see cref="Epoch" />
+    ///                 can be composed.
     ///             </description>
     ///         </item>
     ///     </list>
-    ///     The entire <paramref name="stream" /> is read in this manner until its end is
-    ///     reached. Any trailing data that cannot ultimately form a complete
-    ///     <see cref="DisplaySet" /> causes an exception to be thrown.
+    ///     Only the data necessary to compose an <see cref="Epoch" /> is read from the
+    ///     <paramref name="stream" />.
     /// </remarks>
     /// <returns>
-    ///     A collection <see cref="DisplaySet" />s that was read from the
-    ///     <paramref name="stream" />, or an empty collection if the stream was already at its
-    ///     end.
+    ///     The <see cref="Epoch" /> that was read from the <paramref name="stream" />.
     /// </returns>
+    /// <exception cref="EpochException">
+    ///     Thrown when a combination of individually valid <see cref="DisplaySet" />s cannot be
+    ///     composed into an <see cref="Epoch" />.
+    /// </exception>
     /// <exception cref="DisplaySetException">
     ///     Thrown when a combination of individually valid <see cref="Segment" />s cannot be
     ///     composed into a <see cref="DisplaySet" />.
@@ -107,107 +236,32 @@ public static partial class DisplaySetExtensions
     ///     Thrown when an underlying IO error occurs while attempting to read a segment from
     ///     the <paramref name="stream" />.
     /// </exception>
-    public static async Task<IList<DisplaySet>> ReadAllDisplaySetsAsync(this Stream stream)
+    public static async Task<Epoch?> ReadEpochAsync(this Stream stream)
     {
-        var returnValue = new List<DisplaySet>();
+        var read = false;
+        var composer = new EpochComposer();
 
         while (await stream.ReadDisplaySetAsync() is DisplaySet displaySet)
-            returnValue.Add(displaySet);
-
-        return returnValue;
-    }
-
-    /// <summary>
-    ///     Reads a <see cref="DisplaySet" /> from a <paramref name="stream" />.
-    /// </summary>
-    /// <remarks>
-    ///     Internally, this method reads <see cref="Segment" />s from the
-    ///     <paramref name="stream" /> until a <see cref="DisplaySet" /> can be composed. Only
-    ///     the data necessary to compose a <see cref="DisplaySet" /> is read from the
-    ///     <paramref name="stream" />.
-    /// </remarks>
-    /// <returns>
-    ///     The <see cref="DisplaySet" /> that was read from the <paramref name="stream" />.
-    /// </returns>
-    /// <exception cref="DisplaySetException">
-    ///     Thrown when a combination of individually valid <see cref="Segment" />s cannot be
-    ///     composed into a <see cref="DisplaySet" />.
-    /// </exception>
-    /// <exception cref="SegmentException">
-    ///     Thrown when the flags inside of a segment's buffer are invalid.
-    /// </exception>
-    /// <exception cref="IOException">
-    ///     Thrown when an underlying IO error occurs while attempting to read a segment from
-    ///     the <paramref name="stream" />.
-    /// </exception>
-    public static DisplaySet? ReadDisplaySet(this Stream stream)
-    {
-        var read = false;
-        var composer = new DisplaySetComposer();
-
-        while (stream.ReadSegment() is Segment segment)
         {
             read = true;
 
-            if (composer.Input(segment) is DisplaySet displaySet)
-                return displaySet;
+            if (composer.Input(displaySet) is Epoch epoch)
+                return epoch;
         }
 
         if (read)
-            throw new DisplaySetException("EOF during display set composition.");
+            throw new EpochException("EOF during epoch composition.");
 
         return null;
     }
 
     /// <summary>
-    ///     Asynchronously reads a <see cref="DisplaySet" /> from a <paramref name="stream" />.
+    ///     Composes a collection of <see cref="DisplaySet" />s into a collection of
+    ///     <see cref="Epoch" />s.
     /// </summary>
-    /// <remarks>
-    ///     Internally, this method reads <see cref="Segment" />s from the
-    ///     <paramref name="stream" /> until a <see cref="DisplaySet" /> can be composed. Only
-    ///     the data necessary to compose a <see cref="DisplaySet" /> is read from the
-    ///     <paramref name="stream" />.
-    /// </remarks>
-    /// <returns>
-    ///     The <see cref="DisplaySet" /> that was read from the <paramref name="stream" />.
-    /// </returns>
-    /// <exception cref="DisplaySetException">
-    ///     Thrown when a combination of individually valid <see cref="Segment" />s cannot be
-    ///     composed into a <see cref="DisplaySet" />.
-    /// </exception>
-    /// <exception cref="SegmentException">
-    ///     Thrown when the flags inside of a segment's buffer are invalid.
-    /// </exception>
-    /// <exception cref="IOException">
-    ///     Thrown when an underlying IO error occurs while attempting to read a segment from
-    ///     the <paramref name="stream" />.
-    /// </exception>
-    public static async Task<DisplaySet?> ReadDisplaySetAsync(this Stream stream)
-    {
-        var read = false;
-        var composer = new DisplaySetComposer();
-
-        while (await stream.ReadSegmentAsync() is Segment segment)
-        {
-            read = true;
-
-            if (composer.Input(segment) is DisplaySet displaySet)
-                return displaySet;
-        }
-
-        if (read)
-            throw new DisplaySetException("EOF during display set composition.");
-
-        return null;
-    }
-
-    /// <summary>
-    ///     Composes a collection of <see cref="Segment" />s into a collection of
-    ///     <see cref="DisplaySet" />s.
-    /// </summary>
-    /// <exception cref="DisplaySetException">
-    ///     Thrown when a combination of individually valid <see cref="Segment" />s cannot be
-    ///     composed into a <see cref="DisplaySet" />.
+    /// <exception cref="EpochException">
+    ///     Thrown when a combination of individually valid <see cref="DisplaySet" />s cannot be
+    ///     composed into an <see cref="Epoch" />.
     /// </exception>
     public static IList<DisplaySet> ToDisplaySetList(this IEnumerable<Segment> segments)
     {

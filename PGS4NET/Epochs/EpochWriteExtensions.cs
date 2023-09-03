@@ -11,25 +11,31 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using PGS4NET.DisplaySets;
 using PGS4NET.Segments;
 
-namespace PGS4NET.DisplaySets;
+namespace PGS4NET.Epochs;
 
 /// <summary>
-///     Contains extensions against different classes for intuitively handling display sets.
+///     Contains extensions against different classes for intuitively handling epochs.
 /// </summary>
 public static partial class DisplaySetExtensions
 {
     /// <summary>
-    ///     Writes all <see cref="DisplaySet" />s in a collection to a
-    ///     <paramref name="stream" />.
+    ///     Writes all <see cref="Epochs" />s in a collection to a <paramref name="stream" />.
     /// </summary>
     /// <remarks>
-    ///     Internally, this method iterates through each <see cref="DisplaySet" /> and:
+    ///     Internally, this method iterates through each <see cref="Epoch" /> and:
     ///     <list type="number">
     ///         <item>
     ///             <description>
-    ///                 Decomposes the <see cref="DisplaySet" /> into a collection of
+    ///                 Decomposes the <see cref="Epoch" /> into a collection of
+    ///                 <see cref="DisplaySet" />s.
+    ///             </description>
+    ///         </item>
+    ///         <item>
+    ///             <description>
+    ///                 Decomposes each <see cref="DisplaySet" /> into a collection of
     ///                 <see cref="Segments" />s.
     ///             </description>
     ///         </item>
@@ -40,6 +46,10 @@ public static partial class DisplaySetExtensions
     ///         </item>
     ///     </list>
     /// </remarks>
+    /// <exception cref="EpochException">
+    ///     Thrown when an <see cref="Epoch" /> cannot be decomposed into a collection of
+    ///     <see cref="DisplaySet" />s.
+    /// </exception>
     /// <exception cref="DisplaySetException">
     ///     Thrown when a <see cref="DisplaySet" /> cannot be decomposed into a collection of
     ///     <see cref="Segment" />s.
@@ -52,23 +62,122 @@ public static partial class DisplaySetExtensions
     ///     Thrown when an underlying IO error occurs while attempting to write a
     ///     <see cref="Segment" /> to the <paramref name="stream" />.
     /// </exception>
-    public static void WriteAllDisplaySets(this Stream stream
-        , IEnumerable<DisplaySet> displaySets)
+    public static void WriteAllEpochs(this Stream stream, IEnumerable<Epoch> epochs)
     {
-        foreach (var displaySet in displaySets)
+        foreach (var epoch in epochs)
+            stream.WriteEpoch(epoch);
+    }
+
+    /// <summary>
+    ///     Asynchronously writes all <see cref="Epochs" />s in a collection to a
+    ///     <paramref name="stream" />.
+    /// </summary>
+    /// <remarks>
+    ///     Internally, this method iterates through each <see cref="Epoch" /> and:
+    ///     <list type="number">
+    ///         <item>
+    ///             <description>
+    ///                 Decomposes the <see cref="Epoch" /> into a collection of
+    ///                 <see cref="DisplaySet" />s.
+    ///             </description>
+    ///         </item>
+    ///         <item>
+    ///             <description>
+    ///                 Decomposes each <see cref="DisplaySet" /> into a collection of
+    ///                 <see cref="Segments" />s.
+    ///             </description>
+    ///         </item>
+    ///         <item>
+    ///             <description>
+    ///                 Writes each <see cref="Segment" /> to the <paramref name="stream" />.
+    ///             </description>
+    ///         </item>
+    ///     </list>
+    /// </remarks>
+    /// <exception cref="EpochException">
+    ///     Thrown when an <see cref="Epoch" /> cannot be decomposed into a collection of
+    ///     <see cref="DisplaySet" />s.
+    /// </exception>
+    /// <exception cref="DisplaySetException">
+    ///     Thrown when a <see cref="DisplaySet" /> cannot be decomposed into a collection of
+    ///     <see cref="Segment" />s.
+    /// </exception>
+    /// <exception cref="SegmentException">
+    ///     Thrown when the properties of a <see cref="Segment" /> cannot be written to the
+    ///     <paramref name="stream" />.
+    /// </exception>
+    /// <exception cref="IOException">
+    ///     Thrown when an underlying IO error occurs while attempting to write a
+    ///     <see cref="Segment" /> to the <paramref name="stream" />.
+    /// </exception>
+    public static async Task WriteAllEpochsAsync(this Stream stream, IEnumerable<Epoch> epochs)
+    {
+        foreach (var epoch in epochs)
+            await stream.WriteEpochAsync(epoch);
+    }
+
+    /// <summary>
+    ///     Writes an <see cref="Epoch" /> to a <paramref name="stream" />.
+    /// </summary>
+    /// <remarks>
+    ///     Internally, this method:
+    ///     <list type="number">
+    ///         <item>
+    ///             <description>
+    ///                 Decomposes the <see cref="Epoch" /> into a collection of
+    ///                 <see cref="DisplaySet" />s.
+    ///             </description>
+    ///         </item>
+    ///         <item>
+    ///             <description>
+    ///                 Decomposes each <see cref="DisplaySet" /> into a collection of
+    ///                 <see cref="Segments" />s.
+    ///             </description>
+    ///         </item>
+    ///         <item>
+    ///             <description>
+    ///                 Writes each <see cref="Segment" /> to the <paramref name="stream" />.
+    ///             </description>
+    ///         </item>
+    ///     </list>
+    /// </remarks>
+    /// <exception cref="EpochException">
+    ///     Thrown when an <see cref="Epoch" /> cannot be decomposed into a collection of
+    ///     <see cref="DisplaySet" />s.
+    /// </exception>
+    /// <exception cref="DisplaySetException">
+    ///     Thrown when a <see cref="DisplaySet" /> cannot be decomposed into a collection of
+    ///     <see cref="Segment" />s.
+    /// </exception>
+    /// <exception cref="SegmentException">
+    ///     Thrown when the properties of a <see cref="Segment" /> cannot be written to the
+    ///     <paramref name="stream" />.
+    /// </exception>
+    /// <exception cref="IOException">
+    ///     Thrown when an underlying IO error occurs while attempting to write a
+    ///     <see cref="Segment" /> to the <paramref name="stream" />.
+    /// </exception>
+    public static void WriteEpoch(this Stream stream, Epoch epoch)
+    {
+        foreach (var displaySet in EpochComposer.Decompose(epoch))
             stream.WriteDisplaySet(displaySet);
     }
 
     /// <summary>
-    ///     Asynchronously writes all <see cref="DisplaySet" />s in a collection to a
-    ///     <paramref name="stream" />.
+    ///     Asynchronously writes an <see cref="Epoch" /> to a <paramref name="stream" />.
     /// </summary>
     /// <remarks>
-    ///     Internally, this method iterates through each <see cref="DisplaySet" /> and:
+    ///     Internally, this method:
     ///     <list type="number">
     ///         <item>
     ///             <description>
-    ///                 Decomposes the <see cref="DisplaySet" /> into a collection of
+    ///                 Decomposes the <see cref="Epoch" /> into a collection of
+    ///                 <see cref="DisplaySet" />s.
+    ///             </description>
+    ///         </item>
+    ///         <item>
+    ///             <description>
+    ///                 Decomposes each <see cref="DisplaySet" /> into a collection of
     ///                 <see cref="Segments" />s.
     ///             </description>
     ///         </item>
@@ -79,6 +188,10 @@ public static partial class DisplaySetExtensions
     ///         </item>
     ///     </list>
     /// </remarks>
+    /// <exception cref="EpochException">
+    ///     Thrown when an <see cref="Epoch" /> cannot be decomposed into a collection of
+    ///     <see cref="DisplaySet" />s.
+    /// </exception>
     /// <exception cref="DisplaySetException">
     ///     Thrown when a <see cref="DisplaySet" /> cannot be decomposed into a collection of
     ///     <see cref="Segment" />s.
@@ -91,101 +204,26 @@ public static partial class DisplaySetExtensions
     ///     Thrown when an underlying IO error occurs while attempting to write a
     ///     <see cref="Segment" /> to the <paramref name="stream" />.
     /// </exception>
-    public static async Task WriteAllDisplaySetsAsync(this Stream stream
-        , IEnumerable<DisplaySet> displaySets)
+    public static async Task WriteEpochAsync(this Stream stream, Epoch epoch)
     {
-        foreach (var displaySet in displaySets)
+        foreach (var displaySet in EpochComposer.Decompose(epoch))
             await stream.WriteDisplaySetAsync(displaySet);
     }
 
     /// <summary>
-    ///     Writes a <see cref="DisplaySet" /> to a <paramref name="stream" />.
+    ///     Decomposes a collection of <see cref="Epoch" />s into a collection of
+    ///     <see cref="DisplaySet" />s.
     /// </summary>
-    /// <remarks>
-    ///     Internally, this method:
-    ///     <list type="number">
-    ///         <item>
-    ///             <description>
-    ///                 Decomposes the <see cref="DisplaySet" /> into a collection of
-    ///                 <see cref="Segments" />s.
-    ///             </description>
-    ///         </item>
-    ///         <item>
-    ///             <description>
-    ///                 Writes each <see cref="Segment" /> to the <paramref name="stream" />.
-    ///             </description>
-    ///         </item>
-    ///     </list>
-    /// </remarks>
-    /// <exception cref="DisplaySetException">
-    ///     Thrown when a <see cref="DisplaySet" /> cannot be decomposed into a collection of
-    ///     <see cref="Segment" />s.
+    /// <exception cref="EpochException">
+    ///     Thrown when an <see cref="Epoch" /> cannot be decomposed into a collection of
+    ///     <see cref="DisplaySet" />s.
     /// </exception>
-    /// <exception cref="SegmentException">
-    ///     Thrown when the properties of a <see cref="Segment" /> cannot be written to the
-    ///     <paramref name="stream" />.
-    /// </exception>
-    /// <exception cref="IOException">
-    ///     Thrown when an underlying IO error occurs while attempting to write a
-    ///     <see cref="Segment" /> to the <paramref name="stream" />.
-    /// </exception>
-    public static void WriteDisplaySet(this Stream stream, DisplaySet displaySet)
+    public static IList<DisplaySet> ToDisplaySetList(this IEnumerable<Epoch> epochs)
     {
-        foreach (var segment in DisplaySetComposer.Decompose(displaySet))
-            stream.WriteSegment(segment);
-    }
+        var returnValue = new List<DisplaySet>();
 
-    /// <summary>
-    ///     Asynchronously writes a <see cref="DisplaySet" /> to a <paramref name="stream" />.
-    /// </summary>
-    /// <remarks>
-    ///     Internally, this method:
-    ///     <list type="number">
-    ///         <item>
-    ///             <description>
-    ///                 Decomposes the <see cref="DisplaySet" /> into a collection of
-    ///                 <see cref="Segments" />s.
-    ///             </description>
-    ///         </item>
-    ///         <item>
-    ///             <description>
-    ///                 Writes each <see cref="Segment" /> to the <paramref name="stream" />.
-    ///             </description>
-    ///         </item>
-    ///     </list>
-    /// </remarks>
-    /// <exception cref="DisplaySetException">
-    ///     Thrown when a <see cref="DisplaySet" /> cannot be decomposed into a collection of
-    ///     <see cref="Segment" />s.
-    /// </exception>
-    /// <exception cref="SegmentException">
-    ///     Thrown when the properties of a <see cref="Segment" /> cannot be written to the
-    ///     <paramref name="stream" />.
-    /// </exception>
-    /// <exception cref="IOException">
-    ///     Thrown when an underlying IO error occurs while attempting to write a
-    ///     <see cref="Segment" /> to the <paramref name="stream" />.
-    /// </exception>
-    public static async Task WriteDisplaySetAsync(this Stream stream, DisplaySet displaySet)
-    {
-        foreach (var segment in DisplaySetComposer.Decompose(displaySet))
-            await stream.WriteSegmentAsync(segment);
-    }
-
-    /// <summary>
-    ///     Decomposes a collection of <see cref="DisplaySet" />s into a collection of
-    ///     <see cref="Segment" />s.
-    /// </summary>
-    /// <exception cref="DisplaySetException">
-    ///     Thrown when a <see cref="DisplaySet" /> cannot be decomposed into a collection of
-    ///     <see cref="Segment" />s.
-    /// </exception>
-    public static IList<Segment> ToSegmentList(this IEnumerable<DisplaySet> displaySets)
-    {
-        var returnValue = new List<Segment>();
-
-        foreach (var displaySet in displaySets)
-            returnValue.AddRange(DisplaySetComposer.Decompose(displaySet));
+        foreach (var epoch in epochs)
+            returnValue.AddRange(EpochComposer.Decompose(epoch));
 
         return returnValue;
     }

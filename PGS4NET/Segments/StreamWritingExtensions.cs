@@ -21,15 +21,19 @@ namespace PGS4NET.Segments;
 public static partial class StreamExtensions
 {
     /// <summary>
-    ///     Writes all <see cref="Segment" />s in a collection to a <see cref="Stream" />.
+    ///     Writes all <see cref="Segment" />s in a collection to a <paramref name="stream" />.
     /// </summary>
+    /// <remarks>
+    ///     Internally, this method iterates through each <see cref="Segment" /> and writes it
+    ///     to the <paramref name="stream" />.
+    /// </remarks>
     /// <exception cref="SegmentException">
-    ///     Thrown when the properties of a <see cref="Segment" /> cannot be written to a
-    ///     <see cref="Stream" />.
+    ///     Thrown when the properties of a <see cref="Segment" /> cannot be written to the
+    ///     <paramref name="stream" />.
     /// </exception>
     /// <exception cref="IOException">
     ///     Thrown when an underlying IO error occurs while attempting to write a
-    ///     <see cref="Segment" />.
+    ///     <see cref="Segment" /> to the <paramref name="stream" />.
     /// </exception>
     public static void WriteAllSegments(this Stream stream, IEnumerable<Segment> segments)
     {
@@ -39,15 +43,19 @@ public static partial class StreamExtensions
 
     /// <summary>
     ///     Asynchronously writes all <see cref="Segment" />s in a collection to a
-    ///     <see cref="Stream" />.
+    ///     <paramref name="stream" />.
     /// </summary>
+    /// <remarks>
+    ///     Internally, this method iterates through each <see cref="Segment" /> and writes it
+    ///     to the <paramref name="stream" />.
+    /// </remarks>
     /// <exception cref="SegmentException">
-    ///     Thrown when the properties of a <see cref="Segment" /> cannot be written to a
-    ///     <see cref="Stream" />.
+    ///     Thrown when the properties of a <see cref="Segment" /> cannot be written to the
+    ///     <paramref name="stream" />.
     /// </exception>
     /// <exception cref="IOException">
     ///     Thrown when an underlying IO error occurs while attempting to write a
-    ///     <see cref="Segment" />.
+    ///     <see cref="Segment" /> to the <paramref name="stream" />.
     /// </exception>
     public static async Task WriteAllSegmentsAsync(this Stream stream
         , IEnumerable<Segment> segments)
@@ -57,15 +65,15 @@ public static partial class StreamExtensions
     }
 
     /// <summary>
-    ///     Writes a <see cref="Segment" /> to a <see cref="Stream" />.
+    ///     Writes a <see cref="Segment" /> to a <paramref name="stream" />.
     /// </summary>
     /// <exception cref="SegmentException">
-    ///     Thrown when the properties of a <see cref="Segment" /> cannot be written to a
-    ///     <see cref="Stream" />.
+    ///     Thrown when the properties of a <see cref="Segment" /> cannot be written to the
+    ///     <paramref name="stream" />.
     /// </exception>
     /// <exception cref="IOException">
     ///     Thrown when an underlying IO error occurs while attempting to write a
-    ///     <see cref="Segment" />.
+    ///     <see cref="Segment" /> to the <paramref name="stream" />.
     /// </exception>
     public static void WriteSegment(this Stream stream, Segment segment)
     {
@@ -124,15 +132,15 @@ public static partial class StreamExtensions
     }
 
     /// <summary>
-    ///     Asynchronously writes a <see cref="Segment" /> to a <see cref="Stream" />.
+    ///     Asynchronously writes a <see cref="Segment" /> to a <paramref name="stream" />.
     /// </summary>
     /// <exception cref="SegmentException">
-    ///     Thrown when the properties of a <see cref="Segment" /> cannot be written to a
-    ///     <see cref="Stream" />.
+    ///     Thrown when the properties of a <see cref="Segment" /> cannot be written to the
+    ///     <paramref name="stream" />.
     /// </exception>
     /// <exception cref="IOException">
     ///     Thrown when an underlying IO error occurs while attempting to write a
-    ///     <see cref="Segment" />.
+    ///     <see cref="Segment" /> to the <paramref name="stream" />.
     /// </exception>
     public static async Task WriteSegmentAsync(this Stream stream, Segment segment)
     {

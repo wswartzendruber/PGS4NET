@@ -21,23 +21,24 @@ namespace PGS4NET.Segments;
 public static partial class StreamExtensions
 {
     /// <summary>
-    ///     Reads all segments from a <see cref="Stream" /> until the end of the stream is
-    ///     reached.
+    ///     Reads all <see cref="Segments" />s from a <paramref name="stream" />.
     /// </summary>
     /// <remarks>
-    ///     This method works by reading through all segments in the <see cref="Stream" />. The
-    ///     stream is assumed to contain only segments and any trailing data that cannot form a
-    ///     segment will cause an exception to be thrown.
+    ///     The entire <paramref name="stream" /> is read until its end is reached. Any trailing
+    ///     data that cannot form a complete <see cref="Segment" /> causes an exception to be
+    ///     thrown.
     /// </remarks>
     /// <returns>
-    ///     A collection <see cref="Segments" />s that was read from the <see cref="Stream" />,
-    ///     or an empty collection if the stream was already at its end.
+    ///     A collection <see cref="Segments" />s that was read from the
+    ///     <paramref name="stream" />, or an empty collection if the stream was already at its
+    ///     end.
     /// </returns>
     /// <exception cref="SegmentException">
-    ///     Thrown when the flags inside of a segment are invalid.
+    ///     Thrown when the flags inside of a segment's buffer are invalid.
     /// </exception>
     /// <exception cref="IOException">
-    ///     Thrown when an underlying IO error occurs while attempting to read a segment.
+    ///     Thrown when an underlying IO error occurs while attempting to read a segment from
+    ///     the <paramref name="stream" />.
     /// </exception>
     public static IList<Segment> ReadAllSegments(this Stream stream)
     {
@@ -50,23 +51,24 @@ public static partial class StreamExtensions
     }
 
     /// <summary>
-    ///     Asynchronously reads all segments from a <see cref="Stream" /> until the end of the
-    ///     stream is reached.
+    ///     Asynchronously reads all <see cref="Segments" />s from a <paramref name="stream" />.
     /// </summary>
     /// <remarks>
-    ///     This method works by reading through all segments in the <see cref="Stream" />. The
-    ///     stream is assumed to contain only segments and any trailing data that cannot form a
-    ///     segment will cause an exception to be thrown.
+    ///     The entire <paramref name="stream" /> is read until its end is reached. Any trailing
+    ///     data that cannot form a complete <see cref="Segment" /> causes an exception to be
+    ///     thrown.
     /// </remarks>
     /// <returns>
-    ///     A collection <see cref="Segments" />s that was read from the <see cref="Stream" />,
-    ///     or an empty collection if the stream was already at its end.
+    ///     A collection <see cref="Segments" />s that was read from the
+    ///     <paramref name="stream" />, or an empty collection if the stream was already at its
+    ///     end.
     /// </returns>
     /// <exception cref="SegmentException">
-    ///     Thrown when the flags inside of a segment are invalid.
+    ///     Thrown when the flags inside of a segment's buffer are invalid.
     /// </exception>
     /// <exception cref="IOException">
-    ///     Thrown when an underlying IO error occurs while attempting to read a segment.
+    ///     Thrown when an underlying IO error occurs while attempting to read a segment from
+    ///     the <paramref name="stream" />.
     /// </exception>
     public static async Task<IList<Segment>> ReadAllSegmentsAsync(this Stream stream)
     {
@@ -79,17 +81,21 @@ public static partial class StreamExtensions
     }
 
     /// <summary>
-    ///     Reads the next segment from a <see cref="Stream" />.
+    ///     Reads a <see cref="Segment" /> from a <paramref name="stream" />.
     /// </summary>
+    /// <remarks>
+    ///     Only the data necessary to decode a <see cref="Segment" /> is read from the
+    ///     <paramref name="stream" />.
+    /// </remarks>
     /// <returns>
-    ///     The <see cref="Segment" /> that was read from the <see cref="Stream" />, or
-    ///     <see langword="null" /> if the stream was already at its end.
+    ///     The <see cref="Segment" /> that was read from the <paramref name="stream" />.
     /// </returns>
     /// <exception cref="SegmentException">
-    ///     Thrown when the flags inside of a segment are invalid.
+    ///     Thrown when the flags inside of a segment's buffer are invalid.
     /// </exception>
     /// <exception cref="IOException">
-    ///     Thrown when an underlying IO error occurs while attempting to read a segment.
+    ///     Thrown when an underlying IO error occurs while attempting to read a segment from
+    ///     the <paramref name="stream" />.
     /// </exception>
     public static Segment? ReadSegment(this Stream stream)
     {
@@ -133,17 +139,21 @@ public static partial class StreamExtensions
     }
 
     /// <summary>
-    ///     Asynchronously reads the next segment from a <see cref="Stream" />.
+    ///     Asynchronously reads a <see cref="Segment" /> from a <paramref name="stream" />.
     /// </summary>
+    /// <remarks>
+    ///     Only the data necessary to decode a <see cref="Segment" /> is read from the
+    ///     <paramref name="stream" />.
+    /// </remarks>
     /// <returns>
-    ///     The <see cref="Segment" /> that was read from the <see cref="Stream" />, or
-    ///     <see langword="null" /> if the stream was already at its end.
+    ///     The <see cref="Segment" /> that was read from the <paramref name="stream" />.
     /// </returns>
     /// <exception cref="SegmentException">
-    ///     Thrown when the flags inside of a segment are invalid.
+    ///     Thrown when the flags inside of a segment's buffer are invalid.
     /// </exception>
     /// <exception cref="IOException">
-    ///     Thrown when an underlying IO error occurs while attempting to read a segment.
+    ///     Thrown when an underlying IO error occurs while attempting to read a segment from
+    ///     the <paramref name="stream" />.
     /// </exception>
     public static async Task<Segment?> ReadSegmentAsync(this Stream stream)
     {
