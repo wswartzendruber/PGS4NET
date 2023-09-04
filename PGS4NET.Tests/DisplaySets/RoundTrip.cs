@@ -111,8 +111,8 @@ public class RoundTrip
             throw new Exception($"FrameRate for '{name}' does not match.");
         if (first.PaletteUpdateOnly != second.PaletteUpdateOnly)
             throw new Exception($"PaletteUpdateOnly for '{name}' does not match.");
-        if (first.PaletteUpdateId != second.PaletteUpdateId)
-            throw new Exception($"PaletteUpdateId for '{name}' does not match.");
+        if (first.PaletteId != second.PaletteId)
+            throw new Exception($"PaletteId for '{name}' does not match.");
 
         if (first.Windows.Keys.Count != second.Windows.Keys.Count)
         {

@@ -36,7 +36,7 @@ internal static class DisplaySetInstances
                 Height = RandomUInt16(),
                 FrameRate = RandomByte(),
                 PaletteUpdateOnly = false,
-                PaletteUpdateId = RandomByte(),
+                PaletteId = RandomByte(),
                 Windows = new Dictionary<byte, DisplayWindow>(),
                 Palettes = new Dictionary<VersionedId<byte>, DisplayPalette>(),
                 Objects = new Dictionary<VersionedId<ushort>, DisplayObject>(),
@@ -54,7 +54,7 @@ internal static class DisplaySetInstances
                 Height = RandomUInt16(),
                 FrameRate = RandomByte(),
                 PaletteUpdateOnly = true,
-                PaletteUpdateId = RandomByte(),
+                PaletteId = RandomByte(),
                 Windows = new Dictionary<byte, DisplayWindow>
                 {
                     {

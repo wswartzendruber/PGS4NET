@@ -57,14 +57,15 @@ public class DisplaySet
     public byte FrameRate;
 
     /// <summary>
-    ///     If set, <see cref="PaletteUpdateId" /> indicates the palette for updating.
+    ///     If set, defines that this PCS is responsible for a palette udpate on an existing
+    ///     object.
     /// </summary>
     public bool PaletteUpdateOnly;
 
     /// <summary>
-    ///     The palette ID to use when rendering the bitmap.
+    ///     The palette ID to use when rendering objects.
     /// </summary>
-    public byte PaletteUpdateId;
+    public byte PaletteId;
 
     /// <summary>
     ///     The collection of windows referenced by this DS.

@@ -48,14 +48,15 @@ public class PresentationCompositionSegment : Segment
     public CompositionState State;
 
     /// <summary>
-    ///     If set, <see cref="PaletteUpdateId" /> indicates the palette for updating.
+    ///     If set, defines that this PCS is responsible for a palette udpate on an existing
+    ///     object.
     /// </summary>
     public bool PaletteUpdateOnly;
 
     /// <summary>
-    ///     The palette ID to use when rendering the bitmap.
+    ///     The palette ID to use when rendering objects.
     /// </summary>
-    public byte PaletteUpdateId;
+    public byte PaletteId;
 
     /// <summary>
     ///     Maps an epoch’s objects (or areas within them) to its windows.

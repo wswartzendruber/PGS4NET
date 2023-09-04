@@ -287,7 +287,7 @@ public static partial class StreamExtensions
             Number = compositionNumber,
             State = compositionState,
             PaletteUpdateOnly = paletteUpdateOnly,
-            PaletteUpdateId = paletteUpdateId,
+            PaletteId = paletteUpdateId,
             CompositionObjects = compositionObjects,
         };
     }

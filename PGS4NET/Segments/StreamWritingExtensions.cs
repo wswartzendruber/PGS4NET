@@ -220,7 +220,7 @@ public static partial class StreamExtensions
             _ => throw new ArgumentException("PCS has unrecognized composition state."),
         });
         WriteUInt8(ms, (byte)(pcs.PaletteUpdateOnly ? 0x80 : 0x00));
-        WriteUInt8(ms, pcs.PaletteUpdateId);
+        WriteUInt8(ms, pcs.PaletteId);
 
         if (pcs.CompositionObjects.Count < 256)
             WriteUInt8(ms, (byte)pcs.CompositionObjects.Count);

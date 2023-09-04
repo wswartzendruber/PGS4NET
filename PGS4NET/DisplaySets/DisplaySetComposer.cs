@@ -288,7 +288,7 @@ public class DisplaySetComposer
                         Height = Pcs.Height,
                         FrameRate = Pcs.FrameRate,
                         PaletteUpdateOnly = Pcs.PaletteUpdateOnly,
-                        PaletteUpdateId = Pcs.PaletteUpdateId,
+                        PaletteId = Pcs.PaletteId,
                         Windows = Windows,
                         Palettes = Palettes,
                         Objects = Objects,
@@ -356,7 +356,7 @@ public class DisplaySetComposer
             Number = displaySet.CompositionNumber,
             State = displaySet.CompositionState,
             PaletteUpdateOnly = displaySet.PaletteUpdateOnly,
-            PaletteUpdateId = displaySet.PaletteUpdateId,
+            PaletteId = displaySet.PaletteId,
             CompositionObjects = compositionObjects,
         });
 
