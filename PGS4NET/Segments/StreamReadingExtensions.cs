@@ -224,7 +224,7 @@ public static partial class StreamExtensions
             _ => throw new SegmentException("PCS has unrecognized palette update flag."),
         };
         var paletteUpdateId = ReadUInt8(buffer, 9)
-            ?? throw new IOException("EOS reading PCS palette update ID.");
+            ?? throw new IOException("EOS reading PCS palette ID.");
         var compositionObjectCount = ReadUInt8(buffer, 10)
             ?? throw new IOException("EOS reading PCS composition object count.");
         var compositionObjects = new List<CompositionObject>();
