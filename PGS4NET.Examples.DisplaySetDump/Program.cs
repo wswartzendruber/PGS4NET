@@ -10,6 +10,7 @@
  * SPDX-License-Identifier: CC0-1.0
  */
 
+using PGS4NET;
 using PGS4NET.DisplaySets;
 
 if (args.Length != 1)
@@ -19,5 +20,80 @@ using var stream = new FileStream(args[0], FileMode.Open);
 
 while (stream.ReadDisplaySet() is DisplaySet displaySet)
 {
-    Console.WriteLine($"Read display set with PTS = {displaySet.Pts}");
+    Console.WriteLine("Display Set");
+    Console.WriteLine($"├──PTS: {displaySet.Pts}");
+    Console.WriteLine($"├──DTS: {displaySet.Dts}");
+    Console.WriteLine($"├──Width: {displaySet.Width}");
+    Console.WriteLine($"├──Height: {displaySet.Height}");
+    Console.WriteLine($"├──Frame Rate: {displaySet.FrameRate}");
+    Console.WriteLine($"├──Palette Update Only: {displaySet.PaletteUpdateOnly}");
+    Console.WriteLine($"├──Palette ID: {displaySet.PaletteId}");
+    Console.WriteLine($"├──Composition Number: {displaySet.CompositionNumber}");
+    Console.WriteLine($"├──Composition State: {displaySet.CompositionState}");
+    Console.WriteLine("├──Windows");
+
+    foreach (var window in displaySet.Windows)
+    {
+        Console.WriteLine("├────Window");
+        Console.WriteLine($"├──────ID: {(int)window.Key}");
+        Console.WriteLine($"├──────X: {window.Value.X}");
+        Console.WriteLine($"├──────Y: {window.Value.Y}");
+        Console.WriteLine($"├──────Width: {window.Value.Width}");
+        Console.WriteLine($"├──────Height: {window.Value.Height}");
+    }
+
+    Console.WriteLine("├──Palettes");
+
+    foreach (var palette in displaySet.Palettes)
+    {
+        Console.WriteLine("├────Palette");
+        Console.WriteLine($"├──────ID: {(int)palette.Key.Id}");
+        Console.WriteLine($"├──────Version: {(int)palette.Key.Version}");
+        Console.WriteLine("├──────Entries");
+
+        foreach (var entry in palette.Value.Entries)
+        {
+            Console.WriteLine("├────────Entry");
+            Console.WriteLine($"├──────────ID: {(int)entry.Key}");
+            Console.WriteLine($"├──────────Y: {entry.Value.Y}");
+            Console.WriteLine($"├──────────Cr: {entry.Value.Cr}");
+            Console.WriteLine($"├──────────Cb: {entry.Value.Cb}");
+            Console.WriteLine($"├──────────Alpha: {entry.Value.Alpha}");
+        }
+    }
+
+    Console.WriteLine("├──Objects");
+
+    foreach (var object_ in displaySet.Objects)
+    {
+        Console.WriteLine("├────Object");
+        Console.WriteLine($"├──────ID: {object_.Key.Id}");
+        Console.WriteLine($"├──────Version: {(int)object_.Key.Version}");
+        Console.WriteLine($"├──────Width: {object_.Value.Width}");
+        Console.WriteLine($"├──────Height: {object_.Value.Height}");
+        Console.WriteLine($"├──────Lines: {object_.Value.Lines.Count}");
+    }
+
+    Console.WriteLine("├──Compositions");
+
+    foreach (var composition in displaySet.Compositions)
+    {
+        Console.WriteLine("├────Composition");
+        Console.WriteLine($"├──────Object ID: {composition.Key.ObjectId}");
+        Console.WriteLine($"├──────Window ID: {(int)composition.Key.WindowId}");
+        Console.WriteLine($"├──────X: {composition.Value.X}");
+        Console.WriteLine($"├──────Y: {composition.Value.Y}");
+        Console.WriteLine($"├──────Forced: {composition.Value.Forced}");
+
+        if (composition.Value.Crop is CroppedArea crop)
+        {
+            Console.WriteLine("├──────Crop");
+            Console.WriteLine($"├────────X: {crop.X}");
+            Console.WriteLine($"├────────Y: {crop.Y}");
+            Console.WriteLine($"├────────Width: {crop.Width}");
+            Console.WriteLine($"├────────Height: {crop.Height}");
+        }
+    }
+
+    Console.WriteLine();
 }
