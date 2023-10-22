@@ -49,17 +49,7 @@ while (stream.ReadDisplaySet() is DisplaySet displaySet)
         Console.WriteLine("├────Palette");
         Console.WriteLine($"├──────ID: {(int)palette.Key.Id}");
         Console.WriteLine($"├──────Version: {(int)palette.Key.Version}");
-        Console.WriteLine("├──────Entries");
-
-        foreach (var entry in palette.Value.Entries)
-        {
-            Console.WriteLine("├────────Entry");
-            Console.WriteLine($"├──────────ID: {(int)entry.Key}");
-            Console.WriteLine($"├──────────Y: {entry.Value.Y}");
-            Console.WriteLine($"├──────────Cr: {entry.Value.Cr}");
-            Console.WriteLine($"├──────────Cb: {entry.Value.Cb}");
-            Console.WriteLine($"├──────────Alpha: {entry.Value.Alpha}");
-        }
+        Console.WriteLine($"├──────Entries: {palette.Value.Entries.Count}");
     }
 
     Console.WriteLine("├──Objects");
