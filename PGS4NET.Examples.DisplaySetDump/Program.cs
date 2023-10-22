@@ -21,8 +21,8 @@ using var stream = new FileStream(args[0], FileMode.Open);
 while (stream.ReadDisplaySet() is DisplaySet displaySet)
 {
     Console.WriteLine("Display Set");
-    Console.WriteLine($"├──PTS: {displaySet.Pts}");
-    Console.WriteLine($"├──DTS: {displaySet.Dts}");
+    Console.WriteLine($"├──PTS: {TsToTimeStamp(displaySet.Pts)}");
+    Console.WriteLine($"├──DTS: {TsToTimeStamp(displaySet.Dts)}");
     Console.WriteLine($"├──Width: {displaySet.Width}");
     Console.WriteLine($"├──Height: {displaySet.Height}");
     Console.WriteLine($"├──Frame Rate: {displaySet.FrameRate}");
@@ -86,4 +86,17 @@ while (stream.ReadDisplaySet() is DisplaySet displaySet)
     }
 
     Console.WriteLine();
+}
+
+string TsToTimeStamp(uint ts)
+{
+    var ms = ts / 90;
+    var h = ms / 3_600_000;
+    ms -= h * 3_600_000;
+    var m = ms / 60_000;
+    ms -= m * 60_000;
+    var s = ms / 1_000;
+    ms -= s * 1_000;
+
+    return $"{h.ToString("D2")}:{m.ToString("D2")}:{s.ToString("D2")}.{ms.ToString("D3")}";
 }
