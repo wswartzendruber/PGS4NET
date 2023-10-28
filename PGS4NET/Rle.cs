@@ -18,12 +18,15 @@ namespace PGS4NET;
 public static class Rle
 {
     // COMPRESSION
-    private static RleException LineTooLong = new("Line too long.");
+    private static readonly RleException LineTooLong = new("Line too long.");
 
     // DECOMPRESSION
-    private static RleException IncompleteRleLine = new("Incomplete RLE line.");
-    private static RleException IncompleteRleSequence = new("Incomplete RLE sequence.");
-    private static RleException InvalidRleSequence = new("Invalid RLE sequence.");
+    private static readonly RleException IncompleteRleLine
+        = new("Incomplete RLE line.");
+    private static readonly RleException IncompleteRleSequence
+        = new("Incomplete RLE sequence.");
+    private static readonly RleException InvalidRleSequence
+        = new("Invalid RLE sequence.");
 
     /// <summary>
     ///     Compresses the provided ordered list of lines into a byte sequence.
