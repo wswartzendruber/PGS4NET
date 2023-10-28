@@ -29,7 +29,7 @@ public static partial class StreamExtensions
     ///     thrown.
     /// </remarks>
     /// <returns>
-    ///     A collection <see cref="Segments" />s that was read from the
+    ///     A collection <see cref="Segments" />s that were read from the
     ///     <paramref name="stream" />, or an empty collection if the stream was already at its
     ///     end.
     /// </returns>
@@ -59,7 +59,7 @@ public static partial class StreamExtensions
     ///     thrown.
     /// </remarks>
     /// <returns>
-    ///     A collection <see cref="Segments" />s that was read from the
+    ///     A collection <see cref="Segments" />s that were read from the
     ///     <paramref name="stream" />, or an empty collection if the stream was already at its
     ///     end.
     /// </returns>

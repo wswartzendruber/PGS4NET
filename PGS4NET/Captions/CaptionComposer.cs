@@ -12,24 +12,24 @@ using System;
 using System.Collections.Generic;
 using PGS4NET.DisplaySets;
 
-namespace PGS4NET.Epochs;
+namespace PGS4NET.Captions;
 
 /// <summary>
-///     Statefully composes epochs using sequentially input display sets. Also supports
-///     immediate epoch decomposition into display sets.
+///     Statefully composes captions using sequentially input display sets. Also supports
+///     immediate caption decomposition into display sets.
 /// </summary>
-public class EpochComposer
+public class CaptionComposer
 {
     /// <summary>
     ///     Inputs the next <see cref="DisplaySet" /> into the composer, returning a new
-    ///     <see cref="Epoch" /> instance if one can be composed, or <see langword="null" /> if
-    ///     more display sets are required.
+    ///     <see cref="Caption" /> instance if one can be composed, or <see langword="null" />
+    ///     if more display sets are required.
     /// </summary>
-    /// <exception cref="EpochException">
-    ///     Thrown when a combination of otherwise valid display sets cannot be combined into an
-    ///     epoch.
+    /// <exception cref="CaptionException">
+    ///     Thrown when a combination of otherwise valid display sets cannot be combined into a
+    ///     caption.
     /// </exception>
-    public Epoch? Input(DisplaySet displaySet)
+    public Caption? Input(DisplaySet displaySet)
     {
         return null;
     }
@@ -42,9 +42,9 @@ public class EpochComposer
     }
 
     /// <summary>
-    ///     Decomposes a single epoch into a collection of display sets.
+    ///     Decomposes a single caption into a collection of display sets.
     /// </summary>
-    public static IList<DisplaySet> Decompose(Epoch epoch)
+    public static IList<DisplaySet> Decompose(Caption caption)
     {
         var returnValue = new List<DisplaySet>();
 

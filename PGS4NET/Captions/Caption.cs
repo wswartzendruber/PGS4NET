@@ -10,12 +10,11 @@
 
 using System.Collections.Generic;
 
-namespace PGS4NET.Epochs;
+namespace PGS4NET.Captions;
 
 /// <summary>
-///     A collection of display sets that, when taken together, represent one or more captions
-///     appearing on the screen.
+///     Represents one or more captions appearing and then disappearing from the screen.
 /// </summary>
-public class Epoch
+public class Caption
 {
 }

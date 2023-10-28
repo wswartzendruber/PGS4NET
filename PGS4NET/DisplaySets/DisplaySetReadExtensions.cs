@@ -43,7 +43,7 @@ public static partial class DisplaySetExtensions
     ///     <see cref="DisplaySet" /> causes an exception to be thrown.
     /// </remarks>
     /// <returns>
-    ///     A collection <see cref="DisplaySet" />s that was read from the
+    ///     A collection <see cref="DisplaySet" />s that were read from the
     ///     <paramref name="stream" />, or an empty collection if the stream was already at its
     ///     end.
     /// </returns>
@@ -92,7 +92,7 @@ public static partial class DisplaySetExtensions
     ///     <see cref="DisplaySet" /> causes an exception to be thrown.
     /// </remarks>
     /// <returns>
-    ///     A collection <see cref="DisplaySet" />s that was read from the
+    ///     A collection <see cref="DisplaySet" />s that were read from the
     ///     <paramref name="stream" />, or an empty collection if the stream was already at its
     ///     end.
     /// </returns>

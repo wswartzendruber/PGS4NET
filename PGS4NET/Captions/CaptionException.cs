@@ -10,17 +10,17 @@
 
 using System;
 
-namespace PGS4NET.Epochs;
+namespace PGS4NET.Captions;
 
 /// <summary>
-///     Represents a display set error.
+///     Represents a caption error.
 /// </summary>
-public class EpochException : Exception
+public class CaptionException : Exception
 {
     /// <summary>
     ///     Initializes a new instance of the class.
     /// </summary>
-    public EpochException()
+    public CaptionException()
     {
     }
 
@@ -30,7 +30,7 @@ public class EpochException : Exception
     /// <param name="message">
     ///     The message that describes the error.
     /// </param>
-    public EpochException(string message) : base(message)
+    public CaptionException(string message) : base(message)
     {
     }
 
@@ -44,7 +44,7 @@ public class EpochException : Exception
     /// <param name="inner">
     ///     The exception that is the cause of the current exception.
     /// </param>
-    public EpochException(string message, Exception inner) : base(message, inner)
+    public CaptionException(string message, Exception inner) : base(message, inner)
     {
     }
 }

@@ -14,22 +14,22 @@ using System.Threading.Tasks;
 using PGS4NET.DisplaySets;
 using PGS4NET.Segments;
 
-namespace PGS4NET.Epochs;
+namespace PGS4NET.Captions;
 
 /// <summary>
-///     Contains extensions against different classes for intuitively handling epochs.
+///     Contains extensions against different classes for intuitively handling captions.
 /// </summary>
-public static partial class DisplaySetExtensions
+public static partial class CaptionExtensions
 {
     /// <summary>
-    ///     Writes all <see cref="Epochs" />s in a collection to a <paramref name="stream" />.
+    ///     Writes all <see cref="Captions" />s in a collection to a <paramref name="stream" />.
     /// </summary>
     /// <remarks>
-    ///     Internally, this method iterates through each <see cref="Epoch" /> and:
+    ///     Internally, this method iterates through each <see cref="Caption" /> and:
     ///     <list type="number">
     ///         <item>
     ///             <description>
-    ///                 Decomposes the <see cref="Epoch" /> into a collection of
+    ///                 Decomposes the <see cref="Caption" /> into a collection of
     ///                 <see cref="DisplaySet" />s.
     ///             </description>
     ///         </item>
@@ -46,8 +46,8 @@ public static partial class DisplaySetExtensions
     ///         </item>
     ///     </list>
     /// </remarks>
-    /// <exception cref="EpochException">
-    ///     Thrown when an <see cref="Epoch" /> cannot be decomposed into a collection of
+    /// <exception cref="CaptionException">
+    ///     Thrown when a <see cref="Caption" /> cannot be decomposed into a collection of
     ///     <see cref="DisplaySet" />s.
     /// </exception>
     /// <exception cref="DisplaySetException">
@@ -62,22 +62,22 @@ public static partial class DisplaySetExtensions
     ///     Thrown when an underlying IO error occurs while attempting to write a
     ///     <see cref="Segment" /> to the <paramref name="stream" />.
     /// </exception>
-    public static void WriteAllEpochs(this Stream stream, IEnumerable<Epoch> epochs)
+    public static void WriteAllCaptions(this Stream stream, IEnumerable<Caption> captions)
     {
-        foreach (var epoch in epochs)
-            stream.WriteEpoch(epoch);
+        foreach (var caption in captions)
+            stream.WriteCaption(caption);
     }
 
     /// <summary>
-    ///     Asynchronously writes all <see cref="Epochs" />s in a collection to a
+    ///     Asynchronously writes all <see cref="Captions" />s in a collection to a
     ///     <paramref name="stream" />.
     /// </summary>
     /// <remarks>
-    ///     Internally, this method iterates through each <see cref="Epoch" /> and:
+    ///     Internally, this method iterates through each <see cref="Caption" /> and:
     ///     <list type="number">
     ///         <item>
     ///             <description>
-    ///                 Decomposes the <see cref="Epoch" /> into a collection of
+    ///                 Decomposes the <see cref="Caption" /> into a collection of
     ///                 <see cref="DisplaySet" />s.
     ///             </description>
     ///         </item>
@@ -94,8 +94,8 @@ public static partial class DisplaySetExtensions
     ///         </item>
     ///     </list>
     /// </remarks>
-    /// <exception cref="EpochException">
-    ///     Thrown when an <see cref="Epoch" /> cannot be decomposed into a collection of
+    /// <exception cref="CaptionException">
+    ///     Thrown when a <see cref="Caption" /> cannot be decomposed into a collection of
     ///     <see cref="DisplaySet" />s.
     /// </exception>
     /// <exception cref="DisplaySetException">
@@ -110,21 +110,22 @@ public static partial class DisplaySetExtensions
     ///     Thrown when an underlying IO error occurs while attempting to write a
     ///     <see cref="Segment" /> to the <paramref name="stream" />.
     /// </exception>
-    public static async Task WriteAllEpochsAsync(this Stream stream, IEnumerable<Epoch> epochs)
+    public static async Task WriteAllCaptionsAsync(this Stream stream
+        , IEnumerable<Caption> captions)
     {
-        foreach (var epoch in epochs)
-            await stream.WriteEpochAsync(epoch);
+        foreach (var caption in captions)
+            await stream.WriteCaptionAsync(caption);
     }
 
     /// <summary>
-    ///     Writes an <see cref="Epoch" /> to a <paramref name="stream" />.
+    ///     Writes a <see cref="Caption" /> to a <paramref name="stream" />.
     /// </summary>
     /// <remarks>
     ///     Internally, this method:
     ///     <list type="number">
     ///         <item>
     ///             <description>
-    ///                 Decomposes the <see cref="Epoch" /> into a collection of
+    ///                 Decomposes the <see cref="Caption" /> into a collection of
     ///                 <see cref="DisplaySet" />s.
     ///             </description>
     ///         </item>
@@ -141,8 +142,8 @@ public static partial class DisplaySetExtensions
     ///         </item>
     ///     </list>
     /// </remarks>
-    /// <exception cref="EpochException">
-    ///     Thrown when an <see cref="Epoch" /> cannot be decomposed into a collection of
+    /// <exception cref="CaptionException">
+    ///     Thrown when a <see cref="Caption" /> cannot be decomposed into a collection of
     ///     <see cref="DisplaySet" />s.
     /// </exception>
     /// <exception cref="DisplaySetException">
@@ -157,21 +158,21 @@ public static partial class DisplaySetExtensions
     ///     Thrown when an underlying IO error occurs while attempting to write a
     ///     <see cref="Segment" /> to the <paramref name="stream" />.
     /// </exception>
-    public static void WriteEpoch(this Stream stream, Epoch epoch)
+    public static void WriteCaption(this Stream stream, Caption caption)
     {
-        foreach (var displaySet in EpochComposer.Decompose(epoch))
+        foreach (var displaySet in CaptionComposer.Decompose(caption))
             stream.WriteDisplaySet(displaySet);
     }
 
     /// <summary>
-    ///     Asynchronously writes an <see cref="Epoch" /> to a <paramref name="stream" />.
+    ///     Asynchronously writes a <see cref="Caption" /> to a <paramref name="stream" />.
     /// </summary>
     /// <remarks>
     ///     Internally, this method:
     ///     <list type="number">
     ///         <item>
     ///             <description>
-    ///                 Decomposes the <see cref="Epoch" /> into a collection of
+    ///                 Decomposes the <see cref="Caption" /> into a collection of
     ///                 <see cref="DisplaySet" />s.
     ///             </description>
     ///         </item>
@@ -188,8 +189,8 @@ public static partial class DisplaySetExtensions
     ///         </item>
     ///     </list>
     /// </remarks>
-    /// <exception cref="EpochException">
-    ///     Thrown when an <see cref="Epoch" /> cannot be decomposed into a collection of
+    /// <exception cref="CaptionException">
+    ///     Thrown when a <see cref="Caption" /> cannot be decomposed into a collection of
     ///     <see cref="DisplaySet" />s.
     /// </exception>
     /// <exception cref="DisplaySetException">
@@ -204,26 +205,26 @@ public static partial class DisplaySetExtensions
     ///     Thrown when an underlying IO error occurs while attempting to write a
     ///     <see cref="Segment" /> to the <paramref name="stream" />.
     /// </exception>
-    public static async Task WriteEpochAsync(this Stream stream, Epoch epoch)
+    public static async Task WriteCaptionAsync(this Stream stream, Caption caption)
     {
-        foreach (var displaySet in EpochComposer.Decompose(epoch))
+        foreach (var displaySet in CaptionComposer.Decompose(caption))
             await stream.WriteDisplaySetAsync(displaySet);
     }
 
     /// <summary>
-    ///     Decomposes a collection of <see cref="Epoch" />s into a collection of
+    ///     Decomposes a collection of <see cref="Caption" />s into a collection of
     ///     <see cref="DisplaySet" />s.
     /// </summary>
-    /// <exception cref="EpochException">
-    ///     Thrown when an <see cref="Epoch" /> cannot be decomposed into a collection of
+    /// <exception cref="CaptionException">
+    ///     Thrown when a <see cref="Caption" /> cannot be decomposed into a collection of
     ///     <see cref="DisplaySet" />s.
     /// </exception>
-    public static IList<DisplaySet> ToDisplaySetList(this IEnumerable<Epoch> epochs)
+    public static IList<DisplaySet> ToDisplaySetList(this IEnumerable<Caption> captions)
     {
         var returnValue = new List<DisplaySet>();
 
-        foreach (var epoch in epochs)
-            returnValue.AddRange(EpochComposer.Decompose(epoch));
+        foreach (var caption in captions)
+            returnValue.AddRange(CaptionComposer.Decompose(caption));
 
         return returnValue;
     }

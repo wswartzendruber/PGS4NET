@@ -14,15 +14,15 @@ using System.Threading.Tasks;
 using PGS4NET.DisplaySets;
 using PGS4NET.Segments;
 
-namespace PGS4NET.Epochs;
+namespace PGS4NET.Captions;
 
 /// <summary>
-///     Contains extensions against different classes for intuitively handling epochs.
+///     Contains extensions against different classes for intuitively handling captions.
 /// </summary>
-public static partial class EpochExtensions
+public static partial class CaptionExtensions
 {
     /// <summary>
-    ///     Reads all <see cref="Epoch" />s from a <paramref name="stream" />.
+    ///     Reads all <see cref="Caption" />s from a <paramref name="stream" />.
     /// </summary>
     /// <remarks>
     ///     Internally, this method:
@@ -35,28 +35,28 @@ public static partial class EpochExtensions
     ///         </item>
     ///         <item>
     ///             <description>
-    ///                 Composes enough <see cref="DisplaySet" />s until an <see cref="Epoch" />
-    ///                 can be composed.
+    ///                 Composes enough <see cref="DisplaySet" />s until a
+    ///                 <see cref="Caption" /> can be composed.
     ///             </description>
     ///         </item>
     ///         <item>
     ///             <description>
-    ///                 Adds the composed <see cref="Epoch" /> to the return collection.
+    ///                 Adds the composed <see cref="Caption" /> to the return collection.
     ///             </description>
     ///         </item>
     ///     </list>
     ///     The entire <paramref name="stream" /> is read in this manner until its end is
     ///     reached. Any trailing data that cannot ultimately form a complete
-    ///     <see cref="Epoch" /> causes an exception to be thrown.
+    ///     <see cref="Caption" /> causes an exception to be thrown.
     /// </remarks>
     /// <returns>
-    ///     A collection <see cref="Epoch" />s that was read from the
+    ///     A collection <see cref="Caption" />s that were read from the
     ///     <paramref name="stream" />, or an empty collection if the stream was already at its
     ///     end.
     /// </returns>
-    /// <exception cref="EpochException">
+    /// <exception cref="CaptionException">
     ///     Thrown when a combination of individually valid <see cref="DisplaySet" />s cannot be
-    ///     composed into an <see cref="Epoch" />.
+    ///     composed into an <see cref="Caption" />.
     /// </exception>
     /// <exception cref="DisplaySetException">
     ///     Thrown when a combination of individually valid <see cref="Segment" />s cannot be
@@ -69,18 +69,18 @@ public static partial class EpochExtensions
     ///     Thrown when an underlying IO error occurs while attempting to read a segment from
     ///     the <paramref name="stream" />.
     /// </exception>
-    public static IList<Epoch> ReadAllEpochs(this Stream stream)
+    public static IList<Caption> ReadAllCaptions(this Stream stream)
     {
-        var returnValue = new List<Epoch>();
+        var returnValue = new List<Caption>();
 
-        while (stream.ReadEpoch() is Epoch epoch)
-            returnValue.Add(epoch);
+        while (stream.ReadCaption() is Caption caption)
+            returnValue.Add(caption);
 
         return returnValue;
     }
 
     /// <summary>
-    ///     Asynchronously reads all <see cref="Epoch" />s from a <paramref name="stream" />.
+    ///     Asynchronously reads all <see cref="Caption" />s from a <paramref name="stream" />.
     /// </summary>
     /// <remarks>
     ///     Internally, this method:
@@ -93,28 +93,28 @@ public static partial class EpochExtensions
     ///         </item>
     ///         <item>
     ///             <description>
-    ///                 Composes enough <see cref="DisplaySet" />s until an <see cref="Epoch" />
-    ///                 can be composed.
+    ///                 Composes enough <see cref="DisplaySet" />s until a
+    ///                 <see cref="Caption" /> can be composed.
     ///             </description>
     ///         </item>
     ///         <item>
     ///             <description>
-    ///                 Adds the composed <see cref="Epoch" /> to the return collection.
+    ///                 Adds the composed <see cref="Caption" /> to the return collection.
     ///             </description>
     ///         </item>
     ///     </list>
     ///     The entire <paramref name="stream" /> is read in this manner until its end is
     ///     reached. Any trailing data that cannot ultimately form a complete
-    ///     <see cref="Epoch" /> causes an exception to be thrown.
+    ///     <see cref="Caption" /> causes an exception to be thrown.
     /// </remarks>
     /// <returns>
-    ///     A collection <see cref="Epoch" />s that was read from the
+    ///     A collection <see cref="Caption" />s that were read from the
     ///     <paramref name="stream" />, or an empty collection if the stream was already at its
     ///     end.
     /// </returns>
-    /// <exception cref="EpochException">
+    /// <exception cref="CaptionException">
     ///     Thrown when a combination of individually valid <see cref="DisplaySet" />s cannot be
-    ///     composed into an <see cref="Epoch" />.
+    ///     composed into an <see cref="Caption" />.
     /// </exception>
     /// <exception cref="DisplaySetException">
     ///     Thrown when a combination of individually valid <see cref="Segment" />s cannot be
@@ -127,18 +127,18 @@ public static partial class EpochExtensions
     ///     Thrown when an underlying IO error occurs while attempting to read a segment from
     ///     the <paramref name="stream" />.
     /// </exception>
-    public static async Task<IList<Epoch>> ReadAllEpochsAsync(this Stream stream)
+    public static async Task<IList<Caption>> ReadAllCaptionsAsync(this Stream stream)
     {
-        var returnValue = new List<Epoch>();
+        var returnValue = new List<Caption>();
 
-        while (await stream.ReadEpochAsync() is Epoch epoch)
-            returnValue.Add(epoch);
+        while (await stream.ReadCaptionAsync() is Caption caption)
+            returnValue.Add(caption);
 
         return returnValue;
     }
 
     /// <summary>
-    ///     Reads an <see cref="Epoch" /> from a <paramref name="stream" />.
+    ///     Reads a <see cref="Caption" /> from a <paramref name="stream" />.
     /// </summary>
     /// <remarks>
     ///     Internally, this method:
@@ -151,20 +151,20 @@ public static partial class EpochExtensions
     ///         </item>
     ///         <item>
     ///             <description>
-    ///                 Composes enough <see cref="DisplaySet" />s until an <see cref="Epoch" />
-    ///                 can be composed.
+    ///                 Composes enough <see cref="DisplaySet" />s until a
+    ///                 <see cref="Caption" /> can be composed.
     ///             </description>
     ///         </item>
     ///     </list>
-    ///     Only the data necessary to compose an <see cref="Epoch" /> is read from the
+    ///     Only the data necessary to compose a <see cref="Caption" /> is read from the
     ///     <paramref name="stream" />.
     /// </remarks>
     /// <returns>
-    ///     The <see cref="Epoch" /> that was read from the <paramref name="stream" />.
+    ///     The <see cref="Caption" /> that was read from the <paramref name="stream" />.
     /// </returns>
-    /// <exception cref="EpochException">
+    /// <exception cref="CaptionException">
     ///     Thrown when a combination of individually valid <see cref="DisplaySet" />s cannot be
-    ///     composed into an <see cref="Epoch" />.
+    ///     composed into an <see cref="Caption" />.
     /// </exception>
     /// <exception cref="DisplaySetException">
     ///     Thrown when a combination of individually valid <see cref="Segment" />s cannot be
@@ -177,27 +177,27 @@ public static partial class EpochExtensions
     ///     Thrown when an underlying IO error occurs while attempting to read a segment from
     ///     the <paramref name="stream" />.
     /// </exception>
-    public static Epoch? ReadEpoch(this Stream stream)
+    public static Caption? ReadCaption(this Stream stream)
     {
         var read = false;
-        var composer = new EpochComposer();
+        var composer = new CaptionComposer();
 
         while (stream.ReadDisplaySet() is DisplaySet displaySet)
         {
             read = true;
 
-            if (composer.Input(displaySet) is Epoch epoch)
-                return epoch;
+            if (composer.Input(displaySet) is Caption caption)
+                return caption;
         }
 
         if (read)
-            throw new EpochException("EOF during epoch composition.");
+            throw new CaptionException("EOF during caption composition.");
 
         return null;
     }
 
     /// <summary>
-    ///     Asynchronously reads an <see cref="Epoch" /> from a <paramref name="stream" />.
+    ///     Asynchronously reads a <see cref="Caption" /> from a <paramref name="stream" />.
     /// </summary>
     /// <remarks>
     ///     Internally, this method:
@@ -210,20 +210,20 @@ public static partial class EpochExtensions
     ///         </item>
     ///         <item>
     ///             <description>
-    ///                 Composes enough <see cref="DisplaySet" />s until an <see cref="Epoch" />
-    ///                 can be composed.
+    ///                 Composes enough <see cref="DisplaySet" />s until a
+    ///                 <see cref="Caption" /> can be composed.
     ///             </description>
     ///         </item>
     ///     </list>
-    ///     Only the data necessary to compose an <see cref="Epoch" /> is read from the
+    ///     Only the data necessary to compose a <see cref="Caption" /> is read from the
     ///     <paramref name="stream" />.
     /// </remarks>
     /// <returns>
-    ///     The <see cref="Epoch" /> that was read from the <paramref name="stream" />.
+    ///     The <see cref="Caption" /> that was read from the <paramref name="stream" />.
     /// </returns>
-    /// <exception cref="EpochException">
+    /// <exception cref="CaptionException">
     ///     Thrown when a combination of individually valid <see cref="DisplaySet" />s cannot be
-    ///     composed into an <see cref="Epoch" />.
+    ///     composed into an <see cref="Caption" />.
     /// </exception>
     /// <exception cref="DisplaySetException">
     ///     Thrown when a combination of individually valid <see cref="Segment" />s cannot be
@@ -236,32 +236,32 @@ public static partial class EpochExtensions
     ///     Thrown when an underlying IO error occurs while attempting to read a segment from
     ///     the <paramref name="stream" />.
     /// </exception>
-    public static async Task<Epoch?> ReadEpochAsync(this Stream stream)
+    public static async Task<Caption?> ReadCaptionAsync(this Stream stream)
     {
         var read = false;
-        var composer = new EpochComposer();
+        var composer = new CaptionComposer();
 
         while (await stream.ReadDisplaySetAsync() is DisplaySet displaySet)
         {
             read = true;
 
-            if (composer.Input(displaySet) is Epoch epoch)
-                return epoch;
+            if (composer.Input(displaySet) is Caption caption)
+                return caption;
         }
 
         if (read)
-            throw new EpochException("EOF during epoch composition.");
+            throw new CaptionException("EOF during caption composition.");
 
         return null;
     }
 
     /// <summary>
     ///     Composes a collection of <see cref="DisplaySet" />s into a collection of
-    ///     <see cref="Epoch" />s.
+    ///     <see cref="Caption" />s.
     /// </summary>
-    /// <exception cref="EpochException">
+    /// <exception cref="CaptionException">
     ///     Thrown when a combination of individually valid <see cref="DisplaySet" />s cannot be
-    ///     composed into an <see cref="Epoch" />.
+    ///     composed into a <see cref="Caption" />.
     /// </exception>
     public static IList<DisplaySet> ToDisplaySetList(this IEnumerable<Segment> segments)
     {
