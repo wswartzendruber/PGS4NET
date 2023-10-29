@@ -13,7 +13,7 @@ using System.Collections.Generic;
 namespace PGS4NET.Captions;
 
 /// <summary>
-///     Represents one or more captions appearing and then disappearing from the screen.
+///     Represents a single caption that appears on the screen.
 /// </summary>
 public class Caption
 {
