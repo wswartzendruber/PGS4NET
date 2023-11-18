@@ -150,7 +150,7 @@ public class DisplaySetComposer
                         {
                             Width = sods.Width,
                             Height = sods.Height,
-                            Lines = Rle.Decompress(sods.Data),
+                            Data = Rle.Decompress(sods.Data, sods.Width, sods.Height),
                         };
                     }
                     else
@@ -240,7 +240,8 @@ public class DisplaySetComposer
                         {
                             Width = InitialObject.Width,
                             Height = InitialObject.Height,
-                            Lines = Rle.Decompress(data),
+                            Data = Rle.Decompress(data.ToArray(), InitialObject.Width
+                                , InitialObject.Height),
                         };
 
                         InitialObject = null;
@@ -412,7 +413,8 @@ public class DisplaySetComposer
 
         foreach (var displayObject in displaySet.Objects)
         {
-            var data = Rle.Compress(displayObject.Value.Lines);
+            var data = Rle.Compress(displayObject.Value.Data, displayObject.Value.Width
+                , displayObject.Value.Height);
 
             if (data.Length > InitialObjectDefinitionSegment.MaxDataSize)
             {

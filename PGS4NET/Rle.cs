@@ -8,6 +8,7 @@
  * SPDX-License-Identifier: MPL-2.0
  */
 
+using System;
 using System.Collections.Generic;
 
 namespace PGS4NET;
@@ -18,37 +19,66 @@ namespace PGS4NET;
 public static class Rle
 {
     // COMPRESSION
-    private static readonly RleException LineTooLong = new("Line too long.");
+    private static readonly RleException LineTooLong
+        = new("RLE line is too long.");
 
     // DECOMPRESSION
     private static readonly RleException IncompleteRleLine
         = new("Incomplete RLE line.");
+    private static readonly RleException InvalidRleLineLength
+        = new("Invalid RLE line length.");
+    private static readonly RleException InvalidRleLineCount
+        = new("Invalid RLE line count.");
     private static readonly RleException IncompleteRleSequence
         = new("Incomplete RLE sequence.");
     private static readonly RleException InvalidRleSequence
         = new("Invalid RLE sequence.");
 
     /// <summary>
-    ///     Compresses the provided ordered list of lines into a byte sequence.
+    ///     Compresses the provided object data using PGS RLE.
     /// </summary>
     /// <param name="input">
-    ///     An ordered list of lines, each one of which contains an ordered list of palette
-    ///     entries defined elsewhere.
+    ///     An ordered list of object pixel data where each byte addresses a palette entry
+    ///     during playback. The length of the input must be the product of the
+    ///     <paramref name="width" /> and the <paramref name="height" />.
+    /// </param>
+    /// <param name="width">
+    ///     The width of the object in pixels.
+    /// </param>
+    /// <param name="height">
+    ///     The height of the object in pixels.
     /// </param>
     /// <returns>
     ///     An RLE-compressed byte sequence.
     /// </returns>
-    public static byte[] Compress(IList<IList<byte>> input)
+    public static byte[] Compress(byte[] input, ushort width, ushort height)
     {
+        if ((width == 0) ^ (height == 0))
+        {
+            throw new ArgumentException(
+                "The width and height parameters may not be zero unless both are zero."
+            );
+        }
+        if (input.Length != width * height)
+        {
+            throw new ArgumentException(
+                "Input length is not the product of the width and the height."
+            );
+        }
+
         var output = new List<byte>();
         byte value = 0x00;
         uint count = 0;
 
-        foreach (var line in input)
+        for (ushort x = 0; x < input.Length; x += width)
         {
-            foreach (var nextValue in line)
+            var end = x + width;
+
+            for (ushort i = x; i < end; i++)
             {
-                if (nextValue == value)
+                var current = input[i];
+
+                if (current == value)
                 {
                     count += 1;
                 }
@@ -56,7 +86,7 @@ public static class Rle
                 {
                     if (count > 0)
                         OutputRleSequence(output, value, count);
-                    value = nextValue;
+                    value = current;
                     count = 1;
                 }
             }
@@ -73,60 +103,81 @@ public static class Rle
     }
 
     /// <summary>
-    ///     Decompresses the provided byte sequence into an ordered list of lines.
+    ///     Decompresses the provided PGS RLE buffer into object data.
     /// </summary>
     /// <param name="input">
     ///     An RLE-compressed byte sequence.
     /// </param>
+    /// <param name="width">
+    ///     The width of the object in pixels.
+    /// </param>
+    /// <param name="height">
+    ///     The height of the object in pixels.
+    /// </param>
     /// <returns>
-    ///     An ordered list of lines, each one of which contains an ordered list of palette
-    ///     entries defined elsewhere.
+    ///     An ordered list of object pixel data where each byte addresses a palette entry
+    ///     during playback. The length of the input will be the product of the
+    ///     <see name="width" /> and the <paramref name="height" />.
     /// </returns>
-    /// <exception cref="PGS4NET.RleException">
+    /// <exception cref="RleException">
     ///     <list type="bullet">
     ///         <item>An invalid RLE sequence is encountered.</item>
     ///         <item>An incomplete RLE sequence is encountered.</item>
     ///         <item>An incomplete RLE line is encountered.</item>
+    ///         <item>An RLE line has a length other than <paramref name="width" />.</item>
+    ///         <item>The number of RLE lines contradicts <paramref name="height" />.</item>
     ///     </list>
     /// </exception>
-    public static IList<IList<byte>> Decompress(IEnumerable<byte> input)
+    public static byte[] Decompress(byte[] input, ushort width, ushort height)
     {
-        var output = new List<IList<byte>>();
-        var line = new List<byte>();
-        var enumerator = input.GetEnumerator();
+        if ((width == 0) ^ (height == 0))
+        {
+            throw new ArgumentException(
+                "The width and height parameters may not be zero unless both are zero."
+            );
+        }
+
+        var inIndex = 0;
+        var outIndex = 0;
+        var output = new byte[width * height];
+        var lineOpen = false;
 
         while (true)
         {
-            if (enumerator.MoveNext())
+            if (inIndex < input.Length)
             {
-                var byte1 = enumerator.Current;
+                var byte1 = input[inIndex++];
+
+                lineOpen = true;
 
                 if (byte1 == 0x00)
                 {
-                    if (enumerator.MoveNext())
+                    if (inIndex < input.Length)
                     {
-                        var byte2 = enumerator.Current;
+                        var byte2 = input[inIndex++];
                         var flag = byte2 >> 6;
 
                         if (byte2 == 0x00)
                         {
-                            output.Add(line);
-                            line = new List<byte>();
+                            if (outIndex % width != 0)
+                                throw InvalidRleLineLength;
+
+                            lineOpen = false;
                         }
                         else if (flag == 0)
                         {
                             for (byte i = 0x00; i < (byte2 & 0x3F); i++)
-                                line.Add(0);
+                                output[outIndex++] = 0x00;
                         }
                         else if (flag == 1)
                         {
-                            if (enumerator.MoveNext())
+                            if (inIndex < input.Length)
                             {
-                                var byte3 = enumerator.Current;
+                                var byte3 = input[inIndex++];
                                 var limit = ((ushort)byte2 & 0x3F) << 8 | (ushort)byte3;
 
                                 for (var i = 0; i < limit; i++)
-                                    line.Add(0);
+                                    output[outIndex++] = 0x00;
                             }
                             else
                             {
@@ -135,12 +186,12 @@ public static class Rle
                         }
                         else if (flag == 2)
                         {
-                            if (enumerator.MoveNext())
+                            if (inIndex < input.Length)
                             {
-                                var byte3 = enumerator.Current;
+                                var byte3 = input[inIndex++];
 
                                 for (byte i = 0x00; i < (byte2 & 0x3F); i++)
-                                    line.Add(byte3);
+                                    output[outIndex++] = byte3;
                             }
                             else
                             {
@@ -149,17 +200,17 @@ public static class Rle
                         }
                         else if (flag == 3)
                         {
-                            if (enumerator.MoveNext())
+                            if (inIndex < input.Length)
                             {
-                                var byte3 = enumerator.Current;
+                                var byte3 = input[inIndex++];
                                 var limit = ((ushort)byte2 & 0x3F) << 8 | (ushort)byte3;
 
-                                if (enumerator.MoveNext())
+                                if (inIndex < input.Length)
                                 {
-                                    var byte4 = enumerator.Current;
+                                    var byte4 = input[inIndex++];
 
                                     for (var i = 0; i < limit; i++)
-                                        line.Add(byte4);
+                                        output[outIndex++] = byte4;
                                 }
                                 else
                                 {
@@ -183,7 +234,7 @@ public static class Rle
                 }
                 else
                 {
-                    line.Add(byte1);
+                    output[outIndex++] = byte1;
                 }
             }
             else
@@ -192,7 +243,7 @@ public static class Rle
             }
         }
 
-        if (line.Count > 0)
+        if (lineOpen || outIndex != output.Length)
             throw IncompleteRleLine;
 
         return output;

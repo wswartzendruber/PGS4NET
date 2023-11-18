@@ -178,12 +178,7 @@ internal static class DisplaySetInstances
                             Id = RandomUInt16(128),
                             Version = RandomByte(),
                         },
-                        new DisplayObject
-                        {
-                            Width = RandomUInt16(),
-                            Height = RandomUInt16(),
-                            Lines = new List<IList<byte>>(),
-                        }
+                        RandomDisplayObject()
                     },
                     {
                         new VersionedId<ushort>
@@ -309,27 +304,20 @@ internal static class DisplaySetInstances
 
     private static DisplayObject RandomDisplayObject()
     {
+        var width = (ushort)(RandomUInt16(99) + 1);
+        var height = (ushort)(RandomUInt16(99) + 1);
         var max = UInt24Max / 2;
         var count = 32;
         var eachMax = max / count;
-        var lines = new List<IList<byte>>();
+        var data = new byte[width * height];
 
-        for (int i = 0; i < count; i++)
-        {
-            var lineMax = Rng.Next(eachMax);
-            var newLine = new List<byte>();
-
-            for (int j = 0; j < lineMax; j++)
-                newLine.Add(RandomByte());
-
-            lines.Add(newLine);
-        }
+        Rng.NextBytes(data);
 
         return new DisplayObject
         {
-            Width = RandomUInt16(),
-            Height = RandomUInt16(),
-            Lines = lines,
+            Width = width,
+            Height = height,
+            Data = data,
         };
     }
 }

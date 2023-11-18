@@ -29,8 +29,9 @@ public class DisplayObject
     public ushort Height;
 
     /// <summary>
-    ///     The line data of this object. Each value refers to a palette entry.
-    ///     <c>lines[2][4]</c> would refer to the fifth pixel on the third line.
+    ///     An ordered list of object pixel data where each byte addresses a palette entry
+    ///     during playback. The length should be the product of the <see cref="Width" />
+    ///     and the <see cref="Height" />.
     /// </summary>
-    public IList<IList<byte>> Lines = new List<IList<byte>>();
+    public byte[] Data = new byte[0];
 }

@@ -217,34 +217,12 @@ public class RoundTrip
             {
                 if (secondObject is null)
                     throw new InvalidOperationException("Got a null DisplayObject back.");
-
                 if (firstObject.Width != secondObject.Width)
                     throw new Exception($"Object Width for {oid} in {name} does not match.");
                 if (firstObject.Height != secondObject.Height)
                     throw new Exception($"Object Height for {oid} in {name} does not match.");
-
-                if (firstObject.Lines.Count != secondObject.Lines.Count)
-                {
-                    throw new Exception($"Object Line count for {oid} in {name} does not "
-                        + "match.");
-                }
-                for (int i = 0; i < firstObject.Lines.Count; i++)
-                {
-                    if (firstObject.Lines[i].Count != secondObject.Lines[i].Count)
-                    {
-                        throw new Exception($"Object Line[{i}] count for {oid} in {name} does "
-                            + "not match.");
-                    }
-
-                    for (int j = 0; j < firstObject.Lines[i].Count; j++)
-                    {
-                        if (firstObject.Lines[i][j] != secondObject.Lines[i][j])
-                        {
-                            throw new Exception($"Object Line[{i}][{j}] for {oid} in {name} "
-                                + "does not match.");
-                        }
-                    }
-                }
+                if (firstObject.Data.SequenceEqual(secondObject.Data))
+                    throw new Exception($"Object Data for {oid} in {name} does not match.");
             }
             else
             {

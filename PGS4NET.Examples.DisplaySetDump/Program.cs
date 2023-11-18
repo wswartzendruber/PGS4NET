@@ -61,7 +61,7 @@ while (stream.ReadDisplaySet() is DisplaySet displaySet)
         Console.WriteLine($"├──────Version: {(int)object_.Key.Version}");
         Console.WriteLine($"├──────Width: {object_.Value.Width}");
         Console.WriteLine($"├──────Height: {object_.Value.Height}");
-        Console.WriteLine($"├──────Lines: {LinesToString(object_.Value.Lines)}");
+        Console.WriteLine($"├──────Data: [{object_.Value.Data.Length}]");
     }
 
     Console.WriteLine("├──Compositions");
@@ -99,21 +99,4 @@ string TsToTimeStamp(uint ts)
     ms -= s * 1_000;
 
     return $"{h.ToString("D2")}:{m.ToString("D2")}:{s.ToString("D2")}.{ms.ToString("D3")}";
-}
-
-string LinesToString(IList<IList<byte>> lines)
-{
-    if (lines.Count > 0)
-    {
-        var count = lines.First().Count;
-
-        if (lines.All(x => x.Count == count))
-            return $"[[ {count} ]]";
-        else
-            return $"[ {string.Join(", ", lines.Select(x => x.Count))} ]";
-    }
-    else
-    {
-        return "[]";
-    }
 }
