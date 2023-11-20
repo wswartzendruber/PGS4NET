@@ -9,18 +9,18 @@
 
     SPDX-License-Identifier: CC0-1.0
 -->
-<Project>
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
-    <BaseOutputPath>$(MSBuildThisFileDirectory)bin/$(MSBuildProjectName)</BaseOutputPath>
-    <BaseIntermediateOutputPath>$(MSBuildThisFileDirectory)obj/$(MSBuildProjectName)</BaseIntermediateOutputPath>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
   </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PGS4NET\PGS4NET.csproj" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0" />
