@@ -221,7 +221,7 @@ public class RoundTrip
                     throw new Exception($"Object Width for {oid} in {name} does not match.");
                 if (firstObject.Height != secondObject.Height)
                     throw new Exception($"Object Height for {oid} in {name} does not match.");
-                if (firstObject.Data.SequenceEqual(secondObject.Data))
+                if (!firstObject.Data.SequenceEqual(secondObject.Data))
                     throw new Exception($"Object Data for {oid} in {name} does not match.");
             }
             else
