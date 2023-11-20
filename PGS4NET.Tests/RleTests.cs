@@ -152,6 +152,51 @@ public class RleTests
     }
 
     [Fact]
+    public void TwoLinesSixtyThreeMixedPixels()
+    {
+        var input = new byte[] { 0x00, 0x3F, 0x00, 0x00, 0x00, 0xBF, 0x01, 0x00, 0x00 };
+        var expected1 = NewPopulatedByteArray(0x00, 63);
+        var expected2 = NewPopulatedByteArray(0x01, 63);
+        var expected = expected1.Concat(expected2).ToArray();
+        var received = Rle.Decompress(input, 63, 2);
+
+        Assert.True(received.SequenceEqual(expected));
+        Assert.True(Rle.Compress(received, 63, 2).SequenceEqual(input));
+    }
+
+    [Fact]
+    public void TwoLinesSixtyFourMixedPixels()
+    {
+        var input = new byte[]
+        {
+            0x00, 0x40, 0x40, 0x00, 0x00, 0x00, 0xC0, 0x40, 0x01, 0x00, 0x00,
+        };
+        var expected1 = NewPopulatedByteArray(0x00, 64);
+        var expected2 = NewPopulatedByteArray(0x01, 64);
+        var expected = expected1.Concat(expected2).ToArray();
+        var received = Rle.Decompress(input, 64, 2);
+
+        Assert.True(received.SequenceEqual(expected));
+        Assert.True(Rle.Compress(received, 64, 2).SequenceEqual(input));
+    }
+
+    [Fact]
+    public void TwoLinesMaxMixedPixels()
+    {
+        var input = new byte[]
+        {
+            0x00, 0x7F, 0xFF, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0x01, 0x00, 0x00,
+        };
+        var expected1 = NewPopulatedByteArray(0x00, 16_383);
+        var expected2 = NewPopulatedByteArray(0x01, 16_383);
+        var expected = expected1.Concat(expected2).ToArray();
+        var received = Rle.Decompress(input, 16_383, 2);
+
+        Assert.True(received.SequenceEqual(expected));
+        Assert.True(Rle.Compress(received, 16_383, 2).SequenceEqual(input));
+    }
+
+    [Fact]
     public void SingleLineZeroWidth()
     {
         var input = new byte[] { };
