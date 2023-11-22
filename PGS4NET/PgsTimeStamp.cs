@@ -13,7 +13,7 @@ using System;
 namespace PGS4NET;
 
 /// <summary>
-///     Represents a PGS time stamp accurate to 90 kHz.
+///     Represents a PGS time stamp accurate to 90 kHz, with 90,000 ticks composing one second.
 /// </summary>
 public struct PgsTimeStamp
 {
