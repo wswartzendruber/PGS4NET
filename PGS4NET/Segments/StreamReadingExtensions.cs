@@ -341,14 +341,17 @@ public static partial class StreamExtensions
             {
                 Id = ReadUInt8(buffer, offset)
                     ?? throw new IOException($"EOS reading PDS[{i}] ID."),
-                Y = ReadUInt8(buffer, offset + 1)
-                    ?? throw new IOException($"EOS reading PDS[{i}] Y value."),
-                Cr = ReadUInt8(buffer, offset + 2)
-                    ?? throw new IOException($"EOS reading PDS[{i}] Cr value."),
-                Cb = ReadUInt8(buffer, offset + 3)
-                    ?? throw new IOException($"EOS reading PDS[{i}] Cb value."),
-                Alpha = ReadUInt8(buffer, offset + 4)
-                    ?? throw new IOException($"EOS reading PDS[{i}] alpha value."),
+                Pixel = new PgsPixel
+                {
+                    Y = ReadUInt8(buffer, offset + 1)
+                        ?? throw new IOException($"EOS reading PDS[{i}] Y value."),
+                    Cr = ReadUInt8(buffer, offset + 2)
+                        ?? throw new IOException($"EOS reading PDS[{i}] Cr value."),
+                    Cb = ReadUInt8(buffer, offset + 3)
+                        ?? throw new IOException($"EOS reading PDS[{i}] Cb value."),
+                    Alpha = ReadUInt8(buffer, offset + 4)
+                        ?? throw new IOException($"EOS reading PDS[{i}] alpha value."),
+                },
             });
             offset += 5;
         }

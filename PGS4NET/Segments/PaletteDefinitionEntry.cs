@@ -25,27 +25,7 @@ public struct PaletteDefinitionEntry
     public byte Id;
 
     /// <summary>
-    ///     The range-limited, gamma-corrected luminosity value of this entry. Black is
-    ///     represented by a value of <c>16</c> while white is represented by a value of
-    ///     <c>235</c>. For standard Blu-ray discs, the BT.709 gamma function is typically used.
-    ///     However, 4K UltraHD discs seem to use the ST.2084 gamma function instead.
+    ///     Defines the color properties of the palette entry.
     /// </summary>
-    public byte Y;
-
-    /// <summary>
-    ///     The vertical position of this entry on the YCbCr color plane, starting from the
-    ///     bottom and going up.
-    /// </summary>
-    public byte Cr;
-
-    /// <summary>
-    ///     The horizontal position of this entry on the YCbCr color plane, starting from the
-    ///     left and going to the right.
-    /// </summary>
-    public byte Cb;
-
-    /// <summary>
-    ///     The alpha value (transparency ratio) of this entry.
-    /// </summary>
-    public byte Alpha;
+    public PgsPixel Pixel;
 }

@@ -282,10 +282,10 @@ public static partial class StreamExtensions
         foreach (var entry in pds.Entries)
         {
             WriteUInt8(ms, entry.Id);
-            WriteUInt8(ms, entry.Y);
-            WriteUInt8(ms, entry.Cr);
-            WriteUInt8(ms, entry.Cb);
-            WriteUInt8(ms, entry.Alpha);
+            WriteUInt8(ms, entry.Pixel.Y);
+            WriteUInt8(ms, entry.Pixel.Cr);
+            WriteUInt8(ms, entry.Pixel.Cb);
+            WriteUInt8(ms, entry.Pixel.Alpha);
         }
 
         WriteUInt16Be(stream, (ushort)ms.Length);

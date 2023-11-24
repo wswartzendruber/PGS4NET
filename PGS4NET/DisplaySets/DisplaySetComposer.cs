@@ -114,10 +114,10 @@ public class DisplaySetComposer
                     {
                         entries[entry.Id] = new PgsPixel
                         {
-                            Y = entry.Y,
-                            Cr = entry.Cr,
-                            Cb = entry.Cb,
-                            Alpha = entry.Alpha,
+                            Y = entry.Pixel.Y,
+                            Cr = entry.Pixel.Cr,
+                            Cb = entry.Pixel.Cb,
+                            Alpha = entry.Pixel.Alpha,
                         };
                     }
 
@@ -394,10 +394,13 @@ public class DisplaySetComposer
                 paletteEntries.Add(new PaletteDefinitionEntry
                 {
                     Id = paletteEntry.Key,
-                    Y = paletteEntry.Value.Y,
-                    Cr = paletteEntry.Value.Cr,
-                    Cb = paletteEntry.Value.Cb,
-                    Alpha = paletteEntry.Value.Alpha,
+                    Pixel = new PgsPixel
+                    {
+                        Y = paletteEntry.Value.Y,
+                        Cr = paletteEntry.Value.Cr,
+                        Cb = paletteEntry.Value.Cb,
+                        Alpha = paletteEntry.Value.Alpha,
+                    },
                 });
             }
 
