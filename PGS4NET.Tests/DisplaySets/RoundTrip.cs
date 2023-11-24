@@ -172,7 +172,7 @@ public class RoundTrip
                     var peid = $"{paletteVid.Id}.{paletteVid.Version}.{paletteEntryId}";
 
                     if (secondPalette.Entries.TryGetValue(paletteEntryId
-                        , out DisplayPaletteEntry secondPaletteEntry))
+                        , out PgsPixel secondPaletteEntry))
                     {
                         if (firstPaletteEntry.Y != secondPaletteEntry.Y)
                         {

@@ -108,11 +108,11 @@ public class DisplaySetComposer
                         throw new DisplaySetException($"Duplicate palette VID: {vid}");
                     }
 
-                    var entries = new Dictionary<byte, DisplayPaletteEntry>();
+                    var entries = new Dictionary<byte, PgsPixel>();
 
                     foreach (var entry in pds.Entries)
                     {
-                        entries[entry.Id] = new DisplayPaletteEntry
+                        entries[entry.Id] = new PgsPixel
                         {
                             Y = entry.Y,
                             Cr = entry.Cr,

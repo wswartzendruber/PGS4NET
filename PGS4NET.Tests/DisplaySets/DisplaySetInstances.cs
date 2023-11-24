@@ -98,7 +98,7 @@ internal static class DisplaySetInstances
                         },
                         new DisplayPalette
                         {
-                            Entries = new Dictionary<byte, DisplayPaletteEntry>
+                            Entries = new Dictionary<byte, PgsPixel>
                             {
                             },
                         }
@@ -111,11 +111,11 @@ internal static class DisplaySetInstances
                         },
                         new DisplayPalette
                         {
-                            Entries = new Dictionary<byte, DisplayPaletteEntry>
+                            Entries = new Dictionary<byte, PgsPixel>
                             {
                                 {
                                     RandomByte(),
-                                    new DisplayPaletteEntry
+                                    new PgsPixel
                                     {
                                         Y = RandomByte(),
                                         Cr = RandomByte(),
@@ -134,11 +134,11 @@ internal static class DisplaySetInstances
                         },
                         new DisplayPalette
                         {
-                            Entries = new Dictionary<byte, DisplayPaletteEntry>
+                            Entries = new Dictionary<byte, PgsPixel>
                             {
                                 {
                                     RandomByte(64),
-                                    new DisplayPaletteEntry
+                                    new PgsPixel
                                     {
                                         Y = RandomByte(),
                                         Cr = RandomByte(),
@@ -148,7 +148,7 @@ internal static class DisplaySetInstances
                                 },
                                 {
                                     (byte)(RandomByte(64) + 64),
-                                    new DisplayPaletteEntry
+                                    new PgsPixel
                                     {
                                         Y = RandomByte(),
                                         Cr = RandomByte(),
@@ -158,7 +158,7 @@ internal static class DisplaySetInstances
                                 },
                                 {
                                     (byte)(RandomByte(64) + 128),
-                                    new DisplayPaletteEntry
+                                    new PgsPixel
                                     {
                                         Y = RandomByte(),
                                         Cr = RandomByte(),

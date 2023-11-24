@@ -21,6 +21,5 @@ public class DisplayPalette
     /// <summary>
     ///     The entries within this palette, each mapped according to its ID.
     /// </summary>
-    public IDictionary<byte, DisplayPaletteEntry> Entries
-        = new Dictionary<byte, DisplayPaletteEntry>();
+    public IDictionary<byte, PgsPixel> Entries = new Dictionary<byte, PgsPixel>();
 }
