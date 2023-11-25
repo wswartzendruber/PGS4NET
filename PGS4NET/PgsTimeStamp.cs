@@ -15,8 +15,10 @@ namespace PGS4NET;
 /// <summary>
 ///     Represents a PGS time stamp accurate to 90 kHz, with 90,000 ticks composing one second.
 /// </summary>
-public struct PgsTimeStamp
+public struct PgsTimeStamp : IEquatable<PgsTimeStamp>
 {
+    private static readonly Type ThisType = typeof(PgsTimeStamp);
+
     /// <summary>
     ///     The number of ticks. 90,000 ticks makes one second.
     /// </summary>
@@ -69,4 +71,41 @@ public struct PgsTimeStamp
     ///     The tick count.
     /// </param>
     public static implicit operator PgsTimeStamp(uint ticks) => new PgsTimeStamp(ticks);
+
+    /// <summary>
+    ///     Determines if the fields of another <see cref="PgsTimeStamp" /> match this one's.
+    /// </summary>
+    public bool Equals(PgsTimeStamp other)
+    {
+        if (Object.ReferenceEquals(this, other))
+            return true;
+
+        return
+            other.Ticks == this.Ticks;
+    }
+
+    /// <summary>
+    ///     Checks if the <paramrem name="other" /> instance is of the same type as this one and
+    ///     then returns the value of the implementation-specific function, otherwise returns
+    ///     <see langword="false" />.
+    /// </summary>
+    public override bool Equals(object? other) =>
+        other?.GetType() == ThisType && Equals((PgsTimeStamp)other);
+
+    /// <summary>
+    ///     Returns the hash code of this instance taking into account the values of all fields.
+    /// </summary>
+    public override int GetHashCode() => (Ticks).GetHashCode();
+
+    /// <summary>
+    ///     Determines if the fields of two <see cref="PgsTimeStamp" />s match each other.
+    /// </summary>
+    public static bool operator ==(PgsTimeStamp first, PgsTimeStamp second) =>
+        first.Equals(second);
+
+    /// <summary>
+    ///     Determines if the fields of two <see cref="PgsTimeStamp" />s don't match each other.
+    /// </summary>
+    public static bool operator !=(PgsTimeStamp first, PgsTimeStamp second) =>
+        !first.Equals(second);
 }

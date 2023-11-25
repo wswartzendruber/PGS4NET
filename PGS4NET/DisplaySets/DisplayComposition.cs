@@ -8,6 +8,8 @@
  * SPDX-License-Identifier: MPL-2.0
  */
 
+using System;
+
 namespace PGS4NET.DisplaySets;
 
 /// <summary>
@@ -15,6 +17,8 @@ namespace PGS4NET.DisplaySets;
 /// </summary>
 public struct DisplayComposition
 {
+    private static readonly Type ThisType = typeof(DisplayComposition);
+
     /// <summary>
     ///     The horizontal offset of the object’s top-left corner relative to the top-left
     ///     corner of the screen. If the object is cropped, then this applies only to the
@@ -39,4 +43,46 @@ public struct DisplayComposition
     ///     shown.
     /// </summary>
     public CroppedArea? Crop;
+
+    /// <summary>
+    ///     Determines if the fields of another <see cref="DisplayComposition" /> match this
+    ///     one's.
+    /// </summary>
+    public bool Equals(DisplayComposition other)
+    {
+        if (Object.ReferenceEquals(this, other))
+            return true;
+
+        return
+            other.X == this.X
+            && other.Y == this.Y
+            && other.Forced == this.Forced
+            && other.Crop == this.Crop;
+    }
+
+    /// <summary>
+    ///     Checks if the <paramrem name="other" /> instance is of the same type as this one and
+    ///     then returns the value of the implementation-specific function, otherwise returns
+    ///     <see langword="false" />.
+    /// </summary>
+    public override bool Equals(object? other) =>
+        other?.GetType() == ThisType && Equals((DisplayComposition)other);
+
+    /// <summary>
+    ///     Returns the hash code of this instance taking into account the values of all fields.
+    /// </summary>
+    public override int GetHashCode() => (X, Y, Forced, Crop).GetHashCode();
+
+    /// <summary>
+    ///     Determines if the fields of two <see cref="DisplayComposition" />s match each other.
+    /// </summary>
+    public static bool operator ==(DisplayComposition first, DisplayComposition second) =>
+        first.Equals(second);
+
+    /// <summary>
+    ///     Determines if the fields of two <see cref="DisplayComposition" />s don't match each
+    ///     other.
+    /// </summary>
+    public static bool operator !=(DisplayComposition first, DisplayComposition second) =>
+        !first.Equals(second);
 }
