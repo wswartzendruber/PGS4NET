@@ -64,8 +64,7 @@ public static partial class CaptionExtensions
     /// </exception>
     public static void WriteAllCaptions(this Stream stream, IEnumerable<Caption> captions)
     {
-        foreach (var caption in captions)
-            stream.WriteCaption(caption);
+        // TODO
     }
 
     /// <summary>
@@ -113,102 +112,7 @@ public static partial class CaptionExtensions
     public static async Task WriteAllCaptionsAsync(this Stream stream
         , IEnumerable<Caption> captions)
     {
-        foreach (var caption in captions)
-            await stream.WriteCaptionAsync(caption);
-    }
-
-    /// <summary>
-    ///     Writes a <see cref="Caption" /> to a <paramref name="stream" />.
-    /// </summary>
-    /// <remarks>
-    ///     Internally, this method:
-    ///     <list type="number">
-    ///         <item>
-    ///             <description>
-    ///                 Decomposes the <see cref="Caption" /> into a collection of
-    ///                 <see cref="DisplaySet" />s.
-    ///             </description>
-    ///         </item>
-    ///         <item>
-    ///             <description>
-    ///                 Decomposes each <see cref="DisplaySet" /> into a collection of
-    ///                 <see cref="Segments" />s.
-    ///             </description>
-    ///         </item>
-    ///         <item>
-    ///             <description>
-    ///                 Writes each <see cref="Segment" /> to the <paramref name="stream" />.
-    ///             </description>
-    ///         </item>
-    ///     </list>
-    /// </remarks>
-    /// <exception cref="CaptionException">
-    ///     Thrown when a <see cref="Caption" /> cannot be decomposed into a collection of
-    ///     <see cref="DisplaySet" />s.
-    /// </exception>
-    /// <exception cref="DisplaySetException">
-    ///     Thrown when a <see cref="DisplaySet" /> cannot be decomposed into a collection of
-    ///     <see cref="Segment" />s.
-    /// </exception>
-    /// <exception cref="SegmentException">
-    ///     Thrown when the properties of a <see cref="Segment" /> cannot be written to the
-    ///     <paramref name="stream" />.
-    /// </exception>
-    /// <exception cref="IOException">
-    ///     Thrown when an underlying IO error occurs while attempting to write a
-    ///     <see cref="Segment" /> to the <paramref name="stream" />.
-    /// </exception>
-    public static void WriteCaption(this Stream stream, Caption caption)
-    {
-        foreach (var displaySet in CaptionComposer.Decompose(caption))
-            stream.WriteDisplaySet(displaySet);
-    }
-
-    /// <summary>
-    ///     Asynchronously writes a <see cref="Caption" /> to a <paramref name="stream" />.
-    /// </summary>
-    /// <remarks>
-    ///     Internally, this method:
-    ///     <list type="number">
-    ///         <item>
-    ///             <description>
-    ///                 Decomposes the <see cref="Caption" /> into a collection of
-    ///                 <see cref="DisplaySet" />s.
-    ///             </description>
-    ///         </item>
-    ///         <item>
-    ///             <description>
-    ///                 Decomposes each <see cref="DisplaySet" /> into a collection of
-    ///                 <see cref="Segments" />s.
-    ///             </description>
-    ///         </item>
-    ///         <item>
-    ///             <description>
-    ///                 Writes each <see cref="Segment" /> to the <paramref name="stream" />.
-    ///             </description>
-    ///         </item>
-    ///     </list>
-    /// </remarks>
-    /// <exception cref="CaptionException">
-    ///     Thrown when a <see cref="Caption" /> cannot be decomposed into a collection of
-    ///     <see cref="DisplaySet" />s.
-    /// </exception>
-    /// <exception cref="DisplaySetException">
-    ///     Thrown when a <see cref="DisplaySet" /> cannot be decomposed into a collection of
-    ///     <see cref="Segment" />s.
-    /// </exception>
-    /// <exception cref="SegmentException">
-    ///     Thrown when the properties of a <see cref="Segment" /> cannot be written to the
-    ///     <paramref name="stream" />.
-    /// </exception>
-    /// <exception cref="IOException">
-    ///     Thrown when an underlying IO error occurs while attempting to write a
-    ///     <see cref="Segment" /> to the <paramref name="stream" />.
-    /// </exception>
-    public static async Task WriteCaptionAsync(this Stream stream, Caption caption)
-    {
-        foreach (var displaySet in CaptionComposer.Decompose(caption))
-            await stream.WriteDisplaySetAsync(displaySet);
+        // TODO
     }
 
     /// <summary>
