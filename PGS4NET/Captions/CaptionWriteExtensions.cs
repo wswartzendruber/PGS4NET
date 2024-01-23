@@ -22,7 +22,7 @@ namespace PGS4NET.Captions;
 public static partial class CaptionExtensions
 {
     /// <summary>
-    ///     Writes all <see cref="Captions" />s in a collection to a <paramref name="stream" />.
+    ///     Writes all <see cref="Caption" />s in a collection to a <paramref name="stream" />.
     /// </summary>
     /// <remarks>
     ///     Internally, this method iterates through each <see cref="Caption" /> and:
@@ -69,7 +69,7 @@ public static partial class CaptionExtensions
     }
 
     /// <summary>
-    ///     Asynchronously writes all <see cref="Captions" />s in a collection to a
+    ///     Asynchronously writes all <see cref="Caption" />s in a collection to a
     ///     <paramref name="stream" />.
     /// </summary>
     /// <remarks>
@@ -219,7 +219,7 @@ public static partial class CaptionExtensions
     ///     Thrown when a <see cref="Caption" /> cannot be decomposed into a collection of
     ///     <see cref="DisplaySet" />s.
     /// </exception>
-    public static IList<DisplaySet> ToDisplaySetList(this IEnumerable<Caption> captions)
+    public static IList<DisplaySet> ToSegmentList(this IEnumerable<Caption> captions)
     {
         var returnValue = new List<DisplaySet>();
 

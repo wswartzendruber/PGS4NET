@@ -9,12 +9,17 @@
  */
 
 using System.Collections.Generic;
+using PGS4NET.Segments;
 
 namespace PGS4NET.Captions;
 
 /// <summary>
-///     Represents a single caption that appears on the screen.
+///     A collection of display sets that, when taken together, form a caption on the screen.
 /// </summary>
+/// <remarks>
+///     A caption is principally a graphic that appears on screen at a specific point in time
+///     for a specific duration of time.
+/// </remarks>
 public class Caption
 {
 }

@@ -29,14 +29,8 @@ public static partial class CaptionExtensions
     ///     <list type="number">
     ///         <item>
     ///             <description>
-    ///                 Reads <see cref="Segment" />s from the <paramref name="stream" /> until
-    ///                 a <see cref="DisplaySet" /> can be composed.
-    ///             </description>
-    ///         </item>
-    ///         <item>
-    ///             <description>
-    ///                 Composes enough <see cref="DisplaySet" />s until a
-    ///                 <see cref="Caption" /> can be composed.
+    ///                 Reads <see cref="DisplaySet" />s from the <paramref name="stream" />
+    ///                 until a <see cref="Caption" /> can be composed.
     ///             </description>
     ///         </item>
     ///         <item>
@@ -56,7 +50,7 @@ public static partial class CaptionExtensions
     /// </returns>
     /// <exception cref="CaptionException">
     ///     Thrown when a combination of individually valid <see cref="DisplaySet" />s cannot be
-    ///     composed into an <see cref="Caption" />.
+    ///     composed into a <see cref="Caption" />.
     /// </exception>
     /// <exception cref="DisplaySetException">
     ///     Thrown when a combination of individually valid <see cref="Segment" />s cannot be
@@ -80,21 +74,16 @@ public static partial class CaptionExtensions
     }
 
     /// <summary>
-    ///     Asynchronously reads all <see cref="Caption" />s from a <paramref name="stream" />.
+    ///     Asynchronously reads all <see cref="Caption" />s from a
+    ///     <paramref name="stream" />.
     /// </summary>
     /// <remarks>
     ///     Internally, this method:
     ///     <list type="number">
     ///         <item>
     ///             <description>
-    ///                 Reads <see cref="Segment" />s from the <paramref name="stream" /> until
-    ///                 a <see cref="DisplaySet" /> can be composed.
-    ///             </description>
-    ///         </item>
-    ///         <item>
-    ///             <description>
-    ///                 Composes enough <see cref="DisplaySet" />s until a
-    ///                 <see cref="Caption" /> can be composed.
+    ///                 Reads <see cref="DisplaySet" />s from the <paramref name="stream" />
+    ///                 until a <see cref="Caption" /> can be composed.
     ///             </description>
     ///         </item>
     ///         <item>
@@ -114,7 +103,7 @@ public static partial class CaptionExtensions
     /// </returns>
     /// <exception cref="CaptionException">
     ///     Thrown when a combination of individually valid <see cref="DisplaySet" />s cannot be
-    ///     composed into an <see cref="Caption" />.
+    ///     composed into a <see cref="Caption" />.
     /// </exception>
     /// <exception cref="DisplaySetException">
     ///     Thrown when a combination of individually valid <see cref="Segment" />s cannot be
@@ -141,22 +130,9 @@ public static partial class CaptionExtensions
     ///     Reads a <see cref="Caption" /> from a <paramref name="stream" />.
     /// </summary>
     /// <remarks>
-    ///     Internally, this method:
-    ///     <list type="number">
-    ///         <item>
-    ///             <description>
-    ///                 Reads <see cref="Segment" />s from the <paramref name="stream" /> until
-    ///                 a <see cref="DisplaySet" /> can be composed.
-    ///             </description>
-    ///         </item>
-    ///         <item>
-    ///             <description>
-    ///                 Composes enough <see cref="DisplaySet" />s until a
-    ///                 <see cref="Caption" /> can be composed.
-    ///             </description>
-    ///         </item>
-    ///     </list>
-    ///     Only the data necessary to compose a <see cref="Caption" /> is read from the
+    ///     Internally, this method reads <see cref="DisplaySet" />s from the
+    ///     <paramref name="stream" /> until a <see cref="Caption" /> can be composed. Only
+    ///     the data necessary to compose a <see cref="Caption" /> is read from the
     ///     <paramref name="stream" />.
     /// </remarks>
     /// <returns>
@@ -164,7 +140,7 @@ public static partial class CaptionExtensions
     /// </returns>
     /// <exception cref="CaptionException">
     ///     Thrown when a combination of individually valid <see cref="DisplaySet" />s cannot be
-    ///     composed into an <see cref="Caption" />.
+    ///     composed into a <see cref="Caption" />.
     /// </exception>
     /// <exception cref="DisplaySetException">
     ///     Thrown when a combination of individually valid <see cref="Segment" />s cannot be
@@ -200,22 +176,9 @@ public static partial class CaptionExtensions
     ///     Asynchronously reads a <see cref="Caption" /> from a <paramref name="stream" />.
     /// </summary>
     /// <remarks>
-    ///     Internally, this method:
-    ///     <list type="number">
-    ///         <item>
-    ///             <description>
-    ///                 Reads <see cref="Segment" />s from the <paramref name="stream" /> until
-    ///                 a <see cref="DisplaySet" /> can be composed.
-    ///             </description>
-    ///         </item>
-    ///         <item>
-    ///             <description>
-    ///                 Composes enough <see cref="DisplaySet" />s until a
-    ///                 <see cref="Caption" /> can be composed.
-    ///             </description>
-    ///         </item>
-    ///     </list>
-    ///     Only the data necessary to compose a <see cref="Caption" /> is read from the
+    ///     Internally, this method reads <see cref="DisplaySet" />s from the
+    ///     <paramref name="stream" /> until a <see cref="Caption" /> can be composed. Only
+    ///     the data necessary to compose a <see cref="Caption" /> is read from the
     ///     <paramref name="stream" />.
     /// </remarks>
     /// <returns>
@@ -223,7 +186,7 @@ public static partial class CaptionExtensions
     /// </returns>
     /// <exception cref="CaptionException">
     ///     Thrown when a combination of individually valid <see cref="DisplaySet" />s cannot be
-    ///     composed into an <see cref="Caption" />.
+    ///     composed into a <see cref="Caption" />.
     /// </exception>
     /// <exception cref="DisplaySetException">
     ///     Thrown when a combination of individually valid <see cref="Segment" />s cannot be
@@ -263,25 +226,25 @@ public static partial class CaptionExtensions
     ///     Thrown when a combination of individually valid <see cref="DisplaySet" />s cannot be
     ///     composed into a <see cref="Caption" />.
     /// </exception>
-    public static IList<DisplaySet> ToDisplaySetList(this IEnumerable<Segment> segments)
+    public static IList<Caption> ToCaptionList(this IEnumerable<DisplaySet> displaySets)
     {
         var pending = false;
-        var returnValue = new List<DisplaySet>();
-        var composer = new DisplaySetComposer();
+        var returnValue = new List<Caption>();
+        var composer = new CaptionComposer();
 
-        foreach (var segment in segments)
+        foreach (var displaySet in displaySets)
         {
             pending = true;
 
-            if (composer.Input(segment) is DisplaySet displaySet)
+            if (composer.Input(displaySet) is Caption caption)
             {
                 pending = false;
-                returnValue.Add(displaySet);
+                returnValue.Add(caption);
             }
         }
 
         if (pending)
-            throw new DisplaySetException("Incomplete display set from trailing segments.");
+            throw new CaptionException("Incomplete caption from trailing display sets.");
 
         return returnValue;
     }
