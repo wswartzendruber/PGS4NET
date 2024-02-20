@@ -121,11 +121,31 @@ public static class Rle
     /// </returns>
     /// <exception cref="RleException">
     ///     <list type="bullet">
-    ///         <item>An invalid RLE sequence is encountered.</item>
-    ///         <item>An incomplete RLE sequence is encountered.</item>
-    ///         <item>An incomplete RLE line is encountered.</item>
-    ///         <item>An RLE line has a length other than <paramref name="width" />.</item>
-    ///         <item>The number of RLE lines contradicts <paramref name="height" />.</item>
+    ///         <item>
+    ///             <description>
+    ///                 An invalid RLE sequence is encountered.
+    ///             </description>
+    ///         </item>
+    ///         <item>
+    ///             <description>
+    ///                 An incomplete RLE sequence is encountered.
+    ///             </description>
+    ///         </item>
+    ///         <item>
+    ///             <description>
+    ///                 An incomplete RLE line is encountered.
+    ///             </description>
+    ///         </item>
+    ///         <item>
+    ///             <description>
+    ///                 An RLE line has a length other than <paramref name="width" />.
+    ///             </description>
+    ///         </item>
+    ///         <item>
+    ///             <description>
+    ///                 The number of RLE lines contradicts <paramref name="height" />.
+    ///             </description>
+    ///         </item>
     ///     </list>
     /// </exception>
     public static byte[] Decompress(byte[] input, ushort width, ushort height)

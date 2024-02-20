@@ -19,10 +19,26 @@ namespace PGS4NET.DisplaySets;
 /// <remarks>
 ///     A display set is principally responsible for performing four distinct functions:
 ///     <list type="number">
-///         <item>Define and apply a new composition to the screen.</item>
-///         <item>Repeat an existing composition (allows for player seeking).</item>
-///         <item>Modify a composition that is already on the screen.</item>
-///         <item>Remove a composition from the screen.</item>
+///         <item>
+///             <description>
+///                 Define and apply a new composition to the screen.
+///             </description>
+///         </item>
+///         <item>
+///             <description>
+///                 Repeat an existing composition (allows for player seeking).
+///             </description>
+///         </item>
+///         <item>
+///             <description>
+///                 Modify a composition that is already on the screen.
+///             </description>
+///         </item>
+///         <item>
+///             <description>
+///                 Remove a composition from the screen.
+///             </description>
+///         </item>
 ///     </list>
 /// </remarks>
 public class DisplaySet

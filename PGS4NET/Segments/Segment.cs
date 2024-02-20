@@ -18,11 +18,31 @@ namespace PGS4NET.Segments;
 ///     segments come together in a well-defined manner to form a display set. There are five
 ///     types of segments and within a display set, they typically appear in this order:
 ///     <list type="number">
-///         <item><see cref="PresentationCompositionSegment" /></item>
-///         <item><see cref="WindowDefinitionSegment" /></item>
-///         <item><see cref="PaletteDefinitionSegment" /></item>
-///         <item><see cref="ObjectDefinitionSegment" /></item>
-///         <item><see cref="EndSegment" /></item>
+///         <item>
+///             <description>
+///                 <see cref="PresentationCompositionSegment" />
+///             </description>
+///         </item>
+///         <item>
+///             <description>
+///                 <see cref="WindowDefinitionSegment" />
+///             </description>
+///         </item>
+///         <item>
+///             <description>
+///                 <see cref="PaletteDefinitionSegment" />
+///             </description>
+///         </item>
+///         <item>
+///             <description>
+///                 <see cref="ObjectDefinitionSegment" />
+///             </description>
+///         </item>
+///         <item>
+///             <description>
+///                 <see cref="EndSegment" />
+///             </description>
+///         </item>
 ///     </list>
 /// </remarks>
 public abstract class Segment
