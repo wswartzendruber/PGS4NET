@@ -9,7 +9,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PGS4NET.Examples.SegmentDum
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PGS4NET.Examples.DisplaySetDump", "PGS4NET.Examples.DisplaySetDump\PGS4NET.Examples.DisplaySetDump.csproj", "{D6B146CA-24BD-4942-A4CD-67888FD858B1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PGS4NET.Tests", "PGS4NET.Tests\PGS4NET.Tests.csproj", "{14DB024E-99D6-4594-89E4-0AF7AFD7A7BC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PGS4NET.Tests.netstandard2_0", "PGS4NET.Tests\PGS4NET.Tests.netstandard2_0.csproj", "{5F616ED9-9870-44BC-B477-19525BF9DFE3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PGS4NET.Tests.netstandard2_1", "PGS4NET.Tests\PGS4NET.Tests.netstandard2_1.csproj", "{B8516FC1-0CA7-4D48-A543-B1CF63518DEE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -32,9 +34,13 @@ Global
 		{D6B146CA-24BD-4942-A4CD-67888FD858B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D6B146CA-24BD-4942-A4CD-67888FD858B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D6B146CA-24BD-4942-A4CD-67888FD858B1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{14DB024E-99D6-4594-89E4-0AF7AFD7A7BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{14DB024E-99D6-4594-89E4-0AF7AFD7A7BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{14DB024E-99D6-4594-89E4-0AF7AFD7A7BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{14DB024E-99D6-4594-89E4-0AF7AFD7A7BC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F616ED9-9870-44BC-B477-19525BF9DFE3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F616ED9-9870-44BC-B477-19525BF9DFE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F616ED9-9870-44BC-B477-19525BF9DFE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F616ED9-9870-44BC-B477-19525BF9DFE3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B8516FC1-0CA7-4D48-A543-B1CF63518DEE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B8516FC1-0CA7-4D48-A543-B1CF63518DEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B8516FC1-0CA7-4D48-A543-B1CF63518DEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B8516FC1-0CA7-4D48-A543-B1CF63518DEE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace PGS4NET.Segments;
@@ -70,11 +71,12 @@ public static partial class StreamExtensions
     ///     Thrown when an underlying IO error occurs while attempting to read a segment from
     ///     the <paramref name="stream" />.
     /// </exception>
-    public static async Task<IList<Segment>> ReadAllSegmentsAsync(this Stream stream)
+    public static async Task<IList<Segment>> ReadAllSegmentsAsync(this Stream stream,
+        CancellationToken cancellationToken = default)
     {
         var returnValue = new List<Segment>();
 
-        while (await stream.ReadSegmentAsync() is Segment segment)
+        while (await stream.ReadSegmentAsync(cancellationToken) is Segment segment)
             returnValue.Add(segment);
 
         return returnValue;
@@ -155,10 +157,12 @@ public static partial class StreamExtensions
     ///     Thrown when an underlying IO error occurs while attempting to read a segment from
     ///     the <paramref name="stream" />.
     /// </exception>
-    public static async Task<Segment?> ReadSegmentAsync(this Stream stream)
+    public static async Task<Segment?> ReadSegmentAsync(this Stream stream,
+        CancellationToken cancellationToken = default)
     {
         var headerBuffer = new byte[13];
-        var headerBytesRead = await stream.ReadAsync(headerBuffer, 0, headerBuffer.Length);
+        var headerBytesRead = await stream.ReadAsync(headerBuffer, 0, headerBuffer.Length
+            , cancellationToken);
 
         if (headerBytesRead == 0)
             return null;
@@ -180,7 +184,8 @@ public static partial class StreamExtensions
         var size = ReadUInt16Be(headerBuffer, 11)
             ?? throw new InvalidOperationException();
         var payloadBuffer = new byte[size];
-        var payloadBytesRead = await stream.ReadAsync(payloadBuffer, 0, payloadBuffer.Length);
+        var payloadBytesRead = await stream.ReadAsync(payloadBuffer, 0, payloadBuffer.Length
+            , cancellationToken);
 
         if (payloadBytesRead != payloadBuffer.Length)
             throw new IOException("EOF reading segment payload.");
