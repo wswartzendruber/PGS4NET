@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace PGS4NET.Segments;
@@ -45,6 +46,10 @@ public static partial class StreamExtensions
     ///     Asynchronously writes all <see cref="Segment" />s in a collection to a
     ///     <paramref name="stream" />.
     /// </summary>
+    /// <param name="cancellationToken">
+    ///     An optional cancellation token that will be passed to the <paramref name="stream" />
+    ///     for all asynchronous operations.
+    /// </param>
     /// <remarks>
     ///     Internally, this method iterates through each <see cref="Segment" /> and writes it
     ///     to the <paramref name="stream" />.
@@ -58,10 +63,10 @@ public static partial class StreamExtensions
     ///     <see cref="Segment" /> to the <paramref name="stream" />.
     /// </exception>
     public static async Task WriteAllSegmentsAsync(this Stream stream
-        , IEnumerable<Segment> segments)
+        , IEnumerable<Segment> segments, CancellationToken cancellationToken = default)
     {
         foreach (var segment in segments)
-            await stream.WriteSegmentAsync(segment);
+            await stream.WriteSegmentAsync(segment, cancellationToken);
     }
 
     /// <summary>
@@ -134,6 +139,10 @@ public static partial class StreamExtensions
     /// <summary>
     ///     Asynchronously writes a <see cref="Segment" /> to a <paramref name="stream" />.
     /// </summary>
+    /// <param name="cancellationToken">
+    ///     An optional cancellation token that will be passed to the <paramref name="stream" />
+    ///     for all asynchronous operations.
+    /// </param>
     /// <exception cref="SegmentException">
     ///     Thrown when the properties of a <see cref="Segment" /> cannot be written to the
     ///     <paramref name="stream" />.
@@ -142,7 +151,8 @@ public static partial class StreamExtensions
     ///     Thrown when an underlying IO error occurs while attempting to write a
     ///     <see cref="Segment" /> to the <paramref name="stream" />.
     /// </exception>
-    public static async Task WriteSegmentAsync(this Stream stream, Segment segment)
+    public static async Task WriteSegmentAsync(this Stream stream, Segment segment,
+        CancellationToken cancellationToken = default)
     {
         using var buffer = new MemoryStream();
 
@@ -195,7 +205,7 @@ public static partial class StreamExtensions
         }
 
         buffer.Seek(0, SeekOrigin.Begin);
-        await buffer.CopyToAsync(stream);
+        await buffer.CopyToAsync(stream, 81_920, cancellationToken);
     }
 
     private static void WriteTs(Stream stream, Segment segment)

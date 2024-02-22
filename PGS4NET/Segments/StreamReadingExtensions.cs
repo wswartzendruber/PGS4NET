@@ -59,6 +59,10 @@ public static partial class StreamExtensions
     ///     data that cannot form a complete <see cref="Segment" /> causes an exception to be
     ///     thrown.
     /// </remarks>
+    /// <param name="cancellationToken">
+    ///     An optional cancellation token that will be passed to the <paramref name="stream" />
+    ///     for all asynchronous operations.
+    /// </param>
     /// <returns>
     ///     A collection <see cref="Segments" />s that were read from the
     ///     <paramref name="stream" />, or an empty collection if the stream was already at its
@@ -147,6 +151,10 @@ public static partial class StreamExtensions
     ///     Only the data necessary to decode a <see cref="Segment" /> is read from the
     ///     <paramref name="stream" />.
     /// </remarks>
+    /// <param name="cancellationToken">
+    ///     An optional cancellation token that will be passed to the <paramref name="stream" />
+    ///     for all asynchronous operations.
+    /// </param>
     /// <returns>
     ///     The <see cref="Segment" /> that was read from the <paramref name="stream" />.
     /// </returns>
