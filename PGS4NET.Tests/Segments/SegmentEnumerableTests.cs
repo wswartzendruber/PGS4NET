@@ -10,12 +10,13 @@
  * SPDX-License-Identifier: CC0-1.0
  */
 
+using System.Collections;
 using System.IO;
 using PGS4NET.Segments;
 
 namespace PGS4NET.Tests.Segments;
 
-public class SegmentReaderTests
+public class SegmentEnumerableTests
 {
     [Fact]
     public void EnumerateSegments()
@@ -30,7 +31,7 @@ public class SegmentReaderTests
         inputStream.Seek(0, SeekOrigin.Begin);
         var segments2 = new List<Segment>();
 
-        foreach (var segment in new SegmentReader(inputStream))
+        foreach (var segment in new SegmentEnumerable(inputStream))
             segments2.Add(segment);
 
         if (inputStream.CanRead == true)
@@ -59,8 +60,66 @@ public class SegmentReaderTests
         inputStream.Seek(0, SeekOrigin.Begin);
         var segments2 = new List<Segment>();
 
-        foreach (var segment in new SegmentReader(inputStream, true))
+        foreach (var segment in new SegmentEnumerable(inputStream, true))
             segments2.Add(segment);
+
+        if (inputStream.CanRead == false)
+            throw new Exception("Input stream was disposed.");
+
+        using var segments1Stream = new MemoryStream();
+        using var segments2Stream = new MemoryStream();
+
+        segments1Stream.WriteAllSegments(segments1);
+        segments2Stream.WriteAllSegments(segments2);
+
+        if (!segments1Stream.ToArray().SequenceEqual(segments2Stream.ToArray()))
+            throw new Exception("Memory streams are not equal.");
+    }
+
+    [Fact]
+    public void EnumerateSegmentsLegacy()
+    {
+        using var inputStream = new MemoryStream();
+
+        foreach (var testSegment in SegmentBuffers.Buffers)
+            inputStream.Write(testSegment.Value);
+
+        inputStream.Seek(0, SeekOrigin.Begin);
+        var segments1 = inputStream.ReadAllSegments();
+        inputStream.Seek(0, SeekOrigin.Begin);
+        var segments2 = new List<Segment>();
+
+        foreach (var segment in new SegmentEnumerable(inputStream) as IEnumerable)
+            segments2.Add((Segment)segment);
+
+        if (inputStream.CanRead == true)
+            throw new Exception("Input stream was not disposed.");
+
+        using var segments1Stream = new MemoryStream();
+        using var segments2Stream = new MemoryStream();
+
+        segments1Stream.WriteAllSegments(segments1);
+        segments2Stream.WriteAllSegments(segments2);
+
+        if (!segments1Stream.ToArray().SequenceEqual(segments2Stream.ToArray()))
+            throw new Exception("Memory streams are not equal.");
+    }
+
+    [Fact]
+    public void EnumerateSegmentsLegacyLeaveOpen()
+    {
+        using var inputStream = new MemoryStream();
+
+        foreach (var testSegment in SegmentBuffers.Buffers)
+            inputStream.Write(testSegment.Value);
+
+        inputStream.Seek(0, SeekOrigin.Begin);
+        var segments1 = inputStream.ReadAllSegments();
+        inputStream.Seek(0, SeekOrigin.Begin);
+        var segments2 = new List<Segment>();
+
+        foreach (var segment in new SegmentEnumerable(inputStream, true) as IEnumerable)
+            segments2.Add((Segment)segment);
 
         if (inputStream.CanRead == false)
             throw new Exception("Input stream was disposed.");
@@ -89,7 +148,7 @@ public class SegmentReaderTests
         inputStream.Seek(0, SeekOrigin.Begin);
         var segments2 = new List<Segment>();
 
-        await foreach (var segment in new SegmentReader(inputStream))
+        await foreach (var segment in new SegmentEnumerable(inputStream))
             segments2.Add(segment);
 
         if (inputStream.CanRead == true)
@@ -118,7 +177,7 @@ public class SegmentReaderTests
         inputStream.Seek(0, SeekOrigin.Begin);
         var segments2 = new List<Segment>();
 
-        await foreach (var segment in new SegmentReader(inputStream, true))
+        await foreach (var segment in new SegmentEnumerable(inputStream, true))
             segments2.Add(segment);
 
         if (inputStream.CanRead == false)
