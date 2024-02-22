@@ -131,7 +131,7 @@ public static partial class DisplaySetExtensions
     /// </exception>
     public static void WriteDisplaySet(this Stream stream, DisplaySet displaySet)
     {
-        foreach (var segment in DisplaySetComposer.Decompose(displaySet))
+        foreach (var segment in DisplaySetDecomposer.Decompose(displaySet))
             stream.WriteSegment(segment);
     }
 
@@ -168,7 +168,7 @@ public static partial class DisplaySetExtensions
     /// </exception>
     public static async Task WriteDisplaySetAsync(this Stream stream, DisplaySet displaySet)
     {
-        foreach (var segment in DisplaySetComposer.Decompose(displaySet))
+        foreach (var segment in DisplaySetDecomposer.Decompose(displaySet))
             await stream.WriteSegmentAsync(segment);
     }
 
@@ -185,7 +185,7 @@ public static partial class DisplaySetExtensions
         var returnValue = new List<Segment>();
 
         foreach (var displaySet in displaySets)
-            returnValue.AddRange(DisplaySetComposer.Decompose(displaySet));
+            returnValue.AddRange(DisplaySetDecomposer.Decompose(displaySet));
 
         return returnValue;
     }
