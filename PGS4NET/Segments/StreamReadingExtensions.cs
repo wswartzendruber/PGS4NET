@@ -22,13 +22,16 @@ namespace PGS4NET.Segments;
 public static partial class StreamExtensions
 {
     /// <summary>
-    ///     Reads all <see cref="Segments" />s from a <paramref name="stream" />.
+    ///     Reads all <see cref="Segment" />s from a <paramref name="stream" />.
     /// </summary>
     /// <remarks>
     ///     The entire <paramref name="stream" /> is read until its end is reached. Any trailing
     ///     data that cannot form a complete <see cref="Segment" /> causes an exception to be
     ///     thrown.
     /// </remarks>
+    /// <param name="stream">
+    ///     The <see cref="Stream" /> to read segment data from.
+    /// </param>
     /// <returns>
     ///     A collection <see cref="Segments" />s that were read from the
     ///     <paramref name="stream" />, or an empty collection if the stream was already at its
@@ -59,6 +62,9 @@ public static partial class StreamExtensions
     ///     data that cannot form a complete <see cref="Segment" /> causes an exception to be
     ///     thrown.
     /// </remarks>
+    /// <param name="stream">
+    ///     The <see cref="Stream" /> to asynchronously read segment data from.
+    /// </param>
     /// <param name="cancellationToken">
     ///     An optional cancellation token that will be passed to the <paramref name="stream" />
     ///     for all asynchronous operations.
@@ -93,6 +99,9 @@ public static partial class StreamExtensions
     ///     Only the data necessary to decode a <see cref="Segment" /> is read from the
     ///     <paramref name="stream" />.
     /// </remarks>
+    /// <param name="stream">
+    ///     The <see cref="Stream" /> to read segment data from.
+    /// </param>
     /// <returns>
     ///     The <see cref="Segment" /> that was read from the <paramref name="stream" />.
     /// </returns>
@@ -151,6 +160,9 @@ public static partial class StreamExtensions
     ///     Only the data necessary to decode a <see cref="Segment" /> is read from the
     ///     <paramref name="stream" />.
     /// </remarks>
+    /// <param name="stream">
+    ///     The <see cref="Stream" /> to asynchronously read segment data from.
+    /// </param>
     /// <param name="cancellationToken">
     ///     An optional cancellation token that will be passed to the <paramref name="stream" />
     ///     for all asynchronous operations.

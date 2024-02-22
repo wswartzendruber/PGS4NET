@@ -28,6 +28,12 @@ public static partial class StreamExtensions
     ///     Internally, this method iterates through each <see cref="Segment" /> and writes it
     ///     to the <paramref name="stream" />.
     /// </remarks>
+    /// <param name="stream">
+    ///     The <see cref="Stream" /> to write segment data to.
+    /// </param>
+    /// <param name="segments">
+    ///     The collection of <see cref="Segment" />s to write.
+    /// </param>
     /// <exception cref="SegmentException">
     ///     Thrown when the properties of a <see cref="Segment" /> cannot be written to the
     ///     <paramref name="stream" />.
@@ -46,14 +52,20 @@ public static partial class StreamExtensions
     ///     Asynchronously writes all <see cref="Segment" />s in a collection to a
     ///     <paramref name="stream" />.
     /// </summary>
-    /// <param name="cancellationToken">
-    ///     An optional cancellation token that will be passed to the <paramref name="stream" />
-    ///     for all asynchronous operations.
-    /// </param>
     /// <remarks>
     ///     Internally, this method iterates through each <see cref="Segment" /> and writes it
     ///     to the <paramref name="stream" />.
     /// </remarks>
+    /// <param name="stream">
+    ///     The <see cref="Stream" /> to asynchronously write segment data to.
+    /// </param>
+    /// <param name="segments">
+    ///     The collection of <see cref="Segment" />s to write.
+    /// </param>
+    /// <param name="cancellationToken">
+    ///     An optional cancellation token that will be passed to the <paramref name="stream" />
+    ///     for all asynchronous operations.
+    /// </param>
     /// <exception cref="SegmentException">
     ///     Thrown when the properties of a <see cref="Segment" /> cannot be written to the
     ///     <paramref name="stream" />.
@@ -72,6 +84,12 @@ public static partial class StreamExtensions
     /// <summary>
     ///     Writes a <see cref="Segment" /> to a <paramref name="stream" />.
     /// </summary>
+    /// <param name="stream">
+    ///     The <see cref="Stream" /> to write segment data to.
+    /// </param>
+    /// <param name="segment">
+    ///     The <see cref="Segment" /> to write.
+    /// </param>
     /// <exception cref="SegmentException">
     ///     Thrown when the properties of a <see cref="Segment" /> cannot be written to the
     ///     <paramref name="stream" />.
@@ -139,6 +157,12 @@ public static partial class StreamExtensions
     /// <summary>
     ///     Asynchronously writes a <see cref="Segment" /> to a <paramref name="stream" />.
     /// </summary>
+    /// <param name="stream">
+    ///     The <see cref="Stream" /> to asynchronously write segment data to.
+    /// </param>
+    /// <param name="segment">
+    ///     The <see cref="Segment" /> to write.
+    /// </param>
     /// <param name="cancellationToken">
     ///     An optional cancellation token that will be passed to the <paramref name="stream" />
     ///     for all asynchronous operations.
