@@ -221,6 +221,21 @@ public static partial class StreamExtensions
         };
     }
 
+    /// <summary>
+    ///     Allows iterating through the individual segments in a <see cref="Stream" />.
+    /// </summary>
+    /// <remarks>
+    ///     Segments are read one by one until the end of the <paramref name="stream" /> is
+    ///     reached. The stream must contain only valid segment data from its current position
+    ///     onward. Any trailing data will cause an exception to be thrown. The stream will be
+    ///     left open.
+    /// </remarks>
+    /// <param name="stream">
+    ///     The <see cref="Stream" /> to read segment data from.
+    /// </param>
+    public static SegmentEnumerable Segments(this Stream stream) =>
+        new SegmentEnumerable(stream, true);
+
     private static PresentationCompositionSegment ParsePcs(byte[] buffer, uint pts, uint dts)
     {
         var width = ReadUInt16Be(buffer, 0)

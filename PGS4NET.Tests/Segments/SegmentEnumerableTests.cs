@@ -193,4 +193,33 @@ public class SegmentEnumerableTests
             throw new Exception("Memory streams are not equal.");
     }
 #endif
+
+    [Fact]
+    public void ExtensionMethod()
+    {
+        using var inputStream = new MemoryStream();
+
+        foreach (var testSegment in SegmentBuffers.Buffers)
+            inputStream.Write(testSegment.Value);
+
+        inputStream.Seek(0, SeekOrigin.Begin);
+        var segments1 = inputStream.ReadAllSegments();
+        inputStream.Seek(0, SeekOrigin.Begin);
+        var segments2 = new List<Segment>();
+
+        foreach (var segment in inputStream.Segments())
+            segments2.Add(segment);
+
+        if (inputStream.CanRead == false)
+            throw new Exception("Input stream was disposed.");
+
+        using var segments1Stream = new MemoryStream();
+        using var segments2Stream = new MemoryStream();
+
+        segments1Stream.WriteAllSegments(segments1);
+        segments2Stream.WriteAllSegments(segments2);
+
+        if (!segments1Stream.ToArray().SequenceEqual(segments2Stream.ToArray()))
+            throw new Exception("Memory streams are not equal.");
+    }
 }
