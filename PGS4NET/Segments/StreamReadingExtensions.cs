@@ -16,34 +16,8 @@ using System.Threading.Tasks;
 
 namespace PGS4NET.Segments;
 
-/// <summary>
-///     Contains extensions against <see cref="Stream" /> for reading PGS segments.
-/// </summary>
 public static partial class StreamExtensions
 {
-    /// <summary>
-    ///     Reads all <see cref="Segment" />s from a <paramref name="stream" />.
-    /// </summary>
-    /// <remarks>
-    ///     The entire <paramref name="stream" /> is read until its end is reached. Any trailing
-    ///     data that cannot form a complete <see cref="Segment" /> causes an exception to be
-    ///     thrown.
-    /// </remarks>
-    /// <param name="stream">
-    ///     The <see cref="Stream" /> to read segment data from.
-    /// </param>
-    /// <returns>
-    ///     A collection <see cref="Segments" />s that were read from the
-    ///     <paramref name="stream" />, or an empty collection if the stream was already at its
-    ///     end.
-    /// </returns>
-    /// <exception cref="SegmentException">
-    ///     Thrown when the flags inside of a segment's buffer are invalid.
-    /// </exception>
-    /// <exception cref="IOException">
-    ///     Thrown when an underlying IO error occurs while attempting to read a segment from
-    ///     the <paramref name="stream" />.
-    /// </exception>
     public static IList<Segment> ReadAllSegments(this Stream stream)
     {
         var returnValue = new List<Segment>();
@@ -54,33 +28,6 @@ public static partial class StreamExtensions
         return returnValue;
     }
 
-    /// <summary>
-    ///     Asynchronously reads all <see cref="Segments" />s from a <paramref name="stream" />.
-    /// </summary>
-    /// <remarks>
-    ///     The entire <paramref name="stream" /> is read until its end is reached. Any trailing
-    ///     data that cannot form a complete <see cref="Segment" /> causes an exception to be
-    ///     thrown.
-    /// </remarks>
-    /// <param name="stream">
-    ///     The <see cref="Stream" /> to asynchronously read segment data from.
-    /// </param>
-    /// <param name="cancellationToken">
-    ///     An optional cancellation token that will be passed to the <paramref name="stream" />
-    ///     for all asynchronous operations.
-    /// </param>
-    /// <returns>
-    ///     A collection <see cref="Segments" />s that were read from the
-    ///     <paramref name="stream" />, or an empty collection if the stream was already at its
-    ///     end.
-    /// </returns>
-    /// <exception cref="SegmentException">
-    ///     Thrown when the flags inside of a segment's buffer are invalid.
-    /// </exception>
-    /// <exception cref="IOException">
-    ///     Thrown when an underlying IO error occurs while attempting to read a segment from
-    ///     the <paramref name="stream" />.
-    /// </exception>
     public static async Task<IList<Segment>> ReadAllSegmentsAsync(this Stream stream,
         CancellationToken cancellationToken = default)
     {
@@ -92,26 +39,6 @@ public static partial class StreamExtensions
         return returnValue;
     }
 
-    /// <summary>
-    ///     Reads a <see cref="Segment" /> from a <paramref name="stream" />.
-    /// </summary>
-    /// <remarks>
-    ///     Only the data necessary to decode a <see cref="Segment" /> is read from the
-    ///     <paramref name="stream" />.
-    /// </remarks>
-    /// <param name="stream">
-    ///     The <see cref="Stream" /> to read segment data from.
-    /// </param>
-    /// <returns>
-    ///     The <see cref="Segment" /> that was read from the <paramref name="stream" />.
-    /// </returns>
-    /// <exception cref="SegmentException">
-    ///     Thrown when the flags inside of a segment's buffer are invalid.
-    /// </exception>
-    /// <exception cref="IOException">
-    ///     Thrown when an underlying IO error occurs while attempting to read a segment from
-    ///     the <paramref name="stream" />.
-    /// </exception>
     public static Segment? ReadSegment(this Stream stream)
     {
         var headerBuffer = new byte[13];
@@ -153,30 +80,6 @@ public static partial class StreamExtensions
         };
     }
 
-    /// <summary>
-    ///     Asynchronously reads a <see cref="Segment" /> from a <paramref name="stream" />.
-    /// </summary>
-    /// <remarks>
-    ///     Only the data necessary to decode a <see cref="Segment" /> is read from the
-    ///     <paramref name="stream" />.
-    /// </remarks>
-    /// <param name="stream">
-    ///     The <see cref="Stream" /> to asynchronously read segment data from.
-    /// </param>
-    /// <param name="cancellationToken">
-    ///     An optional cancellation token that will be passed to the <paramref name="stream" />
-    ///     for all asynchronous operations.
-    /// </param>
-    /// <returns>
-    ///     The <see cref="Segment" /> that was read from the <paramref name="stream" />.
-    /// </returns>
-    /// <exception cref="SegmentException">
-    ///     Thrown when the flags inside of a segment's buffer are invalid.
-    /// </exception>
-    /// <exception cref="IOException">
-    ///     Thrown when an underlying IO error occurs while attempting to read a segment from
-    ///     the <paramref name="stream" />.
-    /// </exception>
     public static async Task<Segment?> ReadSegmentAsync(this Stream stream,
         CancellationToken cancellationToken = default)
     {
@@ -220,21 +123,6 @@ public static partial class StreamExtensions
             _ => throw new SegmentException("Unrecognized segment kind."),
         };
     }
-
-    /// <summary>
-    ///     Allows iterating through the individual segments in a <see cref="Stream" />.
-    /// </summary>
-    /// <remarks>
-    ///     Segments are read one by one until the end of the <paramref name="stream" /> is
-    ///     reached. The stream must contain only valid segment data from its current position
-    ///     onward. Any trailing data will cause an exception to be thrown. The stream will be
-    ///     left open.
-    /// </remarks>
-    /// <param name="stream">
-    ///     The <see cref="Stream" /> to read segment data from.
-    /// </param>
-    public static SegmentEnumerable Segments(this Stream stream) =>
-        new SegmentEnumerable(stream, true);
 
     private static PresentationCompositionSegment ParsePcs(byte[] buffer, uint pts, uint dts)
     {

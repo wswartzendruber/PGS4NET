@@ -15,49 +15,8 @@ using PGS4NET.Segments;
 
 namespace PGS4NET.DisplaySets;
 
-/// <summary>
-///     Contains extensions against different classes for intuitively handling display sets.
-/// </summary>
 public static partial class DisplaySetExtensions
 {
-    /// <summary>
-    ///     Reads all <see cref="DisplaySet" />s from a <paramref name="stream" />.
-    /// </summary>
-    /// <remarks>
-    ///     Internally, this method:
-    ///     <list type="number">
-    ///         <item>
-    ///             <description>
-    ///                 Reads <see cref="Segment" />s from the <paramref name="stream" /> until
-    ///                 a <see cref="DisplaySet" /> can be composed.
-    ///             </description>
-    ///         </item>
-    ///         <item>
-    ///             <description>
-    ///                 Adds the composed <see cref="DisplaySet" /> to the return collection.
-    ///             </description>
-    ///         </item>
-    ///     </list>
-    ///     The entire <paramref name="stream" /> is read in this manner until its end is
-    ///     reached. Any trailing data that cannot ultimately form a complete
-    ///     <see cref="DisplaySet" /> causes an exception to be thrown.
-    /// </remarks>
-    /// <returns>
-    ///     A collection <see cref="DisplaySet" />s that were read from the
-    ///     <paramref name="stream" />, or an empty collection if the stream was already at its
-    ///     end.
-    /// </returns>
-    /// <exception cref="DisplaySetException">
-    ///     Thrown when a combination of individually valid <see cref="Segment" />s cannot be
-    ///     composed into a <see cref="DisplaySet" />.
-    /// </exception>
-    /// <exception cref="SegmentException">
-    ///     Thrown when the flags inside of a segment's buffer are invalid.
-    /// </exception>
-    /// <exception cref="IOException">
-    ///     Thrown when an underlying IO error occurs while attempting to read a segment from
-    ///     the <paramref name="stream" />.
-    /// </exception>
     public static IList<DisplaySet> ReadAllDisplaySets(this Stream stream)
     {
         var returnValue = new List<DisplaySet>();
@@ -68,45 +27,6 @@ public static partial class DisplaySetExtensions
         return returnValue;
     }
 
-    /// <summary>
-    ///     Asynchronously reads all <see cref="DisplaySet" />s from a
-    ///     <paramref name="stream" />.
-    /// </summary>
-    /// <remarks>
-    ///     Internally, this method:
-    ///     <list type="number">
-    ///         <item>
-    ///             <description>
-    ///                 Reads <see cref="Segment" />s from the <paramref name="stream" /> until
-    ///                 a <see cref="DisplaySet" /> can be composed.
-    ///             </description>
-    ///         </item>
-    ///         <item>
-    ///             <description>
-    ///                 Adds the composed <see cref="DisplaySet" /> to the return collection.
-    ///             </description>
-    ///         </item>
-    ///     </list>
-    ///     The entire <paramref name="stream" /> is read in this manner until its end is
-    ///     reached. Any trailing data that cannot ultimately form a complete
-    ///     <see cref="DisplaySet" /> causes an exception to be thrown.
-    /// </remarks>
-    /// <returns>
-    ///     A collection <see cref="DisplaySet" />s that were read from the
-    ///     <paramref name="stream" />, or an empty collection if the stream was already at its
-    ///     end.
-    /// </returns>
-    /// <exception cref="DisplaySetException">
-    ///     Thrown when a combination of individually valid <see cref="Segment" />s cannot be
-    ///     composed into a <see cref="DisplaySet" />.
-    /// </exception>
-    /// <exception cref="SegmentException">
-    ///     Thrown when the flags inside of a segment's buffer are invalid.
-    /// </exception>
-    /// <exception cref="IOException">
-    ///     Thrown when an underlying IO error occurs while attempting to read a segment from
-    ///     the <paramref name="stream" />.
-    /// </exception>
     public static async Task<IList<DisplaySet>> ReadAllDisplaySetsAsync(this Stream stream)
     {
         var returnValue = new List<DisplaySet>();
@@ -117,29 +37,6 @@ public static partial class DisplaySetExtensions
         return returnValue;
     }
 
-    /// <summary>
-    ///     Reads a <see cref="DisplaySet" /> from a <paramref name="stream" />.
-    /// </summary>
-    /// <remarks>
-    ///     Internally, this method reads <see cref="Segment" />s from the
-    ///     <paramref name="stream" /> until a <see cref="DisplaySet" /> can be composed. Only
-    ///     the data necessary to compose a <see cref="DisplaySet" /> is read from the
-    ///     <paramref name="stream" />.
-    /// </remarks>
-    /// <returns>
-    ///     The <see cref="DisplaySet" /> that was read from the <paramref name="stream" />.
-    /// </returns>
-    /// <exception cref="DisplaySetException">
-    ///     Thrown when a combination of individually valid <see cref="Segment" />s cannot be
-    ///     composed into a <see cref="DisplaySet" />.
-    /// </exception>
-    /// <exception cref="SegmentException">
-    ///     Thrown when the flags inside of a segment's buffer are invalid.
-    /// </exception>
-    /// <exception cref="IOException">
-    ///     Thrown when an underlying IO error occurs while attempting to read a segment from
-    ///     the <paramref name="stream" />.
-    /// </exception>
     public static DisplaySet? ReadDisplaySet(this Stream stream)
     {
         var read = false;
@@ -159,29 +56,6 @@ public static partial class DisplaySetExtensions
         return null;
     }
 
-    /// <summary>
-    ///     Asynchronously reads a <see cref="DisplaySet" /> from a <paramref name="stream" />.
-    /// </summary>
-    /// <remarks>
-    ///     Internally, this method reads <see cref="Segment" />s from the
-    ///     <paramref name="stream" /> until a <see cref="DisplaySet" /> can be composed. Only
-    ///     the data necessary to compose a <see cref="DisplaySet" /> is read from the
-    ///     <paramref name="stream" />.
-    /// </remarks>
-    /// <returns>
-    ///     The <see cref="DisplaySet" /> that was read from the <paramref name="stream" />.
-    /// </returns>
-    /// <exception cref="DisplaySetException">
-    ///     Thrown when a combination of individually valid <see cref="Segment" />s cannot be
-    ///     composed into a <see cref="DisplaySet" />.
-    /// </exception>
-    /// <exception cref="SegmentException">
-    ///     Thrown when the flags inside of a segment's buffer are invalid.
-    /// </exception>
-    /// <exception cref="IOException">
-    ///     Thrown when an underlying IO error occurs while attempting to read a segment from
-    ///     the <paramref name="stream" />.
-    /// </exception>
     public static async Task<DisplaySet?> ReadDisplaySetAsync(this Stream stream)
     {
         var read = false;
@@ -201,14 +75,6 @@ public static partial class DisplaySetExtensions
         return null;
     }
 
-    /// <summary>
-    ///     Composes a collection of <see cref="Segment" />s into a collection of
-    ///     <see cref="DisplaySet" />s.
-    /// </summary>
-    /// <exception cref="DisplaySetException">
-    ///     Thrown when a combination of individually valid <see cref="Segment" />s cannot be
-    ///     composed into a <see cref="DisplaySet" />.
-    /// </exception>
     public static IList<DisplaySet> ToDisplaySetList(this IEnumerable<Segment> segments)
     {
         var pending = false;

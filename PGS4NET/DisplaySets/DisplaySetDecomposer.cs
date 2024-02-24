@@ -14,14 +14,8 @@ using PGS4NET.Segments;
 
 namespace PGS4NET.DisplaySets;
 
-/// <summary>
-///     Supports immediate display set decomposition into segments.
-/// </summary>
 public static class DisplaySetDecomposer
 {
-    /// <summary>
-    ///     Decomposes a single display set into a collection of segments.
-    /// </summary>
     public static IList<Segment> Decompose(DisplaySet displaySet)
     {
         var returnValue = new List<Segment>();

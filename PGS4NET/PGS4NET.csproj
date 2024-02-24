@@ -24,7 +24,7 @@
     <RepositoryUrl>https://github.com/wswartzendruber/PGS4NET</RepositoryUrl>
     <PackageTags>pgs;presentation;graphics;stream;subtitles;blu-ray;bdmv;bd;sup</PackageTags>
     <PackageLicenseExpression>MPL-2.0</PackageLicenseExpression>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
     <IsPackable>true</IsPackable>
   </PropertyGroup>
 

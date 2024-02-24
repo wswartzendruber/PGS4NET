@@ -14,9 +14,6 @@ using PGS4NET.Segments;
 
 namespace PGS4NET.DisplaySets;
 
-/// <summary>
-///     Statefully composes display sets using sequentially input segments.
-/// </summary>
 public class DisplaySetComposer
 {
     private static readonly DisplaySetException DuplicateObjectVid
@@ -40,15 +37,6 @@ public class DisplaySetComposer
     private Dictionary<CompositionId, DisplayComposition> Compositions = new();
     private PresentationCompositionSegment? Pcs = null;
 
-    /// <summary>
-    ///     Inputs the next <see cref="Segment" /> into the composer, returning a new
-    ///     <see cref="DisplaySet" /> instance if one can be composed, or
-    ///     <see langword="null" /> if more segments are required.
-    /// </summary>
-    /// <exception cref="DisplaySetException">
-    ///     Thrown when a combination of otherwise valid PGS segments cannot be combined into a
-    ///     display set.
-    /// </exception>
     public DisplaySet? Input(Segment segment)
     {
         if (Pcs is null)
@@ -311,9 +299,6 @@ public class DisplaySetComposer
         return null;
     }
 
-    /// <summary>
-    ///     Resets the composer's internal state.
-    /// </summary>
     public void Reset()
     {
         InitialObject = null;
