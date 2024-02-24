@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace PGS4NET.Segments;
 
-public static partial class StreamExtensions
+public static partial class SegmentExtensions
 {
     public static IList<Segment> ReadAllSegments(this Stream stream)
     {

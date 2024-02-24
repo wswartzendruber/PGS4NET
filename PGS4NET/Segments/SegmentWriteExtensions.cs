@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace PGS4NET.Segments;
 
-public static partial class StreamExtensions
+public static partial class SegmentExtensions
 {
     public static void WriteAllSegments(this Stream stream, IEnumerable<Segment> segments)
     {
@@ -30,6 +30,15 @@ public static partial class StreamExtensions
         foreach (var segment in segments)
             await stream.WriteSegmentAsync(segment, cancellationToken);
     }
+
+#if NETSTANDARD2_1_OR_GREATER
+    public static async Task WriteAllSegmentsAsync(this Stream stream
+        , IAsyncEnumerable<Segment> segments, CancellationToken cancellationToken = default)
+    {
+        await foreach (var segment in segments)
+            await stream.WriteSegmentAsync(segment, cancellationToken);
+    }
+#endif
 
     public static void WriteSegment(this Stream stream, Segment segment)
     {

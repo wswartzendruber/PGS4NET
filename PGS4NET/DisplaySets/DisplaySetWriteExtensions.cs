@@ -10,6 +10,7 @@
 
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using PGS4NET.Segments;
 
@@ -25,11 +26,21 @@ public static partial class DisplaySetExtensions
     }
 
     public static async Task WriteAllDisplaySetsAsync(this Stream stream
-        , IEnumerable<DisplaySet> displaySets)
+        , IEnumerable<DisplaySet> displaySets, CancellationToken cancellationToken = default)
     {
         foreach (var displaySet in displaySets)
-            await stream.WriteDisplaySetAsync(displaySet);
+            await stream.WriteDisplaySetAsync(displaySet, cancellationToken);
     }
+
+#if NETSTANDARD2_1_OR_GREATER
+    public static async Task WriteAllDisplaySetsAsync(this Stream stream
+        , IAsyncEnumerable<DisplaySet> displaySets
+        , CancellationToken cancellationToken = default)
+    {
+        await foreach (var displaySet in displaySets)
+            await stream.WriteDisplaySetAsync(displaySet, cancellationToken);
+    }
+#endif
 
     public static void WriteDisplaySet(this Stream stream, DisplaySet displaySet)
     {
@@ -37,10 +48,11 @@ public static partial class DisplaySetExtensions
             stream.WriteSegment(segment);
     }
 
-    public static async Task WriteDisplaySetAsync(this Stream stream, DisplaySet displaySet)
+    public static async Task WriteDisplaySetAsync(this Stream stream, DisplaySet displaySet
+        , CancellationToken cancellationToken = default)
     {
         foreach (var segment in DisplaySetDecomposer.Decompose(displaySet))
-            await stream.WriteSegmentAsync(segment);
+            await stream.WriteSegmentAsync(segment, cancellationToken);
     }
 
     public static IList<Segment> ToSegmentList(this IEnumerable<DisplaySet> displaySets)

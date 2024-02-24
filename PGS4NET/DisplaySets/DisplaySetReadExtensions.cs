@@ -10,6 +10,7 @@
 
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using PGS4NET.Segments;
 
@@ -27,11 +28,12 @@ public static partial class DisplaySetExtensions
         return returnValue;
     }
 
-    public static async Task<IList<DisplaySet>> ReadAllDisplaySetsAsync(this Stream stream)
+    public static async Task<IList<DisplaySet>> ReadAllDisplaySetsAsync(this Stream stream
+        , CancellationToken cancellationToken = default)
     {
         var returnValue = new List<DisplaySet>();
 
-        while (await stream.ReadDisplaySetAsync() is DisplaySet displaySet)
+        while (await stream.ReadDisplaySetAsync(cancellationToken) is DisplaySet displaySet)
             returnValue.Add(displaySet);
 
         return returnValue;
@@ -56,12 +58,13 @@ public static partial class DisplaySetExtensions
         return null;
     }
 
-    public static async Task<DisplaySet?> ReadDisplaySetAsync(this Stream stream)
+    public static async Task<DisplaySet?> ReadDisplaySetAsync(this Stream stream
+        , CancellationToken cancellationToken = default)
     {
         var read = false;
         var composer = new DisplaySetComposer();
 
-        while (await stream.ReadSegmentAsync() is Segment segment)
+        while (await stream.ReadSegmentAsync(cancellationToken) is Segment segment)
         {
             read = true;
 
