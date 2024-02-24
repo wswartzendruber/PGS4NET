@@ -19,82 +19,80 @@ public class RoundTrip
     [Fact]
     public void CycleDisplaySets()
     {
-        foreach (var instance in DisplaySetInstances.Instances)
+        foreach (var testDisplaySetEntry in DisplaySetInstances.Instances)
         {
-            using var stream = new MemoryStream();
+            var testName = testDisplaySetEntry.Key;
+            var testDisplaySet = testDisplaySetEntry.Value;
+            using var testStream = new MemoryStream();
 
-            stream.WriteDisplaySet(instance.Value);
-            stream.Position = 0;
+            testStream.WriteDisplaySet(testDisplaySet);
+            testStream.Seek(0, SeekOrigin.Begin);
 
-            var outDisplaySet = stream.ReadDisplaySet()
-                ?? throw new NullReferenceException("Display set could not be read.");
+            var resultDisplaySet = testStream.ReadDisplaySet()
+                ?? throw new Exception("Read display set came back null.");
 
-            AssertDisplaySetsEqual(instance.Key, instance.Value, outDisplaySet);
+            AssertDisplaySetsEqual(testName, testDisplaySet, resultDisplaySet);
         }
     }
 
     [Fact]
-    public async Task CycleDisplaySetsAsync()
+    public async void CycleDisplaySetsAsync()
     {
-        foreach (var instance in DisplaySetInstances.Instances)
+        foreach (var testDisplaySetEntry in DisplaySetInstances.Instances)
         {
-            using var stream = new MemoryStream();
+            var testName = testDisplaySetEntry.Key;
+            var testDisplaySet = testDisplaySetEntry.Value;
+            using var testStream = new MemoryStream();
 
-            await stream.WriteDisplaySetAsync(instance.Value);
-            stream.Position = 0;
+            await testStream.WriteDisplaySetAsync(testDisplaySet);
+            testStream.Seek(0, SeekOrigin.Begin);
 
-            var outDisplaySet = await stream.ReadDisplaySetAsync()
-                ?? throw new NullReferenceException("Display set could not be read.");
+            var resultDisplaySet = await testStream.ReadDisplaySetAsync()
+                ?? throw new Exception("Read display set came back null.");
 
-            AssertDisplaySetsEqual(instance.Key, instance.Value, outDisplaySet);
+            AssertDisplaySetsEqual(testName, testDisplaySet, resultDisplaySet);
         }
     }
 
     [Fact]
     public void CycleAllDisplaySets()
     {
-        using var stream = new MemoryStream();
-        var displaySetsOut = new List<DisplaySet>(DisplaySetInstances.Instances.Values);
+        var testDisplaySets = DisplaySetInstances.Instances.Values;
+        using var testStream = new MemoryStream();
 
-        stream.WriteAllDisplaySets(displaySetsOut);
-        stream.Position = 0;
+        testStream.WriteAllDisplaySets(testDisplaySets);
+        testStream.Seek(0, SeekOrigin.Begin);
 
-        var displaySetsIn = stream.ReadAllDisplaySets();
+        var resultDisplaySets = testStream.ReadAllDisplaySets();
 
-        AssertAllDisplaySetsEqual(displaySetsOut, displaySetsIn);
+        AssertAllDisplaySetsEqual(testDisplaySets, resultDisplaySets);
     }
 
     [Fact]
-    public async Task CycleAllDisplaySetsAsync()
+    public async void CycleAllDisplaySetsAsync()
     {
-        using var stream = new MemoryStream();
-        var displaySetsOut = new List<DisplaySet>(DisplaySetInstances.Instances.Values);
+        var testDisplaySets = DisplaySetInstances.Instances.Values;
+        using var testStream = new MemoryStream();
 
-        await stream.WriteAllDisplaySetsAsync(displaySetsOut);
-        stream.Position = 0;
+        await testStream.WriteAllDisplaySetsAsync(testDisplaySets);
+        testStream.Seek(0, SeekOrigin.Begin);
 
-        var displaySetsIn = await stream.ReadAllDisplaySetsAsync();
+        var resultDisplaySets = await testStream.ReadAllDisplaySetsAsync();
 
-        AssertAllDisplaySetsEqual(displaySetsOut, displaySetsIn);
+        AssertAllDisplaySetsEqual(testDisplaySets, resultDisplaySets);
     }
 
-    [Fact]
-    public void CycleAllDisplaySetsCollection()
+    private static void AssertAllDisplaySetsEqual(IEnumerable<DisplaySet> first
+        , IEnumerable<DisplaySet> second)
     {
-        var displaySetsIn = new List<DisplaySet>(DisplaySetInstances.Instances.Values);
-        var displaySetsOut = displaySetsIn.ToSegmentList().ToDisplaySetList();
+        var firstArray = first.ToArray();
+        var secondArray = second.ToArray();
 
-        AssertAllDisplaySetsEqual(displaySetsIn, displaySetsOut);
-    }
-
-    private static void AssertAllDisplaySetsEqual(IList<DisplaySet> first
-        , IList<DisplaySet> second)
-    {
-        if (first.Count != second.Count)
+        if (firstArray.Length != secondArray.Length)
             throw new Exception("First and second display set collections differ in size.");
 
-        for (int i = 0; i < first.Count; i++)
-            AssertDisplaySetsEqual(i.ToString(), first[i], second[i]);
+        for (int i = 0; i < firstArray.Length; i++)
+            AssertDisplaySetsEqual(i.ToString(), firstArray[i], secondArray[i]);
     }
 
     private static void AssertDisplaySetsEqual(string name, DisplaySet first, DisplaySet second)

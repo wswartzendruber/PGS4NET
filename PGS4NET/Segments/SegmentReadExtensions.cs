@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -123,6 +124,21 @@ public static partial class SegmentExtensions
             _ => throw new SegmentException("Unrecognized segment kind."),
         };
     }
+
+    public static IEnumerable<Segment> Segments(this Stream stream)
+    {
+        while (stream.ReadSegment() is Segment segment)
+            yield return segment;
+    }
+
+#if NETSTANDARD2_1_OR_GREATER
+    public static async IAsyncEnumerable<Segment> SegmentsAsync(this Stream stream
+        , [EnumeratorCancellation] CancellationToken cancellationToken = default)
+    {
+        while (await stream.ReadSegmentAsync(cancellationToken) is Segment segment)
+            yield return segment;
+    }
+#endif
 
     private static PresentationCompositionSegment ParsePcs(byte[] buffer, uint pts, uint dts)
     {

@@ -18,6 +18,59 @@ namespace PGS4NET.DisplaySets;
 
 public static partial class DisplaySetExtensions
 {
+    public static IEnumerable<DisplaySet> DisplaySets(this Stream stream) =>
+        stream.Segments().DisplaySets();
+
+#if NETSTANDARD2_1_OR_GREATER
+    public static IAsyncEnumerable<DisplaySet> DisplaySetsAsync(this Stream stream) =>
+        stream.SegmentsAsync().DisplaySetsAsync();
+#endif
+
+    public static IEnumerable<DisplaySet> DisplaySets(this IEnumerable<Segment> segments)
+    {
+        var pending = false;
+        var composer = new DisplaySetComposer();
+
+        foreach (var segment in segments)
+        {
+            pending = true;
+
+            if (composer.Input(segment) is DisplaySet displaySet)
+            {
+                pending = false;
+
+                yield return displaySet;
+            }
+        }
+
+        if (pending)
+            throw new DisplaySetException("Incomplete display set from trailing segments.");
+    }
+
+#if NETSTANDARD2_1_OR_GREATER
+    public static async IAsyncEnumerable<DisplaySet> DisplaySetsAsync(
+        this IAsyncEnumerable<Segment> segments)
+    {
+        var pending = false;
+        var composer = new DisplaySetComposer();
+
+        await foreach (var segment in segments)
+        {
+            pending = true;
+
+            if (composer.Input(segment) is DisplaySet displaySet)
+            {
+                pending = false;
+
+                yield return displaySet;
+            }
+        }
+
+        if (pending)
+            throw new DisplaySetException("Incomplete display set from trailing segments.");
+    }
+#endif
+
     public static IList<DisplaySet> ReadAllDisplaySets(this Stream stream)
     {
         var returnValue = new List<DisplaySet>();
@@ -76,28 +129,5 @@ public static partial class DisplaySetExtensions
             throw new DisplaySetException("EOF during display set composition.");
 
         return null;
-    }
-
-    public static IList<DisplaySet> ToDisplaySetList(this IEnumerable<Segment> segments)
-    {
-        var pending = false;
-        var returnValue = new List<DisplaySet>();
-        var composer = new DisplaySetComposer();
-
-        foreach (var segment in segments)
-        {
-            pending = true;
-
-            if (composer.Input(segment) is DisplaySet displaySet)
-            {
-                pending = false;
-                returnValue.Add(displaySet);
-            }
-        }
-
-        if (pending)
-            throw new DisplaySetException("Incomplete display set from trailing segments.");
-
-        return returnValue;
     }
 }

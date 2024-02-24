@@ -225,7 +225,7 @@ public class Failures
 
         try
         {
-            segments.ToDisplaySetList();
+            segments.DisplaySets().ToArray();
 
             throw new Exception("Successfully read an incomplete display set.");
         }
@@ -248,7 +248,7 @@ public class Failures
 
         try
         {
-            segments.ToDisplaySetList();
+            segments.DisplaySets().ToArray();
 
             throw new Exception("Successfully read an incomplete display set.");
         }
