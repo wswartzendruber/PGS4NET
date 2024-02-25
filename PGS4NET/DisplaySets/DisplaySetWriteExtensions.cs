@@ -54,14 +54,4 @@ public static partial class DisplaySetExtensions
         foreach (var segment in DisplaySetDecomposer.Decompose(displaySet))
             await stream.WriteSegmentAsync(segment, cancellationToken);
     }
-
-    public static IList<Segment> ToSegmentList(this IEnumerable<DisplaySet> displaySets)
-    {
-        var returnValue = new List<Segment>();
-
-        foreach (var displaySet in displaySets)
-            returnValue.AddRange(DisplaySetDecomposer.Decompose(displaySet));
-
-        return returnValue;
-    }
 }

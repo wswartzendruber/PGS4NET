@@ -125,21 +125,6 @@ public static partial class SegmentExtensions
         };
     }
 
-    public static IEnumerable<Segment> Segments(this Stream stream)
-    {
-        while (stream.ReadSegment() is Segment segment)
-            yield return segment;
-    }
-
-#if NETSTANDARD2_1_OR_GREATER
-    public static async IAsyncEnumerable<Segment> SegmentsAsync(this Stream stream
-        , [EnumeratorCancellation] CancellationToken cancellationToken = default)
-    {
-        while (await stream.ReadSegmentAsync(cancellationToken) is Segment segment)
-            yield return segment;
-    }
-#endif
-
     private static PresentationCompositionSegment ParsePcs(byte[] buffer, uint pts, uint dts)
     {
         var width = ReadUInt16Be(buffer, 0)
