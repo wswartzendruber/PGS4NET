@@ -1,0 +1,38 @@
+﻿namespace PGS4NET.Captions
+
+- IEnumerable<DisplaySet>.Captions()           -> IEnumerable<Caption>
+- IAsyncEnumerable<DisplaySet>.CaptionsAsync() -> IAsyncEnumerable<Caption>
+
+- IEnumerable<Segment>.Captions()              -> IEnumerable<Caption>
+- IAsyncEnumerable<Segment>.CaptionsAsync()    -> IAsyncEnumerable<Caption>
+
+- Stream.ReadAllCaptions()
+- Stream.ReadAllCaptionsAsync()
+- Stream.ReadCaptions()
+- Stream.ReadCaptionsAsync()
+
+namespace PGS4NET.DisplaySets
+
+- IEnumerable<Caption>.DisplaySets()           -> IEnumerable<DisplaySet>
+- IAsyncEnumerable<Caption>.DisplaySetsAsync() -> IAsyncEnumerable<DisplaySet>
+
+- IEnumerable<Segment>.DisplaySets()           -> IEnumerable<DisplaySet>
+- IAsyncEnumerable<Segment>.DisplaySetsAsync() -> IAsyncEnumerable<DisplaySet>
+
+- Stream.ReadAllDisplaySets()
+- Stream.ReadAllDisplaySetsAsync()
+- Stream.ReadDisplaySet()
+- Stream.ReadDisplaySetAsync()
+
+namespace PGS4NET.Segments
+
+- IEnumerable<Caption>.Segments()              -> IEnumerable<Segment>
+- IAsyncEnumerable<Caption>.SegmentsAsync()    -> IAsyncEnumerable<Segment>
+
+- IEnumerable<DisplaySet>.Segments()           -> IEnumerable<Segment>
+- IAsyncEnumerable<DisplaySet>.SegmentsAsync() -> IAsyncEnumerable<Segment>
+
+- Stream.ReadAllSegments()
+- Stream.ReadAllSegmentsAsync()
+- Stream.ReadSegment()
+- Stream.ReadSegmentAsync()
