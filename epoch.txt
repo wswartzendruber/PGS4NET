@@ -1,0 +1,115 @@
+presentation_composition_segment(01:18:26.076)
+  composition_number = 924
+  composition_state = EPOCH_START
+  palette_update_flags = 0x00
+  palette_id = 0
+  composition_object
+    object_id = 0
+    window_id = 1
+    forced = true
+    x = 562
+    y = 800
+  cropped = false
+window_definition_segment(01:18:26.076)
+  window_id = 0
+  window_horizontal_position = 840
+  window_vertical_position = 169
+  window_width = 240
+  window_height = 61
+  window_id = 1
+  window_horizontal_position = 562
+  window_vertical_position = 800
+  window_width = 785
+  window_height = 75
+palette_definition_segment(01:18:26.076)
+  palette_id = 0
+  palette_version = 0
+  pallet_entries = [255]
+single_object_definition_segment(01:18:26.076)
+  object_id = 0
+  object_version = 0
+  object_width = 785
+  object_height = 75
+  object_data = [15464]
+end_segment(01:18:26.076)
+
+presentation_composition_segment(01:18:27.870)
+  composition_number = 925
+  composition_state = NORMAL_CASE
+  palette_update_flags = 0x00
+  palette_id = 0
+  composition_object
+    object_id = 0
+    window_id = 1
+    forced = true
+    x = 562
+    y = 800
+  cropped = false
+  composition_object
+    object_id = 1
+    window_id = 0
+    forced = false
+    x = 840
+    y = 169
+  cropped = false
+window_definition_segment(01:18:27.870)
+  window_id = 0
+  window_horizontal_position = 840
+  window_vertical_position = 169
+  window_width = 240
+  window_height = 61
+  window_id = 1
+  window_horizontal_position = 562
+  window_vertical_position = 800
+  window_width = 785
+  window_height = 75
+single_object_definition_segment(01:18:27.870)
+  object_id = 1
+  object_version = 0
+  object_width = 240
+  object_height = 61
+  object_data = [8493]
+end_segment(01:18:27.870)
+
+presentation_composition_segment(01:18:29.205)
+  composition_number = 926
+  composition_state = NORMAL_CASE
+  palette_update_flags = 0x00
+  palette_id = 0
+  composition_object
+    object_id = 0
+    window_id = 1
+    forced = true
+    x = 562
+    y = 800
+  cropped = false
+window_definition_segment(01:18:29.205)
+  window_id = 0
+  window_horizontal_position = 840
+  window_vertical_position = 169
+  window_width = 240
+  window_height = 61
+  window_id = 1
+  window_horizontal_position = 562
+  window_vertical_position = 800
+  window_width = 785
+  window_height = 75
+end_segment(01:18:29.205)
+
+presentation_composition_segment(01:18:29.246)
+  composition_number = 927
+  composition_state = NORMAL_CASE
+  palette_update_flags = 0x00
+  palette_id = 0
+window_definition_segment(01:18:29.246)
+  window_id = 0
+  window_horizontal_position = 840
+  window_vertical_position = 169
+  window_width = 240
+  window_height = 61
+  window_id = 1
+  window_horizontal_position = 562
+  window_vertical_position = 800
+  window_width = 785
+  window_height = 75
+end_segment(01:18:29.246)

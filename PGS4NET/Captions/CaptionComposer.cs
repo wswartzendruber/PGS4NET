@@ -18,7 +18,7 @@ public class CaptionComposer
     private readonly Dictionary<byte, DisplayWindow> Windows = new();
     private readonly Dictionary<byte, DisplayPalette> Palettes = new();
     private readonly Dictionary<ushort, DisplayObject> Objects = new();
-    private readonly Dictionary<CompositionId, DisplayComposition> Compositions = new();
+    private readonly Dictionary<CompositionId, CompositionValue> Compositions = new();
     private readonly Queue<Caption> CaptionQueue = new();
 
     public IList<Caption> Input(DisplaySet displaySet)
@@ -35,10 +35,24 @@ public class CaptionComposer
         foreach (var objectEntry in displaySet.Objects)
             Objects[objectEntry.Key.Id] = objectEntry.Value;
 
+        foreach (var compositionEntry in displaySets.Compositions)
+        {
+
+        }
+
         if (!displaySet.PaletteUpdateOnly)
             Compositions.Clear();
         foreach (var compositionEntry in displaySet.Compositions)
-            Compositions[compositionEntry.Key] = compositionEntry.Value;
+        {
+            var compositionValue = new CompositionValue
+            {
+                Composition = compositionEntry.Value,
+                TimeStamp = displaySet.Pts,
+            };
+
+            Compositions[compositionEntry.Key] = compositionValue;
+        }
+
 
         return returnValue;
     }
@@ -50,5 +64,12 @@ public class CaptionComposer
         Objects.Clear();
         Compositions.Clear();
         CaptionQueue.Clear();
+    }
+
+    private struct CompositionValue
+    {
+        internal DisplayComposition Composition;
+
+        internal PgsTimeStamp TimeStamp;
     }
 }
