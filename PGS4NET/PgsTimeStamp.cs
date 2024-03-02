@@ -108,4 +108,14 @@ public struct PgsTimeStamp : IEquatable<PgsTimeStamp>
     /// </summary>
     public static bool operator !=(PgsTimeStamp first, PgsTimeStamp second) =>
         !first.Equals(second);
+
+    public static PgsTimeStamp operator +(PgsTimeStamp augend, PgsTimeStamp addend)
+    {
+        return new PgsTimeStamp(augend.Ticks - addend.Ticks);
+    }
+
+    public static PgsTimeStamp operator -(PgsTimeStamp minuend, PgsTimeStamp subtrahend)
+    {
+        return new PgsTimeStamp(minuend.Ticks - subtrahend.Ticks);
+    }
 }
