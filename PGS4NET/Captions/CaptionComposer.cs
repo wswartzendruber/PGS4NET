@@ -15,112 +15,101 @@ namespace PGS4NET.Captions;
 
 public class CaptionComposer
 {
-    private readonly Dictionary<byte, PgsPixel[]> Palettes = new();
-    private readonly Dictionary<ushort, DisplayObject> Objects = new();
-    private readonly Dictionary<CompositionId, CompositionValue> Compositions = new();
+    private readonly Dictionary<byte, DisplayWindow> Windows = new();
+    private readonly Dictionary<VersionedId<byte>, DisplayPalette> Palettes = new();
+    private readonly Dictionary<VersionedId<ushort>, DisplayObject> Objects = new();
+    private readonly Dictionary<CompositionId, BufferedImage> BufferedImages = new();
 
     public IList<Caption> Input(DisplaySet displaySet)
     {
         var returnValue = new List<Caption>();
 
         if (displaySet.CompositionState == CompositionState.EpochStart)
-        {
-            // EPOCH_START resets everything.
             Reset();
-        }
 
-        foreach (var compositionEntry in Compositions)
-        {
-            if (!displaySet.Compositions.ContainsKey(compositionEntry.Key))
-            {
-                // We have a composition that we've placed onto the screen that isn't there
-                // anymore; we now know its appearance timestamp and its duration so we can
-                // compose a caption.
+        foreach (var entry in displaySet.Windows)
+            Windows[entry.Key] = entry.Value;
+        foreach (var entry in displaySet.Palettes)
+            Palettes[entry.Key] = entry.Value;
+        foreach (var entry in displaySet.Objects)
+            Objects[entry.Key] = entry.Value;
 
-                var compositionId = compositionEntry.Key;
-                var compositionValue = compositionEntry.Value;
-
-                if (!Palettes.TryGetValue(compositionValue.PaletteId, out PgsPixel[] palette))
-                {
-                    throw new CaptionException("PCS has invalid palette ID.");
-                }
-                if (!Objects.TryGetValue(compositionId.ObjectId
-                    , out DisplayObject displayObject))
-                {
-                    throw new CaptionException("Composition object has invalid object ID.");
-                }
-
-                var caption = new Caption
-                {
-                    TimeStamp = compositionValue.TimeStamp,
-                    Duration = compositionValue.TimeStamp - displaySet.Pts,
-                    X = compositionValue.Composition.X,
-                    Y = compositionValue.Composition.Y,
-                    Width = displayObject.Width,
-                    Height = displayObject.Height,
-                    Data = ComposeCaptionImage(palette, displayObject.Data),
-                };
-
-                returnValue.Add(caption);
-            }
-        }
-
-        foreach (var paletteEntry in displaySet.Palettes)
-            Palettes[paletteEntry.Key.Id] = GeneratePaletteLut(paletteEntry.Value.Entries);
-        foreach (var objectEntry in displaySet.Objects)
-            Objects[objectEntry.Key.Id] = objectEntry.Value;
-
-        if (!displaySet.PaletteUpdateOnly)
-            Compositions.Clear();
         foreach (var compositionEntry in displaySet.Compositions)
         {
-            var compositionValue = new CompositionValue
-            {
-                Composition = compositionEntry.Value,
-                TimeStamp = displaySet.Pts,
-                PaletteId = displaySet.PaletteId,
-            };
+            var paletteId = displaySet.PaletteId;
+            var compositionId = compositionEntry.Key;
+            var composition = compositionEntry.Value;
+            var objectId = compositionId.ObjectId;
+            var windowId = compositionId.WindowId;
 
-            Compositions[compositionEntry.Key] = compositionValue;
+            if (!Palettes.TryGetLatestValue(paletteId, out var displayPalette))
+                throw new CaptionException("Display set does not define the set palette.");
+
+            if (!Windows.TryGetValue(windowId, out var displayWindow))
+                throw new CaptionException("Composition object references undefined window.");
+
+            if (!Objects.TryGetLatestValue(objectId, out var displayObject))
+                throw new CaptionException("Composition object references undefined object.");
         }
-
 
         return returnValue;
     }
 
     public void Reset()
     {
-        Palettes.Clear();
-        Objects.Clear();
-        Compositions.Clear();
+        BufferedImages.Clear();
     }
 
-    private PgsPixel[] GeneratePaletteLut(IDictionary<byte, PgsPixel> entries)
+    private class BufferedImage
     {
-        var lut = new PgsPixel[256];
+        private readonly PgsTimeStamp TimeStamp;
+        private readonly ushort X;
+        private readonly ushort Y;
+        private readonly ushort Width;
+        private readonly ushort Height;
+        private readonly byte[] Data;
 
-        foreach (var entry in entries)
-            lut[entry.Key] = entry.Value;
+        private PgsPixel[] PaletteLut;
 
-        return lut;
-    }
+        public BufferedImage(PgsTimeStamp timeStamp, ushort x, ushort y, ushort width
+            , ushort height, byte[] data, IDictionary<byte, PgsPixel> palette)
+        {
+            TimeStamp = timeStamp;
+            X = y;
+            Y = y;
+            Width = width;
+            Height = height;
+            Data = data;
+            PaletteLut = GeneratePaletteLut(palette);
+        }
 
-    private PgsPixel[] ComposeCaptionImage(PgsPixel[] palette, byte[] values)
-    {
-        var pixels = new PgsPixel[values.Length];
+        public PgsPixel[] Render()
+        {
+            var returnValue = new PgsPixel[Data.Length];
 
-        for (int i = 0; i < values.Length; i++)
-            pixels[i] = palette[values[i]];
+            for (int i = 0; i < returnValue.Length; i++)
+                returnValue[i] = PaletteLut[Data[i]];
 
-        return pixels;
-    }
+            return returnValue;
+        }
 
-    private struct CompositionValue
-    {
-        internal DisplayComposition Composition;
+        public PgsPixel[] UpdatePalette(IDictionary<byte, PgsPixel> palette)
+        {
+            var returnValue = Render();
 
-        internal PgsTimeStamp TimeStamp;
+            PaletteLut = GeneratePaletteLut(palette);
 
-        internal byte PaletteId;
+            return returnValue;
+        }
+
+        private PgsPixel[] GeneratePaletteLut(IDictionary<byte, PgsPixel> palette)
+        {
+            var returnValue = new PgsPixel[256];
+
+            foreach (var entry in palette)
+                returnValue[entry.Key] = entry.Value;
+
+            return returnValue;
+        }
     }
 }
