@@ -115,13 +115,8 @@ internal static class DisplaySetInstances
                             {
                                 {
                                     RandomByte(),
-                                    new PgsPixel
-                                    {
-                                        Y = RandomByte(),
-                                        Cr = RandomByte(),
-                                        Cb = RandomByte(),
-                                        Alpha = RandomByte(),
-                                    }
+                                    new PgsPixel(RandomByte(), RandomByte(), RandomByte()
+                                        , RandomByte())
                                 },
                             },
                         }
@@ -138,33 +133,18 @@ internal static class DisplaySetInstances
                             {
                                 {
                                     RandomByte(64),
-                                    new PgsPixel
-                                    {
-                                        Y = RandomByte(),
-                                        Cr = RandomByte(),
-                                        Cb = RandomByte(),
-                                        Alpha = RandomByte(),
-                                    }
+                                    new PgsPixel(RandomByte(), RandomByte(), RandomByte()
+                                        , RandomByte())
                                 },
                                 {
                                     (byte)(RandomByte(64) + 64),
-                                    new PgsPixel
-                                    {
-                                        Y = RandomByte(),
-                                        Cr = RandomByte(),
-                                        Cb = RandomByte(),
-                                        Alpha = RandomByte(),
-                                    }
+                                    new PgsPixel(RandomByte(), RandomByte(), RandomByte()
+                                        , RandomByte())
                                 },
                                 {
                                     (byte)(RandomByte(64) + 128),
-                                    new PgsPixel
-                                    {
-                                        Y = RandomByte(),
-                                        Cr = RandomByte(),
-                                        Cb = RandomByte(),
-                                        Alpha = RandomByte(),
-                                    }
+                                    new PgsPixel(RandomByte(), RandomByte(), RandomByte()
+                                        , RandomByte())
                                 },
                             },
                         }

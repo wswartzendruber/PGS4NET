@@ -81,13 +81,8 @@ public static class DisplaySetDecomposer
                 paletteEntries.Add(new PaletteDefinitionEntry
                 {
                     Id = paletteEntry.Key,
-                    Pixel = new PgsPixel
-                    {
-                        Y = paletteEntry.Value.Y,
-                        Cr = paletteEntry.Value.Cr,
-                        Cb = paletteEntry.Value.Cb,
-                        Alpha = paletteEntry.Value.Alpha,
-                    },
+                    Pixel = new PgsPixel(paletteEntry.Value.Y, paletteEntry.Value.Cr
+                        , paletteEntry.Value.Cb, paletteEntry.Value.Alpha),
                 });
             }
 

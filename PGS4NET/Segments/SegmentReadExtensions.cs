@@ -257,7 +257,7 @@ public static partial class SegmentExtensions
     private static PaletteDefinitionSegment ParsePds(byte[] buffer, uint pts, uint dts)
     {
         var count = (buffer.Length - 2) / 5;
-        var id = ReadUInt8(buffer, 0)
+        var paletteId = ReadUInt8(buffer, 0)
             ?? throw new IOException("EOS reading PDS ID.");
         var version = ReadUInt8(buffer, 1)
             ?? throw new IOException("EOS reading PDS version.");
@@ -266,21 +266,21 @@ public static partial class SegmentExtensions
 
         for (int i = 0; i < count; i++)
         {
+            var entryId = ReadUInt8(buffer, offset)
+                ?? throw new IOException($"EOS reading PDS[{i}] ID.");
+            var y = ReadUInt8(buffer, offset + 1)
+                ?? throw new IOException($"EOS reading PDS[{i}] Y value.");
+            var cr = ReadUInt8(buffer, offset + 2)
+                ?? throw new IOException($"EOS reading PDS[{i}] Cr value.");
+            var cb = ReadUInt8(buffer, offset + 3)
+                ?? throw new IOException($"EOS reading PDS[{i}] Cb value.");
+            var alpha = ReadUInt8(buffer, offset + 4)
+                ?? throw new IOException($"EOS reading PDS[{i}] alpha value.");
+
             entries.Add(new PaletteDefinitionEntry
             {
-                Id = ReadUInt8(buffer, offset)
-                    ?? throw new IOException($"EOS reading PDS[{i}] ID."),
-                Pixel = new PgsPixel
-                {
-                    Y = ReadUInt8(buffer, offset + 1)
-                        ?? throw new IOException($"EOS reading PDS[{i}] Y value."),
-                    Cr = ReadUInt8(buffer, offset + 2)
-                        ?? throw new IOException($"EOS reading PDS[{i}] Cr value."),
-                    Cb = ReadUInt8(buffer, offset + 3)
-                        ?? throw new IOException($"EOS reading PDS[{i}] Cb value."),
-                    Alpha = ReadUInt8(buffer, offset + 4)
-                        ?? throw new IOException($"EOS reading PDS[{i}] alpha value."),
-                },
+                Id = entryId,
+                Pixel = new PgsPixel(y, cr, cb, alpha),
             });
             offset += 5;
         }
@@ -289,7 +289,7 @@ public static partial class SegmentExtensions
         {
             Pts = pts,
             Dts = dts,
-            Id = id,
+            Id = paletteId,
             Version = version,
             Entries = entries,
         };

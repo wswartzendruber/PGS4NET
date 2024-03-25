@@ -99,13 +99,8 @@ public class DisplaySetComposer
 
                     foreach (var entry in pds.Entries)
                     {
-                        entries[entry.Id] = new PgsPixel
-                        {
-                            Y = entry.Pixel.Y,
-                            Cr = entry.Pixel.Cr,
-                            Cb = entry.Pixel.Cb,
-                            Alpha = entry.Pixel.Alpha,
-                        };
+                        entries[entry.Id] = new PgsPixel(entry.Pixel.Y, entry.Pixel.Cr
+                            , entry.Pixel.Cb, entry.Pixel.Alpha);
                     }
 
                     Palettes[vid] = new DisplayPalette

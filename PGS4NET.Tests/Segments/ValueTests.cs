@@ -112,35 +112,17 @@ public class ValueTests
         var a = new PaletteDefinitionEntry
         {
             Id = 1,
-            Pixel = new PgsPixel
-            {
-                Y = 2,
-                Cr = 3,
-                Cb = 4,
-                Alpha = 5,
-            },
+            Pixel = new PgsPixel(2, 3, 4, 5),
         };
         var b = new PaletteDefinitionEntry
         {
             Id = 1,
-            Pixel = new PgsPixel
-            {
-                Y = 2,
-                Cr = 3,
-                Cb = 4,
-                Alpha = 5,
-            },
+            Pixel = new PgsPixel(2, 3, 4, 5),
         };
         var c = new PaletteDefinitionEntry
         {
             Id = 1,
-            Pixel = new PgsPixel
-            {
-                Y = 2,
-                Cr = 3,
-                Cb = 4,
-                Alpha = 6,
-            },
+            Pixel = new PgsPixel(2, 3, 4, 6),
         };
 
         Assert.True(a == a);
