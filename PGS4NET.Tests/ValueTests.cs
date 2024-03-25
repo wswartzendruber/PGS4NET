@@ -55,6 +55,18 @@ public class ValueTests
         Assert.True(a == a);
         Assert.True(a == b);
         Assert.True(a != c);
+        Assert.False(a > a);
+        Assert.False(a < a);
+        Assert.True(a >= a);
+        Assert.True(a <= a);
+        Assert.False(a > b);
+        Assert.False(a < b);
+        Assert.True(a >= b);
+        Assert.True(a <= b);
+        Assert.False(a > c);
+        Assert.True(a < c);
+        Assert.False(a >= c);
+        Assert.True(a <= c);
         Assert.True(a.GetHashCode() == a.GetHashCode());
         Assert.True(a.GetHashCode() == b.GetHashCode());
         Assert.True(a.GetHashCode() != c.GetHashCode());

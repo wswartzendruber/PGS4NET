@@ -15,7 +15,7 @@ namespace PGS4NET;
 /// <summary>
 ///     Represents a PGS time stamp accurate to 90 kHz, with 90,000 ticks composing one second.
 /// </summary>
-public struct PgsTimeStamp : IEquatable<PgsTimeStamp>
+public struct PgsTimeStamp : IEquatable<PgsTimeStamp>, IComparable<PgsTimeStamp>
 {
     private static readonly Type ThisType = typeof(PgsTimeStamp);
 
@@ -81,7 +81,7 @@ public struct PgsTimeStamp : IEquatable<PgsTimeStamp>
             return true;
 
         return
-            other.Ticks == this.Ticks;
+            this.Ticks == other.Ticks;
     }
 
     /// <summary>
@@ -91,6 +91,9 @@ public struct PgsTimeStamp : IEquatable<PgsTimeStamp>
     /// </summary>
     public override bool Equals(object? other) =>
         other?.GetType() == ThisType && Equals((PgsTimeStamp)other);
+
+    public int CompareTo(PgsTimeStamp other) =>
+        this.Ticks.CompareTo(other.Ticks);
 
     /// <summary>
     ///     Returns the hash code of this instance taking into account the values of all fields.
@@ -109,13 +112,21 @@ public struct PgsTimeStamp : IEquatable<PgsTimeStamp>
     public static bool operator !=(PgsTimeStamp first, PgsTimeStamp second) =>
         !first.Equals(second);
 
-    public static PgsTimeStamp operator +(PgsTimeStamp augend, PgsTimeStamp addend)
-    {
-        return new PgsTimeStamp(augend.Ticks - addend.Ticks);
-    }
+    public static PgsTimeStamp operator +(PgsTimeStamp augend, PgsTimeStamp addend) =>
+        new PgsTimeStamp(augend.Ticks - addend.Ticks);
 
-    public static PgsTimeStamp operator -(PgsTimeStamp minuend, PgsTimeStamp subtrahend)
-    {
-        return new PgsTimeStamp(minuend.Ticks - subtrahend.Ticks);
-    }
+    public static PgsTimeStamp operator -(PgsTimeStamp minuend, PgsTimeStamp subtrahend) =>
+        new PgsTimeStamp(minuend.Ticks - subtrahend.Ticks);
+
+    public static bool operator >(PgsTimeStamp left, PgsTimeStamp right) =>
+        left.Ticks > right.Ticks;
+
+    public static bool operator <(PgsTimeStamp left, PgsTimeStamp right) =>
+        left.Ticks < right.Ticks;
+
+    public static bool operator >=(PgsTimeStamp left, PgsTimeStamp right) =>
+        left.Ticks >= right.Ticks;
+
+    public static bool operator <=(PgsTimeStamp left, PgsTimeStamp right) =>
+        left.Ticks <= right.Ticks;
 }
