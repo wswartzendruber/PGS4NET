@@ -26,39 +26,21 @@ public class ValueTests
             X = 1,
             Y = 2,
             Forced = true,
-            Crop = new CroppedArea
-            {
-                X = 3,
-                Y = 4,
-                Width = 5,
-                Height = 6,
-            },
+            Crop = new Area(3, 4, 5, 6),
         };
         var b = new DisplayComposition
         {
             X = 1,
             Y = 2,
             Forced = true,
-            Crop = new CroppedArea
-            {
-                X = 3,
-                Y = 4,
-                Width = 5,
-                Height = 6,
-            },
+            Crop = new Area(3, 4, 5, 6),
         };
         var c = new DisplayComposition
         {
             X = 1,
             Y = 2,
             Forced = true,
-            Crop = new CroppedArea
-            {
-                X = 3,
-                Y = 4,
-                Width = 5,
-                Height = 7,
-            },
+            Crop = new Area(3, 4, 5, 7),
         };
         var d = new DisplayComposition
         {

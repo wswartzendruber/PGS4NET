@@ -194,13 +194,8 @@ internal static class DisplaySetInstances
                             X = RandomUInt16(),
                             Y = RandomUInt16(),
                             Forced = false,
-                            Crop = new CroppedArea
-                            {
-                                X = RandomUInt16(),
-                                Y = RandomUInt16(),
-                                Width = RandomUInt16(),
-                                Height = RandomUInt16(),
-                            },
+                            Crop = new Area(RandomUInt16(), RandomUInt16(), RandomUInt16()
+                                , RandomUInt16()),
                         }
                     },
                     {
@@ -214,13 +209,8 @@ internal static class DisplaySetInstances
                             X = RandomUInt16(),
                             Y = RandomUInt16(),
                             Forced = true,
-                            Crop = new CroppedArea
-                            {
-                                X = RandomUInt16(),
-                                Y = RandomUInt16(),
-                                Width = RandomUInt16(),
-                                Height = RandomUInt16(),
-                            },
+                            Crop = new Area(RandomUInt16(), RandomUInt16(), RandomUInt16()
+                                , RandomUInt16()),
                         }
                     },
                 },

@@ -172,26 +172,25 @@ public static partial class SegmentExtensions
             var y = ReadUInt16Be(buffer, offset + 6)
                 ?? throw new IOException($"EOS reading PCS[{i}] Y position.");
             var forced = (flags & 0x40) != 0;
-            CroppedArea? croppedArea;
+            Area? area;
 
             if ((flags & 0x80) != 0)
             {
-                croppedArea = new CroppedArea
-                {
-                    X = ReadUInt16Be(buffer, offset + 8)
-                        ?? throw new IOException($"EOS reading PCS[{i}] cropped X position."),
-                    Y = ReadUInt16Be(buffer, offset + 10)
-                        ?? throw new IOException($"EOS reading PCS[{i}] cropped Y position."),
-                    Width = ReadUInt16Be(buffer, offset + 12)
-                        ?? throw new IOException($"EOS reading PCS[{i}] cropped width."),
-                    Height = ReadUInt16Be(buffer, offset + 14)
-                        ?? throw new IOException($"EOS reading PCS[{i}] cropped height."),
-                };
+                var areaX = ReadUInt16Be(buffer, offset + 8)
+                    ?? throw new IOException($"EOS reading PCS[{i}] cropped X position.");
+                var areaY = ReadUInt16Be(buffer, offset + 10)
+                    ?? throw new IOException($"EOS reading PCS[{i}] cropped Y position.");
+                var areaWidth = ReadUInt16Be(buffer, offset + 12)
+                    ?? throw new IOException($"EOS reading PCS[{i}] cropped width.");
+                var areaHeight = ReadUInt16Be(buffer, offset + 14)
+                    ?? throw new IOException($"EOS reading PCS[{i}] cropped height.");
+
+                area = new Area(areaX, areaY, areaWidth, areaHeight);
                 offset += 16;
             }
             else
             {
-                croppedArea = null;
+                area = null;
                 offset += 8;
             }
 
@@ -202,7 +201,7 @@ public static partial class SegmentExtensions
                 X = x,
                 Y = y,
                 Forced = forced,
-                Crop = croppedArea,
+                Crop = area,
             });
         }
 

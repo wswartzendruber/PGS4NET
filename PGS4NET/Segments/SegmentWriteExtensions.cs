@@ -192,12 +192,12 @@ public static partial class SegmentExtensions
             WriteUInt16Be(ms, co.X);
             WriteUInt16Be(ms, co.Y);
 
-            if (co.Crop is CroppedArea ca)
+            if (co.Crop is Area area)
             {
-                WriteUInt16Be(ms, ca.X);
-                WriteUInt16Be(ms, ca.Y);
-                WriteUInt16Be(ms, ca.Width);
-                WriteUInt16Be(ms, ca.Height);
+                WriteUInt16Be(ms, area.X);
+                WriteUInt16Be(ms, area.Y);
+                WriteUInt16Be(ms, area.Width);
+                WriteUInt16Be(ms, area.Height);
             }
         }
 

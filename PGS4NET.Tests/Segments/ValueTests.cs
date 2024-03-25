@@ -28,13 +28,7 @@ public class ValueTests
             X = 3,
             Y = 4,
             Forced = true,
-            Crop = new CroppedArea
-            {
-                X = 5,
-                Y = 6,
-                Width = 7,
-                Height = 8,
-            },
+            Crop = new Area(5, 6, 7, 8),
         };
         var b = new CompositionObject
         {
@@ -43,13 +37,7 @@ public class ValueTests
             X = 3,
             Y = 4,
             Forced = true,
-            Crop = new CroppedArea
-            {
-                X = 5,
-                Y = 6,
-                Width = 7,
-                Height = 8,
-            },
+            Crop = new Area(5, 6, 7, 8),
         };
         var c = new CompositionObject
         {
@@ -58,13 +46,7 @@ public class ValueTests
             X = 3,
             Y = 4,
             Forced = true,
-            Crop = new CroppedArea
-            {
-                X = 5,
-                Y = 6,
-                Width = 7,
-                Height = 9,
-            },
+            Crop = new Area(5, 6, 7, 9),
         };
         var d = new CompositionObject
         {

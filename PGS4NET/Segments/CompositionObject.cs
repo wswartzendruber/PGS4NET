@@ -50,7 +50,7 @@ public struct CompositionObject : IEquatable<CompositionObject>
     ///     If set, defines the visible area of the object. Otherwise, the entire object is
     ///     shown.
     /// </summary>
-    public CroppedArea? Crop;
+    public Area? Crop;
 
     /// <summary>
     ///     Determines if the fields of another <see cref="CompositionObject" /> match this
