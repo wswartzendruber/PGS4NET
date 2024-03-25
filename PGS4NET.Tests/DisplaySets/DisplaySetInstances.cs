@@ -91,11 +91,7 @@ internal static class DisplaySetInstances
                 Palettes = new Dictionary<VersionedId<byte>, DisplayPalette>
                 {
                     {
-                        new VersionedId<byte>
-                        {
-                            Id = RandomByte(64),
-                            Version = RandomByte(),
-                        },
+                        new VersionedId<byte>(RandomByte(64), RandomByte()),
                         new DisplayPalette
                         {
                             Entries = new Dictionary<byte, PgsPixel>
@@ -104,11 +100,7 @@ internal static class DisplaySetInstances
                         }
                     },
                     {
-                        new VersionedId<byte>
-                        {
-                            Id = (byte)(RandomByte(64) + 64),
-                            Version = RandomByte(),
-                        },
+                        new VersionedId<byte>((byte)(RandomByte(64) + 64), RandomByte()),
                         new DisplayPalette
                         {
                             Entries = new Dictionary<byte, PgsPixel>
@@ -122,11 +114,7 @@ internal static class DisplaySetInstances
                         }
                     },
                     {
-                        new VersionedId<byte>
-                        {
-                            Id = (byte)(RandomByte(64) + 128),
-                            Version = RandomByte(),
-                        },
+                        new VersionedId<byte>((byte)(RandomByte(64) + 128), RandomByte()),
                         new DisplayPalette
                         {
                             Entries = new Dictionary<byte, PgsPixel>
@@ -153,43 +141,27 @@ internal static class DisplaySetInstances
                 Objects = new Dictionary<VersionedId<ushort>, DisplayObject>
                 {
                     {
-                        new VersionedId<ushort>
-                        {
-                            Id = RandomUInt16(128),
-                            Version = RandomByte(),
-                        },
+                        new VersionedId<ushort>(RandomUInt16(128), RandomByte()),
                         RandomDisplayObject()
                     },
                     {
-                        new VersionedId<ushort>
-                        {
-                            Id = (ushort)(RandomUInt16(128) + 128),
-                            Version = RandomByte(),
-                        },
+                        new VersionedId<ushort>((ushort)(RandomUInt16(128) + 128)
+                            , RandomByte()),
                         RandomDisplayObject()
                     },
                     {
-                        new VersionedId<ushort>
-                        {
-                            Id = (ushort)(RandomUInt16(128) + 256),
-                            Version = RandomByte(),
-                        },
+                        new VersionedId<ushort>((ushort)(RandomUInt16(128) + 256)
+                            , RandomByte()),
                         RandomDisplayObject()
                     },
                     {
-                        new VersionedId<ushort>
-                        {
-                            Id = (ushort)(RandomUInt16(128) + 384),
-                            Version = RandomByte(),
-                        },
+                        new VersionedId<ushort>((ushort)(RandomUInt16(128) + 384)
+                            , RandomByte()),
                         RandomDisplayObject()
                     },
                     {
-                        new VersionedId<ushort>
-                        {
-                            Id = (ushort)(RandomUInt16(128) + 512),
-                            Version = RandomByte(),
-                        },
+                        new VersionedId<ushort>((ushort)(RandomUInt16(128) + 512)
+                            , RandomByte()),
                         RandomDisplayObject()
                     },
                 },

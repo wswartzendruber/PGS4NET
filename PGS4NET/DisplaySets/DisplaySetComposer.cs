@@ -84,11 +84,7 @@ public class DisplaySetComposer
                     if (pds.Dts != Pcs.Dts)
                         throw InconsistentDts;
 
-                    var vid = new VersionedId<byte>
-                    {
-                        Id = pds.Id,
-                        Version = pds.Version,
-                    };
+                    var vid = new VersionedId<byte>(pds.Id, pds.Version);
 
                     if (Palettes.ContainsKey(vid))
                     {
@@ -119,11 +115,7 @@ public class DisplaySetComposer
 
                     if (InitialObject is null)
                     {
-                        var vid = new VersionedId<ushort>
-                        {
-                            Id = sods.Id,
-                            Version = sods.Version,
-                        };
+                        var vid = new VersionedId<ushort>(sods.Id, sods.Version);
 
                         if (Objects.ContainsKey(vid))
                             throw DuplicateObjectVid;
@@ -151,11 +143,7 @@ public class DisplaySetComposer
 
                     if (InitialObject is null)
                     {
-                        var vid = new VersionedId<ushort>
-                        {
-                            Id = iods.Id,
-                            Version = iods.Version,
-                        };
+                        var vid = new VersionedId<ushort>(iods.Id, iods.Version);
 
                         if (Objects.ContainsKey(vid))
                             throw DuplicateObjectVid;
@@ -206,11 +194,7 @@ public class DisplaySetComposer
                         if (fods.Version != InitialObject.Version)
                             throw InconsistentObjectVersion;
 
-                        var vid = new VersionedId<ushort>
-                        {
-                            Id = fods.Id,
-                            Version = fods.Version,
-                        };
+                        var vid = new VersionedId<ushort>(fods.Id, fods.Version);
                         var data = new List<byte>();
 
                         data.AddRange(InitialObject.Data);

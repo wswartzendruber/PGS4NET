@@ -75,36 +75,12 @@ public class ValueTests
     [Fact]
     public void VersionedId()
     {
-        var a = new VersionedId<int>
-        {
-            Id = 1,
-            Version = 2,
-        };
-        var b = new VersionedId<int>
-        {
-            Id = 1,
-            Version = 2,
-        };
-        var c = new VersionedId<int>
-        {
-            Id = 1,
-            Version = 3,
-        };
-        var d = new VersionedId<long>
-        {
-            Id = 1,
-            Version = 2,
-        };
-        var e = new VersionedId<long>
-        {
-            Id = 1,
-            Version = 2,
-        };
-        var f = new VersionedId<long>
-        {
-            Id = 1,
-            Version = 3,
-        };
+        var a = new VersionedId<int>(1, 2);
+        var b = new VersionedId<int>(1, 2);
+        var c = new VersionedId<int>(1, 3);
+        var d = new VersionedId<long>(1, 2);
+        var e = new VersionedId<long>(1, 2);
+        var f = new VersionedId<long>(1, 3);
 
         Assert.True(a == a);
         Assert.True(a == b);

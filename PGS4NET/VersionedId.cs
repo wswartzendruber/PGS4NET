@@ -23,12 +23,21 @@ public struct VersionedId<T> : IEquatable<VersionedId<T>>
     /// <summary>
     ///     The ID.
     /// </summary>
-    public T Id;
+    public T Id { get; private set; }
 
     /// <summary>
     ///     The version.
     /// </summary>
-    public byte Version;
+    public byte Version { get; private set; }
+
+    /// <summary>
+    ///     Initializes a new instance with the provided ID and version.
+    /// </summary>
+    public VersionedId(T id, byte version)
+    {
+        Id = id;
+        Version = version;
+    }
 
     /// <summary>
     ///     Determines if the fields of another <see cref="VersionedId{T}" /> match this
