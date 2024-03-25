@@ -48,18 +48,9 @@ public class ValueTests
     [Fact]
     public void PgsTimeStamp()
     {
-        var a = new PgsTimeStamp
-        {
-            Ticks = 1,
-        };
-        var b = new PgsTimeStamp
-        {
-            Ticks = 1,
-        };
-        var c = new PgsTimeStamp
-        {
-            Ticks = 2,
-        };
+        var a = new PgsTimeStamp(1);
+        var b = new PgsTimeStamp(1);
+        var c = new PgsTimeStamp(2);
 
         Assert.True(a == a);
         Assert.True(a == b);

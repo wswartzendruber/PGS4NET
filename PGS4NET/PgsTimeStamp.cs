@@ -22,7 +22,7 @@ public struct PgsTimeStamp : IEquatable<PgsTimeStamp>
     /// <summary>
     ///     The number of ticks. 90,000 ticks makes one second.
     /// </summary>
-    public uint Ticks;
+    public uint Ticks { get; private set; }
 
     /// <summary>
     ///     Initializes a new instance with the given tick count.
