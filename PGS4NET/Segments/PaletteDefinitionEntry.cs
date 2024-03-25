@@ -21,8 +21,6 @@ namespace PGS4NET.Segments;
 /// </remarks>
 public struct PaletteDefinitionEntry : IEquatable<PaletteDefinitionEntry>
 {
-    private static readonly Type ThisType = typeof(PaletteDefinitionEntry);
-
     /// <summary>
     ///     The ID of this palette entry, which should be unique within an epoch.
     /// </summary>
@@ -53,7 +51,8 @@ public struct PaletteDefinitionEntry : IEquatable<PaletteDefinitionEntry>
     ///     <see langword="false" />.
     /// </summary>
     public override bool Equals(object? other) =>
-        other?.GetType() == ThisType && Equals((PaletteDefinitionEntry)other);
+        other?.GetType() == typeof(PaletteDefinitionEntry)
+            && Equals((PaletteDefinitionEntry)other);
 
     /// <summary>
     ///     Returns the hash code of this instance taking into account the values of all fields.

@@ -17,8 +17,6 @@ namespace PGS4NET;
 /// </summary>
 public struct PgsTimeStamp : IEquatable<PgsTimeStamp>, IComparable<PgsTimeStamp>
 {
-    private static readonly Type ThisType = typeof(PgsTimeStamp);
-
     /// <summary>
     ///     The number of ticks. 90,000 ticks makes one second.
     /// </summary>
@@ -90,7 +88,7 @@ public struct PgsTimeStamp : IEquatable<PgsTimeStamp>, IComparable<PgsTimeStamp>
     ///     <see langword="false" />.
     /// </summary>
     public override bool Equals(object? other) =>
-        other?.GetType() == ThisType && Equals((PgsTimeStamp)other);
+        other?.GetType() == typeof(PgsTimeStamp) && Equals((PgsTimeStamp)other);
 
     public int CompareTo(PgsTimeStamp other) =>
         this.Ticks.CompareTo(other.Ticks);

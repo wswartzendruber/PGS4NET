@@ -17,8 +17,6 @@ namespace PGS4NET;
 /// </summary>
 public struct CroppedArea : IEquatable<CroppedArea>
 {
-    private static readonly Type ThisType = typeof(CroppedArea);
-
     /// <summary>
     ///     The horizontal offset of the area’s top-left corner relative to the top-left corner
     ///     of the object itself.
@@ -62,7 +60,7 @@ public struct CroppedArea : IEquatable<CroppedArea>
     ///     <see langword="false" />.
     /// </summary>
     public override bool Equals(object? other) =>
-        other?.GetType() == ThisType && Equals((CroppedArea)other);
+        other?.GetType() == typeof(CroppedArea) && Equals((CroppedArea)other);
 
     /// <summary>
     ///     Returns the hash code of this instance taking into account the values of all fields.

@@ -17,8 +17,6 @@ namespace PGS4NET.Segments;
 /// </summary>
 public struct CompositionObject : IEquatable<CompositionObject>
 {
-    private static readonly Type ThisType = typeof(CompositionObject);
-
     /// <summary>
     ///     The ID of the object within the epoch.
     /// </summary>
@@ -78,7 +76,7 @@ public struct CompositionObject : IEquatable<CompositionObject>
     ///     <see langword="false" />.
     /// </summary>
     public override bool Equals(object? other) =>
-        other?.GetType() == ThisType && Equals((CompositionObject)other);
+        other?.GetType() == typeof(CompositionObject) && Equals((CompositionObject)other);
 
     /// <summary>
     ///     Returns the hash code of this instance taking into account the values of all fields.

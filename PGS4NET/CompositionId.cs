@@ -17,8 +17,6 @@ namespace PGS4NET;
 /// </summary>
 public struct CompositionId : IEquatable<CompositionId>
 {
-    private static readonly Type ThisType = typeof(CompositionId);
-
     /// <summary>
     ///     The object ID.
     /// </summary>
@@ -48,7 +46,7 @@ public struct CompositionId : IEquatable<CompositionId>
     ///     <see langword="false" />.
     /// </summary>
     public override bool Equals(object? other) =>
-        other?.GetType() == ThisType && Equals((CompositionId)other);
+        other?.GetType() == typeof(CompositionId) && Equals((CompositionId)other);
 
     /// <summary>
     ///     Returns the hash code of this instance taking into account the values of all fields.

@@ -17,8 +17,6 @@ namespace PGS4NET.Segments;
 /// </summary>
 public struct WindowDefinitionEntry : IEquatable<WindowDefinitionEntry>
 {
-    private static readonly Type ThisType = typeof(WindowDefinitionEntry);
-
     /// <summary>
     ///     The ID of this window within the epoch.
     /// </summary>
@@ -69,7 +67,8 @@ public struct WindowDefinitionEntry : IEquatable<WindowDefinitionEntry>
     ///     <see langword="false" />.
     /// </summary>
     public override bool Equals(object? other) =>
-        other?.GetType() == ThisType && Equals((WindowDefinitionEntry)other);
+        other?.GetType() == typeof(WindowDefinitionEntry)
+            && Equals((WindowDefinitionEntry)other);
 
     /// <summary>
     ///     Returns the hash code of this instance taking into account the values of all fields.

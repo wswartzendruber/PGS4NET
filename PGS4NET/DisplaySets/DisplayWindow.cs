@@ -18,8 +18,6 @@ namespace PGS4NET.DisplaySets;
 /// </summary>
 public struct DisplayWindow : IEquatable<DisplayWindow>
 {
-    private static readonly Type ThisType = typeof(DisplayWindow);
-
     /// <summary>
     ///     The horizontal offset of the window’s top-left corner relative to the top-left
     ///     corner of the screen.
@@ -63,7 +61,7 @@ public struct DisplayWindow : IEquatable<DisplayWindow>
     ///     <see langword="false" />.
     /// </summary>
     public override bool Equals(object? other) =>
-        other?.GetType() == ThisType && Equals((DisplayWindow)other);
+        other?.GetType() == typeof(DisplayWindow) && Equals((DisplayWindow)other);
 
     /// <summary>
     ///     Returns the hash code of this instance taking into account the values of all fields.

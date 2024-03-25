@@ -18,8 +18,6 @@ namespace PGS4NET;
 public struct VersionedId<T> : IEquatable<VersionedId<T>>
     where T : IEquatable<T>
 {
-    private static readonly Type ThisType = typeof(VersionedId<T>);
-
     /// <summary>
     ///     The ID.
     /// </summary>
@@ -59,7 +57,7 @@ public struct VersionedId<T> : IEquatable<VersionedId<T>>
     ///     <see langword="false" />.
     /// </summary>
     public override bool Equals(object? other) =>
-        other?.GetType() == ThisType && Equals((VersionedId<T>)other);
+        other?.GetType() == typeof(VersionedId<T>) && Equals((VersionedId<T>)other);
 
     /// <summary>
     ///     Returns the hash code of this instance taking into account the values of all fields.

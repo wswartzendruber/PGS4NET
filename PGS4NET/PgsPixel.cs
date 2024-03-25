@@ -17,8 +17,6 @@ namespace PGS4NET;
 /// </summary>
 public struct PgsPixel : IEquatable<PgsPixel>
 {
-    private static readonly Type ThisType = typeof(PgsPixel);
-
     /// <summary>
     ///     The range-limited, gamma-corrected luminosity value of the pixel. Black is
     ///     represented by a value of <c>16</c> while white is represented by a value of
@@ -93,7 +91,7 @@ public struct PgsPixel : IEquatable<PgsPixel>
     ///     <see langword="false" />.
     /// </summary>
     public override bool Equals(object? other) =>
-        other?.GetType() == ThisType && Equals((PgsPixel)other);
+        other?.GetType() == typeof(PgsPixel) && Equals((PgsPixel)other);
 
     /// <summary>
     ///     Returns the hash code of this instance taking into account the values of all fields.

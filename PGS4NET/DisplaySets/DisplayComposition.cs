@@ -17,8 +17,6 @@ namespace PGS4NET.DisplaySets;
 /// </summary>
 public struct DisplayComposition
 {
-    private static readonly Type ThisType = typeof(DisplayComposition);
-
     /// <summary>
     ///     The horizontal offset of the object’s top-left corner relative to the top-left
     ///     corner of the screen. If the object is cropped, then this applies only to the
@@ -66,7 +64,7 @@ public struct DisplayComposition
     ///     <see langword="false" />.
     /// </summary>
     public override bool Equals(object? other) =>
-        other?.GetType() == ThisType && Equals((DisplayComposition)other);
+        other?.GetType() == typeof(DisplayComposition) && Equals((DisplayComposition)other);
 
     /// <summary>
     ///     Returns the hash code of this instance taking into account the values of all fields.
