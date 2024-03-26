@@ -73,17 +73,11 @@ public struct PgsPixel : IEquatable<PgsPixel>
     /// <summary>
     ///     Determines if the state of another <see cref="PgsPixel" /> matches this one's.
     /// </summary>
-    public bool Equals(PgsPixel other)
-    {
-        if (Object.ReferenceEquals(this, other))
-            return true;
-
-        return
-            other.Y == this.Y
+    public bool Equals(PgsPixel other) =>
+        other.Y == this.Y
             && other.Cr == this.Cr
             && other.Cb == this.Cb
             && other.Alpha == this.Alpha;
-    }
 
     /// <summary>
     ///     Checks if the <paramrem name="other" /> instance is of the same type as this one and

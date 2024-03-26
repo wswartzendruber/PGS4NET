@@ -36,15 +36,9 @@ public struct CompositionId : IEquatable<CompositionId>
     /// <summary>
     ///     Determines if the state of another <see cref="CompositionId" /> matches this one's.
     /// </summary>
-    public bool Equals(CompositionId other)
-    {
-        if (Object.ReferenceEquals(this, other))
-            return true;
-
-        return
-            other.ObjectId == this.ObjectId
+    public bool Equals(CompositionId other) =>
+        other.ObjectId == this.ObjectId
             && other.WindowId == this.WindowId;
-    }
 
     /// <summary>
     ///     Checks if the <paramrem name="other" /> instance is of the same type as this one and

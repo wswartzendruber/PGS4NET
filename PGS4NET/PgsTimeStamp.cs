@@ -73,14 +73,7 @@ public struct PgsTimeStamp : IEquatable<PgsTimeStamp>, IComparable<PgsTimeStamp>
     /// <summary>
     ///     Determines if the state of another <see cref="PgsTimeStamp" /> matches this one's.
     /// </summary>
-    public bool Equals(PgsTimeStamp other)
-    {
-        if (Object.ReferenceEquals(this, other))
-            return true;
-
-        return
-            this.Ticks == other.Ticks;
-    }
+    public bool Equals(PgsTimeStamp other) => other.Ticks == this.Ticks;
 
     /// <summary>
     ///     Checks if the <paramrem name="other" /> instance is of the same type as this one and

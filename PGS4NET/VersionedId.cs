@@ -41,15 +41,9 @@ public struct VersionedId<T> : IEquatable<VersionedId<T>>
     ///     Determines if the state of another <see cref="VersionedId{T}" /> matches this
     ///     one's.
     /// </summary>
-    public bool Equals(VersionedId<T> other)
-    {
-        if (Object.ReferenceEquals(this, other))
-            return true;
-
-        return
-            other.Id.Equals(this.Id)
+    public bool Equals(VersionedId<T> other) =>
+        other.Id.Equals(this.Id)
             && other.Version == this.Version;
-    }
 
     /// <summary>
     ///     Checks if the <paramrem name="other" /> instance is of the same type as this one and

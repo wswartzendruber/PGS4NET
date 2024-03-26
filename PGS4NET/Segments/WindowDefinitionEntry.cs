@@ -38,15 +38,9 @@ public class WindowDefinitionEntry : IEquatable<WindowDefinitionEntry>
     ///     Determines if the state of another <see cref="WindowDefinitionEntry" /> matches this
     ///     one's.
     /// </summary>
-    public bool Equals(WindowDefinitionEntry other)
-    {
-        if (Object.ReferenceEquals(this, other))
-            return true;
-
-        return
-            other.Id == this.Id
+    public bool Equals(WindowDefinitionEntry other) =>
+        other.Id == this.Id
             && other.Area == this.Area;
-    }
 
     /// <summary>
     ///     Checks if the <paramrem name="other" /> instance is of the same type as this one and

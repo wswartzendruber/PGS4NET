@@ -50,17 +50,11 @@ public struct Area : IEquatable<Area>
     /// <summary>
     ///     Determines if the dimensions of another <see cref="Area" /> matches this one's.
     /// </summary>
-    public bool Equals(Area other)
-    {
-        if (Object.ReferenceEquals(this, other))
-            return true;
-
-        return
-            other.X == this.X
+    public bool Equals(Area other) =>
+        other.X == this.X
             && other.Y == this.Y
             && other.Width == this.Width
             && other.Height == this.Height;
-    }
 
     /// <summary>
     ///     Checks if the <paramrem name="other" /> instance is of the same type as this one and
