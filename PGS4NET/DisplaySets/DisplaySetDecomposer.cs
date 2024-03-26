@@ -23,15 +23,11 @@ public static class DisplaySetDecomposer
 
         foreach (var item in displaySet.Compositions)
         {
-            compositionObjects.Add(new CompositionObject
-            {
-                ObjectId = item.Key.ObjectId,
-                WindowId = item.Key.WindowId,
-                X = item.Value.X,
-                Y = item.Value.Y,
-                Forced = item.Value.Forced,
-                Crop = item.Value.Crop,
-            });
+            var cid = new CompositionId(item.Key.ObjectId, item.Key.WindowId);
+            var co = new CompositionObject(cid, item.Value.X, item.Value.Y, item.Value.Forced
+                , item.Value.Crop);
+
+            compositionObjects.Add(co);
         }
 
         returnValue.Add(new PresentationCompositionSegment

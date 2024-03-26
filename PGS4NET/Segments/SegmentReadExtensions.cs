@@ -194,15 +194,10 @@ public static partial class SegmentExtensions
                 offset += 8;
             }
 
-            compositionObjects.Add(new CompositionObject
-            {
-                ObjectId = objectId,
-                WindowId = windowId,
-                X = x,
-                Y = y,
-                Forced = forced,
-                Crop = area,
-            });
+            var cid = new CompositionId(objectId, windowId);
+            var co = new CompositionObject(cid, x, y, forced, area);
+
+            compositionObjects.Add(co);
         }
 
         return new PresentationCompositionSegment

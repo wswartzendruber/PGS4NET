@@ -184,8 +184,8 @@ public static partial class SegmentExtensions
 
         foreach (var co in pcs.CompositionObjects)
         {
-            WriteUInt16Be(ms, co.ObjectId);
-            WriteUInt8(ms, co.WindowId);
+            WriteUInt16Be(ms, co.Id.ObjectId);
+            WriteUInt8(ms, co.Id.WindowId);
             WriteUInt8(ms, (byte)(
                 (co.Crop is not null ? 0x80 : 0x00) | (co.Forced ? 0x40 : 0x00)
             ));

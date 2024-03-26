@@ -21,60 +21,13 @@ public class ValueTests
     [Fact]
     public void CompositionObject()
     {
-        var a = new CompositionObject
-        {
-            ObjectId = 1,
-            WindowId = 2,
-            X = 3,
-            Y = 4,
-            Forced = true,
-            Crop = new Area(5, 6, 7, 8),
-        };
-        var b = new CompositionObject
-        {
-            ObjectId = 1,
-            WindowId = 2,
-            X = 3,
-            Y = 4,
-            Forced = true,
-            Crop = new Area(5, 6, 7, 8),
-        };
-        var c = new CompositionObject
-        {
-            ObjectId = 1,
-            WindowId = 2,
-            X = 3,
-            Y = 4,
-            Forced = true,
-            Crop = new Area(5, 6, 7, 9),
-        };
-        var d = new CompositionObject
-        {
-            ObjectId = 1,
-            WindowId = 2,
-            X = 3,
-            Y = 4,
-            Forced = true,
-            Crop = null,
-        };
-        var e = new CompositionObject
-        {
-            ObjectId = 1,
-            WindowId = 2,
-            X = 3,
-            Y = 4,
-            Forced = true,
-            Crop = null,
-        };
-        var f = new CompositionObject
-        {
-            ObjectId = 1,
-            WindowId = 2,
-            X = 3,
-            Y = 4,
-            Forced = false,
-            Crop = null,
-        };
+        var cid = new CompositionId(1, 2);
+        var a = new CompositionObject(cid, 3, 4, true, new Area(5, 6, 7, 8));
+        var b = new CompositionObject(cid, 3, 4, true, new Area(5, 6, 7, 8));
+        var c = new CompositionObject(cid, 3, 4, true, new Area(5, 6, 7, 9));
+        var d = new CompositionObject(cid, 3, 4, true, null);
+        var e = new CompositionObject(cid, 3, 4, true, null);
+        var f = new CompositionObject(cid, 3, 4, false, null);
 
         Assert.True(a == a);
         Assert.True(a == b);

@@ -15,42 +15,51 @@ namespace PGS4NET.Segments;
 /// <summary>
 ///     Defines a mapping between an object (or an area of one) and a window within an epoch.
 /// </summary>
-public struct CompositionObject : IEquatable<CompositionObject>
+public class CompositionObject : IEquatable<CompositionObject>
 {
     /// <summary>
-    ///     The ID of the object within the epoch.
+    ///     The ID of the composition object.
     /// </summary>
-    public ushort ObjectId;
-
-    /// <summary>
-    ///     The ID of the window within the epoch.
-    /// </summary>
-    public byte WindowId;
+    public CompositionId Id { get; private set; }
 
     /// <summary>
     ///     The horizontal offset of the object’s top-left corner relative to the top-left
     ///     corner of the screen. If the object is cropped, then this applies only to the
     ///     visible area.
     /// </summary>
-    public ushort X;
+    public ushort X { get; set; }
 
     /// <summary>
     ///     The vertical offset of the object’s top-left corner relative to the top-left corner
     ///     of the screen. If the object is cropped, then this applies only to the visible area.
     /// </summary>
-    public ushort Y;
+    public ushort Y { get; set; }
 
     /// <summary>
     ///     Whether or not the composition object is forced. This is typically used to translate
     ///     foreign dialogue or text that appears.
     /// </summary>
-    public bool Forced;
+    public bool Forced { get; set; }
 
     /// <summary>
     ///     If set, defines the visible area of the object. Otherwise, the entire object is
     ///     shown.
     /// </summary>
-    public Area? Crop;
+    public Area? Crop { get; set; }
+
+    public CompositionObject(CompositionId id, ushort x, ushort y, bool forced, Area? crop)
+        : this(id)
+    {
+        X = x;
+        Y = y;
+        Forced = forced;
+        Crop = crop;
+    }
+
+    public CompositionObject(CompositionId id)
+    {
+        Id = id;
+    }
 
     /// <summary>
     ///     Determines if the state of another <see cref="CompositionObject" /> matches this
@@ -62,8 +71,7 @@ public struct CompositionObject : IEquatable<CompositionObject>
             return true;
 
         return
-            other.ObjectId == this.ObjectId
-            && other.WindowId == this.WindowId
+            other.Id == this.Id
             && other.X == this.X
             && other.Y == this.Y
             && other.Forced == this.Forced
@@ -81,7 +89,7 @@ public struct CompositionObject : IEquatable<CompositionObject>
     /// <summary>
     ///     Returns the hash code of this instance taking into account the values of all fields.
     /// </summary>
-    public override int GetHashCode() => (ObjectId, WindowId, X, Y, Forced, Crop).GetHashCode();
+    public override int GetHashCode() => Id.GetHashCode();
 
     /// <summary>
     ///     Determines if the state of two <see cref="CompositionObject" />s match each other.
