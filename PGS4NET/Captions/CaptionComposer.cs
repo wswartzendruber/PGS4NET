@@ -15,7 +15,7 @@ namespace PGS4NET.Captions;
 
 public class CaptionComposer
 {
-    private readonly Dictionary<byte, DisplayWindow> Windows = new();
+    private readonly Dictionary<byte, Area> Windows = new();
     private readonly Dictionary<byte, int> WindowHashCodes = new();
     private readonly Dictionary<byte, DisplayPalette> Palettes = new();
     private readonly Dictionary<byte, int> PaletteHashCodes = new();
@@ -81,7 +81,7 @@ public class CaptionComposer
                 if (!BufferedImages.ContainsKey(compositionId))
                 {
                     if (!Windows.TryGetValue(compositionId.WindowId
-                        , out DisplayWindow displayWindow))
+                        , out Area Area))
                     {
                         throw new CaptionException("Composition object references undefined "
                             + "window.");
@@ -100,7 +100,7 @@ public class CaptionComposer
                     }
 
                     BufferedImages[compositionId] = new BufferedImage(displaySet.Dts
-                        , displayWindow, displayPalette, displayObject, displayComposition);
+                        , Area, displayPalette, displayObject, displayComposition);
                 }
             }
         }
@@ -136,20 +136,20 @@ public class CaptionComposer
 
         private PgsPixel[] PaletteLut;
 
-        public BufferedImage(PgsTimeStamp timeStamp, DisplayWindow displayWindow
+        public BufferedImage(PgsTimeStamp timeStamp, Area window
             , DisplayPalette displayPalette, DisplayObject displayObject
             , DisplayComposition displayComposition)
         {
             TimeStamp = timeStamp;
-            X = displayWindow.X;
-            Y = displayWindow.Y;
+            X = displayComposition.X;
+            Y = displayComposition.Y;
             Width = displayObject.Width;
             Height = displayObject.Height;
             Data = displayObject.Data;
             PaletteLut = GeneratePaletteLut(displayPalette.Entries);
             Forced = displayComposition.Forced;
 
-            WindowHashCode = displayWindow.GetHashCode();
+            WindowHashCode = window.GetHashCode();
             PaletteHashCode = displayPalette.GetHashCode();
             ObjectHashCode = displayObject.GetHashCode();
             CompositionHashCode = displayComposition.GetHashCode();

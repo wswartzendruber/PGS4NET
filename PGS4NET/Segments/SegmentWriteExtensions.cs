@@ -217,10 +217,10 @@ public static partial class SegmentExtensions
         foreach (var wd in wds.Definitions)
         {
             WriteUInt8(ms, wd.Id);
-            WriteUInt16Be(ms, wd.X);
-            WriteUInt16Be(ms, wd.Y);
-            WriteUInt16Be(ms, wd.Width);
-            WriteUInt16Be(ms, wd.Height);
+            WriteUInt16Be(ms, wd.Area.X);
+            WriteUInt16Be(ms, wd.Area.Y);
+            WriteUInt16Be(ms, wd.Area.Width);
+            WriteUInt16Be(ms, wd.Area.Height);
         }
 
         WriteUInt16Be(stream, (ushort)ms.Length);

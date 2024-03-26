@@ -229,19 +229,20 @@ public static partial class SegmentExtensions
 
         for (int i = 0; i < count; i++)
         {
-            definitions.Add(new WindowDefinitionEntry
-            {
-                Id = ReadUInt8(buffer, offset)
-                    ?? throw new IOException($"EOS reading WDS[{i}] ID."),
-                X = ReadUInt16Be(buffer, offset + 1)
-                    ?? throw new IOException($"EOS reading WDS[{i}] X position."),
-                Y = ReadUInt16Be(buffer, offset + 3)
-                    ?? throw new IOException($"EOS reading WDS[{i}] Y position."),
-                Width = ReadUInt16Be(buffer, offset + 5)
-                    ?? throw new IOException($"EOS reading WDS[{i}] width."),
-                Height = ReadUInt16Be(buffer, offset + 7)
-                    ?? throw new IOException($"EOS reading WDS[{i}] height."),
-            });
+            var id = ReadUInt8(buffer, offset)
+                ?? throw new IOException($"EOS reading WDS[{i}] ID.");
+            var x = ReadUInt16Be(buffer, offset + 1)
+                ?? throw new IOException($"EOS reading WDS[{i}] X position.");
+            var y = ReadUInt16Be(buffer, offset + 3)
+                ?? throw new IOException($"EOS reading WDS[{i}] Y position.");
+            var width = ReadUInt16Be(buffer, offset + 5)
+                ?? throw new IOException($"EOS reading WDS[{i}] width.");
+            var height = ReadUInt16Be(buffer, offset + 7)
+                ?? throw new IOException($"EOS reading WDS[{i}] height.");
+            var area = new Area(x, y, width, height);
+            var window = new WindowDefinitionEntry(id, area);
+
+            definitions.Add(window);
             offset += 9;
         }
 

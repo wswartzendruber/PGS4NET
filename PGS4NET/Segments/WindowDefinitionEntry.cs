@@ -15,34 +15,24 @@ namespace PGS4NET.Segments;
 /// <summary>
 ///     Defines a window within the screen.
 /// </summary>
-public struct WindowDefinitionEntry : IEquatable<WindowDefinitionEntry>
+public class WindowDefinitionEntry : IEquatable<WindowDefinitionEntry>
 {
     /// <summary>
     ///     The ID of this window within the epoch.
     /// </summary>
-    public byte Id;
+    public byte Id { get; private set; }
 
     /// <summary>
     ///     The horizontal offset of the window’s top-left corner relative to the top-left
     ///     corner of the screen.
     /// </summary>
-    public ushort X;
+    public Area Area { get; set; }
 
-    /// <summary>
-    ///     The vertical offset of the window’s top-left corner relative to the top-left corner
-    ///     of the screen.
-    /// </summary>
-    public ushort Y;
-
-    /// <summary>
-    ///     The width of the window.
-    /// </summary>
-    public ushort Width;
-
-    /// <summary>
-    ///     The height of the window.
-    /// </summary>
-    public ushort Height;
+    public WindowDefinitionEntry(byte id, Area area)
+    {
+        Id = id;
+        Area = area;
+    }
 
     /// <summary>
     ///     Determines if the fields of another <see cref="WindowDefinitionEntry" /> match this
@@ -55,10 +45,7 @@ public struct WindowDefinitionEntry : IEquatable<WindowDefinitionEntry>
 
         return
             other.Id == this.Id
-            && other.X == this.X
-            && other.Y == this.Y
-            && other.Width == this.Width
-            && other.Height == this.Height;
+            && other.Area == this.Area;
     }
 
     /// <summary>
@@ -73,7 +60,13 @@ public struct WindowDefinitionEntry : IEquatable<WindowDefinitionEntry>
     /// <summary>
     ///     Returns the hash code of this instance taking into account the values of all fields.
     /// </summary>
-    public override int GetHashCode() => (Id, X, Y, Width, Height).GetHashCode();
+    public override int GetHashCode()
+    {
+        unchecked
+        {
+            return (int)((uint)Id << 24);
+        }
+    }
 
     /// <summary>
     ///     Determines if the fields of two <see cref="WindowDefinitionEntry" />s match each

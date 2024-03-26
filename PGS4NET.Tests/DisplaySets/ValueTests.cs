@@ -79,27 +79,9 @@ public class ValueTests
     [Fact]
     public void DisplayWindow()
     {
-        var a = new DisplayWindow
-        {
-            X = 1,
-            Y = 2,
-            Width = 3,
-            Height = 4,
-        };
-        var b = new DisplayWindow
-        {
-            X = 1,
-            Y = 2,
-            Width = 3,
-            Height = 4,
-        };
-        var c = new DisplayWindow
-        {
-            X = 1,
-            Y = 2,
-            Width = 3,
-            Height = 5,
-        };
+        var a = new Area(1, 2, 3, 4);
+        var b = new Area(1, 2, 3, 4);
+        var c = new Area(1, 2, 3, 5);
 
         Assert.True(a == a);
         Assert.True(a == b);

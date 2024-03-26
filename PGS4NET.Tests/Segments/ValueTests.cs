@@ -118,30 +118,9 @@ public class ValueTests
     [Fact]
     public void WindowDefinitionEntry()
     {
-        var a = new WindowDefinitionEntry
-        {
-            Id = 1,
-            X = 2,
-            Y = 3,
-            Width = 4,
-            Height = 5,
-        };
-        var b = new WindowDefinitionEntry
-        {
-            Id = 1,
-            X = 2,
-            Y = 3,
-            Width = 4,
-            Height = 5,
-        };
-        var c = new WindowDefinitionEntry
-        {
-            Id = 1,
-            X = 2,
-            Y = 3,
-            Width = 4,
-            Height = 6,
-        };
+        var a = new WindowDefinitionEntry(1, new Area(2, 3, 4, 5));
+        var b = new WindowDefinitionEntry(1, new Area(2, 3, 4, 5));
+        var c = new WindowDefinitionEntry(2, new Area(2, 3, 4, 5));
 
         Assert.True(a == a);
         Assert.True(a == b);

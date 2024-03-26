@@ -37,7 +37,7 @@ internal static class DisplaySetInstances
                 FrameRate = RandomByte(),
                 PaletteUpdateOnly = false,
                 PaletteId = RandomByte(),
-                Windows = new Dictionary<byte, DisplayWindow>(),
+                Windows = new Dictionary<byte, Area>(),
                 Palettes = new Dictionary<VersionedId<byte>, DisplayPalette>(),
                 Objects = new Dictionary<VersionedId<ushort>, DisplayObject>(),
                 CompositionNumber = RandomUInt16(),
@@ -55,37 +55,22 @@ internal static class DisplaySetInstances
                 FrameRate = RandomByte(),
                 PaletteUpdateOnly = true,
                 PaletteId = RandomByte(),
-                Windows = new Dictionary<byte, DisplayWindow>
+                Windows = new Dictionary<byte, Area>
                 {
                     {
                         RandomByte(64),
-                        new DisplayWindow
-                        {
-                            X = RandomUInt16(),
-                            Y = RandomUInt16(),
-                            Width = RandomUInt16(),
-                            Height = RandomUInt16(),
-                        }
+                        new Area(RandomUInt16(), RandomUInt16(), RandomUInt16()
+                            , RandomUInt16())
                     },
                     {
                         (byte)(RandomByte(64) + 64),
-                        new DisplayWindow
-                        {
-                            X = RandomUInt16(),
-                            Y = RandomUInt16(),
-                            Width = RandomUInt16(),
-                            Height = RandomUInt16(),
-                        }
+                        new Area(RandomUInt16(), RandomUInt16(), RandomUInt16()
+                            , RandomUInt16())
                     },
                     {
                         (byte)(RandomByte(64) + 128),
-                        new DisplayWindow
-                        {
-                            X = RandomUInt16(),
-                            Y = RandomUInt16(),
-                            Width = RandomUInt16(),
-                            Height = RandomUInt16(),
-                        }
+                        new Area(RandomUInt16(), RandomUInt16(), RandomUInt16()
+                            , RandomUInt16())
                     },
                 },
                 Palettes = new Dictionary<VersionedId<byte>, DisplayPalette>
