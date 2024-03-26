@@ -43,7 +43,7 @@ public struct DisplayComposition
     public Area? Crop;
 
     /// <summary>
-    ///     Determines if the fields of another <see cref="DisplayComposition" /> match this
+    ///     Determines if the state of another <see cref="DisplayComposition" /> matches this
     ///     one's.
     /// </summary>
     public bool Equals(DisplayComposition other)
@@ -72,13 +72,13 @@ public struct DisplayComposition
     public override int GetHashCode() => (X, Y, Forced, Crop).GetHashCode();
 
     /// <summary>
-    ///     Determines if the fields of two <see cref="DisplayComposition" />s match each other.
+    ///     Determines if the state of two <see cref="DisplayComposition" />s match each other.
     /// </summary>
     public static bool operator ==(DisplayComposition first, DisplayComposition second) =>
         first.Equals(second);
 
     /// <summary>
-    ///     Determines if the fields of two <see cref="DisplayComposition" />s don't match each
+    ///     Determines if the state of two <see cref="DisplayComposition" />s don't match each
     ///     other.
     /// </summary>
     public static bool operator !=(DisplayComposition first, DisplayComposition second) =>

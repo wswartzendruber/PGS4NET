@@ -71,7 +71,7 @@ public struct PgsPixel : IEquatable<PgsPixel>
     }
 
     /// <summary>
-    ///     Determines if the fields of another <see cref="PgsPixel" /> match this one's.
+    ///     Determines if the state of another <see cref="PgsPixel" /> matches this one's.
     /// </summary>
     public bool Equals(PgsPixel other)
     {
@@ -94,17 +94,24 @@ public struct PgsPixel : IEquatable<PgsPixel>
         other?.GetType() == typeof(PgsPixel) && Equals((PgsPixel)other);
 
     /// <summary>
-    ///     Returns the hash code of this instance taking into account the values of all fields.
+    ///     Returns the hash code of this instance taking into account the values of all
+    ///     readonly properties.
     /// </summary>
-    public override int GetHashCode() => (Y, Cr, Cb, Alpha).GetHashCode();
+    public override int GetHashCode()
+    {
+        unchecked
+        {
+            return ((int)Y << 24) | ((int)Cr << 16) | ((int)Cb << 8) | (int)Alpha;
+        }
+    }
 
     /// <summary>
-    ///     Determines if the fields of two <see cref="PgsPixel" />s match each other.
+    ///     Determines if the state of two <see cref="PgsPixel" />s match each other.
     /// </summary>
     public static bool operator ==(PgsPixel first, PgsPixel second) => first.Equals(second);
 
     /// <summary>
-    ///     Determines if the fields of two <see cref="PgsPixel" />s don't match each other.
+    ///     Determines if the state of two <see cref="PgsPixel" />s don't match each other.
     /// </summary>
     public static bool operator !=(PgsPixel first, PgsPixel second) => !first.Equals(second);
 }

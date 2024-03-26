@@ -53,7 +53,7 @@ public struct CompositionObject : IEquatable<CompositionObject>
     public Area? Crop;
 
     /// <summary>
-    ///     Determines if the fields of another <see cref="CompositionObject" /> match this
+    ///     Determines if the state of another <see cref="CompositionObject" /> matches this
     ///     one's.
     /// </summary>
     public bool Equals(CompositionObject other)
@@ -84,13 +84,13 @@ public struct CompositionObject : IEquatable<CompositionObject>
     public override int GetHashCode() => (ObjectId, WindowId, X, Y, Forced, Crop).GetHashCode();
 
     /// <summary>
-    ///     Determines if the fields of two <see cref="CompositionObject" />s match each other.
+    ///     Determines if the state of two <see cref="CompositionObject" />s match each other.
     /// </summary>
     public static bool operator ==(CompositionObject first, CompositionObject second) =>
         first.Equals(second);
 
     /// <summary>
-    ///     Determines if the fields of two <see cref="CompositionObject" />s don't match each
+    ///     Determines if the state of two <see cref="CompositionObject" />s don't match each
     ///     other.
     /// </summary>
     public static bool operator !=(CompositionObject first, CompositionObject second) =>

@@ -20,15 +20,21 @@ public struct CompositionId : IEquatable<CompositionId>
     /// <summary>
     ///     The object ID.
     /// </summary>
-    public ushort ObjectId;
+    public ushort ObjectId { get; private set; }
 
     /// <summary>
     ///     The window ID.
     /// </summary>
-    public byte WindowId;
+    public byte WindowId { get; private set; }
+
+    public CompositionId(ushort objectId, byte windowId)
+    {
+        ObjectId = objectId;
+        WindowId = windowId;
+    }
 
     /// <summary>
-    ///     Determines if the fields of another <see cref="CompositionId" /> match this one's.
+    ///     Determines if the state of another <see cref="CompositionId" /> matches this one's.
     /// </summary>
     public bool Equals(CompositionId other)
     {
@@ -49,18 +55,25 @@ public struct CompositionId : IEquatable<CompositionId>
         other?.GetType() == typeof(CompositionId) && Equals((CompositionId)other);
 
     /// <summary>
-    ///     Returns the hash code of this instance taking into account the values of all fields.
+    ///     Returns the hash code of this instance taking into account the values of all
+    ///     readonly properties.
     /// </summary>
-    public override int GetHashCode() => (ObjectId, WindowId).GetHashCode();
+    public override int GetHashCode()
+    {
+        unchecked
+        {
+            return ((int)ObjectId << 16) | ((int)WindowId << 8);
+        }
+    }
 
     /// <summary>
-    ///     Determines if the fields of two <see cref="CompositionId" />s match each other.
+    ///     Determines if the state of two <see cref="CompositionId" />s match each other.
     /// </summary>
     public static bool operator ==(CompositionId first, CompositionId second) =>
         first.Equals(second);
 
     /// <summary>
-    ///     Determines if the fields of two <see cref="CompositionId" />s don't match each
+    ///     Determines if the state of two <see cref="CompositionId" />s don't match each
     ///     other.
     /// </summary>
     public static bool operator !=(CompositionId first, CompositionId second) =>

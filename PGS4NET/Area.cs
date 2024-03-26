@@ -48,7 +48,7 @@ public struct Area : IEquatable<Area>
     }
 
     /// <summary>
-    ///     Determines if the dimensions of another <see cref="Area" /> match this one's.
+    ///     Determines if the dimensions of another <see cref="Area" /> matches this one's.
     /// </summary>
     public bool Equals(Area other)
     {
@@ -71,18 +71,30 @@ public struct Area : IEquatable<Area>
         other?.GetType() == typeof(Area) && Equals((Area)other);
 
     /// <summary>
-    ///     Returns the hash code of this instance taking into account the values of all fields.
+    ///     Returns the hash code of this instance taking into account the values of all
+    ///     readonly properties.
     /// </summary>
-    public override int GetHashCode() => (X, Y, Width, Height).GetHashCode();
+    public override int GetHashCode()
+    {
+        unchecked
+        {
+            int hash = 17;
+
+            hash = hash * 23 + ((int)X << 16) | (int)Y;
+            hash = hash * 23 + ((int)Width << 16) | (int)Height;
+
+            return hash;
+        }
+    }
 
     /// <summary>
-    ///     Determines if the fields of two <see cref="Area" />s match each other.
+    ///     Determines if the state of two <see cref="Area" />s match each other.
     /// </summary>
     public static bool operator ==(Area first, Area second) =>
         first.Equals(second);
 
     /// <summary>
-    ///     Determines if the fields of two <see cref="Area" />s don't match each other.
+    ///     Determines if the state of two <see cref="Area" />s don't match each other.
     /// </summary>
     public static bool operator !=(Area first, Area second) =>
         !first.Equals(second);

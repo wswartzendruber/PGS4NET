@@ -38,7 +38,7 @@ public struct VersionedId<T> : IEquatable<VersionedId<T>>
     }
 
     /// <summary>
-    ///     Determines if the fields of another <see cref="VersionedId{T}" /> match this
+    ///     Determines if the state of another <see cref="VersionedId{T}" /> matches this
     ///     one's.
     /// </summary>
     public bool Equals(VersionedId<T> other)
@@ -60,18 +60,30 @@ public struct VersionedId<T> : IEquatable<VersionedId<T>>
         other?.GetType() == typeof(VersionedId<T>) && Equals((VersionedId<T>)other);
 
     /// <summary>
-    ///     Returns the hash code of this instance taking into account the values of all fields.
+    ///     Returns the hash code of this instance taking into account the values of all
+    ///     readonly properties.
     /// </summary>
-    public override int GetHashCode() => (Id, Version).GetHashCode();
+    public override int GetHashCode()
+    {
+        unchecked
+        {
+            int hash = 17;
+
+            hash = hash * 23 + Id.GetHashCode();
+            hash = hash * 23 + (int)Version;
+
+            return hash;
+        }
+    }
 
     /// <summary>
-    ///     Determines if the fields of two <see cref="VersionedId{T}" />s match each other.
+    ///     Determines if the state of two <see cref="VersionedId{T}" />s match each other.
     /// </summary>
     public static bool operator ==(VersionedId<T> first, VersionedId<T> second) =>
         first.Equals(second);
 
     /// <summary>
-    ///     Determines if the fields of two <see cref="VersionedId{T}" />s don't match each
+    ///     Determines if the state of two <see cref="VersionedId{T}" />s don't match each
     ///     other.
     /// </summary>
     public static bool operator !=(VersionedId<T> first, VersionedId<T> second) =>

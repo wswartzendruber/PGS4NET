@@ -71,7 +71,7 @@ public struct PgsTimeStamp : IEquatable<PgsTimeStamp>, IComparable<PgsTimeStamp>
     public static implicit operator PgsTimeStamp(uint ticks) => new PgsTimeStamp(ticks);
 
     /// <summary>
-    ///     Determines if the fields of another <see cref="PgsTimeStamp" /> match this one's.
+    ///     Determines if the state of another <see cref="PgsTimeStamp" /> matches this one's.
     /// </summary>
     public bool Equals(PgsTimeStamp other)
     {
@@ -94,18 +94,25 @@ public struct PgsTimeStamp : IEquatable<PgsTimeStamp>, IComparable<PgsTimeStamp>
         this.Ticks.CompareTo(other.Ticks);
 
     /// <summary>
-    ///     Returns the hash code of this instance taking into account the values of all fields.
+    ///     Returns the hash code of this instance taking into account the values of all
+    ///     readonly properties.
     /// </summary>
-    public override int GetHashCode() => (Ticks).GetHashCode();
+    public override int GetHashCode()
+    {
+        unchecked
+        {
+            return (int)Ticks;
+        }
+    }
 
     /// <summary>
-    ///     Determines if the fields of two <see cref="PgsTimeStamp" />s match each other.
+    ///     Determines if the state of two <see cref="PgsTimeStamp" />s match each other.
     /// </summary>
     public static bool operator ==(PgsTimeStamp first, PgsTimeStamp second) =>
         first.Equals(second);
 
     /// <summary>
-    ///     Determines if the fields of two <see cref="PgsTimeStamp" />s don't match each other.
+    ///     Determines if the state of two <see cref="PgsTimeStamp" />s don't match each other.
     /// </summary>
     public static bool operator !=(PgsTimeStamp first, PgsTimeStamp second) =>
         !first.Equals(second);

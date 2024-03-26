@@ -32,7 +32,7 @@ public struct PaletteDefinitionEntry : IEquatable<PaletteDefinitionEntry>
     public PgsPixel Pixel;
 
     /// <summary>
-    ///     Determines if the fields of another <see cref="PaletteDefinitionEntry" /> match
+    ///     Determines if the state of another <see cref="PaletteDefinitionEntry" /> match
     ///     this one's.
     /// </summary>
     public bool Equals(PaletteDefinitionEntry other)
@@ -60,14 +60,14 @@ public struct PaletteDefinitionEntry : IEquatable<PaletteDefinitionEntry>
     public override int GetHashCode() => (Id, Pixel).GetHashCode();
 
     /// <summary>
-    ///     Determines if the fields of two <see cref="PaletteDefinitionEntry" />s match each
+    ///     Determines if the state of two <see cref="PaletteDefinitionEntry" />s match each
     ///     other.
     /// </summary>
     public static bool operator ==(PaletteDefinitionEntry first
         , PaletteDefinitionEntry second) => first.Equals(second);
 
     /// <summary>
-    ///     Determines if the fields of two <see cref="PaletteDefinitionEntry" />s don't match
+    ///     Determines if the state of two <see cref="PaletteDefinitionEntry" />s don't match
     ///     each other.
     /// </summary>
     public static bool operator !=(PaletteDefinitionEntry first

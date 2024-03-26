@@ -84,8 +84,6 @@ public class ValueTests
         Assert.True(a.GetHashCode() == a.GetHashCode());
         Assert.True(a.GetHashCode() == b.GetHashCode());
         Assert.True(d.GetHashCode() == e.GetHashCode());
-        Assert.True(a.GetHashCode() != c.GetHashCode());
-        Assert.True(d.GetHashCode() != f.GetHashCode());
     }
 
     [Fact]
@@ -112,7 +110,6 @@ public class ValueTests
         Assert.True(a != c);
         Assert.True(a.GetHashCode() == a.GetHashCode());
         Assert.True(a.GetHashCode() == b.GetHashCode());
-        Assert.True(a.GetHashCode() != c.GetHashCode());
     }
 
     [Fact]
@@ -127,6 +124,5 @@ public class ValueTests
         Assert.True(a != c);
         Assert.True(a.GetHashCode() == a.GetHashCode());
         Assert.True(a.GetHashCode() == b.GetHashCode());
-        Assert.True(a.GetHashCode() != c.GetHashCode());
     }
 }

@@ -227,11 +227,8 @@ public class DisplaySetComposer
 
                     foreach (var compositionObject in Pcs.CompositionObjects)
                     {
-                        var cid = new CompositionId
-                        {
-                            ObjectId = compositionObject.ObjectId,
-                            WindowId = compositionObject.WindowId,
-                        };
+                        var cid = new CompositionId(compositionObject.ObjectId
+                            , compositionObject.WindowId);
 
                         Compositions[cid] = new DisplayComposition
                         {

@@ -35,7 +35,7 @@ public class WindowDefinitionEntry : IEquatable<WindowDefinitionEntry>
     }
 
     /// <summary>
-    ///     Determines if the fields of another <see cref="WindowDefinitionEntry" /> match this
+    ///     Determines if the state of another <see cref="WindowDefinitionEntry" /> matches this
     ///     one's.
     /// </summary>
     public bool Equals(WindowDefinitionEntry other)
@@ -69,14 +69,14 @@ public class WindowDefinitionEntry : IEquatable<WindowDefinitionEntry>
     }
 
     /// <summary>
-    ///     Determines if the fields of two <see cref="WindowDefinitionEntry" />s match each
+    ///     Determines if the state of two <see cref="WindowDefinitionEntry" />s match each
     ///     other.
     /// </summary>
     public static bool operator ==(WindowDefinitionEntry first
         , WindowDefinitionEntry second) => first.Equals(second);
 
     /// <summary>
-    ///     Determines if the fields of two <see cref="WindowDefinitionEntry" />s don't match
+    ///     Determines if the state of two <see cref="WindowDefinitionEntry" />s don't match
     ///     each other.
     /// </summary>
     public static bool operator !=(WindowDefinitionEntry first

@@ -155,11 +155,7 @@ internal static class DisplaySetInstances
                 Compositions = new Dictionary<CompositionId, DisplayComposition>
                 {
                     {
-                        new CompositionId
-                        {
-                            ObjectId = RandomUInt16(128),
-                            WindowId = RandomByte(),
-                        },
+                        new CompositionId(RandomUInt16(128), RandomByte()),
                         new DisplayComposition
                         {
                             X = RandomUInt16(),
@@ -169,11 +165,7 @@ internal static class DisplaySetInstances
                         }
                     },
                     {
-                        new CompositionId
-                        {
-                            ObjectId = (ushort)(RandomUInt16(128) + 128),
-                            WindowId = RandomByte(),
-                        },
+                        new CompositionId((ushort)(RandomUInt16(128) + 128), RandomByte()),
                         new DisplayComposition
                         {
                             X = RandomUInt16(),
@@ -184,11 +176,7 @@ internal static class DisplaySetInstances
                         }
                     },
                     {
-                        new CompositionId
-                        {
-                            ObjectId = (ushort)(RandomUInt16(128) + 256),
-                            WindowId = RandomByte(),
-                        },
+                        new CompositionId((ushort)(RandomUInt16(128) + 256), RandomByte()),
                         new DisplayComposition
                         {
                             X = RandomUInt16(),
