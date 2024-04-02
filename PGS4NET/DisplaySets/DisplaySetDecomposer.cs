@@ -30,19 +30,12 @@ public static class DisplaySetDecomposer
             compositionObjects.Add(co);
         }
 
-        returnValue.Add(new PresentationCompositionSegment
-        {
-            Pts = displaySet.Pts,
-            Dts = displaySet.Dts,
-            Width = displaySet.Width,
-            Height = displaySet.Height,
-            FrameRate = displaySet.FrameRate,
-            Number = displaySet.CompositionNumber,
-            State = displaySet.CompositionState,
-            PaletteUpdateOnly = displaySet.PaletteUpdateOnly,
-            PaletteId = displaySet.PaletteId,
-            CompositionObjects = compositionObjects,
-        });
+        var pcs = new PresentationCompositionSegment(displaySet.Pts, displaySet.Dts
+            , displaySet.Width, displaySet.Height, displaySet.FrameRate
+            , displaySet.CompositionNumber, displaySet.CompositionState
+            , displaySet.PaletteUpdateOnly, displaySet.PaletteId, compositionObjects);
+
+        returnValue.Add(pcs);
 
         if (displaySet.Windows.Count > 0)
         {
@@ -54,12 +47,10 @@ public static class DisplaySetDecomposer
                     , window.Value.Y, window.Value.Width, window.Value.Height)));
             }
 
-            returnValue.Add(new WindowDefinitionSegment
-            {
-                Pts = displaySet.Pts,
-                Dts = displaySet.Dts,
-                Definitions = windowEntries,
-            });
+            var wds = new WindowDefinitionSegment(displaySet.Pts, displaySet.Dts
+                , windowEntries);
+
+            returnValue.Add(wds);
         }
 
         foreach (var palette in displaySet.Palettes)
@@ -68,22 +59,17 @@ public static class DisplaySetDecomposer
 
             foreach (var paletteEntry in palette.Value.Entries)
             {
-                paletteEntries.Add(new PaletteDefinitionEntry
-                {
-                    Id = paletteEntry.Key,
-                    Pixel = new PgsPixel(paletteEntry.Value.Y, paletteEntry.Value.Cr
-                        , paletteEntry.Value.Cb, paletteEntry.Value.Alpha),
-                });
+                var pixel = new PgsPixel(paletteEntry.Value.Y, paletteEntry.Value.Cr
+                    , paletteEntry.Value.Cb, paletteEntry.Value.Alpha);
+                var pde = new PaletteDefinitionEntry(paletteEntry.Key, pixel);
+
+                paletteEntries.Add(pde);
             }
 
-            returnValue.Add(new PaletteDefinitionSegment
-            {
-                Pts = displaySet.Pts,
-                Dts = displaySet.Dts,
-                Id = palette.Key.Id,
-                Version = palette.Key.Version,
-                Entries = paletteEntries,
-            });
+            var pds = new PaletteDefinitionSegment(displaySet.Pts, displaySet.Dts, palette.Key
+                , paletteEntries);
+
+            returnValue.Add(pds);
         }
 
         foreach (var displayObject in displaySet.Objects)
@@ -99,17 +85,11 @@ public static class DisplaySetDecomposer
 
                 Array.Copy(data, iodsBuffer, iodsBuffer.Length);
 
-                returnValue.Add(new InitialObjectDefinitionSegment
-                {
-                    Pts = displaySet.Pts,
-                    Dts = displaySet.Dts,
-                    Id = displayObject.Key.Id,
-                    Version = displayObject.Key.Version,
-                    Data = iodsBuffer,
-                    Length = (uint)data.Length + 4,
-                    Width = displayObject.Value.Width,
-                    Height = displayObject.Value.Height,
-                });
+                var iods = new InitialObjectDefinitionSegment(displaySet.Pts, displaySet.Dts
+                    , displayObject.Key, displayObject.Value.Width, displayObject.Value.Height
+                    , (uint)data.Length + 4, iodsBuffer);
+
+                returnValue.Add(iods);
 
                 index += InitialObjectDefinitionSegment.MaxDataSize;
                 size -= InitialObjectDefinitionSegment.MaxDataSize;
@@ -120,14 +100,10 @@ public static class DisplaySetDecomposer
 
                     Array.Copy(data, index, modsBuffer, 0, modsBuffer.Length);
 
-                    returnValue.Add(new MiddleObjectDefinitionSegment
-                    {
-                        Pts = displaySet.Pts,
-                        Dts = displaySet.Dts,
-                        Id = displayObject.Key.Id,
-                        Version = displayObject.Key.Version,
-                        Data = modsBuffer,
-                    });
+                    var mods = new MiddleObjectDefinitionSegment(displaySet.Pts, displaySet.Dts
+                        , displayObject.Key,  modsBuffer);
+
+                    returnValue.Add(mods);
 
                     index += MiddleObjectDefinitionSegment.MaxDataSize;
                     size -= MiddleObjectDefinitionSegment.MaxDataSize;
@@ -137,35 +113,24 @@ public static class DisplaySetDecomposer
 
                 Array.Copy(data, index, fodsBuffer, 0, fodsBuffer.Length);
 
-                returnValue.Add(new FinalObjectDefinitionSegment
-                {
-                    Pts = displaySet.Pts,
-                    Dts = displaySet.Dts,
-                    Id = displayObject.Key.Id,
-                    Version = displayObject.Key.Version,
-                    Data = fodsBuffer,
-                });
+                var fods = new FinalObjectDefinitionSegment(displaySet.Pts, displaySet.Dts
+                    , displayObject.Key, fodsBuffer);
+
+                returnValue.Add(fods);
             }
             else
             {
-                returnValue.Add(new SingleObjectDefinitionSegment
-                {
-                    Pts = displaySet.Pts,
-                    Dts = displaySet.Dts,
-                    Id = displayObject.Key.Id,
-                    Version = displayObject.Key.Version,
-                    Data = data,
-                    Width = displayObject.Value.Width,
-                    Height = displayObject.Value.Height,
-                });
+                var sods = new SingleObjectDefinitionSegment(displaySet.Pts, displaySet.Dts
+                    , displayObject.Key, displayObject.Value.Width, displayObject.Value.Height
+                    , data);
+
+                returnValue.Add(sods);
             }
         }
 
-        returnValue.Add(new EndSegment
-        {
-            Pts = displaySet.Pts,
-            Dts = displaySet.Dts,
-        });
+        var es = new EndSegment(displaySet.Pts, displaySet.Dts);
+
+        returnValue.Add(es);
 
         return returnValue;
     }

@@ -24,26 +24,26 @@ public struct PaletteDefinitionEntry : IEquatable<PaletteDefinitionEntry>
     /// <summary>
     ///     The ID of this palette entry, which should be unique within an epoch.
     /// </summary>
-    public byte Id;
+    public byte Id { get; private set; }
 
     /// <summary>
     ///     Defines the color properties of the palette entry.
     /// </summary>
-    public PgsPixel Pixel;
+    public PgsPixel Pixel { get; private set; }
+
+    public PaletteDefinitionEntry(byte id, PgsPixel pixel)
+    {
+        Id = id;
+        Pixel = pixel;
+    }
 
     /// <summary>
     ///     Determines if the state of another <see cref="PaletteDefinitionEntry" /> match
     ///     this one's.
     /// </summary>
-    public bool Equals(PaletteDefinitionEntry other)
-    {
-        if (Object.ReferenceEquals(this, other))
-            return true;
-
-        return
-            other.Id == this.Id
+    public bool Equals(PaletteDefinitionEntry other) =>
+        other.Id == this.Id
             && other.Pixel == this.Pixel;
-    }
 
     /// <summary>
     ///     Checks if the <paramrem name="other" /> instance is of the same type as this one and
@@ -55,9 +55,21 @@ public struct PaletteDefinitionEntry : IEquatable<PaletteDefinitionEntry>
             && Equals((PaletteDefinitionEntry)other);
 
     /// <summary>
-    ///     Returns the hash code of this instance taking into account the values of all fields.
+    ///     Returns the hash code of this instance taking into account the values of all
+    ///     readonly properties.
     /// </summary>
-    public override int GetHashCode() => (Id, Pixel).GetHashCode();
+    public override int GetHashCode()
+    {
+        unchecked
+        {
+            int hash = 17;
+
+            hash = hash * 23 + Id;
+            hash = hash * 23 + Pixel.GetHashCode();
+
+            return hash;
+        }
+    }
 
     /// <summary>
     ///     Determines if the state of two <see cref="PaletteDefinitionEntry" />s match each

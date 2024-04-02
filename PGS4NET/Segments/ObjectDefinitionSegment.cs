@@ -15,20 +15,22 @@ namespace PGS4NET.Segments;
 /// </summary>
 public abstract class ObjectDefinitionSegment : Segment
 {
-    /// <summary>
-    ///     The ID of this object, which may be redefined within an epoch. All portions of any
-    ///     single object should have the same ID.
-    /// </summary>
-    public ushort Id;
-
-    /// <summary>
-    ///     The version increment of this object. All portions of any single object should have
-    ///     the same version.
-    /// </summary>
-    public byte Version;
+    public VersionedId<ushort> VersionedId { get; set; }
 
     /// <summary>
     ///     The RLE-compressed data for this portion of the completed object.
     /// </summary>
-    public byte[] Data = new byte[0];
+    public byte[] Data { get; set; }
+
+    public ObjectDefinitionSegment()
+    {
+        Data = new byte[0];
+    }
+
+    public ObjectDefinitionSegment(PgsTimeStamp pts, PgsTimeStamp dts
+        , VersionedId<ushort> versionedId, byte[] data) : base(pts, dts)
+    {
+        VersionedId = versionedId;
+        Data = data;
+    }
 }

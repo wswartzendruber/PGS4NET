@@ -79,7 +79,7 @@ public class DisplaySetComposer
                     if (pds.Dts != Pcs.Dts)
                         throw InconsistentDts;
 
-                    var vid = new VersionedId<byte>(pds.Id, pds.Version);
+                    var vid = pds.VersionedId;
 
                     if (Palettes.ContainsKey(vid))
                     {
@@ -110,7 +110,7 @@ public class DisplaySetComposer
 
                     if (InitialObject is null)
                     {
-                        var vid = new VersionedId<ushort>(sods.Id, sods.Version);
+                        var vid = sods.VersionedId;
 
                         if (Objects.ContainsKey(vid))
                             throw DuplicateObjectVid;
@@ -138,7 +138,7 @@ public class DisplaySetComposer
 
                     if (InitialObject is null)
                     {
-                        var vid = new VersionedId<ushort>(iods.Id, iods.Version);
+                        var vid = iods.VersionedId;
 
                         if (Objects.ContainsKey(vid))
                             throw DuplicateObjectVid;
@@ -161,9 +161,9 @@ public class DisplaySetComposer
 
                     if (InitialObject is not null)
                     {
-                        if (mods.Id != InitialObject.Id)
+                        if (mods.VersionedId.Id != InitialObject.VersionedId.Id)
                             throw InconsistentObjectId;
-                        if (mods.Version != InitialObject.Version)
+                        if (mods.VersionedId.Version != InitialObject.VersionedId.Version)
                             throw InconsistentObjectVersion;
 
                         MiddleObjects.Add(mods);
@@ -184,12 +184,12 @@ public class DisplaySetComposer
 
                     if (InitialObject is not null)
                     {
-                        if (fods.Id != InitialObject.Id)
+                        if (fods.VersionedId.Id != InitialObject.VersionedId.Id)
                             throw InconsistentObjectId;
-                        if (fods.Version != InitialObject.Version)
+                        if (fods.VersionedId.Version != InitialObject.VersionedId.Version)
                             throw InconsistentObjectVersion;
 
-                        var vid = new VersionedId<ushort>(fods.Id, fods.Version);
+                        var vid = fods.VersionedId;
                         var data = new List<byte>();
 
                         data.AddRange(InitialObject.Data);

@@ -24,5 +24,16 @@ public class WindowDefinitionSegment : Segment
     /// <summary>
     ///     Defines the window regions within the screen for this epoch.
     /// </summary>
-    public IList<WindowDefinitionEntry> Definitions = new List<WindowDefinitionEntry>();
+    public IList<WindowDefinitionEntry> Definitions { get; set; }
+
+    public WindowDefinitionSegment()
+    {
+        Definitions = new List<WindowDefinitionEntry>();
+    }
+
+    public WindowDefinitionSegment(PgsTimeStamp pts, PgsTimeStamp dts
+        , IList<WindowDefinitionEntry> definitions) : base(pts, dts)
+    {
+        Definitions = definitions;
+    }
 }

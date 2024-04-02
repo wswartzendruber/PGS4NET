@@ -23,18 +23,22 @@ namespace PGS4NET.Segments;
 /// </remarks>
 public class PaletteDefinitionSegment : Segment
 {
-    /// <summary>
-    ///     The ID of this pallete set within the epoch.
-    /// </summary>
-    public byte Id;
-
-    /// <summary>
-    ///     The version increment of this palette set.
-    /// </summary>
-    public byte Version;
+    public VersionedId<byte> VersionedId { get; set; }
 
     /// <summary>
     ///     Defines the individual palette entries in this set.
     /// </summary>
-    public IList<PaletteDefinitionEntry> Entries = new List<PaletteDefinitionEntry>();
+    public IList<PaletteDefinitionEntry> Entries { get; set; }
+
+    public PaletteDefinitionSegment()
+    {
+        Entries = new List<PaletteDefinitionEntry>();
+    }
+
+    public PaletteDefinitionSegment(PgsTimeStamp pts, PgsTimeStamp dts
+        , VersionedId<byte> versionedId, IList<PaletteDefinitionEntry> entries) : base(pts, dts)
+    {
+        VersionedId = versionedId;
+        Entries = entries;
+    }
 }

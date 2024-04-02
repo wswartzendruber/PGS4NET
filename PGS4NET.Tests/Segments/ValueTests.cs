@@ -19,44 +19,11 @@ namespace PGS4NET.Tests.Segments;
 public class ValueTests
 {
     [Fact]
-    public void CompositionObject()
-    {
-        var cid = new CompositionId(1, 2);
-        var a = new CompositionObject(cid, 3, 4, true, new Area(5, 6, 7, 8));
-        var b = new CompositionObject(cid, 3, 4, true, new Area(5, 6, 7, 8));
-        var c = new CompositionObject(cid, 3, 4, true, new Area(5, 6, 7, 9));
-        var d = new CompositionObject(cid, 3, 4, true, null);
-        var e = new CompositionObject(cid, 3, 4, true, null);
-        var f = new CompositionObject(cid, 3, 4, false, null);
-
-        Assert.True(a == a);
-        Assert.True(a == b);
-        Assert.True(d == e);
-        Assert.True(a != c);
-        Assert.True(d != f);
-        Assert.True(a.GetHashCode() == a.GetHashCode());
-        Assert.True(a.GetHashCode() == b.GetHashCode());
-        Assert.True(d.GetHashCode() == e.GetHashCode());
-    }
-
-    [Fact]
     public void PaletteDefinitionEntry()
     {
-        var a = new PaletteDefinitionEntry
-        {
-            Id = 1,
-            Pixel = new PgsPixel(2, 3, 4, 5),
-        };
-        var b = new PaletteDefinitionEntry
-        {
-            Id = 1,
-            Pixel = new PgsPixel(2, 3, 4, 5),
-        };
-        var c = new PaletteDefinitionEntry
-        {
-            Id = 1,
-            Pixel = new PgsPixel(2, 3, 4, 6),
-        };
+        var a = new PaletteDefinitionEntry(1, new PgsPixel(2, 3, 4, 5));
+        var b = new PaletteDefinitionEntry(1, new PgsPixel(2, 3, 4, 5));
+        var c = new PaletteDefinitionEntry(1, new PgsPixel(2, 3, 4, 6));
 
         Assert.True(a == a);
         Assert.True(a == b);

@@ -18,10 +18,22 @@ public class SingleObjectDefinitionSegment : ObjectDefinitionSegment
     /// <summary>
     ///     The width of this object in pixels.
     /// </summary>
-    public ushort Width;
+    public ushort Width { get; set; }
 
     /// <summary>
     ///     The height of this object in pixels.
     /// </summary>
-    public ushort Height;
+    public ushort Height { get; set; }
+
+    public SingleObjectDefinitionSegment()
+    {
+    }
+
+    public SingleObjectDefinitionSegment(PgsTimeStamp pts, PgsTimeStamp dts
+        , VersionedId<ushort> versionedId, ushort width, ushort height, byte[] data)
+        : base(pts, dts, versionedId, data)
+    {
+        Width = width;
+        Height = height;
+    }
 }

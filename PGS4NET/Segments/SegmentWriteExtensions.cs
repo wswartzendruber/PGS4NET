@@ -231,8 +231,8 @@ public static partial class SegmentExtensions
     {
         using var ms = new MemoryStream();
 
-        WriteUInt8(ms, pds.Id);
-        WriteUInt8(ms, pds.Version);
+        WriteUInt8(ms, pds.VersionedId.Id);
+        WriteUInt8(ms, pds.VersionedId.Version);
 
         foreach (var entry in pds.Entries)
         {
@@ -255,8 +255,8 @@ public static partial class SegmentExtensions
 
         using var ms = new MemoryStream();
 
-        WriteUInt16Be(ms, sods.Id);
-        WriteUInt8(ms, sods.Version);
+        WriteUInt16Be(ms, sods.VersionedId.Id);
+        WriteUInt8(ms, sods.VersionedId.Version);
         WriteUInt8(ms, 0xC0);
         WriteUInt24Be(ms, dataLength);
         WriteUInt16Be(ms, sods.Width);
@@ -275,8 +275,8 @@ public static partial class SegmentExtensions
 
         using var ms = new MemoryStream();
 
-        WriteUInt16Be(ms, iods.Id);
-        WriteUInt8(ms, iods.Version);
+        WriteUInt16Be(ms, iods.VersionedId.Id);
+        WriteUInt8(ms, iods.VersionedId.Version);
         WriteUInt8(ms, 0x80);
         WriteUInt24Be(ms, iods.Length);
         WriteUInt16Be(ms, iods.Width);
@@ -293,8 +293,8 @@ public static partial class SegmentExtensions
 
         using var ms = new MemoryStream();
 
-        WriteUInt16Be(ms, mods.Id);
-        WriteUInt8(ms, mods.Version);
+        WriteUInt16Be(ms, mods.VersionedId.Id);
+        WriteUInt8(ms, mods.VersionedId.Version);
         WriteUInt8(ms, 0x00);
         ms.Write(mods.Data, 0, mods.Data.Length);
 
@@ -309,8 +309,8 @@ public static partial class SegmentExtensions
 
         using var ms = new MemoryStream();
 
-        WriteUInt16Be(ms, fods.Id);
-        WriteUInt8(ms, fods.Version);
+        WriteUInt16Be(ms, fods.VersionedId.Id);
+        WriteUInt8(ms, fods.VersionedId.Version);
         WriteUInt8(ms, 0x40);
         ms.Write(fods.Data, 0, fods.Data.Length);
 

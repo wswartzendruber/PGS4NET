@@ -15,7 +15,7 @@ namespace PGS4NET.Segments;
 /// <summary>
 ///     Defines a window within the screen.
 /// </summary>
-public class WindowDefinitionEntry : IEquatable<WindowDefinitionEntry>
+public struct WindowDefinitionEntry : IEquatable<WindowDefinitionEntry>
 {
     /// <summary>
     ///     The ID of this window within the epoch.
@@ -26,7 +26,7 @@ public class WindowDefinitionEntry : IEquatable<WindowDefinitionEntry>
     ///     The horizontal offset of the window’s top-left corner relative to the top-left
     ///     corner of the screen.
     /// </summary>
-    public Area Area { get; set; }
+    public Area Area { get; private set; }
 
     public WindowDefinitionEntry(byte id, Area area)
     {
@@ -35,8 +35,8 @@ public class WindowDefinitionEntry : IEquatable<WindowDefinitionEntry>
     }
 
     /// <summary>
-    ///     Determines if the state of another <see cref="WindowDefinitionEntry" /> matches this
-    ///     one's.
+    ///     Determines if the state of another <see cref="WindowDefinitionEntry" /> match
+    ///     this one's.
     /// </summary>
     public bool Equals(WindowDefinitionEntry other) =>
         other.Id == this.Id
@@ -52,13 +52,19 @@ public class WindowDefinitionEntry : IEquatable<WindowDefinitionEntry>
             && Equals((WindowDefinitionEntry)other);
 
     /// <summary>
-    ///     Returns the hash code of this instance taking into account the values of all fields.
+    ///     Returns the hash code of this instance taking into account the values of all
+    ///     readonly properties.
     /// </summary>
     public override int GetHashCode()
     {
         unchecked
         {
-            return (int)((uint)Id << 24);
+            int hash = 17;
+
+            hash = hash * 23 + Id;
+            hash = hash * 23 + Area.GetHashCode();
+
+            return hash;
         }
     }
 

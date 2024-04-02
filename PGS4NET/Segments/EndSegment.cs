@@ -15,4 +15,11 @@ namespace PGS4NET.Segments;
 /// </summary>
 public class EndSegment : Segment
 {
+    public EndSegment()
+    {
+    }
+
+    public EndSegment(PgsTimeStamp pts, PgsTimeStamp dts) : base(pts, dts)
+    {
+    }
 }

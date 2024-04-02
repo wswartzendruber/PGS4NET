@@ -16,4 +16,12 @@ namespace PGS4NET.Segments;
 /// </summary>
 public class FinalObjectDefinitionSegment : ObjectDefinitionSegment
 {
+    public FinalObjectDefinitionSegment()
+    {
+    }
+
+    public FinalObjectDefinitionSegment(PgsTimeStamp pts, PgsTimeStamp dts
+        , VersionedId<ushort> versionedId, byte[] data) : base(pts, dts, versionedId, data)
+    {
+    }
 }

@@ -20,4 +20,13 @@ public class MiddleObjectDefinitionSegment : ObjectDefinitionSegment
     ///     The maximum data length this object type can hold.
     /// </summary>
     public const int MaxDataSize = 65_515;
+
+    public MiddleObjectDefinitionSegment()
+    {
+    }
+
+    public MiddleObjectDefinitionSegment(PgsTimeStamp pts, PgsTimeStamp dts
+        , VersionedId<ushort> versionedId, byte[] data) : base(pts, dts, versionedId, data)
+    {
+    }
 }

@@ -76,7 +76,7 @@ public static partial class SegmentExtensions
             0x15 => ParseOds(payloadBuffer, pts, dts),
             0x16 => ParsePcs(payloadBuffer, pts, dts),
             0x17 => ParseWds(payloadBuffer, pts, dts),
-            0x80 => new EndSegment { Pts = pts, Dts = dts },
+            0x80 => new EndSegment(pts, dts),
             _ => throw new SegmentException("Unrecognized segment kind."),
         };
     }
@@ -120,7 +120,7 @@ public static partial class SegmentExtensions
             0x15 => ParseOds(payloadBuffer, pts, dts),
             0x16 => ParsePcs(payloadBuffer, pts, dts),
             0x17 => ParseWds(payloadBuffer, pts, dts),
-            0x80 => new EndSegment { Pts = pts, Dts = dts },
+            0x80 => new EndSegment(pts, dts),
             _ => throw new SegmentException("Unrecognized segment kind."),
         };
     }
@@ -152,7 +152,7 @@ public static partial class SegmentExtensions
             0x00 => false,
             _ => throw new SegmentException("PCS has unrecognized palette update flag."),
         };
-        var paletteUpdateId = ReadUInt8(buffer, 9)
+        var paletteId = ReadUInt8(buffer, 9)
             ?? throw new IOException("EOS reading PCS palette ID.");
         var compositionObjectCount = ReadUInt8(buffer, 10)
             ?? throw new IOException("EOS reading PCS composition object count.");
@@ -200,19 +200,9 @@ public static partial class SegmentExtensions
             compositionObjects.Add(co);
         }
 
-        return new PresentationCompositionSegment
-        {
-            Pts = pts,
-            Dts = dts,
-            Width = width,
-            Height = height,
-            FrameRate = frameRate,
-            Number = compositionNumber,
-            State = compositionState,
-            PaletteUpdateOnly = paletteUpdateOnly,
-            PaletteId = paletteUpdateId,
-            CompositionObjects = compositionObjects,
-        };
+        return new PresentationCompositionSegment(pts, dts, width, height, frameRate
+            , compositionNumber, compositionState, paletteUpdateOnly, paletteId
+            , compositionObjects);
     }
 
     private static WindowDefinitionSegment ParseWds(byte[] buffer, uint pts, uint dts)
@@ -241,12 +231,7 @@ public static partial class SegmentExtensions
             offset += 9;
         }
 
-        return new WindowDefinitionSegment
-        {
-            Pts = pts,
-            Dts = dts,
-            Definitions = definitions,
-        };
+        return new WindowDefinitionSegment(pts, dts, definitions);
     }
 
     private static PaletteDefinitionSegment ParsePds(byte[] buffer, uint pts, uint dts)
@@ -256,6 +241,7 @@ public static partial class SegmentExtensions
             ?? throw new IOException("EOS reading PDS ID.");
         var version = ReadUInt8(buffer, 1)
             ?? throw new IOException("EOS reading PDS version.");
+        var versionedId = new VersionedId<byte>(paletteId, version);
         var entries = new List<PaletteDefinitionEntry>();
         var offset = 2;
 
@@ -271,23 +257,14 @@ public static partial class SegmentExtensions
                 ?? throw new IOException($"EOS reading PDS[{i}] Cb value.");
             var alpha = ReadUInt8(buffer, offset + 4)
                 ?? throw new IOException($"EOS reading PDS[{i}] alpha value.");
+            var pixel = new PgsPixel(y, cr, cb, alpha);
+            var pde = new PaletteDefinitionEntry(entryId, pixel);
 
-            entries.Add(new PaletteDefinitionEntry
-            {
-                Id = entryId,
-                Pixel = new PgsPixel(y, cr, cb, alpha),
-            });
+            entries.Add(pde);
             offset += 5;
         }
 
-        return new PaletteDefinitionSegment
-        {
-            Pts = pts,
-            Dts = dts,
-            Id = paletteId,
-            Version = version,
-            Entries = entries,
-        };
+        return new PaletteDefinitionSegment(pts, dts, versionedId, entries);
     }
 
     private static ObjectDefinitionSegment ParseOds(byte[] buffer, uint pts, uint dts)
@@ -312,6 +289,7 @@ public static partial class SegmentExtensions
     private static SingleObjectDefinitionSegment ParseSods(byte[] buffer, uint pts, uint dts
         , ushort id, byte version)
     {
+        var versionedId = new VersionedId<ushort>(id, version);
         var dataLength = ReadUInt24Be(buffer, 4)
             ?? throw new IOException("EOS reading S-ODS data length.");
 
@@ -326,21 +304,13 @@ public static partial class SegmentExtensions
 
         Array.Copy(buffer, 11, data, 0, data.Length);
 
-        return new SingleObjectDefinitionSegment
-        {
-            Pts = pts,
-            Dts = dts,
-            Id = id,
-            Version = version,
-            Data = data,
-            Width = width,
-            Height = height,
-        };
+        return new SingleObjectDefinitionSegment(pts, dts, versionedId, width, height, data);
     }
 
     private static InitialObjectDefinitionSegment ParseIods(byte[] buffer, uint pts, uint dts
         , ushort id, byte version)
     {
+        var versionedId = new VersionedId<ushort>(id, version);
         var dataLength = ReadUInt24Be(buffer, 4)
             ?? throw new IOException("EOS reading I-ODS data length.");
         var width = ReadUInt16Be(buffer, 7)
@@ -351,51 +321,30 @@ public static partial class SegmentExtensions
 
         Array.Copy(buffer, 11, data, 0, data.Length);
 
-        return new InitialObjectDefinitionSegment
-        {
-            Pts = pts,
-            Dts = dts,
-            Id = id,
-            Version = version,
-            Data = data,
-            Length = dataLength,
-            Width = width,
-            Height = height,
-        };
+        return new InitialObjectDefinitionSegment(pts, dts, versionedId, width, height
+            , dataLength, data);
     }
 
     private static MiddleObjectDefinitionSegment ParseMods(byte[] buffer, uint pts, uint dts
         , ushort id, byte version)
     {
+        var versionedId = new VersionedId<ushort>(id, version);
         var data = new byte[buffer.Length - 4];
 
         Array.Copy(buffer, 4, data, 0, data.Length);
 
-        return new MiddleObjectDefinitionSegment
-        {
-            Pts = pts,
-            Dts = dts,
-            Id = id,
-            Version = version,
-            Data = data,
-        };
+        return new MiddleObjectDefinitionSegment(pts, dts, versionedId, data);
     }
 
     private static FinalObjectDefinitionSegment ParseFods(byte[] buffer, uint pts, uint dts
         , ushort id, byte version)
     {
+        var versionedId = new VersionedId<ushort>(id, version);
         var data = new byte[buffer.Length - 4];
 
         Array.Copy(buffer, 4, data, 0, data.Length);
 
-        return new FinalObjectDefinitionSegment
-        {
-            Pts = pts,
-            Dts = dts,
-            Id = id,
-            Version = version,
-            Data = data,
-        };
+        return new FinalObjectDefinitionSegment(pts, dts, versionedId, data);
     }
 
     private static byte? ReadUInt8(byte[] buffer, int offset) =>
