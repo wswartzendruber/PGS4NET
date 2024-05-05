@@ -23,7 +23,7 @@ public struct WindowDefinitionEntry : IEquatable<WindowDefinitionEntry>
     public byte Id { get; private set; }
 
     /// <summary>
-    ///     The horizontal offset of the window’s top-left corner relative to the top-left
+    ///     The horizontal offset of the window's top-left corner relative to the top-left
     ///     corner of the screen.
     /// </summary>
     public Area Area { get; private set; }

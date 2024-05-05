@@ -59,7 +59,7 @@ public class PresentationCompositionSegment : Segment
     public byte PaletteId { get; set; }
 
     /// <summary>
-    ///     Maps an epoch’s objects (or areas within them) to its windows.
+    ///     Maps an epoch's objects (or areas within them) to its windows.
     /// </summary>
     public IList<CompositionObject> CompositionObjects { get; set; }
 

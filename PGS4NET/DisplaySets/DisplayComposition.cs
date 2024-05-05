@@ -18,14 +18,14 @@ namespace PGS4NET.DisplaySets;
 public struct DisplayComposition
 {
     /// <summary>
-    ///     The horizontal offset of the object’s top-left corner relative to the top-left
+    ///     The horizontal offset of the object's top-left corner relative to the top-left
     ///     corner of the screen. If the object is cropped, then this applies only to the
     ///     visible area.
     /// </summary>
     public ushort X;
 
     /// <summary>
-    ///     The vertical offset of the object’s top-left corner relative to the top-left corner
+    ///     The vertical offset of the object's top-left corner relative to the top-left corner
     ///     of the screen. If the object is cropped, then this applies only to the visible area.
     /// </summary>
     public ushort Y;

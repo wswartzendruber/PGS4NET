@@ -22,7 +22,7 @@ public class InitialObjectDefinitionSegment : ObjectDefinitionSegment
     public const int MaxDataSize = 65_508;
 
     /// <summary>
-    ///     The declared length of this object’s data buffer, including all follow-on portions.
+    ///     The declared length of this object's data buffer, including all follow-on portions.
     /// </summary>
     public uint Length { get; set; }
 

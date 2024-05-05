@@ -18,13 +18,13 @@ namespace PGS4NET;
 public struct Area : IEquatable<Area>
 {
     /// <summary>
-    ///     The horizontal offset of the area’s top-left corner relative to the top-left corner
+    ///     The horizontal offset of the area's top-left corner relative to the top-left corner
     ///     of the object itself.
     /// </summary>
     public ushort X { get; private set; }
 
     /// <summary>
-    ///     The vertical offset of the area’s top-left corner relative to the top-left corner of
+    ///     The vertical offset of the area's top-left corner relative to the top-left corner of
     ///     the object itself.
     /// </summary>
     public ushort Y { get; private set; }
@@ -46,6 +46,18 @@ public struct Area : IEquatable<Area>
         Width = width;
         Height = height;
     }
+
+    public Area(Position position, Size size)
+    {
+        X = position.X;
+        Y = position.Y;
+        Width = size.Width;
+        Height = size.Height;
+    }
+
+    public Position ToPosition() => new Position(X, Y);
+
+    public Size ToSize() => new Size(Width, Height);
 
     /// <summary>
     ///     Determines if the dimensions of another <see cref="Area" /> matches this one's.
