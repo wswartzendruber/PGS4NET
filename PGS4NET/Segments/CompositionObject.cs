@@ -45,13 +45,13 @@ public class CompositionObject
     ///     If set, defines the visible area of the object. Otherwise, the entire object is
     ///     shown.
     /// </summary>
-    public Area? Crop { get; set; }
+    public Crop? Crop { get; set; }
 
     public CompositionObject()
     {
     }
 
-    public CompositionObject(CompositionId id, ushort x, ushort y, bool forced, Area? crop)
+    public CompositionObject(CompositionId id, ushort x, ushort y, bool forced, Crop? crop)
     {
         Id = id;
         X = x;

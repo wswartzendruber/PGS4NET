@@ -8,19 +8,16 @@
  * SPDX-License-Identifier: MPL-2.0
  */
 
-using System;
+using System.Collections.Generic;
+using PGS4NET.Segments;
 
-namespace PGS4NET.Segments;
+namespace PGS4NET.DisplaySets;
 
 /// <summary>
-///     Defines a window within the screen.
+///     Defines a window area within a display set.
 /// </summary>
-public class WindowDefinitionEntry
+public class DisplayWindow
 {
-    /// <summary>
-    ///     The ID of this window within the epoch.
-    /// </summary>
-    public byte Id { get; private set; }
     /// <summary>
     ///     The horizontal offset of the window's top-left corner relative to the top-left
     ///     corner of the object itself.
@@ -43,9 +40,8 @@ public class WindowDefinitionEntry
     /// </summary>
     public ushort Height { get; private set; }
 
-    public WindowDefinitionEntry(byte id, ushort x, ushort y, ushort width, ushort height)
+    public DisplayWindow(ushort x, ushort y, ushort width, ushort height)
     {
-        Id = id;
         X = x;
         Y = y;
         Width = width;

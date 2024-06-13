@@ -40,5 +40,5 @@ public struct DisplayComposition
     ///     If set, defines the visible area of the object. Otherwise, the entire object is
     ///     shown.
     /// </summary>
-    public Area? Crop;
+    public Crop? Crop;
 }

@@ -192,12 +192,12 @@ public static partial class SegmentExtensions
             WriteUInt16Be(ms, co.X);
             WriteUInt16Be(ms, co.Y);
 
-            if (co.Crop is Area area)
+            if (co.Crop is Crop crop)
             {
-                WriteUInt16Be(ms, area.X);
-                WriteUInt16Be(ms, area.Y);
-                WriteUInt16Be(ms, area.Width);
-                WriteUInt16Be(ms, area.Height);
+                WriteUInt16Be(ms, crop.X);
+                WriteUInt16Be(ms, crop.Y);
+                WriteUInt16Be(ms, crop.Width);
+                WriteUInt16Be(ms, crop.Height);
             }
         }
 
@@ -217,10 +217,10 @@ public static partial class SegmentExtensions
         foreach (var wd in wds.Definitions)
         {
             WriteUInt8(ms, wd.Id);
-            WriteUInt16Be(ms, wd.Area.X);
-            WriteUInt16Be(ms, wd.Area.Y);
-            WriteUInt16Be(ms, wd.Area.Width);
-            WriteUInt16Be(ms, wd.Area.Height);
+            WriteUInt16Be(ms, wd.X);
+            WriteUInt16Be(ms, wd.Y);
+            WriteUInt16Be(ms, wd.Width);
+            WriteUInt16Be(ms, wd.Height);
         }
 
         WriteUInt16Be(stream, (ushort)ms.Length);

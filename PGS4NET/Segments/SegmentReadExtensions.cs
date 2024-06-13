@@ -172,30 +172,30 @@ public static partial class SegmentExtensions
             var y = ReadUInt16Be(buffer, offset + 6)
                 ?? throw new IOException($"EOS reading PCS[{i}] Y position.");
             var forced = (flags & 0x40) != 0;
-            Area? area;
+            Crop? crop;
 
             if ((flags & 0x80) != 0)
             {
-                var areaX = ReadUInt16Be(buffer, offset + 8)
+                var cropX = ReadUInt16Be(buffer, offset + 8)
                     ?? throw new IOException($"EOS reading PCS[{i}] cropped X position.");
-                var areaY = ReadUInt16Be(buffer, offset + 10)
+                var cropY = ReadUInt16Be(buffer, offset + 10)
                     ?? throw new IOException($"EOS reading PCS[{i}] cropped Y position.");
-                var areaWidth = ReadUInt16Be(buffer, offset + 12)
+                var cropWidth = ReadUInt16Be(buffer, offset + 12)
                     ?? throw new IOException($"EOS reading PCS[{i}] cropped width.");
-                var areaHeight = ReadUInt16Be(buffer, offset + 14)
+                var cropHeight = ReadUInt16Be(buffer, offset + 14)
                     ?? throw new IOException($"EOS reading PCS[{i}] cropped height.");
 
-                area = new Area(areaX, areaY, areaWidth, areaHeight);
+                crop = new Crop(cropX, cropY, cropWidth, cropHeight);
                 offset += 16;
             }
             else
             {
-                area = null;
+                crop = null;
                 offset += 8;
             }
 
             var cid = new CompositionId(objectId, windowId);
-            var co = new CompositionObject(cid, x, y, forced, area);
+            var co = new CompositionObject(cid, x, y, forced, crop);
 
             compositionObjects.Add(co);
         }
@@ -224,8 +224,7 @@ public static partial class SegmentExtensions
                 ?? throw new IOException($"EOS reading WDS[{i}] width.");
             var height = ReadUInt16Be(buffer, offset + 7)
                 ?? throw new IOException($"EOS reading WDS[{i}] height.");
-            var area = new Area(x, y, width, height);
-            var window = new WindowDefinitionEntry(id, area);
+            var window = new WindowDefinitionEntry(id, x, y, width, height);
 
             definitions.Add(window);
             offset += 9;

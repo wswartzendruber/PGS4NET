@@ -43,8 +43,8 @@ public static class DisplaySetDecomposer
 
             foreach (var window in displaySet.Windows)
             {
-                windowEntries.Add(new WindowDefinitionEntry(window.Key, new Area(window.Value.X
-                    , window.Value.Y, window.Value.Width, window.Value.Height)));
+                windowEntries.Add(new WindowDefinitionEntry(window.Key, window.Value.X
+                    , window.Value.Y, window.Value.Width, window.Value.Height));
             }
 
             var wds = new WindowDefinitionSegment(displaySet.Pts, displaySet.Dts

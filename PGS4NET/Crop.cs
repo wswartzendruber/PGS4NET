@@ -8,54 +8,43 @@
  * SPDX-License-Identifier: MPL-2.0
  */
 
-using System;
+using System.Collections.Generic;
+using PGS4NET.Segments;
 
 namespace PGS4NET;
 
 /// <summary>
-///     Represents an area with X and Y offsets that has width and height.
+///     Defines the visible region within an otherwise cropped area.
 /// </summary>
-public struct Area
+public class Crop
 {
     /// <summary>
-    ///     The horizontal offset of the area's top-left corner relative to the top-left corner
-    ///     of the object itself.
+    ///     The horizontal offset of the visible area's top-left corner relative to the top-left
+    ///     corner of the object itself.
     /// </summary>
     public ushort X { get; private set; }
 
     /// <summary>
-    ///     The vertical offset of the area's top-left corner relative to the top-left corner of
-    ///     the object itself.
+    ///     The vertical offset of the visible area's top-left corner relative to the top-left
+    ///     corner of the object itself.
     /// </summary>
     public ushort Y { get; private set; }
 
     /// <summary>
-    ///     The width of the area.
+    ///     The width of the visible area.
     /// </summary>
     public ushort Width { get; private set; }
 
     /// <summary>
-    ///     The height of the area.
+    ///     The height of the visible area.
     /// </summary>
     public ushort Height { get; private set; }
 
-    public Area(ushort x, ushort y, ushort width, ushort height)
+    public Crop(ushort x, ushort y, ushort width, ushort height)
     {
         X = x;
         Y = y;
         Width = width;
         Height = height;
     }
-
-    public Area(Position position, Size size)
-    {
-        X = position.X;
-        Y = position.Y;
-        Width = size.Width;
-        Height = size.Height;
-    }
-
-    public Position ToPosition() => new Position(X, Y);
-
-    public Size ToSize() => new Size(Width, Height);
 }

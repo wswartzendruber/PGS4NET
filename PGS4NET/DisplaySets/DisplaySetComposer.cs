@@ -31,7 +31,7 @@ public class DisplaySetComposer
 
     private InitialObjectDefinitionSegment? InitialObject = null;
     private List<MiddleObjectDefinitionSegment> MiddleObjects = new();
-    private Dictionary<byte, Area> Windows = new();
+    private Dictionary<byte, DisplayWindow> Windows = new();
     private Dictionary<VersionedId<byte>, DisplayPalette> Palettes = new();
     private Dictionary<VersionedId<ushort>, DisplayObject> Objects = new();
     private Dictionary<CompositionId, DisplayComposition> Compositions = new();
@@ -66,8 +66,7 @@ public class DisplaySetComposer
                         if (Windows.ContainsKey(wd.Id))
                             throw new DisplaySetException($"Duplicate window ID: {wd.Id}");
 
-                        Windows[wd.Id] = new Area(wd.Area.X, wd.Area.Y, wd.Area.Width
-                            , wd.Area.Height);
+                        Windows[wd.Id] = new DisplayWindow(wd.X, wd.Y, wd.Width, wd.Height);
                     }
 
                     break;

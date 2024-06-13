@@ -86,7 +86,7 @@ public class DisplaySet
     /// <summary>
     ///     The collection of windows referenced by this DS.
     /// </summary>
-    public IDictionary<byte, Area> Windows = new Dictionary<byte, Area>();
+    public IDictionary<byte, DisplayWindow> Windows = new Dictionary<byte, DisplayWindow>();
 
     /// <summary>
     ///     The collection of palettes referenced by this DS.

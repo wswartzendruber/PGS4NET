@@ -37,7 +37,7 @@ internal static class DisplaySetInstances
                 FrameRate = RandomByte(),
                 PaletteUpdateOnly = false,
                 PaletteId = RandomByte(),
-                Windows = new Dictionary<byte, Area>(),
+                Windows = new Dictionary<byte, DisplayWindow>(),
                 Palettes = new Dictionary<VersionedId<byte>, DisplayPalette>(),
                 Objects = new Dictionary<VersionedId<ushort>, DisplayObject>(),
                 CompositionNumber = RandomUInt16(),
@@ -55,21 +55,21 @@ internal static class DisplaySetInstances
                 FrameRate = RandomByte(),
                 PaletteUpdateOnly = true,
                 PaletteId = RandomByte(),
-                Windows = new Dictionary<byte, Area>
+                Windows = new Dictionary<byte, DisplayWindow>
                 {
                     {
                         RandomByte(64),
-                        new Area(RandomUInt16(), RandomUInt16(), RandomUInt16()
+                        new DisplayWindow(RandomUInt16(), RandomUInt16(), RandomUInt16()
                             , RandomUInt16())
                     },
                     {
                         (byte)(RandomByte(64) + 64),
-                        new Area(RandomUInt16(), RandomUInt16(), RandomUInt16()
+                        new DisplayWindow(RandomUInt16(), RandomUInt16(), RandomUInt16()
                             , RandomUInt16())
                     },
                     {
                         (byte)(RandomByte(64) + 128),
-                        new Area(RandomUInt16(), RandomUInt16(), RandomUInt16()
+                        new DisplayWindow(RandomUInt16(), RandomUInt16(), RandomUInt16()
                             , RandomUInt16())
                     },
                 },
@@ -171,7 +171,7 @@ internal static class DisplaySetInstances
                             X = RandomUInt16(),
                             Y = RandomUInt16(),
                             Forced = false,
-                            Crop = new Area(RandomUInt16(), RandomUInt16(), RandomUInt16()
+                            Crop = new Crop(RandomUInt16(), RandomUInt16(), RandomUInt16()
                                 , RandomUInt16()),
                         }
                     },
@@ -182,7 +182,7 @@ internal static class DisplaySetInstances
                             X = RandomUInt16(),
                             Y = RandomUInt16(),
                             Forced = true,
-                            Crop = new Area(RandomUInt16(), RandomUInt16(), RandomUInt16()
+                            Crop = new Crop(RandomUInt16(), RandomUInt16(), RandomUInt16()
                                 , RandomUInt16()),
                         }
                     },

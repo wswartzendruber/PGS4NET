@@ -75,7 +75,7 @@ while (stream.ReadDisplaySet() is DisplaySet displaySet)
         Console.WriteLine($"├──────Y: {composition.Value.Y}");
         Console.WriteLine($"├──────Forced: {composition.Value.Forced}");
 
-        if (composition.Value.Crop is Area crop)
+        if (composition.Value.Crop is Crop crop)
         {
             Console.WriteLine("├──────Crop");
             Console.WriteLine($"├────────X: {crop.X}");
