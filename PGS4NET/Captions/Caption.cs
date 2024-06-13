@@ -27,20 +27,4 @@ public class Caption
     public PgsPixel[] Data = new PgsPixel[0];
 
     public bool Forced;
-
-    /// <summary>
-    ///     Returns the hash code of this instance taking into account the values of all fields.
-    /// </summary>
-    public override int GetHashCode()
-    {
-        var dataHash = 17;
-
-        unchecked
-        {
-            foreach (var pixel in Data)
-                dataHash = dataHash * 31 + pixel.GetHashCode();
-        }
-
-        return (TimeStamp, Duration, X, Y, Width, Height, dataHash, Forced).GetHashCode();
-    }
 }

@@ -19,7 +19,7 @@ namespace PGS4NET.Segments;
 ///     The role of a palette entry is to define or update exact pixel color, as later
 ///     referenced by any objects also defined within an epoch.
 /// </remarks>
-public struct PaletteDefinitionEntry : IEquatable<PaletteDefinitionEntry>
+public struct PaletteDefinitionEntry
 {
     /// <summary>
     ///     The ID of this palette entry, which should be unique within an epoch.
@@ -36,52 +36,4 @@ public struct PaletteDefinitionEntry : IEquatable<PaletteDefinitionEntry>
         Id = id;
         Pixel = pixel;
     }
-
-    /// <summary>
-    ///     Determines if the state of another <see cref="PaletteDefinitionEntry" /> match
-    ///     this one's.
-    /// </summary>
-    public bool Equals(PaletteDefinitionEntry other) =>
-        other.Id == this.Id
-            && other.Pixel == this.Pixel;
-
-    /// <summary>
-    ///     Checks if the <paramrem name="other" /> instance is of the same type as this one and
-    ///     then returns the value of the implementation-specific function, otherwise returns
-    ///     <see langword="false" />.
-    /// </summary>
-    public override bool Equals(object? other) =>
-        other?.GetType() == typeof(PaletteDefinitionEntry)
-            && Equals((PaletteDefinitionEntry)other);
-
-    /// <summary>
-    ///     Returns the hash code of this instance taking into account the values of all
-    ///     readonly properties.
-    /// </summary>
-    public override int GetHashCode()
-    {
-        unchecked
-        {
-            int hash = 17;
-
-            hash = hash * 23 + Id;
-            hash = hash * 23 + Pixel.GetHashCode();
-
-            return hash;
-        }
-    }
-
-    /// <summary>
-    ///     Determines if the state of two <see cref="PaletteDefinitionEntry" />s match each
-    ///     other.
-    /// </summary>
-    public static bool operator ==(PaletteDefinitionEntry first
-        , PaletteDefinitionEntry second) => first.Equals(second);
-
-    /// <summary>
-    ///     Determines if the state of two <see cref="PaletteDefinitionEntry" />s don't match
-    ///     each other.
-    /// </summary>
-    public static bool operator !=(PaletteDefinitionEntry first
-        , PaletteDefinitionEntry second) => !first.Equals(second);
 }

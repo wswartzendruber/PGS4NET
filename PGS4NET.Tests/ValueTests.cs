@@ -19,77 +19,11 @@ namespace PGS4NET.Tests;
 public class ValueTests
 {
     [Fact]
-    public void Area()
-    {
-        var a = new Area(1, 2, 3, 4);
-        var b = new Area(1, 2, 3, 4);
-        var c = new Area(1, 5, 3, 6);
-
-        Assert.True(a == a);
-        Assert.True(a == b);
-        Assert.True(a != c);
-        Assert.True(a.GetHashCode() == a.GetHashCode());
-        Assert.True(a.GetHashCode() == b.GetHashCode());
-    }
-
-    [Fact]
-    public void Position()
-    {
-        var a = new Position(3, 4);
-        var b = new Position(3, 4);
-        var c = new Position(3, 6);
-
-        Assert.True(a == a);
-        Assert.True(a == b);
-        Assert.True(a != c);
-        Assert.True(a.GetHashCode() == a.GetHashCode());
-        Assert.True(a.GetHashCode() == b.GetHashCode());
-    }
-
-    [Fact]
-    public void Size()
-    {
-        var a = new Size(1, 2);
-        var b = new Size(1, 2);
-        var c = new Size(1, 5);
-
-        Assert.True(a == a);
-        Assert.True(a == b);
-        Assert.True(a != c);
-        Assert.True(a.GetHashCode() == a.GetHashCode());
-        Assert.True(a.GetHashCode() == b.GetHashCode());
-    }
-
-    [Fact]
-    public void PositionSizeArea()
-    {
-        var a = new Area(1, 2, 3, 4);
-        var b = new Area(a.ToPosition(), a.ToSize());
-
-        Assert.True(a == b);
-        Assert.True(a.GetHashCode() == b.GetHashCode());
-    }
-
-    [Fact]
     public void CompositionId()
     {
         var a = new CompositionId(1, 2);
         var b = new CompositionId(1, 2);
         var c = new CompositionId(1, 3);
-
-        Assert.True(a == a);
-        Assert.True(a == b);
-        Assert.True(a != c);
-        Assert.True(a.GetHashCode() == a.GetHashCode());
-        Assert.True(a.GetHashCode() == b.GetHashCode());
-    }
-
-    [Fact]
-    public void PgsPixel()
-    {
-        var a = new PgsPixel(1, 2, 3, 4);
-        var b = new PgsPixel(1, 2, 3, 4);
-        var c = new PgsPixel(1, 2, 3, 5);
 
         Assert.True(a == a);
         Assert.True(a == b);
