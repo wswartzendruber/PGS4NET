@@ -69,4 +69,45 @@ public struct PgsPixel
         Cb = cb;
         Alpha = alpha;
     }
+
+    /// <summary>
+    ///     Determines if the state of another <see cref="PgsPixel" /> matches this one's.
+    /// </summary>
+    public bool Equals(PgsPixel other) =>
+        other.Y.Equals(this.Y)
+            && other.Cr == this.Cr
+            && other.Cb == this.Cb
+            && other.Alpha == this.Alpha;
+
+    /// <summary>
+    ///     Checks if the <paramrem name="other" /> instance is of the same type as this one and
+    ///     then returns the value of the implementation-specific function, otherwise returns
+    ///     <see langword="false" />.
+    /// </summary>
+    public override bool Equals(object? other) =>
+        other?.GetType() == typeof(PgsPixel) && Equals((PgsPixel)other);
+
+    /// <summary>
+    ///     Returns the hash code of this instance taking into account the values of all
+    ///     readonly properties.
+    /// </summary>
+    public override int GetHashCode()
+    {
+        unchecked
+        {
+            return (int)Y << 24 | (int)Cr << 16 | (int)Cb << 8 | (int)Alpha;
+        }
+    }
+
+    /// <summary>
+    ///     Determines if the state of two <see cref="PgsPixel" />s match each other.
+    /// </summary>
+    public static bool operator ==(PgsPixel first, PgsPixel second) =>
+        first.Equals(second);
+
+    /// <summary>
+    ///     Determines if the state of two <see cref="PgsPixel" />s don't match each other.
+    /// </summary>
+    public static bool operator !=(PgsPixel first, PgsPixel second) =>
+        !first.Equals(second);
 }

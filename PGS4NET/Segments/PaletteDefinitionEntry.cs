@@ -19,17 +19,21 @@ namespace PGS4NET.Segments;
 ///     The role of a palette entry is to define or update exact pixel color, as later
 ///     referenced by any objects also defined within an epoch.
 /// </remarks>
-public struct PaletteDefinitionEntry
+public class PaletteDefinitionEntry
 {
     /// <summary>
     ///     The ID of this palette entry, which should be unique within an epoch.
     /// </summary>
-    public byte Id { get; private set; }
+    public byte Id { get; set; }
 
     /// <summary>
     ///     Defines the color properties of the palette entry.
     /// </summary>
-    public PgsPixel Pixel { get; private set; }
+    public PgsPixel Pixel { get; set; }
+
+    public PaletteDefinitionEntry()
+    {
+    }
 
     public PaletteDefinitionEntry(byte id, PgsPixel pixel)
     {

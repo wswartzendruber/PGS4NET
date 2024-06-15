@@ -15,7 +15,7 @@ namespace PGS4NET.DisplaySets;
 /// <summary>
 ///     Defines a mapping between an object (or an area of one) and a window within an epoch.
 /// </summary>
-public struct DisplayComposition
+public class DisplayComposition
 {
     /// <summary>
     ///     The horizontal offset of the object's top-left corner relative to the top-left

@@ -22,23 +22,27 @@ public class Crop
     ///     The horizontal offset of the visible area's top-left corner relative to the top-left
     ///     corner of the object itself.
     /// </summary>
-    public ushort X { get; private set; }
+    public ushort X { get; set; }
 
     /// <summary>
     ///     The vertical offset of the visible area's top-left corner relative to the top-left
     ///     corner of the object itself.
     /// </summary>
-    public ushort Y { get; private set; }
+    public ushort Y { get; set; }
 
     /// <summary>
     ///     The width of the visible area.
     /// </summary>
-    public ushort Width { get; private set; }
+    public ushort Width { get; set; }
 
     /// <summary>
     ///     The height of the visible area.
     /// </summary>
-    public ushort Height { get; private set; }
+    public ushort Height { get; set; }
+
+    public Crop()
+    {
+    }
 
     public Crop(ushort x, ushort y, ushort width, ushort height)
     {

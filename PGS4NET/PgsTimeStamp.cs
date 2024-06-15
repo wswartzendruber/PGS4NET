@@ -56,19 +56,8 @@ public struct PgsTimeStamp : IEquatable<PgsTimeStamp>, IComparable<PgsTimeStamp>
         return new PgsTimeStamp(milliseconds * 90);
     }
 
-    /// <summary>
-    ///     Implicitly returns the <see cref="Ticks" /> value.
-    /// </summary>
-    public static implicit operator uint(PgsTimeStamp pts) => pts.Ticks;
-
-    /// <summary>
-    ///     Implicitly creates a new instance using the provided <paramref name="ticks" />
-    ///     value.
-    /// </summary>
-    /// <param name="ticks">
-    ///     The tick count.
-    /// </param>
-    public static implicit operator PgsTimeStamp(uint ticks) => new PgsTimeStamp(ticks);
+    public int CompareTo(PgsTimeStamp other) =>
+        this.Ticks.CompareTo(other.Ticks);
 
     /// <summary>
     ///     Determines if the state of another <see cref="PgsTimeStamp" /> matches this one's.
@@ -82,9 +71,6 @@ public struct PgsTimeStamp : IEquatable<PgsTimeStamp>, IComparable<PgsTimeStamp>
     /// </summary>
     public override bool Equals(object? other) =>
         other?.GetType() == typeof(PgsTimeStamp) && Equals((PgsTimeStamp)other);
-
-    public int CompareTo(PgsTimeStamp other) =>
-        this.Ticks.CompareTo(other.Ticks);
 
     /// <summary>
     ///     Returns the hash code of this instance taking into account the values of all
@@ -110,12 +96,6 @@ public struct PgsTimeStamp : IEquatable<PgsTimeStamp>, IComparable<PgsTimeStamp>
     public static bool operator !=(PgsTimeStamp first, PgsTimeStamp second) =>
         !first.Equals(second);
 
-    public static PgsTimeStamp operator +(PgsTimeStamp augend, PgsTimeStamp addend) =>
-        new PgsTimeStamp(augend.Ticks - addend.Ticks);
-
-    public static PgsTimeStamp operator -(PgsTimeStamp minuend, PgsTimeStamp subtrahend) =>
-        new PgsTimeStamp(minuend.Ticks - subtrahend.Ticks);
-
     public static bool operator >(PgsTimeStamp left, PgsTimeStamp right) =>
         left.Ticks > right.Ticks;
 
@@ -127,4 +107,24 @@ public struct PgsTimeStamp : IEquatable<PgsTimeStamp>, IComparable<PgsTimeStamp>
 
     public static bool operator <=(PgsTimeStamp left, PgsTimeStamp right) =>
         left.Ticks <= right.Ticks;
+
+    public static PgsTimeStamp operator +(PgsTimeStamp augend, PgsTimeStamp addend) =>
+        new PgsTimeStamp(augend.Ticks + addend.Ticks);
+
+    public static PgsTimeStamp operator -(PgsTimeStamp minuend, PgsTimeStamp subtrahend) =>
+        new PgsTimeStamp(minuend.Ticks - subtrahend.Ticks);
+
+    /// <summary>
+    ///     Implicitly returns the <see cref="Ticks" /> value.
+    /// </summary>
+    public static implicit operator uint(PgsTimeStamp pts) => pts.Ticks;
+
+    /// <summary>
+    ///     Implicitly creates a new instance using the provided <paramref name="ticks" />
+    ///     value.
+    /// </summary>
+    /// <param name="ticks">
+    ///     The tick count.
+    /// </param>
+    public static implicit operator PgsTimeStamp(uint ticks) => new PgsTimeStamp(ticks);
 }
