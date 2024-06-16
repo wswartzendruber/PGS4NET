@@ -24,16 +24,19 @@ public class ValueTests
         var a = new CompositionId(1, 2);
         var b = new CompositionId(1, 2);
         var c = new CompositionId(1, 3);
+        var d = new CompositionId(2, 2);
 
         Assert.True(a == a);
         Assert.True(a == b);
         Assert.True(a != c);
+        Assert.True(a != d);
+        Assert.True(c != d);
         Assert.True(a.GetHashCode() == a.GetHashCode());
         Assert.True(a.GetHashCode() == b.GetHashCode());
     }
 
     [Fact]
-    public void PgsTimeStamp()
+    public void PgsTimeStamp_()
     {
         var a = new PgsTimeStamp(1);
         var b = new PgsTimeStamp(1);
@@ -56,6 +59,8 @@ public class ValueTests
         Assert.True(a <= c);
         Assert.True(a.GetHashCode() == a.GetHashCode());
         Assert.True(a.GetHashCode() == b.GetHashCode());
+        Assert.True((a + b).Ticks == 2);
+        Assert.True((a + c).Ticks == 3);
     }
 
     [Fact]
@@ -64,17 +69,25 @@ public class ValueTests
         var a = new VersionedId<int>(1, 2);
         var b = new VersionedId<int>(1, 2);
         var c = new VersionedId<int>(1, 3);
-        var d = new VersionedId<long>(1, 2);
+        var d = new VersionedId<int>(2, 2);
         var e = new VersionedId<long>(1, 2);
-        var f = new VersionedId<long>(1, 3);
+        var f = new VersionedId<long>(1, 2);
+        var g = new VersionedId<long>(1, 3);
+        var h = new VersionedId<long>(2, 2);
 
         Assert.True(a == a);
         Assert.True(a == b);
-        Assert.True(d == e);
         Assert.True(a != c);
-        Assert.True(d != f);
+        Assert.True(a != d);
+        Assert.True(c != d);
+        Assert.True(e == e);
+        Assert.True(e == f);
+        Assert.True(e != g);
+        Assert.True(e != h);
+        Assert.True(g != h);
         Assert.True(a.GetHashCode() == a.GetHashCode());
         Assert.True(a.GetHashCode() == b.GetHashCode());
-        Assert.True(d.GetHashCode() == e.GetHashCode());
+        Assert.True(e.GetHashCode() == e.GetHashCode());
+        Assert.True(e.GetHashCode() == f.GetHashCode());
     }
 }
