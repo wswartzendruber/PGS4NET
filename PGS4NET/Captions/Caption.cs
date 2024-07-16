@@ -12,19 +12,37 @@ namespace PGS4NET.Captions;
 
 public class Caption
 {
-    public PgsTimeStamp TimeStamp;
+    public PgsTimeStamp TimeStamp { get; set; }
 
-    public PgsTimeStamp Duration;
+    public PgsTimeStamp Duration { get; set; }
 
-    public ushort X;
+    public ushort X { get; set; }
 
-    public ushort Y;
+    public ushort Y { get; set; }
 
-    public ushort Width;
+    public ushort Width { get; set; }
 
-    public ushort Height;
+    public ushort Height { get; set; }
 
-    public PgsPixel[] Data = new PgsPixel[0];
+    public PgsPixel[] Data { get; set; }
 
-    public bool Forced;
+    public bool Forced { get; set; }
+
+    public Caption()
+    {
+        Data = new PgsPixel[0];
+    }
+
+    public Caption(PgsTimeStamp timeStamp, PgsTimeStamp duration, ushort x, ushort y
+        , ushort width, ushort height, PgsPixel[] data, bool forced)
+    {
+        TimeStamp = timeStamp;
+        Duration = duration;
+        X = x;
+        Y = y;
+        Width = width;
+        Height = height;
+        Data = data;
+        Forced = forced;
+    }
 }

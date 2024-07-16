@@ -47,73 +47,100 @@ public class DisplaySet
     ///     The timestamp indicating when composition decoding should start. In practice, this
     ///     is the time at which the composition is displayed.
     /// </summary>
-    public uint Pts;
+    public PgsTimeStamp Pts { get; set; }
 
     /// <summary>
     ///     The timestamp indicating when the composition should be displayed. In practice, this
     ///     value is always zero.
     /// </summary>
-    public uint Dts;
+    public PgsTimeStamp Dts { get; set; }
 
     /// <summary>
     ///     The width of the screen in pixels. This value should be consistent within a
     ///     presentation.
     /// </summary>
-    public ushort Width;
+    public ushort Width { get; set; }
 
     /// <summary>
     ///     The height of the screen in pixels. This value should be consistent within a
     ///     presentation.
     /// </summary>
-    public ushort Height;
+    public ushort Height { get; set; }
 
     /// <summary>
     ///     This value should be set to <c>0x10</c> but can otherwise be typically ignored.
     /// </summary>
-    public byte FrameRate;
+    public byte FrameRate { get; set; }
 
     /// <summary>
     ///     If set, defines that this PCS is responsible for a palette udpate on an existing
     ///     object.
     /// </summary>
-    public bool PaletteUpdateOnly;
+    public bool PaletteUpdateOnly { get; set; }
 
     /// <summary>
     ///     The palette ID to use when rendering objects.
     /// </summary>
-    public byte PaletteId;
-
+    public byte PaletteId { get; set; }
     /// <summary>
     ///     The collection of windows referenced by this DS.
     /// </summary>
-    public IDictionary<byte, DisplayWindow> Windows = new Dictionary<byte, DisplayWindow>();
+    public IDictionary<byte, DisplayWindow> Windows { get; set; }
 
     /// <summary>
     ///     The collection of palettes referenced by this DS.
     /// </summary>
-    public IDictionary<VersionedId<byte>, DisplayPalette> Palettes
-        = new Dictionary<VersionedId<byte>, DisplayPalette>();
+    public IDictionary<VersionedId<byte>, DisplayPalette> Palettes { get; set; }
 
     /// <summary>
     ///     The collection of objects referenced by this DS.
     /// </summary>
-    public IDictionary<VersionedId<ushort>, DisplayObject> Objects
-        = new Dictionary<VersionedId<ushort>, DisplayObject>();
+    public IDictionary<VersionedId<ushort>, DisplayObject> Objects { get; set; }
 
     /// <summary>
     ///     Starting at zero, this increments each time graphics are updated within an epoch.
     /// </summary>
-    public ushort CompositionNumber;
+    public ushort CompositionNumber { get; set; }
 
     /// <summary>
     ///     Defines the role of this DS within the larger epoch.
     /// </summary>
-    public CompositionState CompositionState;
+    public CompositionState CompositionState { get; set; }
 
     /// <summary>
     ///     A collection of composition objects, each mapped according to its compound ID
     ///     (object ID + window ID).
     /// </summary>
-    public IDictionary<CompositionId, DisplayComposition> Compositions
-        = new Dictionary<CompositionId, DisplayComposition>();
+    public IDictionary<CompositionId, DisplayComposition> Compositions { get; set; }
+
+    public DisplaySet()
+    {
+        Windows = new Dictionary<byte, DisplayWindow>();
+        Palettes = new Dictionary<VersionedId<byte>, DisplayPalette>();
+        Objects = new Dictionary<VersionedId<ushort>, DisplayObject>();
+        Compositions = new Dictionary<CompositionId, DisplayComposition>();
+    }
+
+    public DisplaySet(PgsTimeStamp pts, PgsTimeStamp dts, ushort width, ushort height
+        , byte frameRate, bool paletteUpdateOnly, byte paletteId
+        , IDictionary<byte, DisplayWindow> windows
+        , IDictionary<VersionedId<byte>, DisplayPalette> palettes
+        , IDictionary<VersionedId<ushort>, DisplayObject> objects, ushort compositionNumber
+        , CompositionState compositionState
+        , IDictionary<CompositionId, DisplayComposition> compositions)
+    {
+        Pts = pts;
+        Dts = dts;
+        Width = width;
+        Height = height;
+        FrameRate = frameRate;
+        PaletteUpdateOnly = paletteUpdateOnly;
+        PaletteId = paletteId;
+        Windows = windows;
+        Palettes = palettes;
+        Objects = objects;
+        CompositionNumber = compositionNumber;
+        CompositionState = compositionState;
+        Compositions = compositions;
+    }
 }

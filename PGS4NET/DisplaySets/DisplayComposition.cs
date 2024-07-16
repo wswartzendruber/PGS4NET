@@ -22,23 +22,35 @@ public class DisplayComposition
     ///     corner of the screen. If the object is cropped, then this applies only to the
     ///     visible area.
     /// </summary>
-    public ushort X;
+    public ushort X { get; set; }
 
     /// <summary>
     ///     The vertical offset of the object's top-left corner relative to the top-left corner
     ///     of the screen. If the object is cropped, then this applies only to the visible area.
     /// </summary>
-    public ushort Y;
+    public ushort Y { get; set; }
 
     /// <summary>
     ///     Whether or not the composition object is forced. This is typically used to translate
     ///     foreign dialogue or text that appears.
     /// </summary>
-    public bool Forced;
+    public bool Forced { get; set; }
 
     /// <summary>
     ///     If set, defines the visible area of the object. Otherwise, the entire object is
     ///     shown.
     /// </summary>
-    public Crop? Crop;
+    public Crop? Crop { get; set; }
+
+    public DisplayComposition()
+    {
+    }
+
+    public DisplayComposition(ushort x, ushort y, bool forced, Crop? crop)
+    {
+        X = x;
+        Y = y;
+        Forced = forced;
+        Crop = crop;
+    }
 }

@@ -22,23 +22,27 @@ public class DisplayWindow
     ///     The horizontal offset of the window's top-left corner relative to the top-left
     ///     corner of the object itself.
     /// </summary>
-    public ushort X { get; private set; }
+    public ushort X { get; set; }
 
     /// <summary>
     ///     The vertical offset of the window's top-left corner relative to the top-left corner
     ///     of the object itself.
     /// </summary>
-    public ushort Y { get; private set; }
+    public ushort Y { get; set; }
 
     /// <summary>
     ///     The width of the window.
     /// </summary>
-    public ushort Width { get; private set; }
+    public ushort Width { get; set; }
 
     /// <summary>
     ///     The height of the window.
     /// </summary>
-    public ushort Height { get; private set; }
+    public ushort Height { get; set; }
+
+    public DisplayWindow()
+    {
+    }
 
     public DisplayWindow(ushort x, ushort y, ushort width, ushort height)
     {

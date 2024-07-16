@@ -43,6 +43,10 @@ public class WindowDefinitionEntry
     /// </summary>
     public ushort Height { get; set; }
 
+    public WindowDefinitionEntry()
+    {
+    }
+
     public WindowDefinitionEntry(byte id, ushort x, ushort y, ushort width, ushort height)
     {
         Id = id;

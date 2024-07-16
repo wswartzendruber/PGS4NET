@@ -93,10 +93,7 @@ public class DisplaySetComposer
                             , entry.Pixel.Cb, entry.Pixel.Alpha);
                     }
 
-                    Palettes[vid] = new DisplayPalette
-                    {
-                        Entries = entries,
-                    };
+                    Palettes[vid] = new DisplayPalette(entries);
 
                     break;
                 }
@@ -114,12 +111,8 @@ public class DisplaySetComposer
                         if (Objects.ContainsKey(vid))
                             throw DuplicateObjectVid;
 
-                        Objects[vid] = new DisplayObject
-                        {
-                            Width = sods.Width,
-                            Height = sods.Height,
-                            Data = Rle.Decompress(sods.Data, sods.Width, sods.Height),
-                        };
+                        Objects[vid] = new DisplayObject(sods.Width, sods.Height
+                            , Rle.Decompress(sods.Data, sods.Width, sods.Height));
                     }
                     else
                     {
@@ -196,13 +189,9 @@ public class DisplaySetComposer
                             data.AddRange(middleObject.Data);
                         data.AddRange(fods.Data);
 
-                        Objects[vid] = new DisplayObject
-                        {
-                            Width = InitialObject.Width,
-                            Height = InitialObject.Height,
-                            Data = Rle.Decompress(data.ToArray(), InitialObject.Width
-                                , InitialObject.Height),
-                        };
+                        Objects[vid] = new DisplayObject(InitialObject.Width
+                            , InitialObject.Height, Rle.Decompress(data.ToArray()
+                            , InitialObject.Width, InitialObject.Height));
 
                         InitialObject = null;
                         MiddleObjects.Clear();
@@ -229,31 +218,14 @@ public class DisplaySetComposer
                         var cid = new CompositionId(compositionObject.Id.ObjectId
                             , compositionObject.Id.WindowId);
 
-                        Compositions[cid] = new DisplayComposition
-                        {
-                            X = compositionObject.X,
-                            Y = compositionObject.Y,
-                            Forced = compositionObject.Forced,
-                            Crop = compositionObject.Crop,
-                        };
+                        Compositions[cid] = new DisplayComposition(compositionObject.X
+                            , compositionObject.Y, compositionObject.Forced
+                            , compositionObject.Crop);
                     }
 
-                    var returnValue = new DisplaySet
-                    {
-                        Pts = Pcs.Pts,
-                        Dts = Pcs.Dts,
-                        Width = Pcs.Width,
-                        Height = Pcs.Height,
-                        FrameRate = Pcs.FrameRate,
-                        PaletteUpdateOnly = Pcs.PaletteUpdateOnly,
-                        PaletteId = Pcs.PaletteId,
-                        Windows = Windows,
-                        Palettes = Palettes,
-                        Objects = Objects,
-                        CompositionNumber = Pcs.Number,
-                        CompositionState = Pcs.State,
-                        Compositions = Compositions,
-                    };
+                    var returnValue = new DisplaySet(Pcs.Pts, Pcs.Dts, Pcs.Width, Pcs.Height
+                        , Pcs.FrameRate, Pcs.PaletteUpdateOnly, Pcs.PaletteId, Windows
+                        , Palettes, Objects, Pcs.Number, Pcs.State, Compositions);
 
                     Reset();
 
