@@ -20,8 +20,9 @@ public class GraphicsPlane
 
     private PgsPixel[] PrimaryPixels;
     private PgsPixel[] SecondaryPixels;
-    private PgsTimeStamp LastTimeStamp = new PgsTimeStamp(0);
+    private PgsTimeStamp LastTimeStamp = default;
     private bool LastForced = false;
+    private bool Dirty = false;
 
     public event EventHandler<Caption>? NewCaptionReady;
 
@@ -48,22 +49,16 @@ public class GraphicsPlane
 
     public void Clear(PgsTimeStamp timeStamp)
     {
-        SwapPlanes();
-
-        for (uint i = 0; i < Size; i++)
-            PrimaryPixels[i] = default;
-
-        if (PlanesDiffer())
+        if (Dirty)
         {
-            var pixels = new PgsPixel[Size]; Array.Copy(PrimaryPixels, pixels, Size);
+            var pixels = CopyPrimaryPixels();
             var caption = new Caption(LastTimeStamp, timeStamp - LastTimeStamp, X, Y, Width
                 , Height, pixels, LastForced);
 
             OnNewCaptionReady(caption);
         }
 
-        LastTimeStamp = timeStamp;
-        LastForced = false;
+        Reset(timeStamp);
     }
 
     public void Draw(PgsTimeStamp timeStamp, DisplayObject displayObject
@@ -89,11 +84,16 @@ public class GraphicsPlane
 
     public void Reset()
     {
-        for (uint i = 0; i < Size; i++)
-        {
-            PrimaryPixels[i] = default;
-            SecondaryPixels[i] = default;
-        }
+        Reset(default);
+    }
+
+    private PgsPixel[] CopyPrimaryPixels()
+    {
+        var returnValue = new PgsPixel[Size];
+
+        Array.Copy(PrimaryPixels, returnValue, Size);
+
+        return returnValue;
     }
 
     private void OnNewCaptionReady(Caption caption)
@@ -112,6 +112,20 @@ public class GraphicsPlane
 
         return true;
     }
+
+    private void Reset(PgsTimeStamp timeStamp)
+    {
+        LastTimeStamp = timeStamp;
+        LastForced = false;
+        Dirty = false;
+
+        for (uint i = 0; i < Size; i++)
+        {
+            PrimaryPixels[i] = default;
+            SecondaryPixels[i] = default;
+        }
+    }
+
 
     private void SwapPlanes()
     {
