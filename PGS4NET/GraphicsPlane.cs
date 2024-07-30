@@ -17,9 +17,9 @@ namespace PGS4NET;
 public class GraphicsPlane
 {
     private readonly uint Size;
+    private readonly PgsPixel[] PrimaryPixels;
+    private readonly PgsPixel[] SecondaryPixels;
 
-    private PgsPixel[] PrimaryPixels;
-    private PgsPixel[] SecondaryPixels;
     private PgsTimeStamp LastTimeStamp = default;
     private bool LastForced = false;
     private bool Dirty = false;
@@ -58,7 +58,7 @@ public class GraphicsPlane
             OnNewCaptionReady(caption);
         }
 
-        Reset(timeStamp);
+        Reset(timeStamp, Dirty);
     }
 
     public void Draw(PgsTimeStamp timeStamp, DisplayObject displayObject
@@ -84,7 +84,7 @@ public class GraphicsPlane
 
     public void Reset()
     {
-        Reset(default);
+        Reset(default, true);
     }
 
     private PgsPixel[] CopyPrimaryPixels()
@@ -113,25 +113,23 @@ public class GraphicsPlane
         return true;
     }
 
-    private void Reset(PgsTimeStamp timeStamp)
+    private void Reset(PgsTimeStamp timeStamp, bool resetPixels)
     {
         LastTimeStamp = timeStamp;
         LastForced = false;
         Dirty = false;
 
-        for (uint i = 0; i < Size; i++)
+        if (resetPixels)
         {
-            PrimaryPixels[i] = default;
-            SecondaryPixels[i] = default;
+            for (uint i = 0; i < Size; i++)
+                PrimaryPixels[i] = default;
+
+            UpdateSecondaryPixels();
         }
     }
 
-
-    private void SwapPlanes()
+    private void UpdateSecondaryPixels()
     {
-        var temp = PrimaryPixels;
-
-        PrimaryPixels = SecondaryPixels;
-        SecondaryPixels = temp;
+        Array.Copy(PrimaryPixels, SecondaryPixels, Size);
     }
 }
