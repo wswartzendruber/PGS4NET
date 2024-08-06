@@ -17,6 +17,7 @@ namespace PGS4NET;
 public class GraphicsPlane
 {
     private readonly uint Size;
+    private readonly PgsPixel[] Palette;
     private readonly PgsPixel[] PrimaryPixels;
     private readonly PgsPixel[] SecondaryPixels;
 
@@ -37,7 +38,7 @@ public class GraphicsPlane
     public GraphicsPlane(DisplayWindow displayWindow)
     {
         Size = (uint)(displayWindow.Width * displayWindow.Height);
-
+        Palette = new PgsPixel[256];
         PrimaryPixels = new PgsPixel[Size];
         SecondaryPixels = new PgsPixel[Size];
 
@@ -51,9 +52,8 @@ public class GraphicsPlane
     {
         if (Dirty)
         {
-            var pixels = CopyPrimaryPixels();
             var caption = new Caption(LastTimeStamp, timeStamp - LastTimeStamp, X, Y, Width
-                , Height, pixels, LastForced);
+                , Height, CopyPrimaryPixels(), LastForced);
 
             OnNewCaptionReady(caption);
         }
@@ -64,21 +64,57 @@ public class GraphicsPlane
     public void Draw(PgsTimeStamp timeStamp, DisplayObject displayObject
         , DisplayComposition displayComposition, DisplayPalette displayPalette)
     {
-        int x, y, width, height;
+        uint soX;
+        uint soY;
+        uint sWidth = displayObject.Width;
+        uint sHeight = displayObject.Height;
+        uint doX = (uint)(displayComposition.X - X);
+        uint doY = (uint)(displayComposition.Y - Y);
+        uint dWidth = Width;
+        uint dHeight = Height;
+        uint width;
+        uint height;
 
         if (displayComposition.Crop is Crop crop)
         {
-            x = displayComposition.X - X + crop.X;
-            y = displayComposition.Y - Y + crop.Y;
+            soX = crop.X;
+            soY = crop.Y;
             width = crop.Width;
             height = crop.Height;
         }
         else
         {
-            x = displayComposition.X - X;
-            y = displayComposition.Y - Y;
+            soX = 0;
+            soY = 0;
             width = displayObject.Width;
             height = displayObject.Height;
+        }
+
+        for (byte i = 0; i <= 255; i++)
+        {
+            var pixel = displayPalette.Entries.TryGetValue(i, out PgsPixel entry)
+                ? entry
+                : default;
+
+            Palette[i] = pixel;
+        }
+
+        for (uint y = 0; y < height; y++)
+        {
+            uint sBase = sWidth * (y + soY) + soX;
+            uint dBase = dWidth * (y + doY) + doX;
+
+            for (uint x = 0; x < height; x++)
+            {
+                var dot = displayObject.Data[sBase + x];
+                var pixel = Palette[dot];
+
+                PrimaryPixels[dBase + x] = pixel;
+            }
+        }
+
+        if (displayComposition.Forced != LastForced || PlanesDiffer())
+        {
         }
     }
 
