@@ -14,16 +14,16 @@ using PGS4NET.DisplaySets;
 
 namespace PGS4NET;
 
-public class GraphicsPlane
+public class Compositor
 {
     private readonly uint Size;
     private readonly PgsPixel[] Palette;
     private readonly PgsPixel[] PrimaryPixels;
     private readonly PgsPixel[] SecondaryPixels;
 
-    private PgsTimeStamp LastTimeStamp = default;
-    private bool LastForced = false;
-    private bool Dirty = false;
+    private PgsTimeStamp StartTimeStamp = default;
+    private bool Forced = false;
+    private bool PrimaryPlaneHasSomething = false;
 
     public event EventHandler<Caption>? NewCaptionReady;
 
@@ -35,7 +35,7 @@ public class GraphicsPlane
 
     public ushort Height { get; }
 
-    public GraphicsPlane(DisplayWindow displayWindow)
+    public Compositor(DisplayWindow displayWindow)
     {
         Size = (uint)(displayWindow.Width * displayWindow.Height);
         Palette = new PgsPixel[256];
@@ -50,20 +50,30 @@ public class GraphicsPlane
 
     public void Clear(PgsTimeStamp timeStamp)
     {
-        if (Dirty)
+        if (PrimaryPlaneHasSomething)
         {
-            var caption = new Caption(LastTimeStamp, timeStamp - LastTimeStamp, X, Y, Width
-                , Height, CopyPrimaryPixels(), LastForced);
+            var caption = new Caption(StartTimeStamp, timeStamp - StartTimeStamp, X, Y, Width
+                , Height, CopyPrimaryPixels(), Forced);
 
             OnNewCaptionReady(caption);
         }
 
-        Reset(timeStamp, Dirty);
+        Reset(timeStamp, PrimaryPlaneHasSomething);
     }
 
     public void Draw(PgsTimeStamp timeStamp, DisplayObject displayObject
         , DisplayComposition displayComposition, DisplayPalette displayPalette)
     {
+        if (timeStamp <= StartTimeStamp)
+        {
+            throw new CaptionException(
+                "Current time stamp is less than or equal to previous one.");
+        }
+
+        //
+        // CALCULATE POSITIONS
+        //
+
         uint soX;
         uint soY;
         uint sWidth = displayObject.Width;
@@ -90,6 +100,10 @@ public class GraphicsPlane
             height = displayObject.Height;
         }
 
+        //
+        // BUILD PALETTE
+        //
+
         for (byte i = 0; i <= 255; i++)
         {
             var pixel = displayPalette.Entries.TryGetValue(i, out PgsPixel entry)
@@ -98,6 +112,10 @@ public class GraphicsPlane
 
             Palette[i] = pixel;
         }
+
+        //
+        // DRAW
+        //
 
         for (uint y = 0; y < height; y++)
         {
@@ -113,9 +131,60 @@ public class GraphicsPlane
             }
         }
 
-        if (displayComposition.Forced != LastForced || PlanesDiffer())
+        //
+        // POST-DRAW HANDLING
+        //
+
+        var state = GetCompositorState();
+
+        if (!PrimaryPlaneHasSomething && !state.PrimaryPlaneHasSomething)
         {
+            // We had nothing before and we have nothing now.
         }
+        else if (!PrimaryPlaneHasSomething && state.PrimaryPlaneHasSomething)
+        {
+            // We had nothing before but we have something now.
+
+            var caption = new Caption(StartTimeStamp, timeStamp - StartTimeStamp, X, Y, Width
+                , Height, CopyPrimaryPixels(), Forced);
+
+            OnNewCaptionReady(caption);
+
+            StartTimeStamp = timeStamp;
+        }
+        else if (PrimaryPlaneHasSomething && !state.PrimaryPlaneHasSomething)
+        {
+            // We had something before but we have nothing now.
+
+            var caption = new Caption(StartTimeStamp, timeStamp - StartTimeStamp, X, Y, Width
+                , Height, CopyPrimaryPixels(), Forced);
+
+            OnNewCaptionReady(caption);
+        }
+        else if (PrimaryPlaneHasSomething && state.PrimaryPlaneHasSomething)
+        {
+            // We had something before and we have something now.
+
+            if (state.PlanesDiffer || Forced != displayComposition.Forced)
+            {
+                var caption = new Caption(StartTimeStamp, timeStamp - StartTimeStamp, X, Y
+                    , Width, Height, CopyPrimaryPixels(), Forced);
+
+                OnNewCaptionReady(caption);
+
+                StartTimeStamp = timeStamp;
+            }
+        }
+        else
+        {
+            // We shouldn't ever be here...
+            throw new InvalidOperationException("Illegal state.");
+        }
+
+        Forced = displayComposition.Forced;
+        PrimaryPlaneHasSomething = state.PrimaryPlaneHasSomething;
+
+        SyncSecondaryPlane();
     }
 
     public void Reset()
@@ -138,34 +207,52 @@ public class GraphicsPlane
             handler(this, caption);
     }
 
-    private bool PlanesDiffer()
+    private CompositorState GetCompositorState()
     {
+        bool primaryPlaneHasSomething = false;
+        bool planesDiffer = false;
+
         for (uint i = 0; i < Size; i++)
         {
             if (PrimaryPixels[i] != SecondaryPixels[i])
-                return false;
+                planesDiffer = true;
+
+            if (PrimaryPixels[i] != default)
+                primaryPlaneHasSomething = true;
         }
 
-        return true;
+        return new CompositorState(primaryPlaneHasSomething, planesDiffer);
     }
 
     private void Reset(PgsTimeStamp timeStamp, bool resetPixels)
     {
-        LastTimeStamp = timeStamp;
-        LastForced = false;
-        Dirty = false;
+        StartTimeStamp = timeStamp;
+        Forced = false;
 
         if (resetPixels)
         {
             for (uint i = 0; i < Size; i++)
                 PrimaryPixels[i] = default;
 
-            UpdateSecondaryPixels();
+            SyncSecondaryPlane();
         }
     }
 
-    private void UpdateSecondaryPixels()
+    private void SyncSecondaryPlane()
     {
         Array.Copy(PrimaryPixels, SecondaryPixels, Size);
+    }
+
+    private struct CompositorState
+    {
+        public bool PrimaryPlaneHasSomething;
+
+        public bool PlanesDiffer;
+
+        public CompositorState(bool primaryPlaneHasSomething, bool planesDiffer)
+        {
+            PrimaryPlaneHasSomething = primaryPlaneHasSomething;
+            PlanesDiffer = planesDiffer;
+        }
     }
 }
