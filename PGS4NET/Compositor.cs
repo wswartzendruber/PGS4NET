@@ -53,7 +53,7 @@ public class Compositor
         if (PrimaryPlaneHasSomething)
         {
             var caption = new Caption(StartTimeStamp, timeStamp - StartTimeStamp, X, Y, Width
-                , Height, CopyPrimaryPixels(), Forced);
+                , Height, CopyPlane(PrimaryPixels), Forced);
 
             OnNewCaptionReady(caption);
         }
@@ -104,7 +104,9 @@ public class Compositor
         // BUILD PALETTE
         //
 
-        for (byte i = 0; i <= 255; i++)
+        byte i = 0;
+
+        do
         {
             var pixel = displayPalette.Entries.TryGetValue(i, out PgsPixel entry)
                 ? entry
@@ -112,6 +114,7 @@ public class Compositor
 
             Palette[i] = pixel;
         }
+        while (i++ != 255);
 
         //
         // DRAW
@@ -145,11 +148,6 @@ public class Compositor
         {
             // We had nothing before but we have something now.
 
-            var caption = new Caption(StartTimeStamp, timeStamp - StartTimeStamp, X, Y, Width
-                , Height, CopyPrimaryPixels(), Forced);
-
-            OnNewCaptionReady(caption);
-
             StartTimeStamp = timeStamp;
         }
         else if (PrimaryPlaneHasSomething && !state.PrimaryPlaneHasSomething)
@@ -157,7 +155,7 @@ public class Compositor
             // We had something before but we have nothing now.
 
             var caption = new Caption(StartTimeStamp, timeStamp - StartTimeStamp, X, Y, Width
-                , Height, CopyPrimaryPixels(), Forced);
+                , Height, CopyPlane(SecondaryPixels), Forced);
 
             OnNewCaptionReady(caption);
         }
@@ -168,7 +166,7 @@ public class Compositor
             if (state.PlanesDiffer || Forced != displayComposition.Forced)
             {
                 var caption = new Caption(StartTimeStamp, timeStamp - StartTimeStamp, X, Y
-                    , Width, Height, CopyPrimaryPixels(), Forced);
+                    , Width, Height, CopyPlane(SecondaryPixels), Forced);
 
                 OnNewCaptionReady(caption);
 
@@ -192,11 +190,11 @@ public class Compositor
         Reset(default, true);
     }
 
-    private PgsPixel[] CopyPrimaryPixels()
+    private PgsPixel[] CopyPlane(PgsPixel[] plane)
     {
-        var returnValue = new PgsPixel[Size];
+        var returnValue = new PgsPixel[plane.Length];
 
-        Array.Copy(PrimaryPixels, returnValue, Size);
+        Array.Copy(plane, returnValue, returnValue.Length);
 
         return returnValue;
     }
