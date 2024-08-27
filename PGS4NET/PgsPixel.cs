@@ -100,6 +100,16 @@ public struct PgsPixel
     }
 
     /// <summary>
+    ///     Returns a string that represents this pixel in the form of <c>Y-Cr-Cb-A</c> where
+    ///     each component is hexadecimal-encoded.
+    /// </summary>
+    public override string ToString()
+    {
+        return $"{Y.ToString("X2")}-{Cr.ToString("X2")}-{Cb.ToString("X2")}-"
+            + $"{Alpha.ToString("X2")}";
+    }
+
+    /// <summary>
     ///     Determines if the state of two <see cref="PgsPixel" />s match each other.
     /// </summary>
     public static bool operator ==(PgsPixel first, PgsPixel second) =>

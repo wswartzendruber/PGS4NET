@@ -18,12 +18,12 @@ namespace PGS4NET.Tests;
 
 public class CompositorTests
 {
-    private static readonly PgsPixel Pixel = new PgsPixel(255, 63, 31, 15);
+    private static readonly PgsPixel Pixel = new PgsPixel(0xFF, 0xEE, 0xDD, 0xCC);
     private static readonly PgsTimeStamp TimeStamp1 = new PgsTimeStamp(8);
     private static readonly PgsTimeStamp TimeStamp2 = new PgsTimeStamp(16);
 
     [Fact]
-    public void Emptry()
+    public void Empty()
     {
         var window = new DisplayWindow(16, 16, 16, 16);
         var compositor = new Compositor(window);
@@ -58,8 +58,8 @@ public class CompositorTests
         };
         var palette = new DisplayPalette(entries);
         var object1 = new DisplayObject(4, 4, data1);
-        var window = new DisplayWindow(8, 16, 24, 32);
-        var composition = new DisplayComposition(16, 16, false, null);
+        var window = new DisplayWindow(8, 16, 4, 4);
+        var composition = new DisplayComposition(8, 16, false, null);
         var compositor = new Compositor(window);
         var captions = new List<Caption>();
         var expectedPixels1 = new PgsPixel[]
@@ -85,8 +85,8 @@ public class CompositorTests
         Assert.True(captions[0].Duration == TimeStamp2 - TimeStamp1);
         Assert.True(captions[0].X == 8);
         Assert.True(captions[0].Y == 16);
-        Assert.True(captions[0].Width == 24);
-        Assert.True(captions[0].Height == 32);
+        Assert.True(captions[0].Width == 4);
+        Assert.True(captions[0].Height == 4);
         Assert.True(captions[0].Forced == false);
         Assert.True(captions[0].Data.SequenceEqual(expectedPixels1));
     }
