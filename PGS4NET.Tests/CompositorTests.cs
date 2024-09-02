@@ -18,11 +18,11 @@ namespace PGS4NET.Tests;
 
 public class CompositorTests
 {
-    private static readonly PgsPixel Pixel1 = new PgsPixel(0xFF, 0x00, 0xFF, 0x00);
-    private static readonly PgsPixel Pixel2 = new PgsPixel(0x00, 0xFF, 0x00, 0xFF);
-    private static readonly PgsPixel Pixel3 = new PgsPixel(0x00, 0x00, 0xFF, 0xFF);
-    private static readonly PgsPixel Pixel4 = new PgsPixel(0xFF, 0xFF, 0x00, 0x00);
-    private static readonly PgsPixel Pixel5 = new PgsPixel(0xFF, 0xFF, 0xFF, 0xFF);
+    private static readonly PgsPixel Pixel1 = new PgsPixel(0x01, 0x01, 0x01, 0x01);
+    private static readonly PgsPixel Pixel2 = new PgsPixel(0x02, 0x02, 0x02, 0x02);
+    private static readonly PgsPixel Pixel3 = new PgsPixel(0x03, 0x03, 0x03, 0x03);
+    private static readonly PgsPixel Pixel4 = new PgsPixel(0x04, 0x04, 0x04, 0x04);
+    private static readonly PgsPixel Pixel5 = new PgsPixel(0x05, 0x05, 0x05, 0x05);
     private static readonly PgsTimeStamp TimeStamp1 = new PgsTimeStamp(8);
     private static readonly PgsTimeStamp TimeStamp2 = new PgsTimeStamp(16);
 
@@ -338,7 +338,7 @@ public class CompositorTests
             5, 5, 5, 5, 5, 5,
         };
         var palette = new DisplayPalette(entries);
-        var object1 = new DisplayObject(4, 4, data1);
+        var object1 = new DisplayObject(6, 6, data1);
         var window = new DisplayWindow(8, 16, 2, 2);
         var composition = new DisplayComposition(7, 15, false, new Crop(1, 1, 4, 4));
         var compositor = new Compositor(window);

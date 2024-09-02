@@ -71,34 +71,41 @@ public class Compositor
         }
 
         //
-        // CALCULATE POSITIONS
+        // CALCULATE POSITIONING
         //
 
-        uint soX;
-        uint soY;
-        uint sWidth = displayObject.Width;
-        uint sHeight = displayObject.Height;
-        uint doX = (uint)(displayComposition.X - X);
-        uint doY = (uint)(displayComposition.Y - Y);
-        uint dWidth = Width;
-        uint dHeight = Height;
-        uint width;
-        uint height;
+        // Source Area (relative to object)
 
-        if (displayComposition.Crop is Crop crop)
-        {
-            soX = crop.X;
-            soY = crop.Y;
-            width = crop.Width;
-            height = crop.Height;
-        }
-        else
-        {
-            soX = 0;
-            soY = 0;
-            width = displayObject.Width;
-            height = displayObject.Height;
-        }
+        int esx = Math.Max(X - displayComposition.X, 0);
+        int esy = Math.Max(Y - displayComposition.Y, 0);
+        var objectArea = new Area(0, 0, displayObject.Width, displayObject.Height);
+        var cropArea = displayComposition.Crop is Crop crop ? new Area(crop) : objectArea;
+        var sourceArea_ = GetOverlappingArea(objectArea, cropArea.AddOffset(esx, esy));
+
+        if (sourceArea_ is null)
+            return;
+
+        var sourceArea = sourceArea_.Value;
+        int soX = sourceArea.X;
+        int soY = sourceArea.Y;
+
+        // Destination Area (relative to screen)
+
+        var windowArea = new Area(X, Y, Width, Height);
+        var compositionArea = new Area(displayComposition.X, displayComposition.Y, sourceArea.Width, sourceArea.Height);
+        var drawArea_ = GetOverlappingArea(windowArea, compositionArea);
+
+        if (drawArea_ is null)
+            return;
+
+        var drawArea = drawArea_.Value;
+        int doX = drawArea.X - X;
+        int doY = drawArea.Y - Y;
+
+        // Common (agnostic)
+
+        int width = Math.Min(sourceArea.Width, drawArea.Width);
+        int height = Math.Min(sourceArea.Height, drawArea.Height);
 
         //
         // BUILD PALETTE
@@ -120,12 +127,12 @@ public class Compositor
         // DRAW
         //
 
-        for (uint y = 0; y < height; y++)
+        for (int y = 0; y < height; y++)
         {
-            uint sBase = sWidth * (y + soY) + soX;
-            uint dBase = dWidth * (y + doY) + doX;
+            int sBase = objectArea.Width * (y + soY) + soX;
+            int dBase = windowArea.Width * (y + doY) + doX;
 
-            for (uint x = 0; x < height; x++)
+            for (int x = 0; x < height; x++)
             {
                 var dot = displayObject.Data[sBase + x];
                 var pixel = Palette[dot];
@@ -205,6 +212,28 @@ public class Compositor
             handler(this, caption);
     }
 
+    private Area? GetOverlappingArea(Area one, Area two)
+    {
+        int x1s = one.X;
+        int x1e = one.X + one.Width;
+        int y1s = one.Y;
+        int y1e = one.Y + one.Height;
+        int x2s = two.X;
+        int x2e = two.X + two.Width;
+        int y2s = two.Y;
+        int y2e = two.Y + two.Height;
+
+        if (x1e <= x2s || x2e <= x1s || y1e <= y2s || y2e <= y1s)
+            return null;
+
+        int xos = Math.Max(x1s, x2s);
+        int xoe = Math.Min(x1e, x2e);
+        int yos = Math.Max(y1s, y2s);
+        int yoe = Math.Min(y1e, y2e);
+
+        return new Area(xos, yos, xoe - xos, yoe - yos);
+    }
+
     private CompositorState GetCompositorState()
     {
         bool primaryPlaneHasSomething = false;
@@ -239,6 +268,38 @@ public class Compositor
     private void SyncSecondaryPlane()
     {
         Array.Copy(PrimaryPixels, SecondaryPixels, Size);
+    }
+
+    private struct Area
+    {
+        public int X;
+
+        public int Y;
+
+        public int Width;
+
+        public int Height;
+
+        public Area(Crop crop)
+        {
+            X = crop.X;
+            Y = crop.Y;
+            Width = crop.Width;
+            Height = crop.Height;
+        }
+
+        public Area(int x, int y, int width, int height)
+        {
+            X = x;
+            Y = y;
+            Width = width;
+            Height = height;
+        }
+
+        public Area AddOffset(int x, int y)
+        {
+            return new Area(X + x, Y + y, Width, Height);
+        }
     }
 
     private struct CompositorState
