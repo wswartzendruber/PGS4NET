@@ -369,4 +369,86 @@ public class CompositorTests
         Assert.True(captions[0].Forced == false);
         Assert.True(captions[0].Data.SequenceEqual(expectedPixels1));
     }
+
+    [Fact]
+    public void NoOverlapNoCrop()
+    {
+        var entries = new Dictionary<byte, PgsPixel>
+        {
+            { 0, default },
+            { 1, Pixel1 },
+            { 2, Pixel2 },
+            { 3, Pixel3 },
+            { 4, Pixel4 },
+            { 5, Pixel5 },
+        };
+        var data1 = new byte[]
+        {
+            5, 5, 5, 5, 5, 5,
+            5, 1, 2, 3, 4, 5,
+            5, 2, 3, 4, 1, 5,
+            5, 3, 4, 1, 2, 5,
+            5, 4, 1, 2, 3, 5,
+            5, 5, 5, 5, 5, 5,
+        };
+        var palette = new DisplayPalette(entries);
+        var object1 = new DisplayObject(6, 6, data1);
+        var window = new DisplayWindow(8, 16, 4, 4);
+        var composition = new DisplayComposition(12, 15, false, null);
+        var compositor = new Compositor(window);
+        var captions = new List<Caption>();
+
+        compositor.NewCaptionReady += (sender, caption) =>
+        {
+            Assert.True(sender == compositor);
+
+            captions.Add(caption);
+        };
+
+        compositor.Draw(TimeStamp1, object1, composition, palette);
+        compositor.Clear(TimeStamp2);
+
+        Assert.True(captions.Count == 0);
+    }
+
+    [Fact]
+    public void NoOverlapCrop()
+    {
+        var entries = new Dictionary<byte, PgsPixel>
+        {
+            { 0, default },
+            { 1, Pixel1 },
+            { 2, Pixel2 },
+            { 3, Pixel3 },
+            { 4, Pixel4 },
+            { 5, Pixel5 },
+        };
+        var data1 = new byte[]
+        {
+            5, 5, 5, 5, 5, 5,
+            5, 1, 2, 3, 4, 5,
+            5, 2, 3, 4, 1, 5,
+            5, 3, 4, 1, 2, 5,
+            5, 4, 1, 2, 3, 5,
+            5, 5, 5, 5, 5, 5,
+        };
+        var palette = new DisplayPalette(entries);
+        var object1 = new DisplayObject(6, 6, data1);
+        var window = new DisplayWindow(8, 16, 2, 2);
+        var composition = new DisplayComposition(10, 15, false, new Crop(1, 1, 4, 4));
+        var compositor = new Compositor(window);
+        var captions = new List<Caption>();
+
+        compositor.NewCaptionReady += (sender, caption) =>
+        {
+            Assert.True(sender == compositor);
+
+            captions.Add(caption);
+        };
+
+        compositor.Draw(TimeStamp1, object1, composition, palette);
+        compositor.Clear(TimeStamp2);
+
+        Assert.True(captions.Count == 0);
+    }
 }
