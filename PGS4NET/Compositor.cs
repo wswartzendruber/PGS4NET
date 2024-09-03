@@ -258,6 +258,8 @@ public class Compositor
 
         if (resetPixels)
         {
+            PrimaryPlaneHasSomething = false;
+
             for (uint i = 0; i < Size; i++)
                 PrimaryPixels[i] = default;
 

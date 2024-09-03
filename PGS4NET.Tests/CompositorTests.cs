@@ -25,6 +25,10 @@ public class CompositorTests
     private static readonly PgsPixel Pixel5 = new PgsPixel(0x05, 0x05, 0x05, 0x05);
     private static readonly PgsTimeStamp TimeStamp1 = new PgsTimeStamp(8);
     private static readonly PgsTimeStamp TimeStamp2 = new PgsTimeStamp(16);
+    private static readonly PgsTimeStamp TimeStamp3 = new PgsTimeStamp(24);
+    private static readonly PgsTimeStamp TimeStamp4 = new PgsTimeStamp(32);
+    private static readonly PgsTimeStamp TimeStamp5 = new PgsTimeStamp(40);
+    private static readonly PgsTimeStamp TimeStamp6 = new PgsTimeStamp(48);
 
     [Fact]
     public void Empty()
@@ -450,5 +454,102 @@ public class CompositorTests
         compositor.Clear(TimeStamp2);
 
         Assert.True(captions.Count == 0);
+    }
+
+    [Fact]
+    public void Sequence1()
+    {
+        var entries = new Dictionary<byte, PgsPixel>
+        {
+            { 0, default },
+            { 1, Pixel1 },
+            { 2, Pixel2 },
+            { 3, Pixel3 },
+            { 4, Pixel4 },
+        };
+        var data1 = new byte[]
+        {
+            1, 1,
+            1, 1,
+        };
+        var data2 = new byte[]
+        {
+            2, 2,
+            2, 2,
+        };
+        var data3 = new byte[]
+        {
+            0, 0,
+            0, 0,
+        };
+        var data4 = new byte[]
+        {
+            4, 4,
+            4, 4,
+        };
+        var palette = new DisplayPalette(entries);
+        var object1 = new DisplayObject(2, 2, data1);
+        var object2 = new DisplayObject(2, 2, data2);
+        var object3 = new DisplayObject(2, 2, data3);
+        var object4 = new DisplayObject(2, 2, data4);
+        var window = new DisplayWindow(0, 0, 2, 2);
+        var composition = new DisplayComposition(0, 0, false, null);
+        var compositor = new Compositor(window);
+        var captions = new List<Caption>();
+        var expectedPixels1 = new PgsPixel[]
+        {
+            Pixel1, Pixel1,
+            Pixel1, Pixel1,
+        };
+        var expectedPixels2 = new PgsPixel[]
+        {
+            Pixel2, Pixel2,
+            Pixel2, Pixel2,
+        };
+        var expectedPixels4 = new PgsPixel[]
+        {
+            Pixel4, Pixel4,
+            Pixel4, Pixel4,
+        };
+
+        compositor.NewCaptionReady += (sender, caption) =>
+        {
+            Assert.True(sender == compositor);
+
+            captions.Add(caption);
+        };
+
+        compositor.Draw(TimeStamp1, object1, composition, palette);
+        compositor.Draw(TimeStamp2, object2, composition, palette);
+        compositor.Clear(TimeStamp3);
+        compositor.Draw(TimeStamp4, object3, composition, palette);
+        compositor.Draw(TimeStamp5, object4, composition, palette);
+        compositor.Clear(TimeStamp6);
+
+        Assert.True(captions.Count == 3);
+        Assert.True(captions[0].TimeStamp == TimeStamp1);
+        Assert.True(captions[0].Duration == TimeStamp2 - TimeStamp1);
+        Assert.True(captions[0].X == 0);
+        Assert.True(captions[0].Y == 0);
+        Assert.True(captions[0].Width == 2);
+        Assert.True(captions[0].Height == 2);
+        Assert.True(captions[0].Forced == false);
+        Assert.True(captions[0].Data.SequenceEqual(expectedPixels1));
+        Assert.True(captions[1].TimeStamp == TimeStamp2);
+        Assert.True(captions[1].Duration == TimeStamp3 - TimeStamp2);
+        Assert.True(captions[1].X == 0);
+        Assert.True(captions[1].Y == 0);
+        Assert.True(captions[1].Width == 2);
+        Assert.True(captions[1].Height == 2);
+        Assert.True(captions[1].Forced == false);
+        Assert.True(captions[1].Data.SequenceEqual(expectedPixels2));
+        Assert.True(captions[2].TimeStamp == TimeStamp5);
+        Assert.True(captions[2].Duration == TimeStamp6 - TimeStamp5);
+        Assert.True(captions[2].X == 0);
+        Assert.True(captions[2].Y == 0);
+        Assert.True(captions[2].Width == 2);
+        Assert.True(captions[2].Height == 2);
+        Assert.True(captions[2].Forced == false);
+        Assert.True(captions[2].Data.SequenceEqual(expectedPixels4));
     }
 }
