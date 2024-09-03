@@ -29,6 +29,9 @@ public class CompositorTests
     private static readonly PgsTimeStamp TimeStamp4 = new PgsTimeStamp(32);
     private static readonly PgsTimeStamp TimeStamp5 = new PgsTimeStamp(40);
     private static readonly PgsTimeStamp TimeStamp6 = new PgsTimeStamp(48);
+    private static readonly PgsTimeStamp TimeStamp7 = new PgsTimeStamp(56);
+    private static readonly PgsTimeStamp TimeStamp8 = new PgsTimeStamp(64);
+    private static readonly PgsTimeStamp TimeStamp9 = new PgsTimeStamp(72);
 
     [Fact]
     public void Empty()
@@ -457,7 +460,7 @@ public class CompositorTests
     }
 
     [Fact]
-    public void Sequence1()
+    public void ChangeDetection()
     {
         var entries = new Dictionary<byte, PgsPixel>
         {
@@ -551,5 +554,106 @@ public class CompositorTests
         Assert.True(captions[2].Height == 2);
         Assert.True(captions[2].Forced == false);
         Assert.True(captions[2].Data.SequenceEqual(expectedPixels4));
+    }
+
+    [Fact]
+    public void AlternatingForcedFlag()
+    {
+        var entries = new Dictionary<byte, PgsPixel>
+        {
+            { 0, default },
+            { 1, Pixel1 },
+            { 2, Pixel2 },
+            { 3, Pixel3 },
+            { 4, Pixel4 },
+        };
+        var data1 = new byte[]
+        {
+            1, 1,
+            1, 1,
+        };
+        var data2 = new byte[]
+        {
+            1, 1,
+            1, 1,
+        };
+        var data3 = new byte[]
+        {
+            1, 1,
+            1, 1,
+        };
+        var data4 = new byte[]
+        {
+            0, 0,
+            0, 0,
+        };
+        var palette = new DisplayPalette(entries);
+        var object1 = new DisplayObject(2, 2, data1);
+        var object2 = new DisplayObject(2, 2, data2);
+        var object3 = new DisplayObject(2, 2, data3);
+        var object4 = new DisplayObject(2, 2, data4);
+        var window = new DisplayWindow(0, 0, 2, 2);
+        var composition1 = new DisplayComposition(0, 0, false, null);
+        var composition2 = new DisplayComposition(0, 0, true, null);
+        var compositor = new Compositor(window);
+        var captions = new List<Caption>();
+        var expectedPixels1 = new PgsPixel[]
+        {
+            Pixel1, Pixel1,
+            Pixel1, Pixel1,
+        };
+        var expectedPixels2 = new PgsPixel[]
+        {
+            Pixel1, Pixel1,
+            Pixel1, Pixel1,
+        };
+        var expectedPixels3 = new PgsPixel[]
+        {
+            Pixel1, Pixel1,
+            Pixel1, Pixel1,
+        };
+
+        compositor.NewCaptionReady += (sender, caption) =>
+        {
+            Assert.True(sender == compositor);
+
+            captions.Add(caption);
+        };
+
+        compositor.Draw(TimeStamp1, object1, composition1, palette);
+        compositor.Draw(TimeStamp2, object2, composition2, palette);
+        compositor.Draw(TimeStamp3, object3, composition1, palette);
+        compositor.Clear(TimeStamp4);
+        compositor.Draw(TimeStamp5, object4, composition2, palette);
+        compositor.Clear(TimeStamp6);
+        compositor.Draw(TimeStamp7, object4, composition2, palette);
+        compositor.Draw(TimeStamp8, object4, composition1, palette);
+        compositor.Draw(TimeStamp9, object4, composition2, palette);
+
+        Assert.True(captions.Count == 3);
+        Assert.True(captions[0].TimeStamp == TimeStamp1);
+        Assert.True(captions[0].Duration == TimeStamp2 - TimeStamp1);
+        Assert.True(captions[0].X == 0);
+        Assert.True(captions[0].Y == 0);
+        Assert.True(captions[0].Width == 2);
+        Assert.True(captions[0].Height == 2);
+        Assert.True(captions[0].Forced == false);
+        Assert.True(captions[0].Data.SequenceEqual(expectedPixels1));
+        Assert.True(captions[1].TimeStamp == TimeStamp2);
+        Assert.True(captions[1].Duration == TimeStamp3 - TimeStamp2);
+        Assert.True(captions[1].X == 0);
+        Assert.True(captions[1].Y == 0);
+        Assert.True(captions[1].Width == 2);
+        Assert.True(captions[1].Height == 2);
+        Assert.True(captions[1].Forced == true);
+        Assert.True(captions[1].Data.SequenceEqual(expectedPixels2));
+        Assert.True(captions[2].TimeStamp == TimeStamp3);
+        Assert.True(captions[2].Duration == TimeStamp4 - TimeStamp3);
+        Assert.True(captions[2].X == 0);
+        Assert.True(captions[2].Y == 0);
+        Assert.True(captions[2].Width == 2);
+        Assert.True(captions[2].Height == 2);
+        Assert.True(captions[2].Forced == false);
+        Assert.True(captions[2].Data.SequenceEqual(expectedPixels3));
     }
 }
