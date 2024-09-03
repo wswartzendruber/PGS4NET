@@ -40,7 +40,7 @@ public class CompositorTests
         var compositor = new Compositor(window);
         var captions = new List<Caption>();
 
-        compositor.NewCaptionReady += (sender, caption) =>
+        compositor.NewCaption += (sender, caption) =>
         {
             Assert.True(sender == compositor);
 
@@ -84,7 +84,7 @@ public class CompositorTests
             Pixel2, default, default, Pixel1,
         };
 
-        compositor.NewCaptionReady += (sender, caption) =>
+        compositor.NewCaption += (sender, caption) =>
         {
             Assert.True(sender == compositor);
 
@@ -136,7 +136,7 @@ public class CompositorTests
             Pixel3, Pixel4,
         };
 
-        compositor.NewCaptionReady += (sender, caption) =>
+        compositor.NewCaption += (sender, caption) =>
         {
             Assert.True(sender == compositor);
 
@@ -192,7 +192,7 @@ public class CompositorTests
             default, default, default, default, default, default,
         };
 
-        compositor.NewCaptionReady += (sender, caption) =>
+        compositor.NewCaption += (sender, caption) =>
         {
             Assert.True(sender == compositor);
 
@@ -246,7 +246,7 @@ public class CompositorTests
             default, default, default, default,
         };
 
-        compositor.NewCaptionReady += (sender, caption) =>
+        compositor.NewCaption += (sender, caption) =>
         {
             Assert.True(sender == compositor);
 
@@ -302,7 +302,7 @@ public class CompositorTests
             Pixel4, Pixel1, Pixel2, Pixel3,
         };
 
-        compositor.NewCaptionReady += (sender, caption) =>
+        compositor.NewCaption += (sender, caption) =>
         {
             Assert.True(sender == compositor);
 
@@ -356,7 +356,7 @@ public class CompositorTests
             Pixel4, Pixel1,
         };
 
-        compositor.NewCaptionReady += (sender, caption) =>
+        compositor.NewCaption += (sender, caption) =>
         {
             Assert.True(sender == compositor);
 
@@ -405,7 +405,7 @@ public class CompositorTests
         var compositor = new Compositor(window);
         var captions = new List<Caption>();
 
-        compositor.NewCaptionReady += (sender, caption) =>
+        compositor.NewCaption += (sender, caption) =>
         {
             Assert.True(sender == compositor);
 
@@ -446,7 +446,7 @@ public class CompositorTests
         var compositor = new Compositor(window);
         var captions = new List<Caption>();
 
-        compositor.NewCaptionReady += (sender, caption) =>
+        compositor.NewCaption += (sender, caption) =>
         {
             Assert.True(sender == compositor);
 
@@ -515,7 +515,7 @@ public class CompositorTests
             Pixel4, Pixel4,
         };
 
-        compositor.NewCaptionReady += (sender, caption) =>
+        compositor.NewCaption += (sender, caption) =>
         {
             Assert.True(sender == compositor);
 
@@ -613,7 +613,7 @@ public class CompositorTests
             Pixel1, Pixel1,
         };
 
-        compositor.NewCaptionReady += (sender, caption) =>
+        compositor.NewCaption += (sender, caption) =>
         {
             Assert.True(sender == compositor);
 

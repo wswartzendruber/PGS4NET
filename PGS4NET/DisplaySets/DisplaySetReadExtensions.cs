@@ -43,13 +43,20 @@ public static partial class DisplaySetExtensions
     {
         var read = false;
         var composer = new DisplaySetComposer();
+        DisplaySet? displaySet = null;
+
+        composer.NewDisplaySet += (_, displaySet_) =>
+        {
+            displaySet = displaySet_;
+        };
 
         while (stream.ReadSegment() is Segment segment)
         {
             read = true;
+            composer.Input(segment);
 
-            if (composer.Input(segment) is DisplaySet displaySet)
-                return displaySet;
+            if (displaySet is DisplaySet displaySet_)
+                return displaySet_;
         }
 
         if (read)
@@ -63,13 +70,20 @@ public static partial class DisplaySetExtensions
     {
         var read = false;
         var composer = new DisplaySetComposer();
+        DisplaySet? displaySet = null;
 
-        while (await stream.ReadSegmentAsync(cancellationToken) is Segment segment)
+        composer.NewDisplaySet += (_, displaySet_) =>
+        {
+            displaySet = displaySet_;
+        };
+
+        while (await stream.ReadSegmentAsync() is Segment segment)
         {
             read = true;
+            composer.Input(segment);
 
-            if (composer.Input(segment) is DisplaySet displaySet)
-                return displaySet;
+            if (displaySet is DisplaySet displaySet_)
+                return displaySet_;
         }
 
         if (read)

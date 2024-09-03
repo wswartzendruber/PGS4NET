@@ -37,14 +37,12 @@ public class DisplaySetComposer
     private Dictionary<CompositionId, DisplayComposition> Compositions = new();
     private PresentationCompositionSegment? Pcs = null;
 
-    public DisplaySet? Input(Segment segment)
+    public void Input(Segment segment)
     {
         if (Pcs is null)
         {
             Pcs = segment as PresentationCompositionSegment
                 ?? throw new DisplaySetException("Starting segment not PCS.");
-
-            return null;
         }
         else
         {
@@ -223,13 +221,15 @@ public class DisplaySetComposer
                             , compositionObject.Crop);
                     }
 
-                    var returnValue = new DisplaySet(Pcs.Pts, Pcs.Dts, Pcs.Width, Pcs.Height
+                    var newDisplaySet = new DisplaySet(Pcs.Pts, Pcs.Dts, Pcs.Width, Pcs.Height
                         , Pcs.FrameRate, Pcs.PaletteUpdateOnly, Pcs.PaletteId, Windows
                         , Palettes, Objects, Pcs.Number, Pcs.State, Compositions);
 
                     Reset();
 
-                    return returnValue;
+                    OnNewDisplaySet(newDisplaySet);
+
+                    break;
                 }
                 default:
                 {
@@ -237,8 +237,6 @@ public class DisplaySetComposer
                 }
             }
         }
-
-        return null;
     }
 
     public void Reset()
@@ -251,4 +249,11 @@ public class DisplaySetComposer
         Compositions = new();
         Pcs = null;
     }
+
+    protected virtual void OnNewDisplaySet(DisplaySet displaySet)
+    {
+        NewDisplaySet?.Invoke(this, displaySet);
+    }
+
+    public event EventHandler<DisplaySet>? NewDisplaySet;
 }

@@ -25,8 +25,6 @@ public class Compositor
     private bool Forced = false;
     private bool PrimaryPlaneHasSomething = false;
 
-    public event EventHandler<Caption>? NewCaptionReady;
-
     public ushort X { get; }
 
     public ushort Y { get; }
@@ -55,7 +53,7 @@ public class Compositor
             var caption = new Caption(StartTimeStamp, timeStamp - StartTimeStamp, X, Y, Width
                 , Height, CopyPlane(PrimaryPixels), Forced);
 
-            OnNewCaptionReady(caption);
+            OnNewCaption(caption);
         }
 
         Reset(timeStamp, PrimaryPlaneHasSomething);
@@ -92,7 +90,8 @@ public class Compositor
         // Destination Area (relative to screen)
 
         var windowArea = new Area(X, Y, Width, Height);
-        var compositionArea = new Area(displayComposition.X, displayComposition.Y, sourceArea.Width, sourceArea.Height);
+        var compositionArea = new Area(displayComposition.X, displayComposition.Y
+            , sourceArea.Width, sourceArea.Height);
         var drawArea_ = GetOverlappingArea(windowArea, compositionArea);
 
         if (drawArea_ is null)
@@ -164,7 +163,7 @@ public class Compositor
             var caption = new Caption(StartTimeStamp, timeStamp - StartTimeStamp, X, Y, Width
                 , Height, CopyPlane(SecondaryPixels), Forced);
 
-            OnNewCaptionReady(caption);
+            OnNewCaption(caption);
         }
         else if (PrimaryPlaneHasSomething && state.PrimaryPlaneHasSomething)
         {
@@ -175,7 +174,7 @@ public class Compositor
                 var caption = new Caption(StartTimeStamp, timeStamp - StartTimeStamp, X, Y
                     , Width, Height, CopyPlane(SecondaryPixels), Forced);
 
-                OnNewCaptionReady(caption);
+                OnNewCaption(caption);
 
                 StartTimeStamp = timeStamp;
             }
@@ -206,10 +205,9 @@ public class Compositor
         return returnValue;
     }
 
-    private void OnNewCaptionReady(Caption caption)
+    protected virtual void OnNewCaption(Caption caption)
     {
-        if (NewCaptionReady is EventHandler<Caption> handler)
-            handler(this, caption);
+        NewCaption?.Invoke(this, caption);
     }
 
     private Area? GetOverlappingArea(Area one, Area two)
@@ -271,6 +269,8 @@ public class Compositor
     {
         Array.Copy(PrimaryPixels, SecondaryPixels, Size);
     }
+
+    public event EventHandler<Caption>? NewCaption;
 
     private struct Area
     {
