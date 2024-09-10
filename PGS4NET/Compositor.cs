@@ -154,7 +154,7 @@ public class Compositor
                 int sBase = objectArea.Width * (y + soY) + soX;
                 int dBase = windowArea.Width * (y + doY) + doX;
 
-                for (int x = 0; x < height; x++)
+                for (int x = 0; x < width; x++)
                 {
                     var dot = displayObject.Data[sBase + x];
                     var pixel = Palette[dot];

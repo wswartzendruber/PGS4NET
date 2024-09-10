@@ -19,13 +19,26 @@ if (args.Length != 1)
 
 using var stream = new FileStream(args[0], FileMode.Open);
 var composer = new CaptionComposer();
+var count = 0;
 
 composer.NewCaption += (_, caption) =>
 {
     var startTimeStamp = TsToTimeStamp(caption.TimeStamp);
     var endTimeStamp = TsToTimeStamp(caption.TimeStamp + caption.Duration);
+    using var file = new FileStream($"caption-{count.ToString("D4")}-"
+        + $"{caption.Width}x{caption.Height}.raw", FileMode.Create);
 
     Console.WriteLine($"Caption: {startTimeStamp} -> {endTimeStamp}");
+
+    foreach (var pixel in caption.Data)
+    {
+        file.WriteByte(pixel.Y);
+        // file.WriteByte(pixel.Cr);
+        // file.WriteByte(pixel.Cb);
+        // file.WriteByte(pixel.Alpha);
+    }
+
+    count++;
 };
 
 while (stream.ReadDisplaySet() is DisplaySet displaySet)

@@ -68,11 +68,12 @@ public class CompositorTests
             4, 0, 0, 3,
             0, 1, 2, 0,
             0, 3, 4, 0,
+            0, 1, 4, 0,
             2, 0, 0, 1,
         };
         var palette = new DisplayPalette(entries);
-        var object1 = new DisplayObject(4, 4, data1);
-        var window = new DisplayWindow(8, 16, 4, 4);
+        var object1 = new DisplayObject(4, 5, data1);
+        var window = new DisplayWindow(8, 16, 4, 5);
         var composition = new DisplayComposition(8, 16, false, null);
         var compositor = new Compositor(window);
         var captions = new List<Caption>();
@@ -81,6 +82,7 @@ public class CompositorTests
             Pixel4, default, default, Pixel3,
             default, Pixel1, Pixel2, default,
             default, Pixel3, Pixel4, default,
+            default, Pixel1, Pixel4, default,
             Pixel2, default, default, Pixel1,
         };
 
@@ -100,7 +102,7 @@ public class CompositorTests
         Assert.True(captions[0].X == 8);
         Assert.True(captions[0].Y == 16);
         Assert.True(captions[0].Width == 4);
-        Assert.True(captions[0].Height == 4);
+        Assert.True(captions[0].Height == 5);
         Assert.True(captions[0].Forced == false);
         Assert.True(captions[0].Data.SequenceEqual(expectedPixels1));
     }
@@ -122,18 +124,20 @@ public class CompositorTests
             5, 5, 5, 5,
             5, 1, 2, 5,
             5, 3, 4, 5,
+            5, 1, 4, 5,
             5, 5, 5, 5,
         };
         var palette = new DisplayPalette(entries);
-        var object1 = new DisplayObject(4, 4, data1);
-        var window = new DisplayWindow(8, 16, 2, 2);
-        var composition = new DisplayComposition(8, 16, false, new Crop(1, 1, 2, 2));
+        var object1 = new DisplayObject(4, 5, data1);
+        var window = new DisplayWindow(8, 16, 2, 3);
+        var composition = new DisplayComposition(8, 16, false, new Crop(1, 1, 2, 3));
         var compositor = new Compositor(window);
         var captions = new List<Caption>();
         var expectedPixels1 = new PgsPixel[]
         {
             Pixel1, Pixel2,
             Pixel3, Pixel4,
+            Pixel1, Pixel4,
         };
 
         compositor.NewCaption += (sender, caption) =>
@@ -152,7 +156,7 @@ public class CompositorTests
         Assert.True(captions[0].X == 8);
         Assert.True(captions[0].Y == 16);
         Assert.True(captions[0].Width == 2);
-        Assert.True(captions[0].Height == 2);
+        Assert.True(captions[0].Height == 3);
         Assert.True(captions[0].Forced == false);
         Assert.True(captions[0].Data.SequenceEqual(expectedPixels1));
     }
@@ -174,11 +178,12 @@ public class CompositorTests
             5, 5, 5, 5,
             5, 1, 2, 5,
             5, 3, 4, 5,
+            5, 1, 4, 5,
             5, 5, 5, 5,
         };
         var palette = new DisplayPalette(entries);
-        var object1 = new DisplayObject(4, 4, data1);
-        var window = new DisplayWindow(8, 16, 6, 6);
+        var object1 = new DisplayObject(4, 5, data1);
+        var window = new DisplayWindow(8, 16, 6, 7);
         var composition = new DisplayComposition(9, 17, false, null);
         var compositor = new Compositor(window);
         var captions = new List<Caption>();
@@ -188,6 +193,7 @@ public class CompositorTests
             default, Pixel5, Pixel5, Pixel5, Pixel5, default,
             default, Pixel5, Pixel1, Pixel2, Pixel5, default,
             default, Pixel5, Pixel3, Pixel4, Pixel5, default,
+            default, Pixel5, Pixel1, Pixel4, Pixel5, default,
             default, Pixel5, Pixel5, Pixel5, Pixel5, default,
             default, default, default, default, default, default,
         };
@@ -208,7 +214,7 @@ public class CompositorTests
         Assert.True(captions[0].X == 8);
         Assert.True(captions[0].Y == 16);
         Assert.True(captions[0].Width == 6);
-        Assert.True(captions[0].Height == 6);
+        Assert.True(captions[0].Height == 7);
         Assert.True(captions[0].Forced == false);
         Assert.True(captions[0].Data.SequenceEqual(expectedPixels1));
     }
@@ -230,12 +236,13 @@ public class CompositorTests
             5, 5, 5, 5,
             5, 1, 2, 5,
             5, 3, 4, 5,
+            5, 1, 4, 5,
             5, 5, 5, 5,
         };
         var palette = new DisplayPalette(entries);
-        var object1 = new DisplayObject(4, 4, data1);
-        var window = new DisplayWindow(8, 16, 4, 4);
-        var composition = new DisplayComposition(9, 17, false, new Crop(1, 1, 2, 2));
+        var object1 = new DisplayObject(4, 5, data1);
+        var window = new DisplayWindow(8, 16, 4, 5);
+        var composition = new DisplayComposition(9, 17, false, new Crop(1, 1, 2, 3));
         var compositor = new Compositor(window);
         var captions = new List<Caption>();
         var expectedPixels1 = new PgsPixel[]
@@ -243,6 +250,7 @@ public class CompositorTests
             default, default, default, default,
             default, Pixel1, Pixel2, default,
             default, Pixel3, Pixel4, default,
+            default, Pixel1, Pixel4, default,
             default, default, default, default,
         };
 
@@ -262,7 +270,7 @@ public class CompositorTests
         Assert.True(captions[0].X == 8);
         Assert.True(captions[0].Y == 16);
         Assert.True(captions[0].Width == 4);
-        Assert.True(captions[0].Height == 4);
+        Assert.True(captions[0].Height == 5);
         Assert.True(captions[0].Forced == false);
         Assert.True(captions[0].Data.SequenceEqual(expectedPixels1));
     }
@@ -286,11 +294,12 @@ public class CompositorTests
             5, 2, 3, 4, 1, 5,
             5, 3, 4, 1, 2, 5,
             5, 4, 1, 2, 3, 5,
+            5, 3, 0, 1, 2, 5,
             5, 5, 5, 5, 5, 5,
         };
         var palette = new DisplayPalette(entries);
-        var object1 = new DisplayObject(6, 6, data1);
-        var window = new DisplayWindow(8, 16, 4, 4);
+        var object1 = new DisplayObject(6, 7, data1);
+        var window = new DisplayWindow(8, 16, 4, 5);
         var composition = new DisplayComposition(7, 15, false, null);
         var compositor = new Compositor(window);
         var captions = new List<Caption>();
@@ -300,6 +309,7 @@ public class CompositorTests
             Pixel2, Pixel3, Pixel4, Pixel1,
             Pixel3, Pixel4, Pixel1, Pixel2,
             Pixel4, Pixel1, Pixel2, Pixel3,
+            Pixel3, default, Pixel1, Pixel2,
         };
 
         compositor.NewCaption += (sender, caption) =>
@@ -318,7 +328,7 @@ public class CompositorTests
         Assert.True(captions[0].X == 8);
         Assert.True(captions[0].Y == 16);
         Assert.True(captions[0].Width == 4);
-        Assert.True(captions[0].Height == 4);
+        Assert.True(captions[0].Height == 5);
         Assert.True(captions[0].Forced == false);
         Assert.True(captions[0].Data.SequenceEqual(expectedPixels1));
     }
@@ -342,18 +352,20 @@ public class CompositorTests
             5, 2, 3, 4, 1, 5,
             5, 3, 4, 1, 2, 5,
             5, 4, 1, 2, 3, 5,
+            5, 3, 0, 1, 2, 5,
             5, 5, 5, 5, 5, 5,
         };
         var palette = new DisplayPalette(entries);
-        var object1 = new DisplayObject(6, 6, data1);
-        var window = new DisplayWindow(8, 16, 2, 2);
-        var composition = new DisplayComposition(7, 15, false, new Crop(1, 1, 4, 4));
+        var object1 = new DisplayObject(6, 7, data1);
+        var window = new DisplayWindow(8, 16, 2, 3);
+        var composition = new DisplayComposition(7, 15, false, new Crop(1, 1, 4, 5));
         var compositor = new Compositor(window);
         var captions = new List<Caption>();
         var expectedPixels1 = new PgsPixel[]
         {
             Pixel3, Pixel4,
             Pixel4, Pixel1,
+            Pixel1, Pixel2,
         };
 
         compositor.NewCaption += (sender, caption) =>
@@ -372,7 +384,7 @@ public class CompositorTests
         Assert.True(captions[0].X == 8);
         Assert.True(captions[0].Y == 16);
         Assert.True(captions[0].Width == 2);
-        Assert.True(captions[0].Height == 2);
+        Assert.True(captions[0].Height == 3);
         Assert.True(captions[0].Forced == false);
         Assert.True(captions[0].Data.SequenceEqual(expectedPixels1));
     }
