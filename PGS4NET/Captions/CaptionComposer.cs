@@ -17,9 +17,9 @@ namespace PGS4NET.Captions;
 public class CaptionComposer
 {
     private static readonly CaptionException PaletteUndefinedException
-        = new("A display set references an undefined palette ID.");
+        = new("A display set referenced an undefined palette ID.");
     private static readonly CaptionException ObjectUndefinedException
-        = new("A composition object references an undefined object ID.");
+        = new("A composition object referenced an undefined object ID.");
 
     private readonly Dictionary<byte, Compositor> Compositors = new();
     private readonly Dictionary<byte, DisplayPalette> Palettes = new();
@@ -138,6 +138,8 @@ public class CaptionComposer
     public void Reset()
     {
         Compositors.Clear();
+        Palettes.Clear();
+        Objects.Clear();
     }
 
     protected virtual void OnNewCaption(Caption caption)
