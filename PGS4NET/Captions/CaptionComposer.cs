@@ -16,6 +16,11 @@ namespace PGS4NET.Captions;
 
 public class CaptionComposer
 {
+    private static readonly CaptionException PaletteUndefinedException
+        = new("A display set references an undefined palette ID.");
+    private static readonly CaptionException ObjectUndefinedException
+        = new("A composition object references an undefined object ID.");
+
     private readonly Dictionary<byte, Compositor> Compositors = new();
     private readonly Dictionary<byte, DisplayPalette> Palettes = new();
     private readonly Dictionary<ushort, DisplayObject> Objects = new();
@@ -36,24 +41,18 @@ public class CaptionComposer
         {
             var windowId = window.Key;
             var displayWindow = window.Value;
-            Compositor windowCompositor;
 
             if (Compositors.TryGetValue(windowId, out Compositor compositor))
             {
-                if (compositor.X == displayWindow.X && compositor.Y == displayWindow.Y
-                    && compositor.Width == displayWindow.Width
-                    && compositor.Height == displayWindow.Height)
-                {
-                    windowCompositor = compositor;
-                }
-                else
+                if (compositor.X != displayWindow.X || compositor.Y != displayWindow.Y
+                    || compositor.Width != displayWindow.Width
+                    || compositor.Height != displayWindow.Height)
                 {
                     compositor.Clear(displaySet.Pts);
 
                     var newCompositor = BuildNewCompositor(displayWindow);
 
                     Compositors[windowId] = newCompositor;
-                    windowCompositor = newCompositor;
                 }
             }
             else
@@ -61,7 +60,6 @@ public class CaptionComposer
                 var newCompositor = BuildNewCompositor(displayWindow);
 
                 Compositors[windowId] = newCompositor;
-                windowCompositor = newCompositor;
             }
         }
 
@@ -72,6 +70,9 @@ public class CaptionComposer
         foreach (var palette in displaySet.Palettes)
             Palettes[palette.Key.Id] = palette.Value;
 
+        if (!Palettes.TryGetValue(displaySet.PaletteId, out var displayPalette))
+            throw PaletteUndefinedException;
+
         //
         // OBJECT UPDATES
         //
@@ -80,8 +81,52 @@ public class CaptionComposer
             Objects[object_.Key.Id] = object_.Value;
 
         //
-        // COMPOSITION PROCESSING
+        // COMPOSITION AGGREGATION
         //
+
+        var compositions = new Dictionary<byte, Dictionary<ushort, DisplayComposition>>();
+
+        foreach (var displayComposition in displaySet.Compositions)
+        {
+            var windowId = displayComposition.Key.WindowId;
+            var objectId = displayComposition.Key.ObjectId;
+
+            if (!compositions.ContainsKey(windowId))
+                compositions[windowId] = new();
+
+            compositions[windowId][objectId] = displayComposition.Value;
+        }
+
+        //
+        // COMPOSITING
+        //
+
+        foreach (var compositionsByWindow in compositions)
+        {
+            var windowId = compositionsByWindow.Key;
+
+            if (Compositors.TryGetValue(windowId, out var compositor))
+            {
+                var pairs = new List<Tuple<DisplayObject, DisplayComposition>>();
+
+                foreach (var compositionsByObject in compositionsByWindow.Value)
+                {
+                    var objectId = compositionsByObject.Key;
+                    var composition = compositionsByObject.Value;
+
+                    if (!Objects.TryGetValue(objectId, out var displayObject))
+                        throw ObjectUndefinedException;
+
+                    pairs.Add(Tuple.Create(displayObject, composition));
+                }
+
+                compositor.Draw(displaySet.Pts, pairs, displayPalette);
+            }
+            else
+            {
+                throw new Exception("Internal state error.");
+            }
+        }
     }
 
     public void Flush(PgsTimeStamp timeStamp)

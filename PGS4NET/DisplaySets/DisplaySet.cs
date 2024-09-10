@@ -82,6 +82,7 @@ public class DisplaySet
     ///     The palette ID to use when rendering objects.
     /// </summary>
     public byte PaletteId { get; set; }
+
     /// <summary>
     ///     The collection of windows referenced by this DS.
     /// </summary>

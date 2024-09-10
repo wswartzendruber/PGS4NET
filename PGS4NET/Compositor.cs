@@ -12,6 +12,13 @@ using System;
 using PGS4NET.Captions;
 using PGS4NET.DisplaySets;
 
+using CompositionEnumerable = System.Collections.Generic.IEnumerable<
+    System.Tuple<
+        PGS4NET.DisplaySets.DisplayObject,
+        PGS4NET.DisplaySets.DisplayComposition
+    >
+>;
+
 namespace PGS4NET;
 
 public class Compositor
@@ -62,49 +69,22 @@ public class Compositor
     public void Draw(PgsTimeStamp timeStamp, DisplayObject displayObject
         , DisplayComposition displayComposition, DisplayPalette displayPalette)
     {
+        var composition = Tuple.Create(displayObject, displayComposition);
+        var compositions = new Tuple<DisplayObject, DisplayComposition>[] { composition };
+
+        Draw(timeStamp, compositions, displayPalette);
+    }
+
+    public void Draw(PgsTimeStamp timeStamp, CompositionEnumerable compositions
+        , DisplayPalette displayPalette)
+    {
+        var forced = false;
+
         if (timeStamp <= StartTimeStamp)
         {
             throw new CaptionException(
                 "Current time stamp is less than or equal to previous one.");
         }
-
-        //
-        // CALCULATE POSITIONING
-        //
-
-        // Source Area (relative to object)
-
-        int esx = Math.Max(X - displayComposition.X, 0);
-        int esy = Math.Max(Y - displayComposition.Y, 0);
-        var objectArea = new Area(0, 0, displayObject.Width, displayObject.Height);
-        var cropArea = displayComposition.Crop is Crop crop ? new Area(crop) : objectArea;
-        var sourceArea_ = GetOverlappingArea(objectArea, cropArea.AddOffset(esx, esy));
-
-        if (sourceArea_ is null)
-            return;
-
-        var sourceArea = sourceArea_.Value;
-        int soX = sourceArea.X;
-        int soY = sourceArea.Y;
-
-        // Destination Area (relative to screen)
-
-        var windowArea = new Area(X, Y, Width, Height);
-        var compositionArea = new Area(displayComposition.X, displayComposition.Y
-            , sourceArea.Width, sourceArea.Height);
-        var drawArea_ = GetOverlappingArea(windowArea, compositionArea);
-
-        if (drawArea_ is null)
-            return;
-
-        var drawArea = drawArea_.Value;
-        int doX = drawArea.X - X;
-        int doY = drawArea.Y - Y;
-
-        // Common (agnostic)
-
-        int width = Math.Min(sourceArea.Width, drawArea.Width);
-        int height = Math.Min(sourceArea.Height, drawArea.Height);
 
         //
         // BUILD PALETTE
@@ -122,22 +102,68 @@ public class Compositor
         }
         while (i++ != 255);
 
-        //
-        // DRAW
-        //
-
-        for (int y = 0; y < height; y++)
+        foreach (var composition in compositions)
         {
-            int sBase = objectArea.Width * (y + soY) + soX;
-            int dBase = windowArea.Width * (y + doY) + doX;
+            var displayObject = composition.Item1;
+            var displayComposition = composition.Item2;
 
-            for (int x = 0; x < height; x++)
+            //
+            // CALCULATE POSITIONING
+            //
+
+            // Source Area (relative to object)
+
+            int esx = Math.Max(X - displayComposition.X, 0);
+            int esy = Math.Max(Y - displayComposition.Y, 0);
+            var objectArea = new Area(0, 0, displayObject.Width, displayObject.Height);
+            var cropArea = displayComposition.Crop is Crop crop ? new Area(crop) : objectArea;
+            var sourceArea_ = GetOverlappingArea(objectArea, cropArea.AddOffset(esx, esy));
+
+            if (sourceArea_ is null)
+                return;
+
+            var sourceArea = sourceArea_.Value;
+            int soX = sourceArea.X;
+            int soY = sourceArea.Y;
+
+            // Destination Area (relative to screen)
+
+            var windowArea = new Area(X, Y, Width, Height);
+            var compositionArea = new Area(displayComposition.X, displayComposition.Y
+                , sourceArea.Width, sourceArea.Height);
+            var drawArea_ = GetOverlappingArea(windowArea, compositionArea);
+
+            if (drawArea_ is null)
+                return;
+
+            var drawArea = drawArea_.Value;
+            int doX = drawArea.X - X;
+            int doY = drawArea.Y - Y;
+
+            // Common (agnostic)
+
+            int width = Math.Min(sourceArea.Width, drawArea.Width);
+            int height = Math.Min(sourceArea.Height, drawArea.Height);
+
+            //
+            // DRAW
+            //
+
+            for (int y = 0; y < height; y++)
             {
-                var dot = displayObject.Data[sBase + x];
-                var pixel = Palette[dot];
+                int sBase = objectArea.Width * (y + soY) + soX;
+                int dBase = windowArea.Width * (y + doY) + doX;
 
-                PrimaryPixels[dBase + x] = pixel;
+                for (int x = 0; x < height; x++)
+                {
+                    var dot = displayObject.Data[sBase + x];
+                    var pixel = Palette[dot];
+
+                    PrimaryPixels[dBase + x] = pixel;
+                }
             }
+
+            forced |= displayComposition.Forced;
         }
 
         //
@@ -169,7 +195,7 @@ public class Compositor
         {
             // We had something before and we have something now.
 
-            if (state.PlanesDiffer || Forced != displayComposition.Forced)
+            if (state.PlanesDiffer || Forced != forced)
             {
                 var caption = new Caption(StartTimeStamp, timeStamp - StartTimeStamp, X, Y
                     , Width, Height, CopyPlane(SecondaryPixels), Forced);
@@ -185,7 +211,7 @@ public class Compositor
             throw new InvalidOperationException("Illegal state.");
         }
 
-        Forced = displayComposition.Forced;
+        Forced = forced;
         PrimaryPlaneHasSomething = state.PrimaryPlaneHasSomething;
 
         SyncSecondaryPlane();
