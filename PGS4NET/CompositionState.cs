@@ -18,8 +18,8 @@ public enum CompositionState
 {
     /// <summary>
     ///     Indicates that the associated PCS (and the DS it belongs to) defines the start of a
-    ///     new epoch. As such, the associated DS should contain all other segments necessary to
-    ///     render a composition onto the screen.
+    ///     new epoch. This signals a reset of all previously buffered compositions, windows,
+    ///     palettes, and objects.
     /// </summary>
     EpochStart,
 
@@ -31,7 +31,7 @@ public enum CompositionState
     ///     epoch, while still being able to show the relevant composition once the
     ///     <see cref="AcquisitionPoint" /> is encountered. While it is technically possible to
     ///     use this to alter the composition from what the <see cref="EpochStart" /> DS has
-    ///     defined, this practice is discouraged.
+    ///     defined, this practice is less common.
     /// </summary>
     AcquisitionPoint,
 
@@ -40,8 +40,8 @@ public enum CompositionState
     ///     the current composition from the screen by defining a PCS with no composition
     ///     objects, thereby effectively closing out the current epoch. But other things like
     ///     palette updates and object substitution within a window can also be done. As an
-    ///     epoch is supposed to compose to fixed areas of the screen, redefining windows here
-    ///     is discouraged.
+    ///     epoch must compose to fixed areas of the screen, redefining windows here is
+    ///     forbidden.
     /// </summary>
     Normal,
 }

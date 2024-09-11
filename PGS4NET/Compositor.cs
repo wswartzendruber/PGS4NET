@@ -21,6 +21,13 @@ using CompositionEnumerable = System.Collections.Generic.IEnumerable<
 
 namespace PGS4NET;
 
+/// <summary>
+///     Renders the compositions for a given window onto a two-dimensional plane.
+/// </summary>
+/// <remarks>
+///     New captions, as they are completed, are pushed to subscribers via the
+///     <see cref="NewCaption" /> event.
+/// </remarks>
 public class Compositor
 {
     private readonly uint Size;
@@ -32,14 +39,29 @@ public class Compositor
     private bool Forced = false;
     private bool PrimaryPlaneHasSomething = false;
 
+    /// <summary>
+    ///     The horizontal offset of the window's top-left corner.
+    /// </summary>
     public ushort X { get; }
 
+    /// <summary>
+    ///     The vertical offset of the window's top-left corner.
+    /// </summary>
     public ushort Y { get; }
 
+    /// <summary>
+    ///     The width of the window.
+    /// </summary>
     public ushort Width { get; }
 
+    /// <summary>
+    ///     The height of the window.
+    /// </summary>
     public ushort Height { get; }
 
+    /// <summary>
+    ///     Initializes a new instance for the provided window.
+    /// </summary>
     public Compositor(DisplayWindow displayWindow)
     {
         Size = (uint)(displayWindow.Width * displayWindow.Height);
@@ -53,6 +75,13 @@ public class Compositor
         Height = displayWindow.Height;
     }
 
+    /// <summary>
+    ///     Clears the graphics plane. Any content currently on the plane is completed into a
+    ///     new caption and pushed via the <see cref="NewCaption" /> event.
+    /// </summary>
+    /// <param name="timeStamp">
+    ///     The time at which the graphics plane should be cleared.
+    /// </param>
     public void Clear(PgsTimeStamp timeStamp)
     {
         if (PrimaryPlaneHasSomething)
@@ -66,6 +95,24 @@ public class Compositor
         Reset(timeStamp, PrimaryPlaneHasSomething);
     }
 
+    /// <summary>
+    ///     Draws a single composition onto the graphics plane, causing any completed captions
+    ///     to be pushed via the <see cref="NewCaption" /> event.
+    /// <summary>
+    /// <param name="timeStamp">
+    ///     The time at which the composition should be drawn.
+    /// </param>
+    /// <param name="displayObject">
+    ///     The object to be drawn.
+    /// </param>
+    /// <param name="displayComposition">
+    ///     The composition which defines the object's location within the window along with
+    ///     whether or not it is forced. The location defined by the composition is relative to
+    ///     the screen.
+    /// </param>
+    /// <param name="displayPalette">
+    ///     The palette to use when drawing the object.
+    /// </param>
     public void Draw(PgsTimeStamp timeStamp, DisplayObject displayObject
         , DisplayComposition displayComposition, DisplayPalette displayPalette)
     {
@@ -75,6 +122,23 @@ public class Compositor
         Draw(timeStamp, compositions, displayPalette);
     }
 
+    /// <summary>
+    ///     Draws one or more compositions onto the graphics plane, causing any completed
+    ///     captions to be pushed via the <see cref="NewCaption" /> event.
+    /// <summary>
+    /// <param name="timeStamp">
+    ///     The singular time at which the compositions should be drawn.
+    /// </param>
+    /// <param name="compositions">
+    ///     A collection of object+composition tuples. Each one is drawn to the graphics plane.
+    ///     Each composition defines the corresponding object's location within the window along
+    ///     with whether or not it is forced. The location defined by each composition is
+    ///     relative to the screen. If any compositions are forced then all compositions in that
+    ///     invocation become forced.
+    /// </param>
+    /// <param name="displayPalette">
+    ///     The palette to use when drawing the objects.
+    /// </param>
     public void Draw(PgsTimeStamp timeStamp, CompositionEnumerable compositions
         , DisplayPalette displayPalette)
     {
@@ -217,6 +281,10 @@ public class Compositor
         SyncSecondaryPlane();
     }
 
+    /// <summary>
+    ///     Completely resets the internal state of this instance. No otherwise completed
+    ///     captions are pushed.
+    /// </summary>
     public void Reset()
     {
         Reset(default, true);
@@ -231,6 +299,12 @@ public class Compositor
         return returnValue;
     }
 
+    /// <summary>
+    ///     Called when a new caption becomes available.
+    /// </summary>
+    /// <param name="caption">
+    ///     The newly completed caption that is available.
+    /// </param>
     protected virtual void OnNewCaption(Caption caption)
     {
         NewCaption?.Invoke(this, caption);
@@ -296,6 +370,9 @@ public class Compositor
         Array.Copy(PrimaryPixels, SecondaryPixels, Size);
     }
 
+    /// <summary>
+    ///     Triggered when a new caption becomes available.
+    /// </summary>
     public event EventHandler<Caption>? NewCaption;
 
     private struct Area

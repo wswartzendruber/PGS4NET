@@ -19,14 +19,12 @@ namespace PGS4NET.DisplaySets;
 public class DisplayWindow
 {
     /// <summary>
-    ///     The horizontal offset of the window's top-left corner relative to the top-left
-    ///     corner of the object itself.
+    ///     The horizontal offset of the window's top-left corner.
     /// </summary>
     public ushort X { get; set; }
 
     /// <summary>
-    ///     The vertical offset of the window's top-left corner relative to the top-left corner
-    ///     of the object itself.
+    ///     The vertical offset of the window's top-left corner.
     /// </summary>
     public ushort Y { get; set; }
 

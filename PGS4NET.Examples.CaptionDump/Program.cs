@@ -28,7 +28,7 @@ composer.NewCaption += (_, caption) =>
     using var file = new FileStream($"caption-{count.ToString("D4")}-"
         + $"{caption.Width}x{caption.Height}.raw", FileMode.Create);
 
-    Console.WriteLine($"Caption: {startTimeStamp} -> {endTimeStamp}");
+    Console.WriteLine($"Caption[{count.ToString("D4")}]: {startTimeStamp} -> {endTimeStamp}");
 
     foreach (var pixel in caption.Data)
     {

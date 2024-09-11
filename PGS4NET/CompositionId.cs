@@ -27,6 +27,9 @@ public struct CompositionId
     /// </summary>
     public byte WindowId { get; private set; }
 
+    /// <summary>
+    ///     Initializes a new instance with the provided object and window IDs.
+    /// </summary>
     public CompositionId(ushort objectId, byte windowId)
     {
         ObjectId = objectId;
