@@ -37,22 +37,20 @@ public struct CompositionId
     }
 
     /// <summary>
-    ///     Determines if the state of another <see cref="CompositionId" /> matches this one's.
+    ///     Determines if the value of this instance matches another one's.
     /// </summary>
     public bool Equals(CompositionId other) =>
         other.ObjectId == this.ObjectId
             && other.WindowId == this.WindowId;
 
     /// <summary>
-    ///     Determines if the type and state of the <paramrem name="other" /> instance is equal
-    ///     to this one's.
+    ///     Determines if the type and value of this instance matches another one's.
     /// </summary>
     public override bool Equals(object? other) =>
         other?.GetType() == typeof(CompositionId) && Equals((CompositionId)other);
 
     /// <summary>
-    ///     Returns the hash code of this instance taking into account the values of all
-    ///     readonly properties.
+    ///     Calculates and returns the hash code of this instance using its immutable state.
     /// </summary>
     public override int GetHashCode()
     {
@@ -63,13 +61,14 @@ public struct CompositionId
     }
 
     /// <summary>
-    ///     Determines if the state of two <see cref="CompositionId" />s match each other.
+    ///     Determines if the values of two <see cref="CompositionId" />s match each other.
     /// </summary>
     public static bool operator ==(CompositionId first, CompositionId second) =>
         first.Equals(second);
 
     /// <summary>
-    ///     Determines if the state of two <see cref="CompositionId" />s don't match each other.
+    ///     Determines if the values of two <see cref="CompositionId" />s don't match each
+    ///     other.
     /// </summary>
     public static bool operator !=(CompositionId first, CompositionId second) =>
         !first.Equals(second);

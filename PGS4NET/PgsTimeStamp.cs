@@ -18,7 +18,8 @@ namespace PGS4NET;
 public struct PgsTimeStamp : IEquatable<PgsTimeStamp>, IComparable<PgsTimeStamp>
 {
     /// <summary>
-    ///     The number of ticks. 90,000 ticks makes one second.
+    ///     The number of ticks as used by the PTS and DTS fields of PGS segments. 90,000 ticks
+    ///     make one second.
     /// </summary>
     public uint Ticks { get; private set; }
 
@@ -26,7 +27,8 @@ public struct PgsTimeStamp : IEquatable<PgsTimeStamp>, IComparable<PgsTimeStamp>
     ///     Initializes a new instance with the given tick count.
     /// </summary>
     /// <param name="ticks">
-    ///     The tick count of the time stamp.
+    ///     The number of ticks as used by the PTS and DTS fields of PGS segments. 90,000 ticks
+    ///     make one second.
     /// </param>
     public PgsTimeStamp(uint ticks)
     {
@@ -43,9 +45,9 @@ public struct PgsTimeStamp : IEquatable<PgsTimeStamp>, IComparable<PgsTimeStamp>
     ///     Initializes a new instance using the specified millisecond value.
     /// </summary>
     /// <param name="milliseconds">
-    ///     The millisecond count; must not exceed 47,721,858.
+    ///     The millisecond count which must not exceed 47,721,858.
     /// </param>
-    public static PgsTimeStamp FromMilliseconds(uint milliseconds)
+    public static PgsTimeStamp FromMilliseconds(int milliseconds)
     {
         if (milliseconds > 47_721_858)
         {
@@ -84,20 +86,18 @@ public struct PgsTimeStamp : IEquatable<PgsTimeStamp>, IComparable<PgsTimeStamp>
         this.Ticks.CompareTo(other.Ticks);
 
     /// <summary>
-    ///     Determines if the value of another <see cref="PgsTimeStamp" /> matches this one's.
+    ///     Determines if the value of this instance matches another one's.
     /// </summary>
     public bool Equals(PgsTimeStamp other) => other.Ticks == this.Ticks;
 
     /// <summary>
-    ///     Determines if the type and value of the <paramrem name="other" /> instance is equal
-    ///     to this one's.
+    ///     Determines if the type and value of this instance matches another one's.
     /// </summary>
     public override bool Equals(object? other) =>
         other?.GetType() == typeof(PgsTimeStamp) && Equals((PgsTimeStamp)other);
 
     /// <summary>
-    ///     Returns the hash code of this instance taking into account the values of all
-    ///     readonly properties.
+    ///     Calculates and returns the hash code of this instance using its immutable state.
     /// </summary>
     public override int GetHashCode()
     {
@@ -108,13 +108,13 @@ public struct PgsTimeStamp : IEquatable<PgsTimeStamp>, IComparable<PgsTimeStamp>
     }
 
     /// <summary>
-    ///     Determines if the value of two <see cref="PgsTimeStamp" />s match each other.
+    ///     Determines if the values of two <see cref="PgsTimeStamp" />s match each other.
     /// </summary>
     public static bool operator ==(PgsTimeStamp first, PgsTimeStamp second) =>
         first.Equals(second);
 
     /// <summary>
-    ///     Determines if the value of two <see cref="PgsTimeStamp" />s don't match each other.
+    ///     Determines if the values of two <see cref="PgsTimeStamp" />s don't match each other.
     /// </summary>
     public static bool operator !=(PgsTimeStamp first, PgsTimeStamp second) =>
         !first.Equals(second);
@@ -160,8 +160,12 @@ public struct PgsTimeStamp : IEquatable<PgsTimeStamp>, IComparable<PgsTimeStamp>
         new PgsTimeStamp(minuend.Ticks - subtrahend.Ticks);
 
     /// <summary>
-    ///     Implicitly returns the <see cref="Ticks" /> value.
+    ///     Implicitly returns the value of the <see cref="Ticks" /> property.
     /// </summary>
+    /// <returns>
+    ///     The number of ticks as used by the PTS and DTS fields of PGS segments. 90,000 ticks
+    ///     make one second.
+    /// </returns>
     public static implicit operator uint(PgsTimeStamp pts) => pts.Ticks;
 
     /// <summary>
@@ -169,7 +173,8 @@ public struct PgsTimeStamp : IEquatable<PgsTimeStamp>, IComparable<PgsTimeStamp>
     ///     value.
     /// </summary>
     /// <param name="ticks">
-    ///     The tick count.
+    ///     The number of ticks as used by the PTS and DTS fields of PGS segments. 90,000 ticks
+    ///     make one second.
     /// </param>
     public static implicit operator PgsTimeStamp(uint ticks) => new PgsTimeStamp(ticks);
 }

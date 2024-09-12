@@ -38,23 +38,20 @@ public struct VersionedId<T> : IEquatable<VersionedId<T>>
     }
 
     /// <summary>
-    ///     Determines if the state of another <see cref="VersionedId{T}" /> matches this
-    ///     one's.
+    ///     Determines if the value of this instance matches another one's.
     /// </summary>
     public bool Equals(VersionedId<T> other) =>
         other.Id.Equals(this.Id)
             && other.Version == this.Version;
 
     /// <summary>
-    ///     Determines if the type and state of the <paramrem name="other" /> instance is equal
-    ///     to this one's.
+    ///     Determines if the type and value of this instance matches another one's.
     /// </summary>
     public override bool Equals(object? other) =>
         other?.GetType() == typeof(VersionedId<T>) && Equals((VersionedId<T>)other);
 
     /// <summary>
-    ///     Returns the hash code of this instance taking into account the values of all
-    ///     readonly properties.
+    ///     Calculates and returns the hash code of this instance using its immutable state.
     /// </summary>
     public override int GetHashCode()
     {
@@ -70,13 +67,13 @@ public struct VersionedId<T> : IEquatable<VersionedId<T>>
     }
 
     /// <summary>
-    ///     Determines if the state of two <see cref="VersionedId{T}" />s match each other.
+    ///     Determines if the values of two <see cref="VersionedId{T}" />s match each other.
     /// </summary>
     public static bool operator ==(VersionedId<T> first, VersionedId<T> second) =>
         first.Equals(second);
 
     /// <summary>
-    ///     Determines if the state of two <see cref="VersionedId{T}" />s don't match each
+    ///     Determines if the values of two <see cref="VersionedId{T}" />s don't match each
     ///     other.
     /// </summary>
     public static bool operator !=(VersionedId<T> first, VersionedId<T> second) =>
