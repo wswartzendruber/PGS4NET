@@ -31,6 +31,9 @@ public class PaletteDefinitionEntry
     /// </summary>
     public PgsPixel Pixel { get; set; }
 
+    /// <summary>
+    ///     Initializes a new instance with default values.
+    /// </summary>
     public PaletteDefinitionEntry()
     {
     }

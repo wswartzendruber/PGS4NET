@@ -25,10 +25,38 @@ public class SingleObjectDefinitionSegment : ObjectDefinitionSegment
     /// </summary>
     public ushort Height { get; set; }
 
+    /// <summary>
+    ///     Initializes a new instance with default values including an empty data buffer.
+    /// </summary>
     public SingleObjectDefinitionSegment()
     {
     }
 
+    /// <summary>
+    ///     Initializes a new instance with the provided values.
+    /// </summary>
+    /// <param name="pts">
+    ///     The timestamp indicating when composition decoding should start. In practice, this
+    ///     is the time at which the composition is displayed, repeated, modified, or removed.
+    ///     All PTS values within a display set should match.
+    /// </param>
+    /// <param name="dts">
+    ///     The timestamp indicating when the composition should be enacted. In practice, this
+    ///     value is always zero.
+    /// </param>
+    /// <param name="versionedId">
+    ///     The versioned ID of this object where the version should start at zero and then
+    ///     increment by one each time the object is defined differently within a display set.
+    /// </param>
+    /// <param name="width">
+    ///     The width of this complete object in pixels.
+    /// </param>
+    /// <param name="height">
+    ///     The height of this complete object in pixels.
+    /// </param>
+    /// <param name="data">
+    ///     The RLE-compressed data for this portion of the completed object.
+    /// </param>
     public SingleObjectDefinitionSegment(PgsTimeStamp pts, PgsTimeStamp dts
         , VersionedId<ushort> versionedId, ushort width, ushort height, byte[] data)
         : base(pts, dts, versionedId, data)

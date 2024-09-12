@@ -30,6 +30,9 @@ public class PaletteDefinitionSegment : Segment
     /// </summary>
     public IList<PaletteDefinitionEntry> Entries { get; set; }
 
+    /// <summary>
+    ///     Initializes a new instance with default values.
+    /// </summary>
     public PaletteDefinitionSegment()
     {
         Entries = new List<PaletteDefinitionEntry>();

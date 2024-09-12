@@ -15,10 +15,25 @@ namespace PGS4NET.Segments;
 /// </summary>
 public class EndSegment : Segment
 {
+    /// <summary>
+    ///     Initializes a new instance with default values.
+    /// </summary>
     public EndSegment()
     {
     }
 
+    /// <summary>
+    ///     Initializes a new instance with the provided values.
+    /// </summary>
+    /// <param name="pts">
+    ///     The timestamp indicating when composition decoding should start. In practice, this
+    ///     is the time at which the composition is displayed, repeated, modified, or removed.
+    ///     All PTS values within a display set should match.
+    /// </param>
+    /// <param name="dts">
+    ///     The timestamp indicating when the composition should be enacted. In practice, this
+    ///     value is always zero.
+    /// </param>
     public EndSegment(PgsTimeStamp pts, PgsTimeStamp dts) : base(pts, dts)
     {
     }

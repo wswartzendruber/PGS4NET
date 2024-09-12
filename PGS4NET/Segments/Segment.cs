@@ -59,11 +59,26 @@ public abstract class Segment
     /// </summary>
     public PgsTimeStamp Dts { get; set; }
 
-    public Segment()
+    /// <summary>
+    ///     Initializes a new instance with default values.
+    /// </summary>
+    protected Segment()
     {
     }
 
-    public Segment(PgsTimeStamp pts, PgsTimeStamp dts)
+    /// <summary>
+    ///     Initializes a new instance with the provided values.
+    /// </summary>
+    /// <param name="pts">
+    ///     The timestamp indicating when composition decoding should start. In practice, this
+    ///     is the time at which the composition is displayed, repeated, modified, or removed.
+    ///     All PTS values within a display set should match.
+    /// </param>
+    /// <param name="dts">
+    ///     The timestamp indicating when the composition should be enacted. In practice, this
+    ///     value is always zero.
+    /// </param>
+    protected Segment(PgsTimeStamp pts, PgsTimeStamp dts)
     {
         Pts = pts;
         Dts = dts;
