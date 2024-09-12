@@ -69,8 +69,7 @@ public struct CompositionId
         first.Equals(second);
 
     /// <summary>
-    ///     Determines if the state of two <see cref="CompositionId" />s don't match each
-    ///     other.
+    ///     Determines if the state of two <see cref="CompositionId" />s don't match each other.
     /// </summary>
     public static bool operator !=(CompositionId first, CompositionId second) =>
         !first.Equals(second);

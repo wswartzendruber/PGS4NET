@@ -70,13 +70,13 @@ public struct VersionedId<T> : IEquatable<VersionedId<T>>
     }
 
     /// <summary>
-    ///     Determines if the value of two <see cref="VersionedId{T}" />s match each other.
+    ///     Determines if the state of two <see cref="VersionedId{T}" />s match each other.
     /// </summary>
     public static bool operator ==(VersionedId<T> first, VersionedId<T> second) =>
         first.Equals(second);
 
     /// <summary>
-    ///     Determines if the value of two <see cref="VersionedId{T}" />s don't match each
+    ///     Determines if the state of two <see cref="VersionedId{T}" />s don't match each
     ///     other.
     /// </summary>
     public static bool operator !=(VersionedId<T> first, VersionedId<T> second) =>
