@@ -71,16 +71,16 @@ public struct PgsPixel
     }
 
     /// <summary>
-    ///     Determines if the value of this instance matches another one's.
+    ///     Determines if the values of this instance matches another one's.
     /// </summary>
     public bool Equals(PgsPixel other) =>
-        other.Y.Equals(this.Y)
+        other.Y == this.Y
             && other.Cr == this.Cr
             && other.Cb == this.Cb
             && other.Alpha == this.Alpha;
 
     /// <summary>
-    ///     Determines if the type and value of this instance matches another one's.
+    ///     Determines if the type and values of this instance matches another one's.
     /// </summary>
     public override bool Equals(object? other) =>
         other?.GetType() == typeof(PgsPixel) && Equals((PgsPixel)other);

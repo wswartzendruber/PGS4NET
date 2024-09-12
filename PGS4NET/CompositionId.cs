@@ -37,14 +37,14 @@ public struct CompositionId
     }
 
     /// <summary>
-    ///     Determines if the value of this instance matches another one's.
+    ///     Determines if the values of this instance matches another one's.
     /// </summary>
     public bool Equals(CompositionId other) =>
         other.ObjectId == this.ObjectId
             && other.WindowId == this.WindowId;
 
     /// <summary>
-    ///     Determines if the type and value of this instance matches another one's.
+    ///     Determines if the type and values of this instance matches another one's.
     /// </summary>
     public override bool Equals(object? other) =>
         other?.GetType() == typeof(CompositionId) && Equals((CompositionId)other);
