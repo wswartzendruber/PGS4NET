@@ -47,7 +47,7 @@ public struct PgsTimeStamp : IEquatable<PgsTimeStamp>, IComparable<PgsTimeStamp>
     /// <param name="milliseconds">
     ///     The millisecond count which must not exceed 47,721,858.
     /// </param>
-    public static PgsTimeStamp FromMilliseconds(int milliseconds)
+    public static PgsTimeStamp FromMilliseconds(uint milliseconds)
     {
         if (milliseconds > 47_721_858)
         {
