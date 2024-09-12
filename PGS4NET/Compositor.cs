@@ -98,7 +98,7 @@ public class Compositor
     /// <summary>
     ///     Draws a single composition onto the graphics plane, causing any completed captions
     ///     to be pushed via the <see cref="NewCaption" /> event.
-    /// <summary>
+    /// </summary>
     /// <param name="timeStamp">
     ///     The time at which the composition should be drawn.
     /// </param>
@@ -125,7 +125,7 @@ public class Compositor
     /// <summary>
     ///     Draws one or more compositions onto the graphics plane, causing any completed
     ///     captions to be pushed via the <see cref="NewCaption" /> event.
-    /// <summary>
+    /// </summary>
     /// <param name="timeStamp">
     ///     The singular time at which the compositions should be drawn.
     /// </param>

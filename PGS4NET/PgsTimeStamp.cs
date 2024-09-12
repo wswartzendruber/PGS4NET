@@ -56,18 +56,41 @@ public struct PgsTimeStamp : IEquatable<PgsTimeStamp>, IComparable<PgsTimeStamp>
         return new PgsTimeStamp(milliseconds * 90);
     }
 
+    /// <summary>
+    ///     Compares this instance to another <see cref="PgsTimeStamp" /> one.
+    /// </summary>
+    /// <returns>
+    ///     <list type="bullet">
+    ///         <item>
+    ///             <description>
+    ///                 A negative value if this instance is less than the
+    ///                 <paramref name="other" /> one.
+    ///             </description>
+    ///         </item>
+    ///         <item>
+    ///             <description>
+    ///                 Zero if this instance is equal to the <paramref name="other" /> one.
+    ///             </description>
+    ///         </item>
+    ///         <item>
+    ///             <description>
+    ///                 A positive value if this instance is greater than the
+    ///                 <paramref name="other" /> one.
+    ///             </description>
+    ///         </item>
+    ///     </list>
+    /// </returns>
     public int CompareTo(PgsTimeStamp other) =>
         this.Ticks.CompareTo(other.Ticks);
 
     /// <summary>
-    ///     Determines if the state of another <see cref="PgsTimeStamp" /> matches this one's.
+    ///     Determines if the value of another <see cref="PgsTimeStamp" /> matches this one's.
     /// </summary>
     public bool Equals(PgsTimeStamp other) => other.Ticks == this.Ticks;
 
     /// <summary>
-    ///     Checks if the <paramrem name="other" /> instance is of the same type as this one and
-    ///     then returns the value of the implementation-specific function, otherwise returns
-    ///     <see langword="false" />.
+    ///     Determines if the type and value of the <paramrem name="other" /> instance is equal
+    ///     to this one's.
     /// </summary>
     public override bool Equals(object? other) =>
         other?.GetType() == typeof(PgsTimeStamp) && Equals((PgsTimeStamp)other);
@@ -85,32 +108,54 @@ public struct PgsTimeStamp : IEquatable<PgsTimeStamp>, IComparable<PgsTimeStamp>
     }
 
     /// <summary>
-    ///     Determines if the state of two <see cref="PgsTimeStamp" />s match each other.
+    ///     Determines if the value of two <see cref="PgsTimeStamp" />s match each other.
     /// </summary>
     public static bool operator ==(PgsTimeStamp first, PgsTimeStamp second) =>
         first.Equals(second);
 
     /// <summary>
-    ///     Determines if the state of two <see cref="PgsTimeStamp" />s don't match each other.
+    ///     Determines if the value of two <see cref="PgsTimeStamp" />s don't match each other.
     /// </summary>
     public static bool operator !=(PgsTimeStamp first, PgsTimeStamp second) =>
         !first.Equals(second);
 
+    /// <summary>
+    ///     Determines if the <paramref name="left" /> value is greater than the
+    ///     <paramref name="right" /> value.
+    /// </summary>
     public static bool operator >(PgsTimeStamp left, PgsTimeStamp right) =>
         left.Ticks > right.Ticks;
 
+    /// <summary>
+    ///     Determines if the <paramref name="left" /> value is less than the
+    ///     <paramref name="right" /> value.
+    /// </summary>
     public static bool operator <(PgsTimeStamp left, PgsTimeStamp right) =>
         left.Ticks < right.Ticks;
 
+    /// <summary>
+    ///     Determines if the <paramref name="left" /> value is greater than or equal to the
+    ///     <paramref name="right" /> value.
+    /// </summary>
     public static bool operator >=(PgsTimeStamp left, PgsTimeStamp right) =>
         left.Ticks >= right.Ticks;
 
+    /// <summary>
+    ///     Determines if the <paramref name="left" /> value is less than or equal to the
+    ///     <paramref name="right" /> value.
+    /// </summary>
     public static bool operator <=(PgsTimeStamp left, PgsTimeStamp right) =>
         left.Ticks <= right.Ticks;
 
+    /// <summary>
+    ///     Adds the <paramref name="addend" /> to the <paramref name="augend" />.
+    /// </summary>
     public static PgsTimeStamp operator +(PgsTimeStamp augend, PgsTimeStamp addend) =>
         new PgsTimeStamp(augend.Ticks + addend.Ticks);
 
+    /// <summary>
+    ///     Subtracts the <paramref name="subtrahend" /> from the <paramref name="minuend" />.
+    /// </summary>
     public static PgsTimeStamp operator -(PgsTimeStamp minuend, PgsTimeStamp subtrahend) =>
         new PgsTimeStamp(minuend.Ticks - subtrahend.Ticks);
 

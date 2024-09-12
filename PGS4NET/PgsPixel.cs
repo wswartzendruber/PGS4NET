@@ -80,9 +80,8 @@ public struct PgsPixel
             && other.Alpha == this.Alpha;
 
     /// <summary>
-    ///     Checks if the <paramrem name="other" /> instance is of the same type as this one and
-    ///     then returns the value of the implementation-specific function, otherwise returns
-    ///     <see langword="false" />.
+    ///     Determines if the type and state of the <paramrem name="other" /> instance is equal
+    ///     to this one's.
     /// </summary>
     public override bool Equals(object? other) =>
         other?.GetType() == typeof(PgsPixel) && Equals((PgsPixel)other);
@@ -100,12 +99,12 @@ public struct PgsPixel
     }
 
     /// <summary>
-    ///     Returns a string that represents this pixel in the form of <c>Y-Cr-Cb-A</c> where
+    ///     Returns a string that represents this pixel in the form of <c>Y-Cb-Cr-A</c> where
     ///     each component is hexadecimal-encoded.
     /// </summary>
     public override string ToString()
     {
-        return $"{Y.ToString("X2")}-{Cr.ToString("X2")}-{Cb.ToString("X2")}-"
+        return $"{Y.ToString("X2")}-{Cb.ToString("X2")}-{Cr.ToString("X2")}-"
             + $"{Alpha.ToString("X2")}";
     }
 

@@ -14,7 +14,7 @@ using PGS4NET.Segments;
 namespace PGS4NET;
 
 /// <summary>
-///     Defines the visible region within an otherwise cropped area.
+///     Defines the visible region within an object.
 /// </summary>
 public class Crop
 {
@@ -40,10 +40,23 @@ public class Crop
     /// </summary>
     public ushort Height { get; set; }
 
-    public Crop()
-    {
-    }
-
+    /// <summary>
+    ///     Initializes a new instance with the provided offset and size.
+    /// </summary>
+    /// <param name="x">
+    ///     The horizontal offset of the visible area's top-left corner relative to the top-left
+    ///     corner of the object itself.
+    /// </param>
+    /// <param name="y">
+    ///     The vertical offset of the visible area's top-left corner relative to the top-left
+    ///     corner of the object itself.
+    /// </param>
+    /// <param name="width">
+    ///     The width of the visible area.
+    /// </param>
+    /// <param name="height">
+    ///     The height of the visible area.
+    /// </param>
     public Crop(ushort x, ushort y, ushort width, ushort height)
     {
         X = x;

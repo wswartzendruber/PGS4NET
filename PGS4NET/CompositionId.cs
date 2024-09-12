@@ -44,9 +44,8 @@ public struct CompositionId
             && other.WindowId == this.WindowId;
 
     /// <summary>
-    ///     Checks if the <paramrem name="other" /> instance is of the same type as this one and
-    ///     then returns the value of the implementation-specific function, otherwise returns
-    ///     <see langword="false" />.
+    ///     Determines if the type and state of the <paramrem name="other" /> instance is equal
+    ///     to this one's.
     /// </summary>
     public override bool Equals(object? other) =>
         other?.GetType() == typeof(CompositionId) && Equals((CompositionId)other);
