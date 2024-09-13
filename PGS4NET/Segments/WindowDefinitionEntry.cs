@@ -21,15 +21,14 @@ public class WindowDefinitionEntry
     ///     The ID of this window within the epoch.
     /// </summary>
     public byte Id { get; set; }
+
     /// <summary>
-    ///     The horizontal offset of the window's top-left corner relative to the top-left
-    ///     corner of the object itself.
+    ///     The horizontal offset of the window's top-left corner relative to the screen.
     /// </summary>
     public ushort X { get; set; }
 
     /// <summary>
-    ///     The vertical offset of the window's top-left corner relative to the top-left corner
-    ///     of the object itself.
+    ///     The vertical offset of the window's top-left corner relative to the screen.
     /// </summary>
     public ushort Y { get; set; }
 
@@ -43,10 +42,31 @@ public class WindowDefinitionEntry
     /// </summary>
     public ushort Height { get; set; }
 
+    /// <summary>
+    ///     Initializes a new instance with default values.
+    /// </summary>
     public WindowDefinitionEntry()
     {
     }
 
+    /// <summary>
+    ///     Initializes a new instance with the provided values.
+    /// </summary>
+    /// <param name="id">
+    ///     The ID of this window within the epoch.
+    /// </param>
+    /// <param name="x">
+    ///     The horizontal offset of the window's top-left corner relative to the screen.
+    /// </param>
+    /// <param name="y">
+    ///     The vertical offset of the window's top-left corner relative to the screen.
+    /// </param>
+    /// <param name="width">
+    ///     The width of the window.
+    /// </param>
+    /// <param name="height">
+    ///     The height of the window.
+    /// </param>
     public WindowDefinitionEntry(byte id, ushort x, ushort y, ushort width, ushort height)
     {
         Id = id;

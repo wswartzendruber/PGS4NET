@@ -27,7 +27,7 @@ public class PaletteDefinitionEntry
     public byte Id { get; set; }
 
     /// <summary>
-    ///     Defines the color properties of the palette entry.
+    ///     The color properties of this palette entry.
     /// </summary>
     public PgsPixel Pixel { get; set; }
 
@@ -38,6 +38,15 @@ public class PaletteDefinitionEntry
     {
     }
 
+    /// <summary>
+    ///     Initializes a new instance with the provided values.
+    /// </summary>
+    /// <param name="id">
+    ///     The ID of this palette entry, which should be unique within an epoch.
+    /// </param>
+    /// <param name="pixel">
+    ///     The color properties of this palette entry.
+    /// </param>
     public PaletteDefinitionEntry(byte id, PgsPixel pixel)
     {
         Id = id;

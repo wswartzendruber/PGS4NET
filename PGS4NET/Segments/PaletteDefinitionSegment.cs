@@ -23,10 +23,13 @@ namespace PGS4NET.Segments;
 /// </remarks>
 public class PaletteDefinitionSegment : Segment
 {
+    /// <summary>
+    ///     The versioned ID of this palette.
+    /// </summary>
     public VersionedId<byte> VersionedId { get; set; }
 
     /// <summary>
-    ///     Defines the individual palette entries in this set.
+    ///     The individual palette entries in this set.
     /// </summary>
     public IList<PaletteDefinitionEntry> Entries { get; set; }
 
@@ -38,6 +41,24 @@ public class PaletteDefinitionSegment : Segment
         Entries = new List<PaletteDefinitionEntry>();
     }
 
+    /// <summary>
+    ///     Initializes a new instance with the provided values.
+    /// </summary>
+    /// <param name="pts">
+    ///     The timestamp indicating when composition decoding should start. In practice, this
+    ///     is the time at which the composition is displayed, repeated, modified, or removed.
+    ///     All PTS values within a display set should match.
+    /// </param>
+    /// <param name="dts">
+    ///     The timestamp indicating when the composition should be enacted. In practice, this
+    ///     value is always zero.
+    /// </param>
+    /// <param name="versionedId">
+    ///     The versioned ID of this palette.
+    /// </param>
+    /// <param name="entries">
+    ///     The individual palette entries in this set.
+    /// </param>
     public PaletteDefinitionSegment(PgsTimeStamp pts, PgsTimeStamp dts
         , VersionedId<byte> versionedId, IList<PaletteDefinitionEntry> entries) : base(pts, dts)
     {
