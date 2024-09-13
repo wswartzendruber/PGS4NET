@@ -17,8 +17,31 @@ using System.Threading.Tasks;
 
 namespace PGS4NET.Segments;
 
+/// <summary>
+///     Extension methods against <see cref="System.IO.Stream" /> for reading PGS segments.
+/// </summary>
 public static partial class SegmentExtensions
 {
+    /// <summary>
+    ///     Attempts to read all PGS segments from a <paramref name="stream" />.
+    /// </summary>
+    /// <remarks>
+    ///     The current position of the <paramref name="stream" /> must be at the beginning of a
+    ///     a segment. The stream must contain only PGS segments from this point on and there
+    ///     must be no trailing data.
+    /// </remarks>
+    /// <param name="stream">
+    ///     The stream to read all segments from.
+    /// </param>
+    /// <returns>
+    ///     The collection of PGS segment that were read.
+    /// </returns>
+    /// <exception cref="SegmentException">
+    ///     An encoded value within a segment is invalid.
+    /// </exception>
+    /// <exception cref="IOException">
+    ///     An underlying I/O error occurs while attempting to read a segment.
+    /// </exception>
     public static IList<Segment> ReadAllSegments(this Stream stream)
     {
         var returnValue = new List<Segment>();
@@ -29,6 +52,29 @@ public static partial class SegmentExtensions
         return returnValue;
     }
 
+    /// <summary>
+    ///     Attempts to asynchronously read all PGS segments from a <paramref name="stream" />.
+    /// </summary>
+    /// <remarks>
+    ///     The current position of the <paramref name="stream" /> must be at the beginning of a
+    ///     a segment. The stream must contain only PGS segments from this point on and there
+    ///     must be no trailing data.
+    /// </remarks>
+    /// <param name="stream">
+    ///     The stream to read all segments from.
+    /// </param>
+    /// <param name="cancellationToken">
+    ///     The token to monitor for cancellation requests.
+    /// </param>
+    /// <returns>
+    ///     The collection of PGS segment that were read.
+    /// </returns>
+    /// <exception cref="SegmentException">
+    ///     An encoded value within a segment is invalid.
+    /// </exception>
+    /// <exception cref="IOException">
+    ///     An underlying I/O error occurs while attempting to read a segment.
+    /// </exception>
     public static async Task<IList<Segment>> ReadAllSegmentsAsync(this Stream stream,
         CancellationToken cancellationToken = default)
     {
@@ -40,6 +86,26 @@ public static partial class SegmentExtensions
         return returnValue;
     }
 
+    /// <summary>
+    ///     Attempts to read the next PGS segment from a <paramref name="stream" />.
+    /// </summary>
+    /// <remarks>
+    ///     The current position of the <paramref name="stream" /> must be at the beginning of a
+    ///     a segment.
+    /// </remarks>
+    /// <param name="stream">
+    ///     The stream to read the next segment from.
+    /// </param>
+    /// <returns>
+    ///     The PGS segment that was read or <see langword="null" /> if the
+    ///     <paramref name="stream" /> is already EOF.
+    /// </returns>
+    /// <exception cref="SegmentException">
+    ///     An encoded value within the segment is invalid.
+    /// </exception>
+    /// <exception cref="IOException">
+    ///     An underlying I/O error occurs while attempting to read the segment.
+    /// </exception>
     public static Segment? ReadSegment(this Stream stream)
     {
         var headerBuffer = new byte[13];
@@ -81,6 +147,30 @@ public static partial class SegmentExtensions
         };
     }
 
+    /// <summary>
+    ///     Attempts to asynchronously read the next PGS segment from a
+    ///     <paramref name="stream" />.
+    /// </summary>
+    /// <remarks>
+    ///     The current position of the <paramref name="stream" /> must be at the beginning of a
+    ///     a segment.
+    /// </remarks>
+    /// <param name="stream">
+    ///     The stream to read the next segment from.
+    /// </param>
+    /// <param name="cancellationToken">
+    ///     The token to monitor for cancellation requests.
+    /// </param>
+    /// <returns>
+    ///     The PGS segment that was read or <see langword="null" /> if the
+    ///     <paramref name="stream" /> is already EOF.
+    /// </returns>
+    /// <exception cref="SegmentException">
+    ///     An encoded value within the segment is invalid.
+    /// </exception>
+    /// <exception cref="IOException">
+    ///     An underlying I/O error occurs while attempting to read the segment.
+    /// </exception>
     public static async Task<Segment?> ReadSegmentAsync(this Stream stream,
         CancellationToken cancellationToken = default)
     {
