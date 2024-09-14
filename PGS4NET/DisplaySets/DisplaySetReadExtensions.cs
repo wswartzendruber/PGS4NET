@@ -16,8 +16,35 @@ using PGS4NET.Segments;
 
 namespace PGS4NET.DisplaySets;
 
+/// <summary>
+///     Extension methods against <see cref="System.IO.Stream" /> for reading PGS display sets.
+/// </summary>
 public static partial class DisplaySetExtensions
 {
+    /// <summary>
+    ///     Attempts to read all PGS display sets from a <paramref name="stream" /> in a single
+    ///     operation.
+    /// </summary>
+    /// <remarks>
+    ///     The current position of the <paramref name="stream" /> must be at the beginning of a
+    ///     display set. The stream must contain only complete PGS display sets from this point
+    ///     on and there must be no trailing data.
+    /// </remarks>
+    /// <param name="stream">
+    ///     The stream to read all display sets from.
+    /// </param>
+    /// <returns>
+    ///     The collection of PGS display sets that were read.
+    /// </returns>
+    /// <exception cref="DisplaySetException">
+    ///     An encoded value within a display set is invalid.
+    /// </exception>
+    /// <exception cref="SegmentException">
+    ///     An encoded value within a segment is invalid.
+    /// </exception>
+    /// <exception cref="IOException">
+    ///     An underlying I/O error occurs while attempting to read a segment.
+    /// </exception>
     public static IList<DisplaySet> ReadAllDisplaySets(this Stream stream)
     {
         var returnValue = new List<DisplaySet>();
@@ -28,6 +55,33 @@ public static partial class DisplaySetExtensions
         return returnValue;
     }
 
+    /// <summary>
+    ///     Attempts to asynchronously read all PGS display sets from a
+    ///     <paramref name="stream" /> in a single operation.
+    /// </summary>
+    /// <remarks>
+    ///     The current position of the <paramref name="stream" /> must be at the beginning of a
+    ///     display set. The stream must contain only complete PGS display sets from this point
+    ///     on and there must be no trailing data.
+    /// </remarks>
+    /// <param name="stream">
+    ///     The stream to read all display sets from.
+    /// </param>
+    /// <param name="cancellationToken">
+    ///     The token to monitor for cancellation requests.
+    /// </param>
+    /// <returns>
+    ///     The collection of PGS display sets that were read.
+    /// </returns>
+    /// <exception cref="DisplaySetException">
+    ///     An encoded value within a display set is invalid.
+    /// </exception>
+    /// <exception cref="SegmentException">
+    ///     An encoded value within a segment is invalid.
+    /// </exception>
+    /// <exception cref="IOException">
+    ///     An underlying I/O error occurs while attempting to read a segment.
+    /// </exception>
     public static async Task<IList<DisplaySet>> ReadAllDisplaySetsAsync(this Stream stream
         , CancellationToken cancellationToken = default)
     {
@@ -39,6 +93,29 @@ public static partial class DisplaySetExtensions
         return returnValue;
     }
 
+    /// <summary>
+    ///     Attempts to read the next PGS display set from a <paramref name="stream" />.
+    /// </summary>
+    /// <remarks>
+    ///     The current position of the <paramref name="stream" /> must be at the beginning of a
+    ///     a display set.
+    /// </remarks>
+    /// <param name="stream">
+    ///     The stream to read the next display set from.
+    /// </param>
+    /// <returns>
+    ///     The PGS display set that was read or <see langword="null" /> if the
+    ///     <paramref name="stream" /> is already EOF.
+    /// </returns>
+    /// <exception cref="DisplaySetException">
+    ///     An encoded value within the display set is invalid.
+    /// </exception>
+    /// <exception cref="SegmentException">
+    ///     An encoded value within a segment is invalid.
+    /// </exception>
+    /// <exception cref="IOException">
+    ///     An underlying I/O error occurs while attempting to read a segment.
+    /// </exception>
     public static DisplaySet? ReadDisplaySet(this Stream stream)
     {
         var read = false;
@@ -65,6 +142,33 @@ public static partial class DisplaySetExtensions
         return null;
     }
 
+    /// <summary>
+    ///     Attempts to asynchronously read the next PGS display set from a
+    ///     <paramref name="stream" />.
+    /// </summary>
+    /// <remarks>
+    ///     The current position of the <paramref name="stream" /> must be at the beginning of a
+    ///     a display set.
+    /// </remarks>
+    /// <param name="stream">
+    ///     The stream to read the next display set from.
+    /// </param>
+    /// <param name="cancellationToken">
+    ///     The token to monitor for cancellation requests.
+    /// </param>
+    /// <returns>
+    ///     The PGS display set that was read or <see langword="null" /> if the
+    ///     <paramref name="stream" /> is already EOF.
+    /// </returns>
+    /// <exception cref="DisplaySetException">
+    ///     An encoded value within the display set is invalid.
+    /// </exception>
+    /// <exception cref="SegmentException">
+    ///     An encoded value within a segment is invalid.
+    /// </exception>
+    /// <exception cref="IOException">
+    ///     An underlying I/O error occurs while attempting to read a segment.
+    /// </exception>
     public static async Task<DisplaySet?> ReadDisplaySetAsync(this Stream stream
         , CancellationToken cancellationToken = default)
     {

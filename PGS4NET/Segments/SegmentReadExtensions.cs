@@ -28,8 +28,8 @@ public static partial class SegmentExtensions
     /// </summary>
     /// <remarks>
     ///     The current position of the <paramref name="stream" /> must be at the beginning of a
-    ///     a segment. The stream must contain only PGS segments from this point on and there
-    ///     must be no trailing data.
+    ///     a segment. The stream must contain only complete PGS segments from this point on and
+    ///     there must be no trailing data.
     /// </remarks>
     /// <param name="stream">
     ///     The stream to read all segments from.
@@ -56,8 +56,8 @@ public static partial class SegmentExtensions
     /// </summary>
     /// <remarks>
     ///     The current position of the <paramref name="stream" /> must be at the beginning of a
-    ///     a segment. The stream must contain only PGS segments from this point on and there
-    ///     must be no trailing data.
+    ///     a segment. The stream must contain only complete PGS segments from this point on and
+    ///     there must be no trailing data.
     /// </remarks>
     /// <param name="stream">
     ///     The stream to read all segments from.
@@ -88,8 +88,8 @@ public static partial class SegmentExtensions
     /// </summary>
     /// <remarks>
     ///     The current position of the <paramref name="stream" /> must be at the beginning of a
-    ///     a segment. The stream must contain only PGS segments from this point on and there
-    ///     must be no trailing data.
+    ///     a segment. The stream must contain only complete PGS segments from this point on and
+    ///     there must be no trailing data.
     /// </remarks>
     /// <param name="stream">
     ///     The stream to read all segments from.
@@ -119,8 +119,8 @@ public static partial class SegmentExtensions
     /// </summary>
     /// <remarks>
     ///     The current position of the <paramref name="stream" /> must be at the beginning of a
-    ///     a segment. The stream must contain only PGS segments from this point on and there
-    ///     must be no trailing data.
+    ///     a segment. The stream must contain only complete PGS segments from this point on and
+    ///     there must be no trailing data.
     /// </remarks>
     /// <param name="stream">
     ///     The stream to read all segments from.
