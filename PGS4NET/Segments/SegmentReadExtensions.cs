@@ -23,7 +23,68 @@ namespace PGS4NET.Segments;
 public static partial class SegmentExtensions
 {
     /// <summary>
-    ///     Attempts to read all PGS segments from a <paramref name="stream" />.
+    ///     Attempts to read all PGS segments from a <paramref name="stream" />, one at a time,
+    ///     as each one is consumed by an enumerator.
+    /// </summary>
+    /// <remarks>
+    ///     The current position of the <paramref name="stream" /> must be at the beginning of a
+    ///     a segment. The stream must contain only PGS segments from this point on and there
+    ///     must be no trailing data.
+    /// </remarks>
+    /// <param name="stream">
+    ///     The stream to read all segments from.
+    /// </param>
+    /// <returns>
+    ///     An enumerator over segments being read.
+    /// </returns>
+    /// <exception cref="SegmentException">
+    ///     An encoded value within a segment is invalid.
+    /// </exception>
+    /// <exception cref="IOException">
+    ///     An underlying I/O error occurs while attempting to read a segment.
+    /// </exception>
+    public static IEnumerable<Segment> Segments(this Stream stream)
+    {
+        while (stream.ReadSegment() is Segment segment)
+            yield return segment;
+    }
+
+#if NETSTANDARD2_1_OR_GREATER
+    /// <summary>
+    ///     Attempts to asynchronously read all PGS segments from a <paramref name="stream" />,
+    ///     one at a time, as each one is consumed by an asynchronous enumerator.
+    /// </summary>
+    /// <remarks>
+    ///     The current position of the <paramref name="stream" /> must be at the beginning of a
+    ///     a segment. The stream must contain only PGS segments from this point on and there
+    ///     must be no trailing data.
+    /// </remarks>
+    /// <param name="stream">
+    ///     The stream to read all segments from.
+    /// </param>
+    /// <param name="cancellationToken">
+    ///     The token to monitor for cancellation requests.
+    /// </param>
+    /// <returns>
+    ///     An asynchronous enumerator over segments being read.
+    /// </returns>
+    /// <exception cref="SegmentException">
+    ///     An encoded value within a segment is invalid.
+    /// </exception>
+    /// <exception cref="IOException">
+    ///     An underlying I/O error occurs while attempting to read a segment.
+    /// </exception>
+    public static async IAsyncEnumerable<Segment> SegmentsAsync(this Stream stream,
+        [EnumeratorCancellation] CancellationToken cancellationToken = default)
+    {
+        while (await stream.ReadSegmentAsync(cancellationToken) is Segment segment)
+            yield return segment;
+    }
+#endif
+
+    /// <summary>
+    ///     Attempts to read all PGS segments from a <paramref name="stream" /> in a single
+    ///     operation.
     /// </summary>
     /// <remarks>
     ///     The current position of the <paramref name="stream" /> must be at the beginning of a
@@ -53,7 +114,8 @@ public static partial class SegmentExtensions
     }
 
     /// <summary>
-    ///     Attempts to asynchronously read all PGS segments from a <paramref name="stream" />.
+    ///     Attempts to asynchronously read all PGS segments from a <paramref name="stream" />
+    ///     in a single operation.
     /// </summary>
     /// <remarks>
     ///     The current position of the <paramref name="stream" /> must be at the beginning of a
