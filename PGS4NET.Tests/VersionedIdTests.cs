@@ -16,27 +16,24 @@ using PGS4NET;
 
 namespace PGS4NET.Tests;
 
-public class ValueTests
+public class VersionedIdTests
 {
     [Fact]
-    public void CompositionId()
+    public void HashCodes()
     {
-        var a = new CompositionId(1, 2);
-        var b = new CompositionId(1, 2);
-        var c = new CompositionId(1, 3);
-        var d = new CompositionId(2, 2);
+        var a = new VersionedId<int>(1, 2);
+        var b = new VersionedId<int>(1, 2);
+        var e = new VersionedId<long>(1, 2);
+        var f = new VersionedId<long>(1, 2);
 
-        Assert.True(a == a);
-        Assert.True(a == b);
-        Assert.True(a != c);
-        Assert.True(a != d);
-        Assert.True(c != d);
         Assert.True(a.GetHashCode() == a.GetHashCode());
         Assert.True(a.GetHashCode() == b.GetHashCode());
+        Assert.True(e.GetHashCode() == e.GetHashCode());
+        Assert.True(e.GetHashCode() == f.GetHashCode());
     }
 
     [Fact]
-    public void VersionedId()
+    public void Equality()
     {
         var a = new VersionedId<int>(1, 2);
         var b = new VersionedId<int>(1, 2);
@@ -47,6 +44,16 @@ public class ValueTests
         var g = new VersionedId<long>(1, 3);
         var h = new VersionedId<long>(2, 2);
 
+        Assert.True(a.Equals(a));
+        Assert.True(a.Equals(b));
+        Assert.False(a.Equals(c));
+        Assert.False(a.Equals(d));
+        Assert.False(c.Equals(d));
+        Assert.True(e.Equals(e));
+        Assert.True(e.Equals(f));
+        Assert.False(e.Equals(g));
+        Assert.False(e.Equals(h));
+        Assert.False(g.Equals(h));
         Assert.True(a == a);
         Assert.True(a == b);
         Assert.True(a != c);
@@ -57,9 +64,5 @@ public class ValueTests
         Assert.True(e != g);
         Assert.True(e != h);
         Assert.True(g != h);
-        Assert.True(a.GetHashCode() == a.GetHashCode());
-        Assert.True(a.GetHashCode() == b.GetHashCode());
-        Assert.True(e.GetHashCode() == e.GetHashCode());
-        Assert.True(e.GetHashCode() == f.GetHashCode());
     }
 }
