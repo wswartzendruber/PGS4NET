@@ -17,6 +17,9 @@ namespace PGS4NET;
 /// </summary>
 public struct PgsTimeStamp : IEquatable<PgsTimeStamp>, IComparable<PgsTimeStamp>
 {
+    // The highest millisecond value that can be represented by this class.
+    public const uint MaxMilliseconds = 47_721_858;
+
     /// <summary>
     ///     The number of ticks as used by the PTS and DTS fields of PGS segments. 90,000 ticks
     ///     make one second.
@@ -49,7 +52,7 @@ public struct PgsTimeStamp : IEquatable<PgsTimeStamp>, IComparable<PgsTimeStamp>
     /// </param>
     public static PgsTimeStamp FromMilliseconds(uint milliseconds)
     {
-        if (milliseconds > 47_721_858)
+        if (milliseconds > MaxMilliseconds)
         {
             throw new ArgumentOutOfRangeException("milliseconds", milliseconds
                 , "The milliseconds value cannot exceed 47,721,858.");
