@@ -14,8 +14,20 @@ using PGS4NET.Segments;
 
 namespace PGS4NET.DisplaySets;
 
+/// <summary>
+///     Deconstructs PGS display sets into segments.
+/// </summary>
 public static class DisplaySetDecomposer
 {
+    /// <summary>
+    ///     Deconstructs a PGS display set into a collection of segments.
+    /// </summary>
+    /// <param name="displaySet">
+    ///     The display set to deconstruct.
+    /// </param>
+    /// <returns>
+    ///     A list of segments representing the display set.
+    /// </returns>
     public static IList<Segment> Decompose(DisplaySet displaySet)
     {
         var returnValue = new List<Segment>();

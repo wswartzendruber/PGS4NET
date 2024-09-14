@@ -14,6 +14,9 @@ using PGS4NET.Segments;
 
 namespace PGS4NET.DisplaySets;
 
+/// <summary>
+///     Constructs PGS display sets from segments.
+/// </summary>
 public class DisplaySetComposer
 {
     private static readonly DisplaySetException DuplicateObjectVid
@@ -37,6 +40,16 @@ public class DisplaySetComposer
     private Dictionary<CompositionId, DisplayComposition> Compositions = new();
     private PresentationCompositionSegment? Pcs = null;
 
+    /// <summary>
+    ///     Inputs a PGS segment into the composer, causing <see cref="NewDisplaySet" /> to fire
+    ///     each time a new <see cref="DisplaySet" /> becomes available.
+    /// </summary>
+    /// <param name="segment">
+    ///     The segment to input.
+    /// </param>
+    /// <exception cref="DisplaySetException">
+    ///     The <paramref name="segment" /> is not valid given the composer's state.
+    /// </exception>
     public void Input(Segment segment)
     {
         if (Pcs is null)
@@ -239,6 +252,9 @@ public class DisplaySetComposer
         }
     }
 
+    /// <summary>
+    ///     Resets the state of the composer.
+    /// </summary>
     public void Reset()
     {
         InitialObject = null;
@@ -250,10 +266,16 @@ public class DisplaySetComposer
         Pcs = null;
     }
 
+    /// <summary>
+    ///     Invoked when a new display set is ready.
+    /// </summary>
     protected virtual void OnNewDisplaySet(DisplaySet displaySet)
     {
         NewDisplaySet?.Invoke(this, displaySet);
     }
 
+    /// <summary>
+    ///     Fires when a new display set is ready.
+    /// </summary>
     public event EventHandler<DisplaySet>? NewDisplaySet;
 }
