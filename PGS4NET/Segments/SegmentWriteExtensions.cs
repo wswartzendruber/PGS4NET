@@ -16,14 +16,51 @@ using System.Threading.Tasks;
 
 namespace PGS4NET.Segments;
 
+/// <summary>
+///     Extension methods against <see cref="System.IO.Stream" /> for writing PGS segments.
+/// </summary>
 public static partial class SegmentExtensions
 {
+    /// <summary>
+    ///     Writes all PGS segments in a collection to a <paramref name="stream" />.
+    /// </summary>
+    /// <param name="stream">
+    ///     The stream to write all segments to.
+    /// </param>
+    /// <param name="segments">
+    ///     The collection of segments to write.
+    /// </param>
+    /// <exception cref="SegmentException">
+    ///     A property of a <see cref="Segment" /> is invalid.
+    /// </exception>
+    /// <exception cref="IOException">
+    ///     An underlying I/O error occurs while attempting to write a segment.
+    /// </exception>
     public static void WriteAllSegments(this Stream stream, IEnumerable<Segment> segments)
     {
         foreach (var segment in segments)
             stream.WriteSegment(segment);
     }
 
+    /// <summary>
+    ///     Asynchronously writes all PGS segments in a collection to a
+    ///     <paramref name="stream" />.
+    /// </summary>
+    /// <param name="stream">
+    ///     The stream to write all segments to.
+    /// </param>
+    /// <param name="segments">
+    ///     The collection of segments to write.
+    /// </param>
+    /// <param name="cancellationToken">
+    ///     The token to monitor for cancellation requests.
+    /// </param>
+    /// <exception cref="SegmentException">
+    ///     A property of a <see cref="Segment" /> is invalid.
+    /// </exception>
+    /// <exception cref="IOException">
+    ///     An underlying I/O error occurs while attempting to write a segment.
+    /// </exception>
     public static async Task WriteAllSegmentsAsync(this Stream stream
         , IEnumerable<Segment> segments, CancellationToken cancellationToken = default)
     {
@@ -32,6 +69,25 @@ public static partial class SegmentExtensions
     }
 
 #if NETSTANDARD2_1_OR_GREATER
+    /// <summary>
+    ///     Asynchronously writes all PGS segments in an asynchronous collection to a
+    ///     <paramref name="stream" />.
+    /// </summary>
+    /// <param name="stream">
+    ///     The stream to write all segments to.
+    /// </param>
+    /// <param name="segments">
+    ///     The asynchronous collection of segments to write.
+    /// </param>
+    /// <param name="cancellationToken">
+    ///     The token to monitor for cancellation requests.
+    /// </param>
+    /// <exception cref="SegmentException">
+    ///     A property of a <see cref="Segment" /> is invalid.
+    /// </exception>
+    /// <exception cref="IOException">
+    ///     An underlying I/O error occurs while attempting to write a segment.
+    /// </exception>
     public static async Task WriteAllSegmentsAsync(this Stream stream
         , IAsyncEnumerable<Segment> segments, CancellationToken cancellationToken = default)
     {
@@ -40,6 +96,21 @@ public static partial class SegmentExtensions
     }
 #endif
 
+    /// <summary>
+    ///     Writes a PGS segment to a <paramref name="stream" />.
+    /// </summary>
+    /// <param name="stream">
+    ///     The stream to write the segment to.
+    /// </param>
+    /// <param name="segment">
+    ///     The segment to write.
+    /// </param>
+    /// <exception cref="SegmentException">
+    ///     A property of the <see cref="Segment" /> is invalid.
+    /// </exception>
+    /// <exception cref="IOException">
+    ///     An underlying I/O error occurs while attempting to write the segment.
+    /// </exception>
     public static void WriteSegment(this Stream stream, Segment segment)
     {
         using var buffer = new MemoryStream();
@@ -96,6 +167,24 @@ public static partial class SegmentExtensions
         buffer.CopyTo(stream);
     }
 
+    /// <summary>
+    ///     Asynchronously writes a PGS segment to a <paramref name="stream" />.
+    /// </summary>
+    /// <param name="stream">
+    ///     The stream to write the segment to.
+    /// </param>
+    /// <param name="segment">
+    ///     The segment to write.
+    /// </param>
+    /// <param name="cancellationToken">
+    ///     The token to monitor for cancellation requests.
+    /// </param>
+    /// <exception cref="SegmentException">
+    ///     A property of the <see cref="Segment" /> is invalid.
+    /// </exception>
+    /// <exception cref="IOException">
+    ///     An underlying I/O error occurs while attempting to write the segment.
+    /// </exception>
     public static async Task WriteSegmentAsync(this Stream stream, Segment segment,
         CancellationToken cancellationToken = default)
     {
