@@ -23,11 +23,20 @@ public class DisplayPalette
     /// </summary>
     public IDictionary<byte, PgsPixel> Entries { get; set; }
 
+    /// <summary>
+    ///     Initializes a new instance with default values and an empty list of entries.
+    /// </summary>
     public DisplayPalette()
     {
         Entries = new Dictionary<byte, PgsPixel>();
     }
 
+    /// <summary>
+    ///     Initializes a new instance with the provided values.
+    /// </summary>
+    /// <param name="entries">
+    ///     The entries within this palette, each mapped according to its ID.
+    /// </param>
     public DisplayPalette(IDictionary<byte, PgsPixel> entries)
     {
         Entries = entries;

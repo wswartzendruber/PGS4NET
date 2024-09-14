@@ -42,10 +42,33 @@ public class DisplayComposition
     /// </summary>
     public Crop? Crop { get; set; }
 
+    /// <summary>
+    ///     Initializes a new instance with default values.
+    /// </summary>
     public DisplayComposition()
     {
     }
 
+    /// <summary>
+    ///     Initializes a new instance with the provided values.
+    /// </summary>
+    /// <param name="x">
+    ///     The horizontal offset of the object's top-left corner relative to the top-left
+    ///     corner of the screen. If the object is cropped, then this applies only to the
+    ///     visible area.
+    /// </param>
+    /// <param name="y">
+    ///     The vertical offset of the object's top-left corner relative to the top-left corner
+    ///     of the screen. If the object is cropped, then this applies only to the visible area.
+    /// </param>
+    /// <param name="forced">
+    ///     Whether or not the composition object is forced. This is typically used to translate
+    ///     foreign dialogue or text that appears.
+    /// </param>
+    /// <param name="crop">
+    ///     If set, defines the visible area of the object. Otherwise, the entire object is
+    ///     shown.
+    /// </param>
     public DisplayComposition(ushort x, ushort y, bool forced, Crop? crop)
     {
         X = x;

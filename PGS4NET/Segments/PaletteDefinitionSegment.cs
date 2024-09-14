@@ -34,7 +34,7 @@ public class PaletteDefinitionSegment : Segment
     public IList<PaletteDefinitionEntry> Entries { get; set; }
 
     /// <summary>
-    ///     Initializes a new instance with default values.
+    ///     Initializes a new instance with default values and an empty list of entries.
     /// </summary>
     public PaletteDefinitionSegment()
     {

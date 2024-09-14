@@ -38,10 +38,28 @@ public class DisplayWindow
     /// </summary>
     public ushort Height { get; set; }
 
+    /// <summary>
+    ///     Initializes a new instance with default values.
+    /// </summary>
     public DisplayWindow()
     {
     }
 
+    /// <summary>
+    ///     Initializes a new instance with the provided values.
+    /// </summary>
+    /// <param name="x">
+    ///     The horizontal offset of the window's top-left corner.
+    /// </param>
+    /// <param name="y">
+    ///     The vertical offset of the window's top-left corner.
+    /// </param>
+    /// <param name="width">
+    ///     The width of the window.
+    /// </param>
+    /// <param name="height">
+    ///     The height of the window.
+    /// </param>
     public DisplayWindow(ushort x, ushort y, ushort width, ushort height)
     {
         X = x;

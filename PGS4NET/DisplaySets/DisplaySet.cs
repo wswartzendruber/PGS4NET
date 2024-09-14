@@ -45,12 +45,13 @@ public class DisplaySet
 {
     /// <summary>
     ///     The timestamp indicating when composition decoding should start. In practice, this
-    ///     is the time at which the composition is displayed.
+    ///     is the time at which the composition is displayed, repeated, modified, or removed.
+    ///     All PTS values within a display set should match.
     /// </summary>
     public PgsTimeStamp Pts { get; set; }
 
     /// <summary>
-    ///     The timestamp indicating when the composition should be displayed. In practice, this
+    ///     The timestamp indicating when the composition should be enacted. In practice, this
     ///     value is always zero.
     /// </summary>
     public PgsTimeStamp Dts { get; set; }
@@ -73,8 +74,8 @@ public class DisplaySet
     public byte FrameRate { get; set; }
 
     /// <summary>
-    ///     If set, defines that this PCS is responsible for a palette udpate on an existing
-    ///     object.
+    ///     If set, defines that this instance is mainly responsible for a palette udpate on one
+    ///     or more existing objects.
     /// </summary>
     public bool PaletteUpdateOnly { get; set; }
 
@@ -84,27 +85,28 @@ public class DisplaySet
     public byte PaletteId { get; set; }
 
     /// <summary>
-    ///     The collection of windows referenced by this DS.
+    ///     The collection of windows referenced by this instance.
     /// </summary>
     public IDictionary<byte, DisplayWindow> Windows { get; set; }
 
     /// <summary>
-    ///     The collection of palettes referenced by this DS.
+    ///     The collection of palettes referenced by instance.
     /// </summary>
     public IDictionary<VersionedId<byte>, DisplayPalette> Palettes { get; set; }
 
     /// <summary>
-    ///     The collection of objects referenced by this DS.
+    ///     The collection of objects referenced by instance.
     /// </summary>
     public IDictionary<VersionedId<ushort>, DisplayObject> Objects { get; set; }
 
     /// <summary>
-    ///     Starting at zero, this increments each time graphics are updated within an epoch.
+    ///     Starting at zero, this increments each time graphics are updated within a
+    ///     presentation.
     /// </summary>
     public ushort CompositionNumber { get; set; }
 
     /// <summary>
-    ///     Defines the role of this DS within the larger epoch.
+    ///     Defines the role of this instance within the larger epoch.
     /// </summary>
     public CompositionState CompositionState { get; set; }
 
@@ -114,6 +116,10 @@ public class DisplaySet
     /// </summary>
     public IDictionary<CompositionId, DisplayComposition> Compositions { get; set; }
 
+    /// <summary>
+    ///     Initializes a new instance with default values and an empty collection of windows,
+    ///     palettes, objects, and compositions.
+    /// </summary>
     public DisplaySet()
     {
         Windows = new Dictionary<byte, DisplayWindow>();
@@ -122,6 +128,56 @@ public class DisplaySet
         Compositions = new Dictionary<CompositionId, DisplayComposition>();
     }
 
+    /// <summary>
+    ///     Initializes a new instance with the provided values.
+    /// </summary>
+    /// <param name="pts">
+    ///     The timestamp indicating when composition decoding should start. In practice, this
+    ///     is the time at which the composition is displayed, repeated, modified, or removed.
+    ///     All PTS values within a display set should match.
+    /// </param>
+    /// <param name="dts">
+    ///     The timestamp indicating when the composition should be enacted. In practice, this
+    ///     value is always zero.
+    /// </param>
+    /// <param name="width">
+    ///     The width of the screen in pixels. This value should be consistent within a
+    ///     presentation.
+    /// </param>
+    /// <param name="height">
+    ///     The height of the screen in pixels. This value should be consistent within a
+    ///     presentation.
+    /// </param>
+    /// <param name="frameRate">
+    ///     This value should be set to <c>0x10</c> but can otherwise be typically ignored.
+    /// </param>
+    /// <param name="paletteUpdateOnly">
+    ///     If set, defines that this instance is mainly responsible for a palette udpate on one
+    ///     or more existing objects.
+    /// </param>
+    /// <param name="paletteId">
+    ///     The palette ID to use when rendering objects.
+    /// </param>
+    /// <param name="windows">
+    ///     The collection of windows referenced by this instance.
+    /// </param>
+    /// <param name="palettes">
+    ///     The collection of palettes referenced by instance.
+    /// </param>
+    /// <param name="objects">
+    ///     The collection of objects referenced by instance.
+    /// </param>
+    /// <param name="compositionNumber">
+    ///     Starting at zero, this increments each time graphics are updated within a
+    ///     presentation.
+    /// </param>
+    /// <param name="compositionState">
+    ///     Defines the role of this instance within the larger epoch.
+    /// </param>
+    /// <param name="compositions">
+    ///     A collection of composition objects, each mapped according to its compound ID
+    ///     (object ID + window ID).
+    /// </param>
     public DisplaySet(PgsTimeStamp pts, PgsTimeStamp dts, ushort width, ushort height
         , byte frameRate, bool paletteUpdateOnly, byte paletteId
         , IDictionary<byte, DisplayWindow> windows

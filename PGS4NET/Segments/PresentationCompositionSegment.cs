@@ -38,7 +38,8 @@ public class PresentationCompositionSegment : Segment
     public byte FrameRate { get; set; }
 
     /// <summary>
-    ///     Starting at zero, this increments each time graphics are updated within an epoch.
+    ///     Starting at zero, this increments each time graphics are updated within a
+    ///     presentation.
     /// </summary>
     public ushort Number { get; set; }
 
@@ -96,7 +97,8 @@ public class PresentationCompositionSegment : Segment
     ///     This value should be set to <c>0x10</c> but can otherwise be typically ignored.
     /// </param>
     /// <param name="number">
-    ///     Starting at zero, this increments each time graphics are updated within an epoch.
+    ///     Starting at zero, this increments each time graphics are updated within a
+    ///     presentation.
     /// </param>
     /// <param name="state">
     ///     Defines the role of the current DS within the larger epoch.

@@ -35,11 +35,28 @@ public class DisplayObject
     /// </summary>
     public byte[] Data { get; set; }
 
+    /// <summary>
+    ///     Initializes a new instance with default values including an empty data buffer.
+    /// </summary>
     public DisplayObject()
     {
         Data = new byte[0];
     }
 
+    /// <summary>
+    ///     Initializes a new instance with the provided values.
+    /// </summary>
+    /// <param name="width">
+    ///     The width of this object in pixels.
+    /// </param>
+    /// <param name="height">
+    ///     The height of this object in pixels.
+    /// </param>
+    /// <param name="data">
+    ///     An ordered list of object pixel data where each byte addresses a palette entry
+    ///     during playback. The length should be the product of the <see cref="Width" />
+    ///     and the <see cref="Height" />.
+    /// </param>
     public DisplayObject(ushort width, ushort height, byte[] data)
     {
         Width = width;
