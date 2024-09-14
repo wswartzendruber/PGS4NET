@@ -16,8 +16,29 @@ using PGS4NET.Segments;
 
 namespace PGS4NET.DisplaySets;
 
+/// <summary>
+///     Extension methods against <see cref="System.IO.Stream" /> for writing PGS display sets.
+/// </summary>
 public static partial class DisplaySetExtensions
 {
+    /// <summary>
+    ///     Writes all PGS display sets in a collection to a <paramref name="stream" />.
+    /// </summary>
+    /// <param name="stream">
+    ///     The stream to write all display sets to.
+    /// </param>
+    /// <param name="displaySets">
+    ///     The collection of display sets to write.
+    /// </param>
+    /// <exception cref="DisplaySetException">
+    ///     A property of a <see cref="DisplaySet" /> is invalid.
+    /// </exception>
+    /// <exception cref="SegmentException">
+    ///     A property of a <see cref="Segment" /> is invalid.
+    /// </exception>
+    /// <exception cref="IOException">
+    ///     An underlying I/O error occurs while attempting to write a segment.
+    /// </exception>
     public static void WriteAllDisplaySets(this Stream stream
         , IEnumerable<DisplaySet> displaySets)
     {
@@ -25,6 +46,28 @@ public static partial class DisplaySetExtensions
             stream.WriteDisplaySet(displaySet);
     }
 
+    /// <summary>
+    ///     Asynchronously writes all PGS display sets in a collection to a
+    ///     <paramref name="stream" />.
+    /// </summary>
+    /// <param name="stream">
+    ///     The stream to write all display sets to.
+    /// </param>
+    /// <param name="displaySets">
+    ///     The collection of display sets to write.
+    /// </param>
+    /// <param name="cancellationToken">
+    ///     The token to monitor for cancellation requests.
+    /// </param>
+    /// <exception cref="DisplaySetException">
+    ///     A property of a <see cref="DisplaySet" /> is invalid.
+    /// </exception>
+    /// <exception cref="SegmentException">
+    ///     A property of a <see cref="Segment" /> is invalid.
+    /// </exception>
+    /// <exception cref="IOException">
+    ///     An underlying I/O error occurs while attempting to write a segment.
+    /// </exception>
     public static async Task WriteAllDisplaySetsAsync(this Stream stream
         , IEnumerable<DisplaySet> displaySets, CancellationToken cancellationToken = default)
     {
@@ -33,6 +76,28 @@ public static partial class DisplaySetExtensions
     }
 
 #if NETSTANDARD2_1_OR_GREATER
+    /// <summary>
+    ///     Asynchronously writes all PGS display sets in an asynchronous collection to a
+    ///     <paramref name="stream" />.
+    /// </summary>
+    /// <param name="stream">
+    ///     The stream to write all display sets to.
+    /// </param>
+    /// <param name="displaySets">
+    ///     The asynchronous collection of display sets to write.
+    /// </param>
+    /// <param name="cancellationToken">
+    ///     The token to monitor for cancellation requests.
+    /// </param>
+    /// <exception cref="DisplaySetException">
+    ///     A property of a <see cref="DisplaySet" /> is invalid.
+    /// </exception>
+    /// <exception cref="SegmentException">
+    ///     A property of a <see cref="Segment" /> is invalid.
+    /// </exception>
+    /// <exception cref="IOException">
+    ///     An underlying I/O error occurs while attempting to write a segment.
+    /// </exception>
     public static async Task WriteAllDisplaySetsAsync(this Stream stream
         , IAsyncEnumerable<DisplaySet> displaySets
         , CancellationToken cancellationToken = default)
@@ -42,12 +107,51 @@ public static partial class DisplaySetExtensions
     }
 #endif
 
+    /// <summary>
+    ///     Writes a PGS display set to a <paramref name="stream" />.
+    /// </summary>
+    /// <param name="stream">
+    ///     The stream to write the display set to.
+    /// </param>
+    /// <param name="displaySet">
+    ///     The display set to write.
+    /// </param>
+    /// <exception cref="DisplaySetException">
+    ///     A property of the <see cref="DisplaySet" /> is invalid.
+    /// </exception>
+    /// <exception cref="SegmentException">
+    ///     A property of a <see cref="Segment" /> is invalid.
+    /// </exception>
+    /// <exception cref="IOException">
+    ///     An underlying I/O error occurs while attempting to write a segment.
+    /// </exception>
     public static void WriteDisplaySet(this Stream stream, DisplaySet displaySet)
     {
         foreach (var segment in DisplaySetDecomposer.Decompose(displaySet))
             stream.WriteSegment(segment);
     }
 
+    /// <summary>
+    ///     Asynchronously writes a PGS display set to a <paramref name="stream" />.
+    /// </summary>
+    /// <param name="stream">
+    ///     The stream to write the display set to.
+    /// </param>
+    /// <param name="displaySet">
+    ///     The display set to write.
+    /// </param>
+    /// <param name="cancellationToken">
+    ///     The token to monitor for cancellation requests.
+    /// </param>
+    /// <exception cref="DisplaySetException">
+    ///     A property of the <see cref="DisplaySet" /> is invalid.
+    /// </exception>
+    /// <exception cref="SegmentException">
+    ///     A property of a <see cref="Segment" /> is invalid.
+    /// </exception>
+    /// <exception cref="IOException">
+    ///     An underlying I/O error occurs while attempting to write a segment.
+    /// </exception>
     public static async Task WriteDisplaySetAsync(this Stream stream, DisplaySet displaySet
         , CancellationToken cancellationToken = default)
     {
