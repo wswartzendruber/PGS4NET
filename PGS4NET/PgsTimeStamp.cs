@@ -17,7 +17,9 @@ namespace PGS4NET;
 /// </summary>
 public struct PgsTimeStamp : IEquatable<PgsTimeStamp>, IComparable<PgsTimeStamp>
 {
-    // The highest millisecond value that can be represented by this class.
+    /// <summary>
+    ///     The highest millisecond value that can be represented by this class.
+    /// </summary>
     public const uint MaxMilliseconds = 47_721_858;
 
     /// <summary>

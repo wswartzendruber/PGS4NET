@@ -15,7 +15,7 @@ namespace PGS4NET;
 /// <summary>
 ///     Represents a PGS pixel.
 /// </summary>
-public struct PgsPixel
+public struct PgsPixel : IEquatable<PgsPixel>
 {
     /// <summary>
     ///     The range-limited, gamma-corrected luminosity value of the pixel. Black is
