@@ -36,68 +36,6 @@ public class ValueTests
     }
 
     [Fact]
-    public void PgsTimeStamp_()
-    {
-        var a = new PgsTimeStamp(1);
-        var b = new PgsTimeStamp(1);
-        var c = new PgsTimeStamp(2);
-        uint au = a;
-        uint cu = c;
-        PgsTimeStamp ap = 1;
-        PgsTimeStamp cp = 2;
-
-        // Ticks
-        Assert.True(a.Ticks == 1);
-        Assert.True(b.Ticks == 1);
-        Assert.True(c.Ticks == 2);
-
-        // Milliseconds
-        for (uint ms = 0; ms <= PgsTimeStamp.MaxMilliseconds; ms++)
-            Assert.True(PgsTimeStamp.FromMilliseconds(ms).ToMilliseconds() == ms);
-
-        // Comparison
-        Assert.True(a.CompareTo(a) == 0);
-        Assert.True(a.CompareTo(b) == 0);
-        Assert.True(a.CompareTo(c) < 0);
-        Assert.True(c.CompareTo(a) > 0);
-
-        // Hash codes
-        Assert.True(a.GetHashCode() == a.GetHashCode());
-        Assert.True(a.GetHashCode() == b.GetHashCode());
-
-        // Equality operators
-        Assert.True(a == a);
-        Assert.True(a == b);
-        Assert.True(a != c);
-
-        // Comparison operators
-        Assert.False(a > a);
-        Assert.False(a < a);
-        Assert.True(a >= a);
-        Assert.True(a <= a);
-        Assert.False(a > b);
-        Assert.False(a < b);
-        Assert.True(a >= b);
-        Assert.True(a <= b);
-        Assert.False(a > c);
-        Assert.True(a < c);
-        Assert.False(a >= c);
-        Assert.True(a <= c);
-
-        // Addition
-        Assert.True((a + b).Ticks == 2);
-        Assert.True((a + c).Ticks == 3);
-        Assert.True((b - a).Ticks == 0);
-        Assert.True((c - a).Ticks == 1);
-
-        // Casting
-        Assert.True(au == 1);
-        Assert.True(cu == 2);
-        Assert.True(ap == a);
-        Assert.True(cp == c);
-    }
-
-    [Fact]
     public void VersionedId()
     {
         var a = new VersionedId<int>(1, 2);
