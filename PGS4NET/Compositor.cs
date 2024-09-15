@@ -40,12 +40,12 @@ public class Compositor
     private bool PrimaryPlaneHasSomething = false;
 
     /// <summary>
-    ///     The horizontal offset of the window's top-left corner.
+    ///     The horizontal offset of the window's top-left corner within the screen.
     /// </summary>
     public ushort X { get; }
 
     /// <summary>
-    ///     The vertical offset of the window's top-left corner.
+    ///     The vertical offset of the window's top-left corner within the screen.
     /// </summary>
     public ushort Y { get; }
 

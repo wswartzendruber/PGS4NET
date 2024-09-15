@@ -26,12 +26,12 @@ public class Caption
     public PgsTimeStamp Duration { get; set; }
 
     /// <summary>
-    ///     The horizontal offset of the caption's top-left within the screen.
+    ///     The horizontal offset of the object's top-left corner within the screen.
     /// </summary>
     public ushort X { get; set; }
 
     /// <summary>
-    ///     The vertical offset of the caption's top-left within the screen.
+    ///     The vertical offset of the object's top-left corner within the screen.
     /// </summary>
     public ushort Y { get; set; }
 
@@ -76,10 +76,10 @@ public class Caption
     ///     The duration for which the caption is visible.
     /// </param>
     /// <param name="x">
-    ///     The horizontal offset of the caption's top-left within the screen.
+    ///     The horizontal offset of the object's top-left corner within the screen.
     /// </param>
     /// <param name="y">
-    ///     The vertical offset of the caption's top-left within the screen.
+    ///     The vertical offset of the object's top-left corner within the screen.
     /// </param>
     /// <param name="width">
     ///     The width of the caption.

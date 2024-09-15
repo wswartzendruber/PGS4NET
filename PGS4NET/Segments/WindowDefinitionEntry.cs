@@ -23,12 +23,12 @@ public class WindowDefinitionEntry
     public byte Id { get; set; }
 
     /// <summary>
-    ///     The horizontal offset of the window's top-left corner relative to the screen.
+    ///     The horizontal offset of the window's top-left corner within the screen.
     /// </summary>
     public ushort X { get; set; }
 
     /// <summary>
-    ///     The vertical offset of the window's top-left corner relative to the screen.
+    ///     The vertical offset of the window's top-left corner within the screen.
     /// </summary>
     public ushort Y { get; set; }
 
@@ -56,10 +56,10 @@ public class WindowDefinitionEntry
     ///     The ID of this window within the epoch.
     /// </param>
     /// <param name="x">
-    ///     The horizontal offset of the window's top-left corner relative to the screen.
+    ///     The horizontal offset of the window's top-left corner within the screen.
     /// </param>
     /// <param name="y">
-    ///     The vertical offset of the window's top-left corner relative to the screen.
+    ///     The vertical offset of the window's top-left corner within the screen.
     /// </param>
     /// <param name="width">
     ///     The width of the window.

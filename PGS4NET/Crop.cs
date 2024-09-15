@@ -19,14 +19,12 @@ namespace PGS4NET;
 public class Crop
 {
     /// <summary>
-    ///     The horizontal offset of the visible area's top-left corner relative to the top-left
-    ///     corner of the object itself.
+    ///     The horizontal offset of the visible area's top-left corner within the object.
     /// </summary>
     public ushort X { get; set; }
 
     /// <summary>
-    ///     The vertical offset of the visible area's top-left corner relative to the top-left
-    ///     corner of the object itself.
+    ///     The vertical offset of the visible area's top-left corner within the object.
     /// </summary>
     public ushort Y { get; set; }
 
@@ -44,12 +42,10 @@ public class Crop
     ///     Initializes a new instance with the provided offset and size.
     /// </summary>
     /// <param name="x">
-    ///     The horizontal offset of the visible area's top-left corner relative to the top-left
-    ///     corner of the object itself.
+    ///     The horizontal offset of the visible area's top-left corner within the object.
     /// </param>
     /// <param name="y">
-    ///     The vertical offset of the visible area's top-left corner relative to the top-left
-    ///     corner of the object itself.
+    ///     The vertical offset of the visible area's top-left corner within the object.
     /// </param>
     /// <param name="width">
     ///     The width of the visible area.

@@ -18,15 +18,14 @@ namespace PGS4NET.DisplaySets;
 public class DisplayComposition
 {
     /// <summary>
-    ///     The horizontal offset of the object's top-left corner relative to the top-left
-    ///     corner of the screen. If the object is cropped, then this applies only to the
-    ///     visible area.
+    ///     The horizontal offset of the object's top-left corner within the screen. If the
+    ///     object is cropped, then this applies only to the visible area.
     /// </summary>
     public ushort X { get; set; }
 
     /// <summary>
-    ///     The vertical offset of the object's top-left corner relative to the top-left corner
-    ///     of the screen. If the object is cropped, then this applies only to the visible area.
+    ///     The vertical offset of the object's top-left corner within the screen. If the
+    ///     object is cropped, then this applies only to the visible area.
     /// </summary>
     public ushort Y { get; set; }
 
@@ -53,13 +52,12 @@ public class DisplayComposition
     ///     Initializes a new instance with the provided values.
     /// </summary>
     /// <param name="x">
-    ///     The horizontal offset of the object's top-left corner relative to the top-left
-    ///     corner of the screen. If the object is cropped, then this applies only to the
-    ///     visible area.
+    ///     The horizontal offset of the object's top-left corner within the screen. If the
+    ///     object is cropped, then this applies only to the visible area.
     /// </param>
     /// <param name="y">
-    ///     The vertical offset of the object's top-left corner relative to the top-left corner
-    ///     of the screen. If the object is cropped, then this applies only to the visible area.
+    ///     The vertical offset of the object's top-left corner within the screen. If the
+    ///     object is cropped, then this applies only to the visible area.
     /// </param>
     /// <param name="forced">
     ///     Whether or not the composition object is forced. This is typically used to translate
