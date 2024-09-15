@@ -14,6 +14,9 @@ using PGS4NET.DisplaySets;
 
 namespace PGS4NET.Captions;
 
+/// <summary>
+///     Constructs captions from PGS segments.
+/// </summary>
 public class CaptionComposer
 {
     private static readonly CaptionException PaletteUndefinedException
@@ -25,6 +28,16 @@ public class CaptionComposer
     private readonly Dictionary<byte, DisplayPalette> Palettes = new();
     private readonly Dictionary<ushort, DisplayObject> Objects = new();
 
+    /// <summary>
+    ///     Inputs a PGS display set into the composer, causing <see cref="NewCaption" /> to
+    ///     fire each time a new <see cref="Caption" /> becomes available.
+    /// </summary>
+    /// <param name="displaySet">
+    ///     The displaySet to input.
+    /// </param>
+    /// <exception cref="CaptionException">
+    ///     The <paramref name="displaySet" /> is not valid given the composer's state.
+    /// </exception>
     public void Input(DisplaySet displaySet)
     {
         if (displaySet.CompositionState == CompositionState.EpochStart)
@@ -129,12 +142,19 @@ public class CaptionComposer
         }
     }
 
+    /// <summary>
+    ///     Flushes any graphics which are present, causing <see cref="NewCaption" /> to fire
+    ///     should any new <see cref="Caption" />s be available as a result.
+    /// </summary>
     public void Flush(PgsTimeStamp timeStamp)
     {
         foreach (var compositor in Compositors.Values)
             compositor.Clear(timeStamp);
     }
 
+    /// <summary>
+    ///     Resets the state of the composer.
+    /// </summary>
     public void Reset()
     {
         Compositors.Clear();
@@ -142,6 +162,9 @@ public class CaptionComposer
         Objects.Clear();
     }
 
+    /// <summary>
+    ///     Invoked when a new caption is ready.
+    /// </summary>
     protected virtual void OnNewCaption(Caption caption)
     {
         NewCaption?.Invoke(this, caption);
@@ -159,5 +182,8 @@ public class CaptionComposer
         return newCompositor;
     }
 
+    /// <summary>
+    ///     Fires when a new caption is ready.
+    /// </summary>
     public event EventHandler<Caption>? NewCaption;
 }

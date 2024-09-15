@@ -10,29 +10,92 @@
 
 namespace PGS4NET.Captions;
 
+/// <summary>
+///     Represents a graphic with a defined location that appears for a specific amount of time.
+/// </summary>
 public class Caption
 {
+    /// <summary>
+    ///     The at which the caption appears.
+    /// </summary>
     public PgsTimeStamp TimeStamp { get; set; }
 
+    /// <summary>
+    ///     The duration for which the caption is visible.
+    /// </summary>
     public PgsTimeStamp Duration { get; set; }
 
+    /// <summary>
+    ///     The horizontal offset of the caption's top-left within the screen.
+    /// </summary>
     public ushort X { get; set; }
 
+    /// <summary>
+    ///     The vertical offset of the caption's top-left within the screen.
+    /// </summary>
     public ushort Y { get; set; }
 
+    /// <summary>
+    ///     The width of the caption.
+    /// </summary>
     public ushort Width { get; set; }
 
+    /// <summary>
+    ///     The height of the caption.
+    /// </summary>
     public ushort Height { get; set; }
 
+    /// <summary>
+    ///     An ordered list of object pixel data where each value contains a YCbCr pixel. The
+    ///     collection scans horizontally from left to right, top to bottom. The length should
+    ///     be the product of the <see cref="Width" /> and the <see cref="Height" />.
+    /// </summary>
     public PgsPixel[] Data { get; set; }
 
+    /// <summary>
+    ///     Whether or not the caption is forced. This is typically used to translate foreign
+    ///     dialogue or text that appears.
+    /// </summary>
     public bool Forced { get; set; }
 
+    /// <summary>
+    ///     Initializes a new instance with default values including an empty data buffer.
+    /// </summary>
     public Caption()
     {
         Data = new PgsPixel[0];
     }
 
+    /// <summary>
+    ///     Initializes a new instance with the provided values.
+    /// </summary>
+    /// <param name="timeStamp">
+    ///     The at which the caption appears.
+    /// </param>
+    /// <param name="duration">
+    ///     The duration for which the caption is visible.
+    /// </param>
+    /// <param name="x">
+    ///     The horizontal offset of the caption's top-left within the screen.
+    /// </param>
+    /// <param name="y">
+    ///     The vertical offset of the caption's top-left within the screen.
+    /// </param>
+    /// <param name="width">
+    ///     The width of the caption.
+    /// </param>
+    /// <param name="height">
+    ///     The height of the caption.
+    /// </param>
+    /// <param name="data">
+    ///     An ordered list of object pixel data where each value contains a YCbCr pixel. The
+    ///     collection scans horizontally from left to right, top to bottom. The length should
+    ///     be the product of the <see cref="Width" /> and the <see cref="Height" />.
+    /// </param>
+    /// <param name="forced">
+    ///     Whether or not the caption is forced. This is typically used to translate foreign
+    ///     dialogue or text that appears.
+    /// </param>
     public Caption(PgsTimeStamp timeStamp, PgsTimeStamp duration, ushort x, ushort y
         , ushort width, ushort height, PgsPixel[] data, bool forced)
     {

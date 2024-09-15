@@ -30,8 +30,9 @@ public class DisplayObject
 
     /// <summary>
     ///     An ordered list of object pixel data where each byte addresses a palette entry
-    ///     during playback. The length should be the product of the <see cref="Width" />
-    ///     and the <see cref="Height" />.
+    ///     during playback. The collection scans horizontally from left to right, top to
+    ///     bottom. The length should be the product of the <see cref="Width" /> and the
+    ///     <see cref="Height" />.
     /// </summary>
     public byte[] Data { get; set; }
 
@@ -54,8 +55,9 @@ public class DisplayObject
     /// </param>
     /// <param name="data">
     ///     An ordered list of object pixel data where each byte addresses a palette entry
-    ///     during playback. The length should be the product of the <see cref="Width" />
-    ///     and the <see cref="Height" />.
+    ///     during playback. The collection scans horizontally from left to right, top to
+    ///     bottom. The length should be the product of the <see cref="Width" /> and the
+    ///     <see cref="Height" />.
     /// </param>
     public DisplayObject(ushort width, ushort height, byte[] data)
     {

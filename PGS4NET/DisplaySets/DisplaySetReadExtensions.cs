@@ -56,7 +56,7 @@ public static partial class DisplaySetExtensions
     /// <summary>
     ///     Attempts to asynchronously read all PGS display sets from a
     ///     <paramref name="stream" />, one at a time, as each one is consumed by an
-    ///     asynchronously enumerator.
+    ///     asynchronous enumerator.
     /// </summary>
     /// <remarks>
     ///     The current position of the <paramref name="stream" /> must be at the beginning of a
