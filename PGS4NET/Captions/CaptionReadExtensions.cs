@@ -90,7 +90,7 @@ public static partial class CaptionExtensions
     ///     The token to monitor for cancellation requests.
     /// </param>
     /// <returns>
-    ///     An enumerator over captions being read.
+    ///     An asynchronous enumerator over captions being read.
     /// </returns>
     /// <exception cref="CaptionException">
     ///     Multiple display sets cannot be composed into a caption.
