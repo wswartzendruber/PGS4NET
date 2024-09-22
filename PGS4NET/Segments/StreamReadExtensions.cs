@@ -20,7 +20,7 @@ namespace PGS4NET.Segments;
 /// <summary>
 ///     Extension methods against <see cref="System.IO.Stream" /> for reading PGS segments.
 /// </summary>
-public static partial class SegmentExtensions
+public static class StreamReadExtensions
 {
     /// <summary>
     ///     Attempts to read all PGS segments from a <paramref name="stream" />, one at a time,

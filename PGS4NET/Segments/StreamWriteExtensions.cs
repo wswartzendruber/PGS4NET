@@ -19,7 +19,7 @@ namespace PGS4NET.Segments;
 /// <summary>
 ///     Extension methods against <see cref="System.IO.Stream" /> for writing PGS segments.
 /// </summary>
-public static partial class SegmentExtensions
+public static class StreamWriteExtensions
 {
     /// <summary>
     ///     Writes all PGS segments in a collection to a <paramref name="stream" />.
