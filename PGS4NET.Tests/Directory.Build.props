@@ -35,4 +35,10 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="sintel-en.sup">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

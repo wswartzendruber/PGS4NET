@@ -21,11 +21,12 @@ for .NET Standard 2.0.
 
 Different portions of this project are placed under different licenses:
 
-| Component     | License                    | SPDX ID                           |
-|---------------|----------------------------|-----------------------------------|
-| Library       | Mozilla Public License 2.0 | [`MPL-2.0`](LICENSES/MPL-2.0.txt) |
-| Documentation | Mozilla Public License 2.0 | [`MPL-2.0`](LICENSES/MPL-2.0.txt) |
-| Images        | Mozilla Public License 2.0 | [`MPL-2.0`](LICENSES/MPL-2.0.txt) |
-| Examples      | Public Domain              | [`CC0-1.0`](LICENSES/CC0-1.0.txt) |
-| Build scripts | Public Domain              | [`CC0-1.0`](LICENSES/CC0-1.0.txt) |
-| Unit tests    | Public Domain              | [`CC0-1.0`](LICENSES/CC0-1.0.txt) |
+| Component                       | License                                   | SPDX ID                               |
+|---------------------------------|-------------------------------------------|---------------------------------------|
+| Library                         | Mozilla Public License 2.0                | [`MPL-2.0`](LICENSES/MPL-2.0.txt)     |
+| Documentation                   | Mozilla Public License 2.0                | [`MPL-2.0`](LICENSES/MPL-2.0.txt)     |
+| Images                          | Mozilla Public License 2.0                | [`MPL-2.0`](LICENSES/MPL-2.0.txt)     |
+| Examples                        | Creative Commons Zero v1.0 Universal      | [`CC0-1.0`](LICENSES/CC0-1.0.txt)     |
+| Build scripts                   | Creative Commons Zero v1.0 Universal      | [`CC0-1.0`](LICENSES/CC0-1.0.txt)     |
+| Unit tests (original code)      | Creative Commons Zero v1.0 Universal      | [`CC0-1.0`](LICENSES/CC0-1.0.txt)     |
+| Unit tests (_Sintel_ subtitles) | Creative Commons Attribution 3.0 Unported | [`CC-BY-3.0`](LICENSES/CC-BY-3.0.txt) |
