@@ -19,6 +19,16 @@ namespace PGS4NET.Captions;
 /// </summary>
 public static class IEnumerableExtensions
 {
+    /// <summary>
+    ///     Constructs all display sets in a collection into captions, multiple display sets at
+    ///     a time, as the captions are consumed by an enumerator.
+    /// </summary>
+    /// <param name="displaySets">
+    ///     The collection of display sets to construct.
+    /// </param>
+    /// <returns>
+    ///     An enumerator over the constructed captions.
+    /// </returns>
     public static IEnumerable<Caption> Captions(this IEnumerable<DisplaySet> displaySets)
     {
         var composer = new CaptionComposer();
@@ -41,4 +51,40 @@ public static class IEnumerableExtensions
             }
         }
     }
+
+#if NETSTANDARD2_1_OR_GREATER
+    /// <summary>
+    ///     Constructs all display sets in an asynchronous collection into captions, multiple
+    ///     display sets at a time, as the captions are consumed by an asynchronous enumerator.
+    /// </summary>
+    /// <param name="displaySets">
+    ///     The asynchronous collection of display sets to construct.
+    /// </param>
+    /// <returns>
+    ///     An asynchronous enumerator over the constructed captions.
+    /// </returns>
+    public static async IAsyncEnumerable<Caption> CaptionsAsync(
+        this IAsyncEnumerable<DisplaySet> displaySets)
+    {
+        var composer = new CaptionComposer();
+        Caption? caption = null;
+
+        composer.NewCaption += (_, caption_) =>
+        {
+            caption = caption_;
+        };
+
+        await foreach (var displaySet in displaySets)
+        {
+            composer.Input(displaySet);
+
+            if (caption is Caption caption_)
+            {
+                yield return caption_;
+
+                caption = null;
+            }
+        }
+    }
+#endif
 }
