@@ -17,7 +17,7 @@ namespace PGS4NET.Captions;
 ///     Extension methods against <see cref="System.Collections.Generic.IEnumerable{T}" /> for
 ///     constructing captions;
 /// </summary>
-public static class EnumerableExtensions
+public static class IEnumerableExtensions
 {
     public static IEnumerable<Caption> Captions(this IEnumerable<DisplaySet> displaySets)
     {

@@ -17,7 +17,7 @@ namespace PGS4NET.Segments;
 ///     Extension methods against <see cref="System.Collections.Generic.IEnumerable{T}" /> for
 ///     deconstructing display sets;
 /// </summary>
-public static class EnumerableExtensions
+public static class IEnumerableExtensions
 {
     public static IEnumerable<Segment> Segments(this IEnumerable<DisplaySet> displaySets)
     {

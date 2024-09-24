@@ -10,54 +10,55 @@
  * SPDX-License-Identifier: CC0-1.0
  */
 
-using PGS4NET.Segments;
+using PGS4NET.DisplaySets;
 
-namespace PGS4NET.Tests.Segments;
+namespace PGS4NET.Tests.DisplaySets;
 
 public class StreamTests
 {
     [Fact]
-    public void EnumerateWriteAllSegments()
+    public void EnumerateWriteAllDisplaySets()
     {
         using var inputStream = new MemoryStream(SintelSubtitles.Buffer);
         using var outputStream = new MemoryStream();
 
-        outputStream.WriteAllSegments(inputStream.Segments());
+        outputStream.WriteAllDisplaySets(inputStream.DisplaySets());
 
         Assert.True(inputStream.ToArray().SequenceEqual(outputStream.ToArray()));
     }
 
 #if TEST_NETSTANDARD2_1
     [Fact]
-    public async Task EnumerateWriteAllSegmentsAsync()
+    public async Task EnumerateWriteAllDisplaySetsAsync()
     {
         using var inputStream = new MemoryStream(SintelSubtitles.Buffer);
         using var outputStream = new MemoryStream();
 
-        await outputStream.WriteAllSegmentsAsync(inputStream.SegmentsAsync());
+        await outputStream.WriteAllDisplaySetsAsync(inputStream.DisplaySetsAsync());
 
         Assert.True(inputStream.ToArray().SequenceEqual(outputStream.ToArray()));
     }
 #endif
 
     [Fact]
-    public void ReadWriteAllSegments()
+    public void ReadWriteAllDisplaySets()
     {
         using var inputStream = new MemoryStream(SintelSubtitles.Buffer);
         using var outputStream = new MemoryStream();
 
-        outputStream.WriteAllSegments(inputStream.ReadAllSegments());
+        outputStream.WriteAllDisplaySets(inputStream.ReadAllDisplaySets());
 
         Assert.True(inputStream.ToArray().SequenceEqual(outputStream.ToArray()));
     }
 
     [Fact]
-    public async Task ReadWriteAllSegmentsAsync()
+    public async Task ReadWriteAllDisplaySetsAsync()
     {
         using var inputStream = new MemoryStream(SintelSubtitles.Buffer);
         using var outputStream = new MemoryStream();
 
-        await outputStream.WriteAllSegmentsAsync(await inputStream.ReadAllSegmentsAsync());
+        await outputStream.WriteAllDisplaySetsAsync(
+            await inputStream.ReadAllDisplaySetsAsync());
 
         Assert.True(inputStream.ToArray().SequenceEqual(outputStream.ToArray()));
     }

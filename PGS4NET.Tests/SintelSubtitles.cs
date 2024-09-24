@@ -20,7 +20,7 @@ public static class SintelSubtitles
 
     static SintelSubtitles()
     {
-        var pwd = Assembly.GetExecutingAssembly().Location;
+        var pwd = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
         var subtitlesFile = Path.Join(pwd, "sintel-en.sup");
 
         Buffer = File.ReadAllBytes(subtitlesFile);

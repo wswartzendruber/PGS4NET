@@ -70,11 +70,11 @@ public static class Rle
         byte value = 0x00;
         uint count = 0;
 
-        for (ushort x = 0; x < input.Length; x += width)
+        for (uint x = 0; x < input.Length; x += width)
         {
             var end = x + width;
 
-            for (ushort i = x; i < end; i++)
+            for (uint i = x; i < end; i++)
             {
                 var current = input[i];
 
