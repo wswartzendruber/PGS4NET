@@ -214,48 +214,4 @@ public class Failures
                 throw new Exception("Expected specific error message on header EOF.");
         }
     }
-
-    // [Fact]
-    // public void IncompleteCollection1()
-    // {
-    //     var segments = new List<Segment>
-    //     {
-    //         new PresentationCompositionSegment(),
-    //     };
-
-    //     try
-    //     {
-    //         segments.DisplaySets().ToArray();
-
-    //         throw new Exception("Successfully read an incomplete display set.");
-    //     }
-    //     catch (DisplaySetException dse)
-    //     {
-    //         if (dse.Message != "Incomplete display set from trailing segments.")
-    //             throw new Exception("Expected specific error message on composition.");
-    //     }
-    // }
-
-    // [Fact]
-    // public void IncompleteCollection2()
-    // {
-    //     var segments = new List<Segment>
-    //     {
-    //         new PresentationCompositionSegment(),
-    //         new EndSegment(),
-    //         new PresentationCompositionSegment(),
-    //     };
-
-    //     try
-    //     {
-    //         segments.DisplaySets().ToArray();
-
-    //         throw new Exception("Successfully read an incomplete display set.");
-    //     }
-    //     catch (DisplaySetException dse)
-    //     {
-    //         if (dse.Message != "Incomplete display set from trailing segments.")
-    //             throw new Exception("Expected specific error message on composition.");
-    //     }
-    // }
 }
