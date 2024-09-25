@@ -139,6 +139,10 @@ public class Compositor
     /// <param name="displayPalette">
     ///     The palette to use when drawing the objects.
     /// </param>
+    /// <exception cref="CaptionException">
+    ///     The PTS value of a display set is less than or equal to the PTS value of the
+    ///     previous display set.
+    /// </exception>
     public void Draw(PgsTimeStamp timeStamp, CompositionEnumerable compositions
         , DisplayPalette displayPalette)
     {

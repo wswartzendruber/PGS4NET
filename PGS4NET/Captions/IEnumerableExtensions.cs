@@ -29,6 +29,21 @@ public static class IEnumerableExtensions
     /// <returns>
     ///     An enumerator over the constructed captions.
     /// </returns>
+    /// <exception cref="CaptionException">
+    ///     <list type="bullet">
+    ///         <item>
+    ///             <description>
+    ///                 A display set is not valid to compose a caption it should be in.
+    ///             </description>
+    ///         </item>
+    ///         <item>
+    ///             <description>
+    ///                 The PTS value of a display set is less than or equal to the PTS value of
+    ///                 the previous display set.
+    ///             </description>
+    ///         </item>
+    ///     </list>
+    /// </exception>
     public static IEnumerable<Caption> Captions(this IEnumerable<DisplaySet> displaySets)
     {
         var composer = new CaptionComposer();
@@ -63,6 +78,21 @@ public static class IEnumerableExtensions
     /// <returns>
     ///     An asynchronous enumerator over the constructed captions.
     /// </returns>
+    /// <exception cref="CaptionException">
+    ///     <list type="bullet">
+    ///         <item>
+    ///             <description>
+    ///                 A display set is not valid to compose a caption it should be in.
+    ///             </description>
+    ///         </item>
+    ///         <item>
+    ///             <description>
+    ///                 The PTS value of a display set is less than or equal to the PTS value of
+    ///                 the previous display set.
+    ///             </description>
+    ///         </item>
+    ///     </list>
+    /// </exception>
     public static async IAsyncEnumerable<Caption> CaptionsAsync(
         this IAsyncEnumerable<DisplaySet> displaySets)
     {

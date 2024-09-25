@@ -33,6 +33,20 @@ public static class IEnumerableExtensions
     /// <returns>
     ///     An enumerator over the constructed display sets.
     /// </returns>
+    /// <exception cref="DisplaySetException">
+    ///     <list type="bullet">
+    ///         <item>
+    ///             <description>
+    ///                 A segment is not valid to construct the display set it's in.
+    ///             </description>
+    ///         </item>
+    ///         <item>
+    ///             <description>
+    ///                 Trailing segments do not form a complete display set.
+    ///             </description>
+    ///         </item>
+    ///     </list>
+    /// </exception>
     public static IEnumerable<DisplaySet> DisplaySets(this IEnumerable<Segment> segments)
     {
         var complete = true;
@@ -77,6 +91,20 @@ public static class IEnumerableExtensions
     /// <returns>
     ///     An asynchronous enumerator over the constructed display sets.
     /// </returns>
+    /// <exception cref="DisplaySetException">
+    ///     <list type="bullet">
+    ///         <item>
+    ///             <description>
+    ///                 A segment is not valid to construct the display set it's in.
+    ///             </description>
+    ///         </item>
+    ///         <item>
+    ///             <description>
+    ///                 Trailing segments do not form a complete display set.
+    ///             </description>
+    ///         </item>
+    ///     </list>
+    /// </exception>
     public static async IAsyncEnumerable<DisplaySet> DisplaySetsAsync(
         this IAsyncEnumerable<Segment> segments)
     {
