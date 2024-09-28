@@ -15,7 +15,7 @@ namespace PGS4NET;
 /// <summary>
 ///     Represents a RGB pixel.
 /// </summary>
-public struct RgbCoefficients : IEquatable<RgbCoefficients>
+public struct ColorSpace : IEquatable<ColorSpace>
 {
     /// <summary>
     ///     Preconfigured RGB coefficients for BT.709.
@@ -25,7 +25,7 @@ public struct RgbCoefficients : IEquatable<RgbCoefficients>
     ///     HDTV. These coefficients are also valid for sRGB. Most SDR (standard dynamic range)
     ///     content will use them.
     /// </remarks>
-    public static readonly RgbCoefficients Bt709RgbCoefficients = new(0.2126, 0.7152, 0.0722);
+    public static readonly ColorSpace Bt709ColorSpace = new(0.2126, 0.7152, 0.0722);
 
     /// <summary>
     ///     Preconfigured RGB coefficients for BT.2020.
@@ -34,22 +34,22 @@ public struct RgbCoefficients : IEquatable<RgbCoefficients>
     ///     These should be used for the later 4K-UHD incarnation of Blu-ray (in the black
     ///     cases). All HDR (high dynamic range) content should use them.
     /// </remarks>
-    public static readonly RgbCoefficients Bt2020RgbCoefficients = new(0.2627, 0.6780, 0.0593);
+    public static readonly ColorSpace Bt2020ColorSpace = new(0.2627, 0.6780, 0.0593);
 
     /// <summary>
     ///     The red coefficient.
     /// </summary>
-    public double Red { get; private set; }
+    public readonly double Red;
 
     /// <summary>
     ///     The green coefficient.
     /// </summary>
-    public double Green { get; private set; }
+    public readonly double Green;
 
     /// <summary>
     ///     The blue coefficient.
     /// </summary>
-    public double Blue { get; private set; }
+    public readonly double Blue;
 
     /// <summary>
     ///     Creates a new instance with the provided color coefficients.
@@ -63,7 +63,7 @@ public struct RgbCoefficients : IEquatable<RgbCoefficients>
     /// <param name="blue">
     ///     The blue coefficient.
     /// </param>
-    public RgbCoefficients(double red, double green, double blue)
+    public ColorSpace(double red, double green, double blue)
     {
         Red = red;
         Green = green;
@@ -73,7 +73,7 @@ public struct RgbCoefficients : IEquatable<RgbCoefficients>
     /// <summary>
     ///     Determines if the values of this instance matches another one's.
     /// </summary>
-    public bool Equals(RgbCoefficients other) =>
+    public bool Equals(ColorSpace other) =>
         other.Red == this.Red
             && other.Green == this.Green
             && other.Blue == this.Blue;
@@ -82,7 +82,7 @@ public struct RgbCoefficients : IEquatable<RgbCoefficients>
     ///     Determines if the type and values of this instance matches another one's.
     /// </summary>
     public override bool Equals(object? other) =>
-        other?.GetType() == typeof(RgbCoefficients) && Equals((RgbCoefficients)other);
+        other?.GetType() == typeof(ColorSpace) && Equals((ColorSpace)other);
 
     /// <summary>
     ///     Calculates and returns the hash code of this instance using its immutable state.
@@ -102,15 +102,15 @@ public struct RgbCoefficients : IEquatable<RgbCoefficients>
     }
 
     /// <summary>
-    ///     Determines if the values of two <see cref="RgbCoefficients" />s match each other.
+    ///     Determines if the values of two <see cref="ColorSpace" />s match each other.
     /// </summary>
-    public static bool operator ==(RgbCoefficients first, RgbCoefficients second) =>
+    public static bool operator ==(ColorSpace first, ColorSpace second) =>
         first.Equals(second);
 
     /// <summary>
-    ///     Determines if the values of two <see cref="RgbCoefficients" />s don't match each
+    ///     Determines if the values of two <see cref="ColorSpace" />s don't match each
     ///     other.
     /// </summary>
-    public static bool operator !=(RgbCoefficients first, RgbCoefficients second) =>
+    public static bool operator !=(ColorSpace first, ColorSpace second) =>
         !first.Equals(second);
 }

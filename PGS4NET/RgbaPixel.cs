@@ -20,22 +20,22 @@ public struct RgbaPixel : IEquatable<RgbaPixel>
     /// <summary>
     ///     The mangitude of the red channel, ranging from <c>0</c> to <c>1</c>.
     /// </summary>
-    public double Red { get; private set; }
+    public readonly double Red;
 
     /// <summary>
     ///     The mangitude of the green channel, ranging from <c>0</c> to <c>1</c>.
     /// </summary>
-    public double Green { get; private set; }
+    public readonly double Green;
 
     /// <summary>
     ///     The mangitude of the blue channel, ranging from <c>0</c> to <c>1</c>.
     /// </summary>
-    public double Blue { get; private set; }
+    public readonly double Blue;
 
     /// <summary>
     ///     The alpha value (transparency ratio), ranging from <c>0</c> to <c>1</c>.
     /// </summary>
-    public double Alpha { get; private set; }
+    public readonly double Alpha;
 
     /// <summary>
     ///     Creates a new instance with the provided color values.

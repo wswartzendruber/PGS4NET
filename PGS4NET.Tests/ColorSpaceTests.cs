@@ -16,12 +16,12 @@ using PGS4NET;
 
 namespace PGS4NET.Tests;
 
-public class RgbCoefficientsTests
+public class ColorSpaceTests
 {
     [Fact]
     public void Properties()
     {
-        var a = new RgbCoefficients(0.01, 0.02, 0.03);
+        var a = new ColorSpace(0.01, 0.02, 0.03);
 
         Assert.True(a.Red == 0.01);
         Assert.True(a.Green == 0.02);
@@ -31,8 +31,8 @@ public class RgbCoefficientsTests
     [Fact]
     public void HashCodes()
     {
-        var a = new RgbCoefficients(0.01, 0.02, 0.03);
-        var b = new RgbCoefficients(0.01, 0.02, 0.03);
+        var a = new ColorSpace(0.01, 0.02, 0.03);
+        var b = new ColorSpace(0.01, 0.02, 0.03);
 
         Assert.True(a.GetHashCode() == a.GetHashCode());
         Assert.True(a.GetHashCode() == b.GetHashCode());
@@ -41,11 +41,11 @@ public class RgbCoefficientsTests
     [Fact]
     public void Equality()
     {
-        var a = new RgbCoefficients(0.01, 0.02, 0.03);
-        var b = new RgbCoefficients(0.01, 0.02, 0.03);
-        var c = new RgbCoefficients(0.01, 0.02, 0.13);
-        var d = new RgbCoefficients(0.01, 0.12, 0.03);
-        var e = new RgbCoefficients(0.11, 0.02, 0.03);
+        var a = new ColorSpace(0.01, 0.02, 0.03);
+        var b = new ColorSpace(0.01, 0.02, 0.03);
+        var c = new ColorSpace(0.01, 0.02, 0.13);
+        var d = new ColorSpace(0.01, 0.12, 0.03);
+        var e = new ColorSpace(0.11, 0.02, 0.03);
 
         Assert.True(a.Equals(a));
         Assert.True(a.Equals(b));

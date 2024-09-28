@@ -23,24 +23,24 @@ public struct PgsPixel : IEquatable<PgsPixel>
     ///     <c>235</c>. For standard Blu-ray discs, the BT.709 transfer function is typically
     ///     used. However, 4K UltraHD discs seem to use the ST.2084 transfer function instead.
     /// </summary>
-    public byte Y { get; private set; }
+    public readonly byte Y;
 
     /// <summary>
     ///     The vertical position of the pixel on the YCbCr color plane, starting from the
     ///     bottom and going up.
     /// </summary>
-    public byte Cr { get; private set; }
+    public readonly byte Cr;
 
     /// <summary>
     ///     The horizontal position of the pixel on the YCbCr color plane, starting from the
     ///     left and going to the right.
     /// </summary>
-    public byte Cb { get; private set; }
+    public readonly byte Cb;
 
     /// <summary>
     ///     The alpha value (transparency ratio) of the pixel.
     /// </summary>
-    public byte Alpha { get; private set; }
+    public readonly byte Alpha;
 
     /// <summary>
     ///     Creates a new instance with the provided color values.
