@@ -79,7 +79,7 @@ internal static class DisplaySetInstances
                         new VersionedId<byte>(RandomByte(64), RandomByte()),
                         new DisplayPalette
                         {
-                            Entries = new Dictionary<byte, PgsPixel>
+                            Entries = new Dictionary<byte, YcbcraPixel>
                             {
                             },
                         }
@@ -88,11 +88,11 @@ internal static class DisplaySetInstances
                         new VersionedId<byte>((byte)(RandomByte(64) + 64), RandomByte()),
                         new DisplayPalette
                         {
-                            Entries = new Dictionary<byte, PgsPixel>
+                            Entries = new Dictionary<byte, YcbcraPixel>
                             {
                                 {
                                     RandomByte(),
-                                    new PgsPixel(RandomByte(), RandomByte(), RandomByte()
+                                    new YcbcraPixel(RandomByte(), RandomByte(), RandomByte()
                                         , RandomByte())
                                 },
                             },
@@ -102,21 +102,21 @@ internal static class DisplaySetInstances
                         new VersionedId<byte>((byte)(RandomByte(64) + 128), RandomByte()),
                         new DisplayPalette
                         {
-                            Entries = new Dictionary<byte, PgsPixel>
+                            Entries = new Dictionary<byte, YcbcraPixel>
                             {
                                 {
                                     RandomByte(64),
-                                    new PgsPixel(RandomByte(), RandomByte(), RandomByte()
+                                    new YcbcraPixel(RandomByte(), RandomByte(), RandomByte()
                                         , RandomByte())
                                 },
                                 {
                                     (byte)(RandomByte(64) + 64),
-                                    new PgsPixel(RandomByte(), RandomByte(), RandomByte()
+                                    new YcbcraPixel(RandomByte(), RandomByte(), RandomByte()
                                         , RandomByte())
                                 },
                                 {
                                     (byte)(RandomByte(64) + 128),
-                                    new PgsPixel(RandomByte(), RandomByte(), RandomByte()
+                                    new YcbcraPixel(RandomByte(), RandomByte(), RandomByte()
                                         , RandomByte())
                                 },
                             },

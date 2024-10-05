@@ -31,9 +31,9 @@ namespace PGS4NET;
 public class Compositor
 {
     private readonly uint Size;
-    private readonly PgsPixel[] Palette;
-    private readonly PgsPixel[] PrimaryPixels;
-    private readonly PgsPixel[] SecondaryPixels;
+    private readonly YcbcraPixel[] Palette;
+    private readonly YcbcraPixel[] PrimaryPixels;
+    private readonly YcbcraPixel[] SecondaryPixels;
 
     private PgsTimeStamp StartTimeStamp = default;
     private bool Forced = false;
@@ -65,9 +65,9 @@ public class Compositor
     public Compositor(DisplayWindow displayWindow)
     {
         Size = (uint)(displayWindow.Width * displayWindow.Height);
-        Palette = new PgsPixel[256];
-        PrimaryPixels = new PgsPixel[Size];
-        SecondaryPixels = new PgsPixel[Size];
+        Palette = new YcbcraPixel[256];
+        PrimaryPixels = new YcbcraPixel[Size];
+        SecondaryPixels = new YcbcraPixel[Size];
 
         X = displayWindow.X;
         Y = displayWindow.Y;
@@ -162,7 +162,7 @@ public class Compositor
 
         do
         {
-            var pixel = displayPalette.Entries.TryGetValue(i, out PgsPixel entry)
+            var pixel = displayPalette.Entries.TryGetValue(i, out YcbcraPixel entry)
                 ? entry
                 : default;
 
@@ -294,9 +294,9 @@ public class Compositor
         Reset(default, true);
     }
 
-    private PgsPixel[] CopyPlane(PgsPixel[] plane)
+    private YcbcraPixel[] CopyPlane(YcbcraPixel[] plane)
     {
-        var returnValue = new PgsPixel[plane.Length];
+        var returnValue = new YcbcraPixel[plane.Length];
 
         Array.Copy(plane, returnValue, returnValue.Length);
 

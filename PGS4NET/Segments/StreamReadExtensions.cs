@@ -408,7 +408,7 @@ public static class StreamReadExtensions
                 ?? throw new IOException($"EOS reading PDS[{i}] Cb value.");
             var alpha = ReadUInt8(buffer, offset + 4)
                 ?? throw new IOException($"EOS reading PDS[{i}] alpha value.");
-            var pixel = new PgsPixel(y, cr, cb, alpha);
+            var pixel = new YcbcraPixel(y, cb, cr, alpha);
             var pde = new PaletteDefinitionEntry(entryId, pixel);
 
             entries.Add(pde);

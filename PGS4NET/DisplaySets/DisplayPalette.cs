@@ -21,14 +21,14 @@ public class DisplayPalette
     /// <summary>
     ///     The entries within this palette, each mapped according to its ID.
     /// </summary>
-    public IDictionary<byte, PgsPixel> Entries { get; set; }
+    public IDictionary<byte, YcbcraPixel> Entries { get; set; }
 
     /// <summary>
     ///     Initializes a new instance with default values and an empty list of entries.
     /// </summary>
     public DisplayPalette()
     {
-        Entries = new Dictionary<byte, PgsPixel>();
+        Entries = new Dictionary<byte, YcbcraPixel>();
     }
 
     /// <summary>
@@ -37,7 +37,7 @@ public class DisplayPalette
     /// <param name="entries">
     ///     The entries within this palette, each mapped according to its ID.
     /// </param>
-    public DisplayPalette(IDictionary<byte, PgsPixel> entries)
+    public DisplayPalette(IDictionary<byte, YcbcraPixel> entries)
     {
         Entries = entries;
     }

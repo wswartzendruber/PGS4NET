@@ -71,8 +71,8 @@ public static class DisplaySetDecomposer
 
             foreach (var paletteEntry in palette.Value.Entries)
             {
-                var pixel = new PgsPixel(paletteEntry.Value.Y, paletteEntry.Value.Cr
-                    , paletteEntry.Value.Cb, paletteEntry.Value.Alpha);
+                var pixel = new YcbcraPixel(paletteEntry.Value.Y, paletteEntry.Value.Cb
+                    , paletteEntry.Value.Cr, paletteEntry.Value.Alpha);
                 var pde = new PaletteDefinitionEntry(paletteEntry.Key, pixel);
 
                 paletteEntries.Add(pde);

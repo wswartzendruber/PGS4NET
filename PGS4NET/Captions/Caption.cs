@@ -50,7 +50,7 @@ public class Caption
     ///     collection scans horizontally from left to right, top to bottom. The length should
     ///     be the product of the <see cref="Width" /> and the <see cref="Height" />.
     /// </summary>
-    public PgsPixel[] Data { get; set; }
+    public YcbcraPixel[] Data { get; set; }
 
     /// <summary>
     ///     Whether or not the caption is forced. This is typically used to translate foreign
@@ -63,7 +63,7 @@ public class Caption
     /// </summary>
     public Caption()
     {
-        Data = new PgsPixel[0];
+        Data = new YcbcraPixel[0];
     }
 
     /// <summary>
@@ -97,7 +97,7 @@ public class Caption
     ///     dialogue or text that appears.
     /// </param>
     public Caption(PgsTimeStamp timeStamp, PgsTimeStamp duration, ushort x, ushort y
-        , ushort width, ushort height, PgsPixel[] data, bool forced)
+        , ushort width, ushort height, YcbcraPixel[] data, bool forced)
     {
         TimeStamp = timeStamp;
         Duration = duration;

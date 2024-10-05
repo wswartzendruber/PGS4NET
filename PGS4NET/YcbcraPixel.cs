@@ -15,7 +15,7 @@ namespace PGS4NET;
 /// <summary>
 ///     Represents a PGS pixel.
 /// </summary>
-public struct PgsPixel : IEquatable<PgsPixel>
+public struct YcbcraPixel : IEquatable<YcbcraPixel>
 {
     /// <summary>
     ///     The range-limited, gamma-corrected luminosity value of the pixel. Black is
@@ -26,16 +26,16 @@ public struct PgsPixel : IEquatable<PgsPixel>
     public readonly byte Y;
 
     /// <summary>
-    ///     The vertical position of the pixel on the YCbCr color plane, starting from the
-    ///     bottom and going up.
-    /// </summary>
-    public readonly byte Cr;
-
-    /// <summary>
     ///     The horizontal position of the pixel on the YCbCr color plane, starting from the
     ///     left and going to the right.
     /// </summary>
     public readonly byte Cb;
+
+    /// <summary>
+    ///     The vertical position of the pixel on the YCbCr color plane, starting from the
+    ///     bottom and going up.
+    /// </summary>
+    public readonly byte Cr;
 
     /// <summary>
     ///     The alpha value (transparency ratio) of the pixel.
@@ -51,39 +51,39 @@ public struct PgsPixel : IEquatable<PgsPixel>
     ///     <c>235</c>. For standard Blu-ray discs, the BT.709 transfer function is typically
     ///     used. However, 4K UltraHD discs seem to use the ST.2084 transfer function instead.
     /// </param>
-    /// <param name="cr">
-    ///     The vertical position of the pixel on the YCbCr color plane, starting from the
-    ///     bottom and going up.
-    /// </param>
     /// <param name="cb">
     ///     The horizontal position of the pixel on the YCbCr color plane, starting from the
     ///     left and going to the right.
     /// </param>
+    /// <param name="cr">
+    ///     The vertical position of the pixel on the YCbCr color plane, starting from the
+    ///     bottom and going up.
+    /// </param>
     /// <param name="alpha">
     ///     The alpha value (transparency ratio) of the pixel.
     /// </param>
-    public PgsPixel(byte y, byte cr, byte cb, byte alpha)
+    public YcbcraPixel(byte y, byte cb, byte cr, byte alpha)
     {
         Y = y;
-        Cr = cr;
         Cb = cb;
+        Cr = cr;
         Alpha = alpha;
     }
 
     /// <summary>
     ///     Determines if the values of this instance matches another one's.
     /// </summary>
-    public bool Equals(PgsPixel other) =>
+    public bool Equals(YcbcraPixel other) =>
         other.Y == this.Y
-            && other.Cr == this.Cr
             && other.Cb == this.Cb
+            && other.Cr == this.Cr
             && other.Alpha == this.Alpha;
 
     /// <summary>
     ///     Determines if the type and values of this instance matches another one's.
     /// </summary>
     public override bool Equals(object? other) =>
-        other?.GetType() == typeof(PgsPixel) && Equals((PgsPixel)other);
+        other?.GetType() == typeof(YcbcraPixel) && Equals((YcbcraPixel)other);
 
     /// <summary>
     ///     Calculates and returns the hash code of this instance using its immutable state.
@@ -92,7 +92,7 @@ public struct PgsPixel : IEquatable<PgsPixel>
     {
         unchecked
         {
-            return (int)Y << 24 | (int)Cr << 16 | (int)Cb << 8 | (int)Alpha;
+            return (int)Y << 24 | (int)Cb << 16 | (int)Cr << 8 | (int)Alpha;
         }
     }
 
@@ -107,14 +107,14 @@ public struct PgsPixel : IEquatable<PgsPixel>
     }
 
     /// <summary>
-    ///     Determines if the values of two <see cref="PgsPixel" />s match each other.
+    ///     Determines if the values of two <see cref="YcbcraPixel" />s match each other.
     /// </summary>
-    public static bool operator ==(PgsPixel first, PgsPixel second) =>
+    public static bool operator ==(YcbcraPixel first, YcbcraPixel second) =>
         first.Equals(second);
 
     /// <summary>
-    ///     Determines if the values of two <see cref="PgsPixel" />s don't match each other.
+    ///     Determines if the values of two <see cref="YcbcraPixel" />s don't match each other.
     /// </summary>
-    public static bool operator !=(PgsPixel first, PgsPixel second) =>
+    public static bool operator !=(YcbcraPixel first, YcbcraPixel second) =>
         !first.Equals(second);
 }

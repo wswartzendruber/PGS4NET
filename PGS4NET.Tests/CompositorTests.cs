@@ -18,11 +18,11 @@ namespace PGS4NET.Tests;
 
 public class CompositorTests
 {
-    private static readonly PgsPixel Pixel1 = new PgsPixel(0x01, 0x01, 0x01, 0x01);
-    private static readonly PgsPixel Pixel2 = new PgsPixel(0x02, 0x02, 0x02, 0x02);
-    private static readonly PgsPixel Pixel3 = new PgsPixel(0x03, 0x03, 0x03, 0x03);
-    private static readonly PgsPixel Pixel4 = new PgsPixel(0x04, 0x04, 0x04, 0x04);
-    private static readonly PgsPixel Pixel5 = new PgsPixel(0x05, 0x05, 0x05, 0x05);
+    private static readonly YcbcraPixel Pixel1 = new YcbcraPixel(0x01, 0x01, 0x01, 0x01);
+    private static readonly YcbcraPixel Pixel2 = new YcbcraPixel(0x02, 0x02, 0x02, 0x02);
+    private static readonly YcbcraPixel Pixel3 = new YcbcraPixel(0x03, 0x03, 0x03, 0x03);
+    private static readonly YcbcraPixel Pixel4 = new YcbcraPixel(0x04, 0x04, 0x04, 0x04);
+    private static readonly YcbcraPixel Pixel5 = new YcbcraPixel(0x05, 0x05, 0x05, 0x05);
     private static readonly PgsTimeStamp TimeStamp1 = new PgsTimeStamp(8);
     private static readonly PgsTimeStamp TimeStamp2 = new PgsTimeStamp(16);
     private static readonly PgsTimeStamp TimeStamp3 = new PgsTimeStamp(24);
@@ -55,7 +55,7 @@ public class CompositorTests
     [Fact]
     public void FullWindowNoCrop()
     {
-        var entries = new Dictionary<byte, PgsPixel>
+        var entries = new Dictionary<byte, YcbcraPixel>
         {
             { 0, default },
             { 1, Pixel1 },
@@ -77,7 +77,7 @@ public class CompositorTests
         var composition = new DisplayComposition(8, 16, false, null);
         var compositor = new Compositor(window);
         var captions = new List<Caption>();
-        var expectedPixels1 = new PgsPixel[]
+        var expectedPixels1 = new YcbcraPixel[]
         {
             Pixel4, default, default, Pixel3,
             default, Pixel1, Pixel2, default,
@@ -110,7 +110,7 @@ public class CompositorTests
     [Fact]
     public void FullWindowCrop()
     {
-        var entries = new Dictionary<byte, PgsPixel>
+        var entries = new Dictionary<byte, YcbcraPixel>
         {
             { 0, default },
             { 1, Pixel1 },
@@ -133,7 +133,7 @@ public class CompositorTests
         var composition = new DisplayComposition(8, 16, false, new Crop(1, 1, 2, 3));
         var compositor = new Compositor(window);
         var captions = new List<Caption>();
-        var expectedPixels1 = new PgsPixel[]
+        var expectedPixels1 = new YcbcraPixel[]
         {
             Pixel1, Pixel2,
             Pixel3, Pixel4,
@@ -164,7 +164,7 @@ public class CompositorTests
     [Fact]
     public void PartialWindowNoCrop()
     {
-        var entries = new Dictionary<byte, PgsPixel>
+        var entries = new Dictionary<byte, YcbcraPixel>
         {
             { 0, default },
             { 1, Pixel1 },
@@ -187,7 +187,7 @@ public class CompositorTests
         var composition = new DisplayComposition(9, 17, false, null);
         var compositor = new Compositor(window);
         var captions = new List<Caption>();
-        var expectedPixels1 = new PgsPixel[]
+        var expectedPixels1 = new YcbcraPixel[]
         {
             default, default, default, default, default, default,
             default, Pixel5, Pixel5, Pixel5, Pixel5, default,
@@ -222,7 +222,7 @@ public class CompositorTests
     [Fact]
     public void PartialWindowCrop()
     {
-        var entries = new Dictionary<byte, PgsPixel>
+        var entries = new Dictionary<byte, YcbcraPixel>
         {
             { 0, default },
             { 1, Pixel1 },
@@ -245,7 +245,7 @@ public class CompositorTests
         var composition = new DisplayComposition(9, 17, false, new Crop(1, 1, 2, 3));
         var compositor = new Compositor(window);
         var captions = new List<Caption>();
-        var expectedPixels1 = new PgsPixel[]
+        var expectedPixels1 = new YcbcraPixel[]
         {
             default, default, default, default,
             default, Pixel1, Pixel2, default,
@@ -278,7 +278,7 @@ public class CompositorTests
     [Fact]
     public void OutsideWindowNoCrop()
     {
-        var entries = new Dictionary<byte, PgsPixel>
+        var entries = new Dictionary<byte, YcbcraPixel>
         {
             { 0, default },
             { 1, Pixel1 },
@@ -303,7 +303,7 @@ public class CompositorTests
         var composition = new DisplayComposition(7, 15, false, null);
         var compositor = new Compositor(window);
         var captions = new List<Caption>();
-        var expectedPixels1 = new PgsPixel[]
+        var expectedPixels1 = new YcbcraPixel[]
         {
             Pixel1, Pixel2, Pixel3, Pixel4,
             Pixel2, Pixel3, Pixel4, Pixel1,
@@ -336,7 +336,7 @@ public class CompositorTests
     [Fact]
     public void OutsideWindowCrop()
     {
-        var entries = new Dictionary<byte, PgsPixel>
+        var entries = new Dictionary<byte, YcbcraPixel>
         {
             { 0, default },
             { 1, Pixel1 },
@@ -361,7 +361,7 @@ public class CompositorTests
         var composition = new DisplayComposition(7, 15, false, new Crop(1, 1, 4, 5));
         var compositor = new Compositor(window);
         var captions = new List<Caption>();
-        var expectedPixels1 = new PgsPixel[]
+        var expectedPixels1 = new YcbcraPixel[]
         {
             Pixel3, Pixel4,
             Pixel4, Pixel1,
@@ -392,7 +392,7 @@ public class CompositorTests
     [Fact]
     public void NoOverlapNoCrop()
     {
-        var entries = new Dictionary<byte, PgsPixel>
+        var entries = new Dictionary<byte, YcbcraPixel>
         {
             { 0, default },
             { 1, Pixel1 },
@@ -433,7 +433,7 @@ public class CompositorTests
     [Fact]
     public void NoOverlapCrop()
     {
-        var entries = new Dictionary<byte, PgsPixel>
+        var entries = new Dictionary<byte, YcbcraPixel>
         {
             { 0, default },
             { 1, Pixel1 },
@@ -474,7 +474,7 @@ public class CompositorTests
     [Fact]
     public void ChangeDetection()
     {
-        var entries = new Dictionary<byte, PgsPixel>
+        var entries = new Dictionary<byte, YcbcraPixel>
         {
             { 0, default },
             { 1, Pixel1 },
@@ -511,17 +511,17 @@ public class CompositorTests
         var composition = new DisplayComposition(0, 0, false, null);
         var compositor = new Compositor(window);
         var captions = new List<Caption>();
-        var expectedPixels1 = new PgsPixel[]
+        var expectedPixels1 = new YcbcraPixel[]
         {
             Pixel1, Pixel1,
             Pixel1, Pixel1,
         };
-        var expectedPixels2 = new PgsPixel[]
+        var expectedPixels2 = new YcbcraPixel[]
         {
             Pixel2, Pixel2,
             Pixel2, Pixel2,
         };
-        var expectedPixels4 = new PgsPixel[]
+        var expectedPixels4 = new YcbcraPixel[]
         {
             Pixel4, Pixel4,
             Pixel4, Pixel4,
@@ -571,7 +571,7 @@ public class CompositorTests
     [Fact]
     public void AlternatingForcedFlag()
     {
-        var entries = new Dictionary<byte, PgsPixel>
+        var entries = new Dictionary<byte, YcbcraPixel>
         {
             { 0, default },
             { 1, Pixel1 },
@@ -609,17 +609,17 @@ public class CompositorTests
         var composition2 = new DisplayComposition(0, 0, true, null);
         var compositor = new Compositor(window);
         var captions = new List<Caption>();
-        var expectedPixels1 = new PgsPixel[]
+        var expectedPixels1 = new YcbcraPixel[]
         {
             Pixel1, Pixel1,
             Pixel1, Pixel1,
         };
-        var expectedPixels2 = new PgsPixel[]
+        var expectedPixels2 = new YcbcraPixel[]
         {
             Pixel1, Pixel1,
             Pixel1, Pixel1,
         };
-        var expectedPixels3 = new PgsPixel[]
+        var expectedPixels3 = new YcbcraPixel[]
         {
             Pixel1, Pixel1,
             Pixel1, Pixel1,

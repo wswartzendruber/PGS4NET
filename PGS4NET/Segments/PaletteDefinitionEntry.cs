@@ -29,7 +29,7 @@ public class PaletteDefinitionEntry
     /// <summary>
     ///     The color properties of this palette entry.
     /// </summary>
-    public PgsPixel Pixel { get; set; }
+    public YcbcraPixel Pixel { get; set; }
 
     /// <summary>
     ///     Initializes a new instance with default values.
@@ -47,7 +47,7 @@ public class PaletteDefinitionEntry
     /// <param name="pixel">
     ///     The color properties of this palette entry.
     /// </param>
-    public PaletteDefinitionEntry(byte id, PgsPixel pixel)
+    public PaletteDefinitionEntry(byte id, YcbcraPixel pixel)
     {
         Id = id;
         Pixel = pixel;

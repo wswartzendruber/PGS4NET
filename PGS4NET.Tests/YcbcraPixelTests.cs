@@ -16,24 +16,24 @@ using PGS4NET;
 
 namespace PGS4NET.Tests;
 
-public class PgsPixelTests
+public class YcbcraPixelTests
 {
     [Fact]
     public void Properties()
     {
-        var a = new PgsPixel(0x01, 0x02, 0x03, 0x04);
+        var a = new YcbcraPixel(0x01, 0x02, 0x03, 0x04);
 
         Assert.True(a.Y == 0x01);
-        Assert.True(a.Cr == 0x02);
-        Assert.True(a.Cb == 0x03);
+        Assert.True(a.Cb == 0x02);
+        Assert.True(a.Cr == 0x03);
         Assert.True(a.Alpha == 0x04);
     }
 
     [Fact]
     public void HashCodes()
     {
-        var a = new PgsPixel(0x01, 0x02, 0x03, 0x04);
-        var b = new PgsPixel(0x01, 0x02, 0x03, 0x04);
+        var a = new YcbcraPixel(0x01, 0x02, 0x03, 0x04);
+        var b = new YcbcraPixel(0x01, 0x02, 0x03, 0x04);
 
         Assert.True(a.GetHashCode() == a.GetHashCode());
         Assert.True(a.GetHashCode() == b.GetHashCode());
@@ -42,12 +42,12 @@ public class PgsPixelTests
     [Fact]
     public void Equality()
     {
-        var a = new PgsPixel(0x01, 0x02, 0x03, 0x04);
-        var b = new PgsPixel(0x01, 0x02, 0x03, 0x04);
-        var c = new PgsPixel(0x01, 0x02, 0x03, 0x14);
-        var d = new PgsPixel(0x01, 0x02, 0x13, 0x04);
-        var e = new PgsPixel(0x01, 0x12, 0x03, 0x04);
-        var f = new PgsPixel(0x11, 0x02, 0x03, 0x04);
+        var a = new YcbcraPixel(0x01, 0x02, 0x03, 0x04);
+        var b = new YcbcraPixel(0x01, 0x02, 0x03, 0x04);
+        var c = new YcbcraPixel(0x01, 0x02, 0x03, 0x14);
+        var d = new YcbcraPixel(0x01, 0x02, 0x13, 0x04);
+        var e = new YcbcraPixel(0x01, 0x12, 0x03, 0x04);
+        var f = new YcbcraPixel(0x11, 0x02, 0x03, 0x04);
 
         Assert.True(a.Equals(a));
         Assert.True(a.Equals(b));
