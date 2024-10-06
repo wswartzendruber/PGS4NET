@@ -99,8 +99,7 @@ public struct RgbaPixel : IEquatable<RgbaPixel>
     /// </summary>
     public override string ToString()
     {
-        return $"#{Red.ToString("X2")}{Green.ToString("X2")}{Blue.ToString("X2")}"
-            + $"{Alpha.ToString("X2")}";
+        return $"{Red}-{Green}-{Blue}-{Alpha}";
     }
 
     /// <summary>

@@ -81,10 +81,10 @@ public class ColorSpace : IEquatable<ColorSpace>
         Fg2 = -(blue / green) * (2.0 - 2.0 * blue);
         Fg3 = -(red / green) * (2.0 - 2.0 * red);
         Fb2 = 2.0 - 2.0 * blue;
-        Rb1 = -0.5 * (Red / (1.0 - Blue));
-        Rb2 = -0.5 * (Green / (1.0 - Blue));
-        Rr2 = -0.5 * (Green / (1.0 - Red));
-        Rr3 = -0.5 * (Blue / (1.0 - Red));
+        Rb1 = -0.5 * (red / (1.0 - blue));
+        Rb2 = -0.5 * (green / (1.0 - blue));
+        Rr2 = -0.5 * (green / (1.0 - red));
+        Rr3 = -0.5 * (blue / (1.0 - red));
     }
 
     /// <summary>
@@ -124,10 +124,10 @@ public class ColorSpace : IEquatable<ColorSpace>
         var y2 = (Compress(y1) * 255.0) - 0.25;
         var y3 = Math.Round(Math.Min(Math.Max(y2, 0.0), 255.0));
         var cb1 = Rb1 * rgbaPixel.Red + Rb2 * rgbaPixel.Green + 0.5 * rgbaPixel.Blue;
-        var cb2 = cb1 * 128.0;
+        var cb2 = (cb1 + 1.0) * 128.0;
         var cb3 = Math.Round(Math.Min(Math.Max(cb2, 0.0), 255.0));
         var cr1 = 0.5 * rgbaPixel.Red + Rr2 * rgbaPixel.Green + Rr3 * rgbaPixel.Blue;
-        var cr2 = cr1 * 128.0;
+        var cr2 = (cr1 + 1.0) * 128.0;
         var cr3 = Math.Round(Math.Min(Math.Max(cr2, 0.0), 255.0));
         var alpha1 = (rgbaPixel.Alpha) * 255.0;
         var alpha2 = Math.Round(Math.Min(Math.Max(alpha1, 0.0), 255.0));
@@ -137,14 +137,14 @@ public class ColorSpace : IEquatable<ColorSpace>
 
     public RgbaPixel YcbcraToRgba(YcbcraPixel ycbcraPixel)
     {
-        var y = Expand((double)ycbcraPixel.Y / 255.0);
-        var pb = ((double)ycbcraPixel.Cb - 128.0) / 128.0;
-        var pr = ((double)ycbcraPixel.Cr - 128.0) / 128.0;
-        var alpha = (double)ycbcraPixel.Alpha / 255.0;
+        var y = Expand(ycbcraPixel.Y / 255.0);
+        var pb = (ycbcraPixel.Cb - 128.0) / 128.0;
+        var pr = (ycbcraPixel.Cr - 128.0) / 128.0;
+        var alpha = ycbcraPixel.Alpha / 255.0;
 
-        var red = 1.0 + Fr3 * pr;
-        var green = 1.0 + Fg2 * pb + Fg3 * pr;
-        var blue = 1.0 + Fb2 * pb;
+        var red = 1.0 * y + Fr3 * pr;
+        var green = 1.0 * y + Fg2 * pb + Fg3 * pr;
+        var blue = 1.0 * y + Fb2 * pb;
 
         return new RgbaPixel(red, green, blue, alpha);
     }

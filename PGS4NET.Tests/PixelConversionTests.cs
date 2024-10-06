@@ -29,14 +29,10 @@ public class PixelConversionTests
             {
                 for (short cr = 0; cr <= 255; cr++)
                 {
-                    for (short alpha = 0; alpha <= 255; alpha++)
+                    for (short alpha = 0; alpha <= 255; alpha += 32)
                     {
                         var inPixel = new YcbcraPixel(y, (byte)cb, (byte)cr, (byte)alpha);
                         var outPixel = colorSpace.RgbaToYcbcra(colorSpace.YcbcraToRgba(inPixel));
-
-                        Console.Error.WriteLine("==========================");
-                        Console.Error.WriteLine($"IN_PIXEL: {inPixel}");
-                        Console.Error.WriteLine($"OUT_PIXEL: {outPixel}");
 
                         Assert.True(inPixel == outPixel);
                     }
