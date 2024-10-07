@@ -13,15 +13,16 @@ using System;
 namespace PGS4NET;
 
 /// <summary>
-///     Represents a PGS pixel.
+///     Represents a PGS pixel, which is typically limited range.
 /// </summary>
 public struct YcbcraPixel : IEquatable<YcbcraPixel>
 {
     /// <summary>
-    ///     The range-limited, gamma-corrected luminosity value of the pixel. Black is
-    ///     represented by a value of <c>16</c> while white is represented by a value of
-    ///     <c>235</c>. For standard Blu-ray discs, the BT.709 transfer function is typically
-    ///     used. However, 4K UltraHD discs seem to use the ST.2084 transfer function instead.
+    ///     The gamma-corrected luminosity value of the pixel. In the typical case of
+    ///     limited-range encoding, black is represented by a value of <c>16</c> while white is
+    ///     represented by a value of <c>235</c>. For standard Blu-ray discs, the BT.709
+    ///     transfer function is typically used. However, 4K UltraHD discs seem to use the
+    ///     ST.2084 transfer function instead.
     /// </summary>
     public readonly byte Y;
 
@@ -46,10 +47,11 @@ public struct YcbcraPixel : IEquatable<YcbcraPixel>
     ///     Creates a new instance with the provided color values.
     /// </summary>
     /// <param name="y">
-    ///     The range-limited, gamma-corrected luminosity value of the pixel. Black is
-    ///     represented by a value of <c>16</c> while white is represented by a value of
-    ///     <c>235</c>. For standard Blu-ray discs, the BT.709 transfer function is typically
-    ///     used. However, 4K UltraHD discs seem to use the ST.2084 transfer function instead.
+    ///     The gamma-corrected luminosity value of the pixel. In the typical case of
+    ///     limited-range encoding, black is represented by a value of <c>16</c> while white is
+    ///     represented by a value of <c>235</c>. For standard Blu-ray discs, the BT.709
+    ///     transfer function is typically used. However, 4K UltraHD discs seem to use the
+    ///     ST.2084 transfer function instead.
     /// </param>
     /// <param name="cb">
     ///     The horizontal position of the pixel on the YCbCr color plane, starting from the

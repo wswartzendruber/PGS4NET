@@ -13,7 +13,7 @@ using System;
 namespace PGS4NET;
 
 /// <summary>
-///     Represents a RGB pixel.
+///     Represents a RGBA pixel, which is always full-range.
 /// </summary>
 public struct RgbaPixel : IEquatable<RgbaPixel>
 {
@@ -99,7 +99,7 @@ public struct RgbaPixel : IEquatable<RgbaPixel>
     /// </summary>
     public override string ToString()
     {
-        return $"{Red}-{Green}-{Blue}-{Alpha}";
+        return $"R[{Red}]-G[{Green}]-B[{Blue}]-A[{Alpha}]";
     }
 
     /// <summary>

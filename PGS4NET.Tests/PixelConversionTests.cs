@@ -19,7 +19,7 @@ namespace PGS4NET.Tests;
 public class PixelConversionTests
 {
     [Fact]
-    public void RoundTripBt709()
+    public void RoundTripBt709LimitedRange()
     {
         var colorSpace = ColorSpace.Bt709ColorSpace;
 
@@ -32,7 +32,32 @@ public class PixelConversionTests
                     for (short alpha = 0; alpha <= 255; alpha += 32)
                     {
                         var inPixel = new YcbcraPixel(y, (byte)cb, (byte)cr, (byte)alpha);
-                        var outPixel = colorSpace.RgbaToYcbcra(colorSpace.YcbcraToRgba(inPixel));
+                        var outPixel = colorSpace.RgbaToYcbcra(
+                            colorSpace.YcbcraToRgba(inPixel, true), true);
+
+                        Assert.True(inPixel == outPixel);
+                    }
+                }
+            }
+        }
+    }
+
+    [Fact]
+    public void RoundTripBt709FullRange()
+    {
+        var colorSpace = ColorSpace.Bt709ColorSpace;
+
+        for (short y = 0; y <= 255; y++)
+        {
+            for (short cb = 0; cb <= 255; cb++)
+            {
+                for (short cr = 0; cr <= 255; cr++)
+                {
+                    for (short alpha = 0; alpha <= 255; alpha += 32)
+                    {
+                        var inPixel = new YcbcraPixel((byte)y, (byte)cb, (byte)cr, (byte)alpha);
+                        var outPixel = colorSpace.RgbaToYcbcra(
+                            colorSpace.YcbcraToRgba(inPixel, false), false);
 
                         Assert.True(inPixel == outPixel);
                     }

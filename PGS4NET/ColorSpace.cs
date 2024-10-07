@@ -118,10 +118,28 @@ public class ColorSpace : IEquatable<ColorSpace>
         }
     }
 
-    public YcbcraPixel RgbaToYcbcra(RgbaPixel rgbaPixel)
+    /// <summary>
+    ///     Converts a RGBA pixel to a YCbCrA pixel.
+    /// </summary>
+    /// <param name="rgbaPixel">
+    ///     The RGBA pixel to convert, which is always full-range.
+    /// </param>
+    /// <param name="limitedRange">
+    ///     Determines whether the return value will be limited-range (typical) or full-range
+    ///     (uncommon).
+    /// </param>
+    /// <returns>
+    ///     A limited-range or full-range YCbCrA pixel, according to the
+    ///     <paramref name="limitedRange" /> parameter.
+    /// </returns>
+    public YcbcraPixel RgbaToYcbcra(RgbaPixel rgbaPixel, bool limitedRange = true)
     {
         var y1 = Red * rgbaPixel.Red + Green * rgbaPixel.Green + Blue * rgbaPixel.Blue;
-        var y2 = (Compress(y1) * 255.0) - 0.25;
+
+        if (limitedRange)
+            y1 = Compress(y1);
+
+        var y2 = (y1 * 255.0) - 0.25;
         var y3 = Math.Round(Math.Min(Math.Max(y2, 0.0), 255.0));
         var cb1 = Rb1 * rgbaPixel.Red + Rb2 * rgbaPixel.Green + 0.5 * rgbaPixel.Blue;
         var cb2 = (cb1 + 1.0) * 128.0;
@@ -135,9 +153,27 @@ public class ColorSpace : IEquatable<ColorSpace>
         return new YcbcraPixel((byte)y3, (byte)cb3, (byte)cr3, (byte)alpha2);
     }
 
-    public RgbaPixel YcbcraToRgba(YcbcraPixel ycbcraPixel)
+    /// <summary>
+    ///     Converts a YCbCrA pixel to a RGBA pixel.
+    /// </summary>
+    /// <param name="ycbcraPixel">
+    ///     The YCbCrA pixel to convert, which may be either limited-range or full-range
+    ///     according to the <paramref name="limitedRange" /> parameter.
+    /// </param>
+    /// <param name="limitedRange">
+    ///     Determines whether the input value is limited-range (typical) or full-range
+    ///     (uncommon).
+    /// </param>
+    /// <returns>
+    ///     A full-range RGBA pixel.
+    /// </returns>
+    public RgbaPixel YcbcraToRgba(YcbcraPixel ycbcraPixel, bool limitedRange = true)
     {
-        var y = Expand(ycbcraPixel.Y / 255.0);
+        var y = ycbcraPixel.Y / 255.0;
+
+        if (limitedRange)
+            y = Expand(y);
+
         var pb = (ycbcraPixel.Cb - 128.0) / 128.0;
         var pr = (ycbcraPixel.Cr - 128.0) / 128.0;
         var alpha = ycbcraPixel.Alpha / 255.0;
