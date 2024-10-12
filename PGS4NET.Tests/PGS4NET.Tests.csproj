@@ -12,7 +12,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFrameworks>net8.0;net481;net462</TargetFrameworks>
+	<LangVersion>10.0</LangVersion>
+	<Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
@@ -22,6 +24,10 @@
     <None Include="sintel-en.sup">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PGS4NET\PGS4NET.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -35,10 +41,6 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\PGS4NET\PGS4NET.csproj" AdditionalProperties="TargetFramework=netstandard2.0" />
   </ItemGroup>
 
 </Project>

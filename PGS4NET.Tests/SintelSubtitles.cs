@@ -20,9 +20,18 @@ public static class SintelSubtitles
 
     static SintelSubtitles()
     {
-        var pwd = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-        var subtitlesFile = Path.Join(pwd, "sintel-en.sup");
+        var pwd = Path.GetDirectoryName(GetWorkingDirectory()) ?? string.Empty;
+        var subtitlesFile = Path.Combine(pwd, "sintel-en.sup");
 
         Buffer = File.ReadAllBytes(subtitlesFile);
+    }
+
+    private static string GetWorkingDirectory()
+    {
+#if NET
+        return Assembly.GetExecutingAssembly().Location;
+#elif NETFRAMEWORK
+        return new Uri(Assembly.GetExecutingAssembly().CodeBase).LocalPath;
+#endif
     }
 }

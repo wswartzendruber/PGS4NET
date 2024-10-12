@@ -195,12 +195,7 @@ internal static class DisplaySetInstances
 
     private static ushort RandomUInt16(ushort max = ushort.MaxValue) => (ushort)Rng.Next(max);
 
-    private static uint RandomUInt24(uint max = UInt24Max) =>
-        max > UInt24Max
-            ? throw new ArgumentOutOfRangeException("RandomUInt24(max) is limited to 24 bits.")
-            : (uint)Rng.NextInt64(max);
-
-    private static uint RandomUInt32(uint max = uint.MaxValue) => (uint)Rng.NextInt64(max);
+    private static uint RandomUInt32() => (uint)Rng.Next();
 
     private static CompositionState RandomCompositionState()
     {

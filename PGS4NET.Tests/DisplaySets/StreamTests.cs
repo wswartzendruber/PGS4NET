@@ -27,7 +27,7 @@ public class StreamTests
         Assert.True(inputStream.ToArray().SequenceEqual(outputStream.ToArray()));
     }
 
-#if TEST_NETSTANDARD2_1
+#if NETCOREAPP3_0_OR_GREATER
     [Fact]
     public async Task EnumerateWriteAllDisplaySetsAsync()
     {

@@ -82,7 +82,7 @@ public class Failures
         using var stream = new MemoryStream();
         var buffer = SegmentBuffers.Buffers["pcs-es"];
 
-        stream.Write(buffer);
+        stream.Write(buffer, 0, buffer.Length);
         stream.WriteByte(0x00);
         stream.Position = 0;
 
@@ -105,7 +105,7 @@ public class Failures
         using var stream = new MemoryStream();
         var buffer = SegmentBuffers.Buffers["pcs-es"];
 
-        stream.Write(buffer);
+        stream.Write(buffer, 0, buffer.Length);
         stream.WriteByte(0x00);
         stream.Position = 0;
 
