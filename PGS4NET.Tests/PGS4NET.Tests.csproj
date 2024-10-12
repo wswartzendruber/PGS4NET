@@ -13,8 +13,8 @@
 
   <PropertyGroup>
     <TargetFrameworks>net8.0;net481;net462</TargetFrameworks>
-	<LangVersion>10.0</LangVersion>
-	<Nullable>enable</Nullable>
+    <LangVersion>10.0</LangVersion>
+    <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
