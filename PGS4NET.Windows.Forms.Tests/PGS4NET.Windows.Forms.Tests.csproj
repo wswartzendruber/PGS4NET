@@ -12,7 +12,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net8.0;net481;net462</TargetFrameworks>
+    <TargetFrameworks>net8.0-windows;net481;net462</TargetFrameworks>
     <LangVersion>10.0</LangVersion>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
@@ -28,17 +28,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\PGS4NET\PGS4NET.csproj" />
+    <ProjectReference Include="..\PGS4NET.Windows.Forms\PGS4NET.Windows.Forms.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Using Include="Xunit" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="sintel-en.sup">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 
 </Project>

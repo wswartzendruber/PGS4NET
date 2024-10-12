@@ -68,7 +68,7 @@ public static class CaptionExtensions
 
     private static double Clamp(double value, double min, double max)
     {
-        if (min < value && value < max)
+        if (min <= value && value <= max)
             return value;
         else if (value < min)
             return min;

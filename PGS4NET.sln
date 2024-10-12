@@ -15,6 +15,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PGS4NET.Tests", "PGS4NET.Te
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PGS4NET.Windows.Forms", "PGS4NET.Windows.Forms\PGS4NET.Windows.Forms.csproj", "{42887725-A0AC-448C-9008-E8EE1BD8D5CD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PGS4NET.Windows.Forms.Tests", "PGS4NET.Windows.Forms.Tests\PGS4NET.Windows.Forms.Tests.csproj", "{B1BD4F89-40D0-4E4F-B26F-554765F2E8B4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{42887725-A0AC-448C-9008-E8EE1BD8D5CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{42887725-A0AC-448C-9008-E8EE1BD8D5CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{42887725-A0AC-448C-9008-E8EE1BD8D5CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1BD4F89-40D0-4E4F-B26F-554765F2E8B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1BD4F89-40D0-4E4F-B26F-554765F2E8B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1BD4F89-40D0-4E4F-B26F-554765F2E8B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1BD4F89-40D0-4E4F-B26F-554765F2E8B4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

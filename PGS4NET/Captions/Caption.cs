@@ -16,7 +16,7 @@ namespace PGS4NET.Captions;
 public class Caption
 {
     /// <summary>
-    ///     The at which the caption appears.
+    ///     The time at which the caption appears.
     /// </summary>
     public PgsTimeStamp TimeStamp { get; set; }
 
@@ -70,7 +70,7 @@ public class Caption
     ///     Initializes a new instance with the provided values.
     /// </summary>
     /// <param name="timeStamp">
-    ///     The at which the caption appears.
+    ///     The time at which the caption appears.
     /// </param>
     /// <param name="duration">
     ///     The duration for which the caption is visible.
