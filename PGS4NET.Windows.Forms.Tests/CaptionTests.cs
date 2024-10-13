@@ -27,8 +27,8 @@ public class CaptionTests
         var duration = new PgsTimeStamp((uint)Rng.Next());
         ushort x = 16;
         ushort y = 24;
-        ushort width = 384;
-        ushort height = 128;
+        ushort width = 1024;
+        ushort height = 1024;
         int length = width * height;
         var data = new YcbcraPixel[length];
         bool forced = true;

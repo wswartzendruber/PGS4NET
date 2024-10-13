@@ -11,6 +11,7 @@
 using System;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Runtime.InteropServices;
 using PGS4NET.Captions;
 
 namespace PGS4NET.Windows.Forms;
@@ -45,36 +46,34 @@ public static class CaptionExtensions
     {
         var width = caption.Width;
         var height = caption.Height;
+        var readLength = width * height;
         var bitmap = new Bitmap(width, height, PixelFormat.Format32bppArgb);
+        var data = bitmap.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.WriteOnly, bitmap.PixelFormat);
+        var pointer = data.Scan0;
+        var values = new byte[4 * readLength];
+        var writeIndex = 0;
 
-        for (int y = 0; y < height; y++)
+        for (int readIndex = 0; readIndex < readLength; readIndex++)
         {
-            for (int x = 0; x < width; x++)
-            {
-                var index = (width * y) + x;
-                var inColor = colorSpace.YcbcraToRgba(caption.Data[index], limitedRange);
-                var red = (int)Clamp(inColor.Red * 255.0, 0.0, 255.0);
-                var green = (int)Clamp(inColor.Green * 255.0, 0.0, 255.0);
-                var blue = (int)Clamp(inColor.Blue * 255.0, 0.0, 255.0);
-                var alpha = (int)Clamp(inColor.Alpha * 255.0, 0.0, 255.0);
-                var outColor = Color.FromArgb(alpha, red, green, blue);
+            var inColor = colorSpace.YcbcraToRgba(caption.Data[readIndex], limitedRange);
 
-                bitmap.SetPixel(x, y, outColor);
-            }
+            values[writeIndex++] = ClampToByte((int)(inColor.Blue * 255.0));
+            values[writeIndex++] = ClampToByte((int)(inColor.Green * 255.0));
+            values[writeIndex++] = ClampToByte((int)(inColor.Red * 255.0));
+            values[writeIndex++] = ClampToByte((int)(inColor.Alpha * 255.0));
         }
+
+        Marshal.Copy(values, 0, pointer, values.Length);
+        bitmap.UnlockBits(data);
 
         return bitmap;
     }
 
-    private static double Clamp(double value, double min, double max)
+    private static byte ClampToByte(int value)
     {
-        if (min <= value && value <= max)
-            return value;
-        else if (value < min)
-            return min;
-        else if (max < value)
-            return max;
-        else
-            throw new InvalidOperationException();
+        if ((value & ~0xFF) != 0)
+            value = ((~value) >> 31) & 0xFF;
+        
+        return (byte)value;
     }
 }
