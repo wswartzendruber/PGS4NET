@@ -15,7 +15,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PGS4NET.Tests", "PGS4NET.Te
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PGS4NET.Windows.Forms", "PGS4NET.Windows.Forms\PGS4NET.Windows.Forms.csproj", "{42887725-A0AC-448C-9008-E8EE1BD8D5CD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PGS4NET.Windows.Forms.Tests", "PGS4NET.Windows.Forms.Tests\PGS4NET.Windows.Forms.Tests.csproj", "{B1BD4F89-40D0-4E4F-B26F-554765F2E8B4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PGS4NET.Windows.Forms.Tests", "PGS4NET.Windows.Forms.Tests\PGS4NET.Windows.Forms.Tests.csproj", "{B1BD4F89-40D0-4E4F-B26F-554765F2E8B4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{61BD7869-5F51-4EE7-A200-F4940B55B705}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\create-release.yml = .github\workflows\create-release.yml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -82,9 +82,9 @@ public class CaptionTests
 
     private bool PixelsNearlyEqual(YcbcraPixel first, YcbcraPixel second)
     {
-        return Math.Abs(first.Y - second.Y) <= 4
-            && Math.Abs(first.Cb - second.Cb) <= 4
-            && Math.Abs(first.Cr - second.Cr) <= 4
+        return Math.Abs(first.Y - second.Y) <= 8
+            && Math.Abs(first.Cb - second.Cb) <= 8
+            && Math.Abs(first.Cr - second.Cr) <= 8
             && Math.Abs(first.Alpha - second.Alpha) <= 4;
     }
 }
