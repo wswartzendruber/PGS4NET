@@ -46,21 +46,27 @@ public static class CaptionExtensions
     {
         var width = caption.Width;
         var height = caption.Height;
-        var readLength = width * height;
         var bitmap = new Bitmap(width, height, PixelFormat.Format32bppArgb);
         var data = bitmap.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.WriteOnly, bitmap.PixelFormat);
         var pointer = data.Scan0;
-        var values = new byte[4 * readLength];
-        var writeIndex = 0;
+        var stride = Math.Abs(data.Stride);
+        var length = stride * bitmap.Height;
+        var values = new byte[length];
+        var readIndex = 0;
 
-        for (int readIndex = 0; readIndex < readLength; readIndex++)
+        for (var j = 0; j < height; j++)
         {
-            var inColor = colorSpace.YcbcraToRgba(caption.Data[readIndex], limitedRange);
+            var writeIndex = stride * j;
 
-            values[writeIndex++] = ClampToByte((int)(inColor.Blue * 255.0));
-            values[writeIndex++] = ClampToByte((int)(inColor.Green * 255.0));
-            values[writeIndex++] = ClampToByte((int)(inColor.Red * 255.0));
-            values[writeIndex++] = ClampToByte((int)(inColor.Alpha * 255.0));
+            for (var i = 0; i < width; i++)
+            {
+                var inColor = colorSpace.YcbcraToRgba(caption.Data[readIndex++], limitedRange);
+
+                values[writeIndex++] = ClampToByte((int)(inColor.Blue * 255.0));
+                values[writeIndex++] = ClampToByte((int)(inColor.Green * 255.0));
+                values[writeIndex++] = ClampToByte((int)(inColor.Red * 255.0));
+                values[writeIndex++] = ClampToByte((int)(inColor.Alpha * 255.0));
+            }
         }
 
         Marshal.Copy(values, 0, pointer, values.Length);

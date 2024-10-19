@@ -10,6 +10,8 @@
 
 using System;
 using System.Drawing;
+using System.Drawing.Imaging;
+using System.Runtime.InteropServices;
 using PGS4NET.Captions;
 
 namespace PGS4NET.Windows.Forms;
@@ -18,7 +20,7 @@ namespace PGS4NET.Windows.Forms;
 ///     Extension methods against <see cref="System.Drawing.Image" /> for interoperating
 ///     with PGS4NET.
 /// </summary>
-public static class ImageExtensions
+public static class BitmapsExtensions
 {
     /// <summary>
     ///     Converts a Windows Forms bitmap into a PGS4NET caption.
@@ -60,26 +62,36 @@ public static class ImageExtensions
         var y = Convert.ToUInt16(location.Y);
         var width = Convert.ToUInt16(bitmap.Width);
         var height = Convert.ToUInt16(bitmap.Height);
-        var length = width * height;
-        var data = new YcbcraPixel[length];
-        var caption = new Caption(timeStamp, duration, x, y, width, height, data, forced);
+        var data = bitmap.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.ReadOnly
+            , bitmap.PixelFormat);
+        var pointer = data.Scan0;
+        var stride = Math.Abs(data.Stride);
+        var length = stride * bitmap.Height;
+        var values = new byte[length];
+        var captionData = new YcbcraPixel[width * height];
+        var writeIndex = 0;
 
-        for (ushort j = 0; j < height; j++)
+        Marshal.Copy(pointer, values, 0, length);
+
+        for (var j = 0; j < height; j++)
         {
-            for (ushort i = 0; i < width; i++)
-            {
-                var index = (width * j) + i;
-                var inColor = bitmap.GetPixel(i, j);
-                var red = inColor.R / 255.0;
-                var green = inColor.G / 255.0;
-                var blue = inColor.B / 255.0;
-                var alpha = inColor.A / 255.0;
-                var outColor = new RgbaPixel(red, green, blue, alpha);
+            var readIndex = stride * j;
 
-                data[index] = colorSpace.RgbaToYcbcra(outColor, limitedRange);
+            for (var i = 0; i < width; i++)
+            {
+                double blue = values[readIndex++] / 255.0;
+                double green = values[readIndex++] / 255.0;
+                double red = values[readIndex++] / 255.0;
+                double alpha = values[readIndex++] / 255.0;
+                var rgbaPixel = new RgbaPixel(red, green, blue, alpha);
+                var ycbcraPixel = colorSpace.RgbaToYcbcra(rgbaPixel, limitedRange);
+
+                captionData[writeIndex++] = ycbcraPixel;
             }
         }
 
-        return caption;
+        bitmap.UnlockBits(data);
+
+        return new Caption(timeStamp, duration, x, y, width, height, captionData, forced);
     }
 }

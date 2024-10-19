@@ -10,6 +10,7 @@
  * SPDX-License-Identifier: CC0-1.0
  */
 
+using System.Drawing;
 using PGS4NET.Captions;
 
 namespace PGS4NET.Windows.Forms.Tests;
@@ -22,7 +23,7 @@ public class CaptionTests
     public void RoundTrip()
     {
         var limitedRange = false;
-        var colorSpace = ColorSpace.Bt709ColorSpace;
+        var colorSpace = ColorSpace.Bt2020ColorSpace;
         var timeStamp = new PgsTimeStamp((uint)Rng.Next());
         var duration = new PgsTimeStamp((uint)Rng.Next());
         ushort x = 16;
@@ -46,7 +47,7 @@ public class CaptionTests
 
         var inCaption = new Caption(timeStamp, duration, x, y, width, height, data, forced);
         var bitmap = inCaption.ToBitmap(colorSpace, limitedRange);
-        var outCaption = bitmap.ToCaption(new System.Drawing.Point(x, y), timeStamp, duration, forced, colorSpace, limitedRange);
+        var outCaption = bitmap.ToCaption(new Point(x, y), timeStamp, duration, forced, colorSpace, limitedRange);
 
         AssertCaptionsEqual(inCaption, outCaption);
     }
@@ -74,7 +75,12 @@ public class CaptionTests
         for (int index = 0; index < length; index++)
         {
             if (!PixelsNearlyEqual(first[index], second[index]))
+            {
+                var firstPixel = first[index];
+                var secondPixel = second[index];
+
                 return false;
+            }
         }
 
         return true;
@@ -82,9 +88,9 @@ public class CaptionTests
 
     private bool PixelsNearlyEqual(YcbcraPixel first, YcbcraPixel second)
     {
-        return Math.Abs(first.Y - second.Y) <= 8
-            && Math.Abs(first.Cb - second.Cb) <= 8
-            && Math.Abs(first.Cr - second.Cr) <= 8
-            && Math.Abs(first.Alpha - second.Alpha) <= 4;
+        return Math.Abs(first.Y - second.Y) <= 6
+            && Math.Abs(first.Cb - second.Cb) <= 6
+            && Math.Abs(first.Cr - second.Cr) <= 6
+            && Math.Abs(first.Alpha - second.Alpha) <= 6;
     }
 }
