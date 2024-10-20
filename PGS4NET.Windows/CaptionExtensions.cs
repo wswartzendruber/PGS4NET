@@ -12,9 +12,11 @@ using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using PGS4NET.Captions;
 
-namespace PGS4NET.Windows.Forms;
+namespace PGS4NET.Windows;
 
 /// <summary>
 ///     Extension methods against <see cref="PGS4NET.Captions.Caption" /> for interoperating
@@ -22,6 +24,11 @@ namespace PGS4NET.Windows.Forms;
 /// </summary>
 public static class CaptionExtensions
 {
+    private static readonly System.Drawing.Imaging.PixelFormat WinFormsPixelFormat
+        = System.Drawing.Imaging.PixelFormat.Format32bppArgb;
+    private static readonly System.Windows.Media.PixelFormat WpfPixelFormat
+        = System.Windows.Media.PixelFormats.Rgba64;
+
     /// <summary>
     ///     Converts a PGS4NET caption to a standard Windows Forms bitmap.
     /// </summary>
@@ -46,7 +53,7 @@ public static class CaptionExtensions
     {
         var width = caption.Width;
         var height = caption.Height;
-        var bitmap = new Bitmap(width, height, PixelFormat.Format32bppArgb);
+        var bitmap = new Bitmap(width, height, WinFormsPixelFormat);
         var data = bitmap.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.WriteOnly, bitmap.PixelFormat);
         var pointer = data.Scan0;
         var stride = Math.Abs(data.Stride);
@@ -75,11 +82,19 @@ public static class CaptionExtensions
         return bitmap;
     }
 
+    //public static BitmapSource ToBitmapSource(this Caption caption)
+    //{
+    //    var width = caption.Width;
+    //    var height = caption.Height;
+    //    var values = new byte[width * height * 8];
+    //    var bitmapSource = BitmapSource.Create(width, height, 96.0, 96.0, WpfPixelFormat, null,  )
+    //}
+
     private static byte ClampToByte(int value)
     {
         if ((value & ~0xFF) != 0)
             value = ((~value) >> 31) & 0xFF;
-        
+
         return (byte)value;
     }
 }

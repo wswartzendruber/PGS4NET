@@ -28,7 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\PGS4NET.Windows.Forms\PGS4NET.Windows.Forms.csproj" />
+    <ProjectReference Include="..\PGS4NET.Windows\PGS4NET.Windows.csproj" />
   </ItemGroup>
 
   <ItemGroup>

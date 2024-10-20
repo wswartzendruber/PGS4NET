@@ -13,7 +13,7 @@
 using System.Drawing;
 using PGS4NET.Captions;
 
-namespace PGS4NET.Windows.Forms.Tests;
+namespace PGS4NET.Windows.Tests;
 
 public class CaptionTests
 {
@@ -26,8 +26,8 @@ public class CaptionTests
         var colorSpace = ColorSpace.Bt2020ColorSpace;
         var timeStamp = new PgsTimeStamp((uint)Rng.Next());
         var duration = new PgsTimeStamp((uint)Rng.Next());
-        ushort x = 16;
-        ushort y = 24;
+        ushort x = 17;
+        ushort y = 23;
         ushort width = 1024;
         ushort height = 1024;
         int length = width * height;

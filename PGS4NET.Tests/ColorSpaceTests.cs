@@ -58,4 +58,63 @@ public class ColorSpaceTests
         Assert.True(a != d);
         Assert.True(a != e);
     }
+    [Fact]
+    public void RoundTripBt709LimitedRange()
+    {
+        var colorSpace = ColorSpace.Bt709ColorSpace;
+
+        for (short y = 16; y <= 235; y += 16)
+        {
+            for (short cb = 0; cb <= 255; cb += 16)
+            {
+                for (short cr = 0; cr <= 255; cr += 16)
+                {
+                    for (short alpha = 0; alpha <= 255; alpha += 16)
+                    {
+                        var inPixel = new YcbcraPixel((byte)y, (byte)cb, (byte)cr, (byte)alpha);
+                        var outPixel = colorSpace.RgbaToYcbcra(
+                            colorSpace.YcbcraToRgba(inPixel, true), true);
+
+                        Assert.True(inPixel == outPixel);
+                    }
+                }
+            }
+        }
+
+        var finalInPixel = new YcbcraPixel(0xEB, 0xFF, 0xFF, 0xFF);
+        var finalOutPixel = colorSpace.RgbaToYcbcra(
+            colorSpace.YcbcraToRgba(finalInPixel, true), true);
+
+        Assert.True(finalInPixel == finalOutPixel);
+    }
+
+    [Fact]
+    public void RoundTripBt709FullRange()
+    {
+        var colorSpace = ColorSpace.Bt709ColorSpace;
+
+        for (short y = 0; y <= 255; y += 16)
+        {
+            for (short cb = 0; cb <= 255; cb += 16)
+            {
+                for (short cr = 0; cr <= 255; cr += 16)
+                {
+                    for (short alpha = 0; alpha <= 255; alpha += 16)
+                    {
+                        var inPixel = new YcbcraPixel((byte)y, (byte)cb, (byte)cr, (byte)alpha);
+                        var outPixel = colorSpace.RgbaToYcbcra(
+                            colorSpace.YcbcraToRgba(inPixel, false), false);
+
+                        Assert.True(inPixel == outPixel);
+                    }
+                }
+            }
+        }
+
+        var finalInPixel = new YcbcraPixel(0xFF, 0xFF, 0xFF, 0xFF);
+        var finalOutPixel = colorSpace.RgbaToYcbcra(
+            colorSpace.YcbcraToRgba(finalInPixel, false), false);
+
+        Assert.True(finalInPixel == finalOutPixel);
+    }
 }

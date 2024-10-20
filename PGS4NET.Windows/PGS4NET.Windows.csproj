@@ -16,21 +16,22 @@
     <LangVersion>10.0</LangVersion>
     <Nullable>enable</Nullable>
     <Authors>William Swartzendruber</Authors>
-    <Description>Windows Presentation Foundation interface for PGS4NET.</Description>
+    <Description>Windows Forms interface for PGS4NET.</Description>
     <Copyright>Copyright © 2024 William Swartzendruber</Copyright>
     <PackageProjectUrl>$(RepositoryUrl)</PackageProjectUrl>
     <PackageIcon>PackageIcon.png</PackageIcon>
     <PackageReadmeFile>ReadMe.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/wswartzendruber/PGS4NET</RepositoryUrl>
-    <PackageTags>pgs;presentation;graphics;stream;subtitles;blu-ray;bdmv;bd;sup;windows;foundation;wpf</PackageTags>
+    <PackageTags>pgs;presentation;graphics;stream;subtitles;blu-ray;bdmv;bd;sup;windows;forms;winforms</PackageTags>
     <PackageLicenseExpression>MPL-2.0</PackageLicenseExpression>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <IsPackable>true</IsPackable>
+    <UseWindowsForms>true</UseWindowsForms>
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="PackageIcon.png" />
+    <None Include="PackageIcon.png" Pack="true" PackagePath="/" />
     <None Include="ReadMe.md" Pack="true" PackagePath="/" />
   </ItemGroup>
 

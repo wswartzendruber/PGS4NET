@@ -14,7 +14,7 @@ using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using PGS4NET.Captions;
 
-namespace PGS4NET.Windows.Forms;
+namespace PGS4NET.Windows;
 
 /// <summary>
 ///     Extension methods against <see cref="System.Drawing.Image" /> for interoperating
