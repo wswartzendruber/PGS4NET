@@ -46,7 +46,8 @@ public static class CaptionExtensions
     ///     <see langword="true" />.
     /// </param>
     /// <returns>
-    ///     A standard Windows Forms bitmap.
+    ///     A standard Windows Forms bitmap in the
+    ///     <see cref="System.Drawing.Imaging.PixelFormat.Format32bppArgb"/> color space.
     /// </returns>
     public static Bitmap ToBitmap(this Caption caption, ColorSpace colorSpace
         , bool limitedRange = true)
@@ -81,14 +82,6 @@ public static class CaptionExtensions
 
         return bitmap;
     }
-
-    //public static BitmapSource ToBitmapSource(this Caption caption)
-    //{
-    //    var width = caption.Width;
-    //    var height = caption.Height;
-    //    var values = new byte[width * height * 8];
-    //    var bitmapSource = BitmapSource.Create(width, height, 96.0, 96.0, WpfPixelFormat, null,  )
-    //}
 
     private static byte ClampToByte(int value)
     {

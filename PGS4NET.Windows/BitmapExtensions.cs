@@ -20,7 +20,7 @@ namespace PGS4NET.Windows;
 ///     Extension methods against <see cref="System.Drawing.Image" /> for interoperating
 ///     with PGS4NET.
 /// </summary>
-public static class BitmapsExtensions
+public static class BitmapExtensions
 {
     /// <summary>
     ///     Converts a Windows Forms bitmap into a PGS4NET caption.
