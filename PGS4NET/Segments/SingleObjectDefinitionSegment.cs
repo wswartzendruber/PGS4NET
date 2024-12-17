@@ -18,12 +18,12 @@ public class SingleObjectDefinitionSegment : ObjectDefinitionSegment
     /// <summary>
     ///     The width of this object in pixels.
     /// </summary>
-    public ushort Width { get; set; }
+    public int Width { get; set; }
 
     /// <summary>
     ///     The height of this object in pixels.
     /// </summary>
-    public ushort Height { get; set; }
+    public int Height { get; set; }
 
     /// <summary>
     ///     Initializes a new instance with default values including an empty data buffer.
@@ -58,7 +58,7 @@ public class SingleObjectDefinitionSegment : ObjectDefinitionSegment
     ///     The RLE-compressed data for this portion of the completed object.
     /// </param>
     public SingleObjectDefinitionSegment(PgsTimeStamp pts, PgsTimeStamp dts
-        , VersionedId<ushort> versionedId, ushort width, ushort height, byte[] data)
+        , VersionedId<int> versionedId, int width, int height, byte[] data)
         : base(pts, dts, versionedId, data)
     {
         Width = width;

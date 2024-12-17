@@ -25,22 +25,22 @@ public class WindowDefinitionEntry
     /// <summary>
     ///     The horizontal offset of the window's top-left corner within the screen.
     /// </summary>
-    public ushort X { get; set; }
+    public int X { get; set; }
 
     /// <summary>
     ///     The vertical offset of the window's top-left corner within the screen.
     /// </summary>
-    public ushort Y { get; set; }
+    public int Y { get; set; }
 
     /// <summary>
     ///     The width of the window.
     /// </summary>
-    public ushort Width { get; set; }
+    public int Width { get; set; }
 
     /// <summary>
     ///     The height of the window.
     /// </summary>
-    public ushort Height { get; set; }
+    public int Height { get; set; }
 
     /// <summary>
     ///     Initializes a new instance with default values.
@@ -67,7 +67,7 @@ public class WindowDefinitionEntry
     /// <param name="height">
     ///     The height of the window.
     /// </param>
-    public WindowDefinitionEntry(byte id, ushort x, ushort y, ushort width, ushort height)
+    public WindowDefinitionEntry(byte id, int x, int y, int width, int height)
     {
         Id = id;
         X = x;

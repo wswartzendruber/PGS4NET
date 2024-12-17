@@ -36,7 +36,7 @@ public class DisplaySetComposer
     private List<MiddleObjectDefinitionSegment> MiddleObjects = new();
     private Dictionary<byte, DisplayWindow> Windows = new();
     private Dictionary<VersionedId<byte>, DisplayPalette> Palettes = new();
-    private Dictionary<VersionedId<ushort>, DisplayObject> Objects = new();
+    private Dictionary<VersionedId<int>, DisplayObject> Objects = new();
     private Dictionary<CompositionId, DisplayComposition> Compositions = new();
     private PresentationCompositionSegment? Pcs = null;
 

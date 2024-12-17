@@ -99,7 +99,7 @@ public static class DisplaySetDecomposer
 
                 var iods = new InitialObjectDefinitionSegment(displaySet.Pts, displaySet.Dts
                     , displayObject.Key, displayObject.Value.Width, displayObject.Value.Height
-                    , (uint)data.Length + 4, iodsBuffer);
+                    , (long)data.Length + 4, iodsBuffer);
 
                 returnValue.Add(iods);
 

@@ -26,7 +26,7 @@ public class CaptionComposer
 
     private readonly Dictionary<byte, Compositor> Compositors = new();
     private readonly Dictionary<byte, DisplayPalette> Palettes = new();
-    private readonly Dictionary<ushort, DisplayObject> Objects = new();
+    private readonly Dictionary<int, DisplayObject> Objects = new();
 
     /// <summary>
     ///     Inputs a PGS display set into the composer, causing <see cref="NewCaption" /> to
@@ -97,7 +97,7 @@ public class CaptionComposer
         // COMPOSITION AGGREGATION
         //
 
-        var compositions = new Dictionary<byte, Dictionary<ushort, DisplayComposition>>();
+        var compositions = new Dictionary<byte, Dictionary<int, DisplayComposition>>();
 
         foreach (var displayComposition in displaySet.Compositions)
         {

@@ -21,12 +21,12 @@ public class DisplayObject
     /// <summary>
     ///     The width of this object in pixels.
     /// </summary>
-    public ushort Width { get; set; }
+    public int Width { get; set; }
 
     /// <summary>
     ///     The height of this object in pixels.
     /// </summary>
-    public ushort Height { get; set; }
+    public int Height { get; set; }
 
     /// <summary>
     ///     An ordered list of object pixel data where each byte addresses a palette entry
@@ -59,7 +59,7 @@ public class DisplayObject
     ///     bottom. The length should be the product of the <see cref="Width" /> and the
     ///     <see cref="Height" />.
     /// </param>
-    public DisplayObject(ushort width, ushort height, byte[] data)
+    public DisplayObject(int width, int height, byte[] data)
     {
         Width = width;
         Height = height;

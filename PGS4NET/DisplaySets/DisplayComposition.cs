@@ -21,13 +21,13 @@ public class DisplayComposition
     ///     The horizontal offset of the object's top-left corner within the screen. If the
     ///     object is cropped, then this applies only to the visible area.
     /// </summary>
-    public ushort X { get; set; }
+    public int X { get; set; }
 
     /// <summary>
     ///     The vertical offset of the object's top-left corner within the screen. If the
     ///     object is cropped, then this applies only to the visible area.
     /// </summary>
-    public ushort Y { get; set; }
+    public int Y { get; set; }
 
     /// <summary>
     ///     Whether or not the composition object is forced. This is typically used to translate
@@ -67,7 +67,7 @@ public class DisplayComposition
     ///     If set, defines the visible area of the object. Otherwise, the entire object is
     ///     shown.
     /// </param>
-    public DisplayComposition(ushort x, ushort y, bool forced, Crop? crop)
+    public DisplayComposition(int x, int y, bool forced, Crop? crop)
     {
         X = x;
         Y = y;

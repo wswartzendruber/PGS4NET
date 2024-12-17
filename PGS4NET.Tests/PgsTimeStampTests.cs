@@ -33,7 +33,7 @@ public class PgsTimeStampTests
     [Fact]
     public void Milliseconds()
     {
-        for (uint ms = 0; ms <= PgsTimeStamp.MaxMilliseconds; ms++)
+        for (long ms = 0; ms <= PgsTimeStamp.MaxMilliseconds; ms++)
             Assert.True(PgsTimeStamp.FromMilliseconds(ms).ToMilliseconds() == ms);
     }
 
@@ -92,8 +92,8 @@ public class PgsTimeStampTests
     {
         var a = new PgsTimeStamp(1);
         var c = new PgsTimeStamp(2);
-        uint au = a;
-        uint cu = c;
+        long au = a;
+        long cu = c;
         PgsTimeStamp ap = 1;
         PgsTimeStamp cp = 2;
 

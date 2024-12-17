@@ -88,7 +88,7 @@ while (stream.ReadDisplaySet() is DisplaySet displaySet)
     Console.WriteLine();
 }
 
-string TsToTimeStamp(uint ts)
+string TsToTimeStamp(long ts)
 {
     var ms = ts / 90;
     var h = ms / 3_600_000;

@@ -39,7 +39,7 @@ internal static class DisplaySetInstances
                 PaletteId = RandomByte(),
                 Windows = new Dictionary<byte, DisplayWindow>(),
                 Palettes = new Dictionary<VersionedId<byte>, DisplayPalette>(),
-                Objects = new Dictionary<VersionedId<ushort>, DisplayObject>(),
+                Objects = new Dictionary<VersionedId<int>, DisplayObject>(),
                 CompositionNumber = RandomUInt16(),
                 CompositionState = RandomCompositionState(),
                 Compositions = new Dictionary<CompositionId, DisplayComposition>(),
@@ -123,29 +123,29 @@ internal static class DisplaySetInstances
                         }
                     },
                 },
-                Objects = new Dictionary<VersionedId<ushort>, DisplayObject>
+                Objects = new Dictionary<VersionedId<int>, DisplayObject>
                 {
                     {
-                        new VersionedId<ushort>(RandomUInt16(128), RandomByte()),
+                        new VersionedId<int>(RandomUInt16(128), RandomByte()),
                         RandomDisplayObject()
                     },
                     {
-                        new VersionedId<ushort>((ushort)(RandomUInt16(128) + 128)
+                        new VersionedId<int>((int)(RandomUInt16(128) + 128)
                             , RandomByte()),
                         RandomDisplayObject()
                     },
                     {
-                        new VersionedId<ushort>((ushort)(RandomUInt16(128) + 256)
+                        new VersionedId<int>((int)(RandomUInt16(128) + 256)
                             , RandomByte()),
                         RandomDisplayObject()
                     },
                     {
-                        new VersionedId<ushort>((ushort)(RandomUInt16(128) + 384)
+                        new VersionedId<int>((int)(RandomUInt16(128) + 384)
                             , RandomByte()),
                         RandomDisplayObject()
                     },
                     {
-                        new VersionedId<ushort>((ushort)(RandomUInt16(128) + 512)
+                        new VersionedId<int>((int)(RandomUInt16(128) + 512)
                             , RandomByte()),
                         RandomDisplayObject()
                     },
@@ -165,7 +165,7 @@ internal static class DisplaySetInstances
                         }
                     },
                     {
-                        new CompositionId((ushort)(RandomUInt16(128) + 128), RandomByte()),
+                        new CompositionId((int)(RandomUInt16(128) + 128), RandomByte()),
                         new DisplayComposition
                         {
                             X = RandomUInt16(),
@@ -176,7 +176,7 @@ internal static class DisplaySetInstances
                         }
                     },
                     {
-                        new CompositionId((ushort)(RandomUInt16(128) + 256), RandomByte()),
+                        new CompositionId((int)(RandomUInt16(128) + 256), RandomByte()),
                         new DisplayComposition
                         {
                             X = RandomUInt16(),
@@ -193,9 +193,9 @@ internal static class DisplaySetInstances
 
     private static byte RandomByte(byte max = byte.MaxValue) => (byte)Rng.Next(max);
 
-    private static ushort RandomUInt16(ushort max = ushort.MaxValue) => (ushort)Rng.Next(max);
+    private static int RandomUInt16(int max = int.MaxValue) => (int)Rng.Next(max);
 
-    private static uint RandomUInt32() => (uint)Rng.Next();
+    private static long RandomUInt32() => (long)Rng.Next();
 
     private static CompositionState RandomCompositionState()
     {
@@ -214,8 +214,8 @@ internal static class DisplaySetInstances
 
     private static DisplayObject RandomDisplayObject()
     {
-        var width = (ushort)(RandomUInt16(99) + 1);
-        var height = (ushort)(RandomUInt16(99) + 1);
+        var width = (int)(RandomUInt16(99) + 1);
+        var height = (int)(RandomUInt16(99) + 1);
         var max = UInt24Max / 2;
         var count = 32;
         var eachMax = max / count;

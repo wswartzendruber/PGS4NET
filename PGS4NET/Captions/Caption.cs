@@ -28,22 +28,22 @@ public class Caption
     /// <summary>
     ///     The horizontal offset of the object's top-left corner within the screen.
     /// </summary>
-    public ushort X { get; set; }
+    public int X { get; set; }
 
     /// <summary>
     ///     The vertical offset of the object's top-left corner within the screen.
     /// </summary>
-    public ushort Y { get; set; }
+    public int Y { get; set; }
 
     /// <summary>
     ///     The width of the caption.
     /// </summary>
-    public ushort Width { get; set; }
+    public int Width { get; set; }
 
     /// <summary>
     ///     The height of the caption.
     /// </summary>
-    public ushort Height { get; set; }
+    public int Height { get; set; }
 
     /// <summary>
     ///     An ordered list of object pixel data where each value contains a YCbCr pixel. The
@@ -96,8 +96,8 @@ public class Caption
     ///     Whether or not the caption is forced. This is typically used to translate foreign
     ///     dialogue or text that appears.
     /// </param>
-    public Caption(PgsTimeStamp timeStamp, PgsTimeStamp duration, ushort x, ushort y
-        , ushort width, ushort height, YcbcraPixel[] data, bool forced)
+    public Caption(PgsTimeStamp timeStamp, PgsTimeStamp duration, int x, int y
+        , int width, int height, YcbcraPixel[] data, bool forced)
     {
         TimeStamp = timeStamp;
         Duration = duration;

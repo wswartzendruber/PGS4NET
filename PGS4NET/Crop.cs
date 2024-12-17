@@ -21,22 +21,22 @@ public class Crop
     /// <summary>
     ///     The horizontal offset of the visible area's top-left corner within the object.
     /// </summary>
-    public ushort X { get; set; }
+    public int X { get; set; }
 
     /// <summary>
     ///     The vertical offset of the visible area's top-left corner within the object.
     /// </summary>
-    public ushort Y { get; set; }
+    public int Y { get; set; }
 
     /// <summary>
     ///     The width of the visible area.
     /// </summary>
-    public ushort Width { get; set; }
+    public int Width { get; set; }
 
     /// <summary>
     ///     The height of the visible area.
     /// </summary>
-    public ushort Height { get; set; }
+    public int Height { get; set; }
 
     /// <summary>
     ///     Initializes a new instance with the provided offset and size.
@@ -53,7 +53,7 @@ public class Crop
     /// <param name="height">
     ///     The height of the visible area.
     /// </param>
-    public Crop(ushort x, ushort y, ushort width, ushort height)
+    public Crop(int x, int y, int width, int height)
     {
         X = x;
         Y = y;

@@ -24,12 +24,12 @@ public class CaptionTests
     {
         var limitedRange = false;
         var colorSpace = ColorSpace.Bt2020ColorSpace;
-        var timeStamp = new PgsTimeStamp((uint)Rng.Next());
-        var duration = new PgsTimeStamp((uint)Rng.Next());
-        ushort x = 17;
-        ushort y = 23;
-        ushort width = 1024;
-        ushort height = 1024;
+        var timeStamp = new PgsTimeStamp((long)Rng.Next());
+        var duration = new PgsTimeStamp((long)Rng.Next());
+        int x = 17;
+        int y = 23;
+        int width = 1024;
+        int height = 1024;
         int length = width * height;
         var data = new YcbcraPixel[length];
         bool forced = true;

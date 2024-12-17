@@ -24,13 +24,13 @@ public class PresentationCompositionSegment : Segment
     ///     The width of the screen in pixels. This value should be consistent within a
     ///     presentation.
     /// </summary>
-    public ushort Width { get; set; }
+    public int Width { get; set; }
 
     /// <summary>
     ///     The height of the screen in pixels. This value should be consistent within a
     ///     presentation.
     /// </summary>
-    public ushort Height { get; set; }
+    public int Height { get; set; }
 
     /// <summary>
     ///     This value should be set to <c>0x10</c> but can otherwise be typically ignored.
@@ -41,7 +41,7 @@ public class PresentationCompositionSegment : Segment
     ///     Starting at zero, this increments each time graphics are updated within a
     ///     presentation.
     /// </summary>
-    public ushort Number { get; set; }
+    public int Number { get; set; }
 
     /// <summary>
     ///     Defines the role of the current DS within the larger epoch.
@@ -113,8 +113,8 @@ public class PresentationCompositionSegment : Segment
     /// <param name="compositionObjects">
     ///     Maps an epoch's objects (or areas within them) to its windows.
     /// </param>
-    public PresentationCompositionSegment(PgsTimeStamp pts, PgsTimeStamp dts, ushort width
-        , ushort height, byte frameRate, ushort number, CompositionState state
+    public PresentationCompositionSegment(PgsTimeStamp pts, PgsTimeStamp dts, int width
+        , int height, byte frameRate, int number, CompositionState state
         , bool paletteUpdateOnly, byte paletteId, IList<CompositionObject> compositionObjects)
         : base(pts, dts)
     {

@@ -277,7 +277,7 @@ public static class StreamReadExtensions
         };
     }
 
-    private static PresentationCompositionSegment ParsePcs(byte[] buffer, uint pts, uint dts)
+    private static PresentationCompositionSegment ParsePcs(byte[] buffer, long pts, long dts)
     {
         var width = ReadUInt16Be(buffer, 0)
             ?? throw new IOException("EOS reading PCS width.");
@@ -357,7 +357,7 @@ public static class StreamReadExtensions
             , compositionObjects);
     }
 
-    private static WindowDefinitionSegment ParseWds(byte[] buffer, uint pts, uint dts)
+    private static WindowDefinitionSegment ParseWds(byte[] buffer, long pts, long dts)
     {
         var definitions = new List<WindowDefinitionEntry>();
         var count = ReadUInt8(buffer, 0)
@@ -385,7 +385,7 @@ public static class StreamReadExtensions
         return new WindowDefinitionSegment(pts, dts, definitions);
     }
 
-    private static PaletteDefinitionSegment ParsePds(byte[] buffer, uint pts, uint dts)
+    private static PaletteDefinitionSegment ParsePds(byte[] buffer, long pts, long dts)
     {
         var count = (buffer.Length - 2) / 5;
         var paletteId = ReadUInt8(buffer, 0)
@@ -418,7 +418,7 @@ public static class StreamReadExtensions
         return new PaletteDefinitionSegment(pts, dts, versionedId, entries);
     }
 
-    private static ObjectDefinitionSegment ParseOds(byte[] buffer, uint pts, uint dts)
+    private static ObjectDefinitionSegment ParseOds(byte[] buffer, long pts, long dts)
     {
         var id = ReadUInt16Be(buffer, 0)
             ?? throw new IOException("EOS reading ODS ID.");
@@ -437,10 +437,10 @@ public static class StreamReadExtensions
         };
     }
 
-    private static SingleObjectDefinitionSegment ParseSods(byte[] buffer, uint pts, uint dts
-        , ushort id, byte version)
+    private static SingleObjectDefinitionSegment ParseSods(byte[] buffer, long pts, long dts
+        , int id, byte version)
     {
-        var versionedId = new VersionedId<ushort>(id, version);
+        var versionedId = new VersionedId<int>(id, version);
         var dataLength = ReadUInt24Be(buffer, 4)
             ?? throw new IOException("EOS reading S-ODS data length.");
 
@@ -458,10 +458,10 @@ public static class StreamReadExtensions
         return new SingleObjectDefinitionSegment(pts, dts, versionedId, width, height, data);
     }
 
-    private static InitialObjectDefinitionSegment ParseIods(byte[] buffer, uint pts, uint dts
-        , ushort id, byte version)
+    private static InitialObjectDefinitionSegment ParseIods(byte[] buffer, long pts, long dts
+        , int id, byte version)
     {
-        var versionedId = new VersionedId<ushort>(id, version);
+        var versionedId = new VersionedId<int>(id, version);
         var dataLength = ReadUInt24Be(buffer, 4)
             ?? throw new IOException("EOS reading I-ODS data length.");
         var width = ReadUInt16Be(buffer, 7)
@@ -476,10 +476,10 @@ public static class StreamReadExtensions
             , dataLength, data);
     }
 
-    private static MiddleObjectDefinitionSegment ParseMods(byte[] buffer, uint pts, uint dts
-        , ushort id, byte version)
+    private static MiddleObjectDefinitionSegment ParseMods(byte[] buffer, long pts, long dts
+        , int id, byte version)
     {
-        var versionedId = new VersionedId<ushort>(id, version);
+        var versionedId = new VersionedId<int>(id, version);
         var data = new byte[buffer.Length - 4];
 
         Array.Copy(buffer, 4, data, 0, data.Length);
@@ -487,10 +487,10 @@ public static class StreamReadExtensions
         return new MiddleObjectDefinitionSegment(pts, dts, versionedId, data);
     }
 
-    private static FinalObjectDefinitionSegment ParseFods(byte[] buffer, uint pts, uint dts
-        , ushort id, byte version)
+    private static FinalObjectDefinitionSegment ParseFods(byte[] buffer, long pts, long dts
+        , int id, byte version)
     {
-        var versionedId = new VersionedId<ushort>(id, version);
+        var versionedId = new VersionedId<int>(id, version);
         var data = new byte[buffer.Length - 4];
 
         Array.Copy(buffer, 4, data, 0, data.Length);
@@ -503,19 +503,19 @@ public static class StreamReadExtensions
             ? buffer[offset]
             : null;
 
-    private static ushort? ReadUInt16Be(byte[] buffer, int offset) =>
+    private static int? ReadUInt16Be(byte[] buffer, int offset) =>
         (offset + 2 <= buffer.Length)
-            ? (ushort)(buffer[offset] << 8 | buffer[offset + 1])
+            ? buffer[offset] << 8 | buffer[offset + 1]
             : null;
 
-    private static uint? ReadUInt24Be(byte[] buffer, int offset) =>
+    private static int? ReadUInt24Be(byte[] buffer, int offset) =>
         (offset + 3 <= buffer.Length)
-            ? (uint)(buffer[offset] << 16 | buffer[offset + 1] << 8 | buffer[offset + 2])
+            ? buffer[offset] << 16 | buffer[offset + 1] << 8 | buffer[offset + 2]
             : null;
 
-    private static uint? ReadUInt32Be(byte[] buffer, int offset) =>
+    private static long? ReadUInt32Be(byte[] buffer, int offset) =>
         (offset + 4 <= buffer.Length)
-            ? (uint)(buffer[offset] << 24 | buffer[offset + 1] << 16 | buffer[offset + 2] << 8
-                | buffer[offset + 3])
+            ? buffer[offset] << 24 | buffer[offset + 1] << 16 | buffer[offset + 2] << 8
+                | buffer[offset + 3]
             : null;
 }

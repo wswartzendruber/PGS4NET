@@ -290,7 +290,7 @@ public static class StreamWriteExtensions
             }
         }
 
-        WriteUInt16Be(stream, (ushort)ms.Length);
+        WriteUInt16Be(stream, (int)ms.Length);
         ms.WriteTo(stream);
     }
 
@@ -312,7 +312,7 @@ public static class StreamWriteExtensions
             WriteUInt16Be(ms, wd.Height);
         }
 
-        WriteUInt16Be(stream, (ushort)ms.Length);
+        WriteUInt16Be(stream, (int)ms.Length);
         ms.WriteTo(stream);
     }
 
@@ -332,14 +332,14 @@ public static class StreamWriteExtensions
             WriteUInt8(ms, entry.Pixel.Alpha);
         }
 
-        WriteUInt16Be(stream, (ushort)ms.Length);
+        WriteUInt16Be(stream, (int)ms.Length);
         ms.WriteTo(stream);
     }
 
     private static void WriteSods(Stream stream, SingleObjectDefinitionSegment sods)
     {
         var dataLength = (sods.Data.Length <= 65_524)
-            ? (uint)sods.Data.Length + 4
+            ? (long)sods.Data.Length + 4
             : throw new SegmentException("S-ODS data length exceeds 65,524.");
 
         using var ms = new MemoryStream();
@@ -351,7 +351,7 @@ public static class StreamWriteExtensions
         WriteUInt16Be(ms, sods.Width);
         WriteUInt16Be(ms, sods.Height);
         ms.Write(sods.Data, 0, sods.Data.Length);
-        WriteUInt16Be(stream, (ushort)ms.Length);
+        WriteUInt16Be(stream, (int)ms.Length);
         ms.WriteTo(stream);
     }
 
@@ -371,7 +371,7 @@ public static class StreamWriteExtensions
         WriteUInt16Be(ms, iods.Width);
         WriteUInt16Be(ms, iods.Height);
         ms.Write(iods.Data, 0, iods.Data.Length);
-        WriteUInt16Be(stream, (ushort)ms.Length);
+        WriteUInt16Be(stream, (int)ms.Length);
         ms.WriteTo(stream);
     }
 
@@ -387,7 +387,7 @@ public static class StreamWriteExtensions
         WriteUInt8(ms, 0x00);
         ms.Write(mods.Data, 0, mods.Data.Length);
 
-        WriteUInt16Be(stream, (ushort)ms.Length);
+        WriteUInt16Be(stream, (int)ms.Length);
         ms.WriteTo(stream);
     }
 
@@ -403,7 +403,7 @@ public static class StreamWriteExtensions
         WriteUInt8(ms, 0x40);
         ms.Write(fods.Data, 0, fods.Data.Length);
 
-        WriteUInt16Be(stream, (ushort)ms.Length);
+        WriteUInt16Be(stream, (int)ms.Length);
         ms.WriteTo(stream);
     }
 
@@ -412,21 +412,30 @@ public static class StreamWriteExtensions
         stream.WriteByte(value);
     }
 
-    private static void WriteUInt16Be(Stream stream, ushort value)
+    private static void WriteUInt16Be(Stream stream, int value)
     {
+        if (value < 0x0 || value > 0xFFFF)
+            throw new OverflowException($"{value} is not a 16-bit unsigned integer.");
+
         stream.WriteByte((byte)(value >> 8));
         stream.WriteByte((byte)value);
     }
 
-    private static void WriteUInt24Be(Stream stream, uint value)
+    private static void WriteUInt24Be(Stream stream, long value)
     {
+        if (value < 0x0 || value > 0xFFFFFF)
+            throw new OverflowException($"{value} is not a 24-bit unsigned integer.");
+
         stream.WriteByte((byte)(value >> 16));
         stream.WriteByte((byte)(value >> 8));
         stream.WriteByte((byte)value);
     }
 
-    private static void WriteUInt32Be(Stream stream, uint value)
+    private static void WriteUInt32Be(Stream stream, long value)
     {
+        if (value < 0x0 || value > 0xFFFFFFFF)
+            throw new OverflowException($"{value} is not a 32-bit unsigned integer.");
+
         stream.WriteByte((byte)(value >> 24));
         stream.WriteByte((byte)(value >> 16));
         stream.WriteByte((byte)(value >> 8));

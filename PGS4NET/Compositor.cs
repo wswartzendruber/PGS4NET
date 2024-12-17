@@ -30,7 +30,7 @@ namespace PGS4NET;
 /// </remarks>
 public class Compositor
 {
-    private readonly uint Size;
+    private readonly long Size;
     private readonly YcbcraPixel[] Palette;
     private readonly YcbcraPixel[] PrimaryPixels;
     private readonly YcbcraPixel[] SecondaryPixels;
@@ -42,29 +42,29 @@ public class Compositor
     /// <summary>
     ///     The horizontal offset of the window's top-left corner within the screen.
     /// </summary>
-    public ushort X { get; }
+    public int X { get; }
 
     /// <summary>
     ///     The vertical offset of the window's top-left corner within the screen.
     /// </summary>
-    public ushort Y { get; }
+    public int Y { get; }
 
     /// <summary>
     ///     The width of the window.
     /// </summary>
-    public ushort Width { get; }
+    public int Width { get; }
 
     /// <summary>
     ///     The height of the window.
     /// </summary>
-    public ushort Height { get; }
+    public int Height { get; }
 
     /// <summary>
     ///     Initializes a new instance for the provided window.
     /// </summary>
     public Compositor(DisplayWindow displayWindow)
     {
-        Size = (uint)(displayWindow.Width * displayWindow.Height);
+        Size = (long)(displayWindow.Width * displayWindow.Height);
         Palette = new YcbcraPixel[256];
         PrimaryPixels = new YcbcraPixel[Size];
         SecondaryPixels = new YcbcraPixel[Size];
@@ -341,7 +341,7 @@ public class Compositor
         bool primaryPlaneHasSomething = false;
         bool planesDiffer = false;
 
-        for (uint i = 0; i < Size; i++)
+        for (long i = 0; i < Size; i++)
         {
             if (PrimaryPixels[i] != SecondaryPixels[i])
                 planesDiffer = true;
@@ -362,7 +362,7 @@ public class Compositor
         {
             PrimaryPlaneHasSomething = false;
 
-            for (uint i = 0; i < Size; i++)
+            for (long i = 0; i < Size; i++)
                 PrimaryPixels[i] = default;
 
             SyncSecondaryPlane();

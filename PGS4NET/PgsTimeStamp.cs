@@ -20,13 +20,13 @@ public struct PgsTimeStamp : IEquatable<PgsTimeStamp>, IComparable<PgsTimeStamp>
     /// <summary>
     ///     The highest millisecond value that can be represented by this class.
     /// </summary>
-    public const uint MaxMilliseconds = 47_721_858;
+    public const long MaxMilliseconds = 47_721_858;
 
     /// <summary>
     ///     The number of ticks as used by the PTS and DTS fields of PGS segments. 90,000 ticks
     ///     make one second.
     /// </summary>
-    public uint Ticks { get; private set; }
+    public long Ticks { get; private set; }
 
     /// <summary>
     ///     Initializes a new instance with the given tick count.
@@ -35,7 +35,7 @@ public struct PgsTimeStamp : IEquatable<PgsTimeStamp>, IComparable<PgsTimeStamp>
     ///     The number of ticks as used by the PTS and DTS fields of PGS segments. 90,000 ticks
     ///     make one second.
     /// </param>
-    public PgsTimeStamp(uint ticks)
+    public PgsTimeStamp(long ticks)
     {
         Ticks = ticks;
     }
@@ -44,7 +44,7 @@ public struct PgsTimeStamp : IEquatable<PgsTimeStamp>, IComparable<PgsTimeStamp>
     ///     Returns the number of milliseconds represented by the time stamp. The return value
     ///     is rounded down to the nearest millisecond.
     /// </summary>
-    public uint ToMilliseconds() => Ticks / 90;
+    public long ToMilliseconds() => Ticks / 90;
 
     /// <summary>
     ///     Initializes a new instance using the specified millisecond value.
@@ -52,7 +52,7 @@ public struct PgsTimeStamp : IEquatable<PgsTimeStamp>, IComparable<PgsTimeStamp>
     /// <param name="milliseconds">
     ///     The millisecond count which must not exceed 47,721,858.
     /// </param>
-    public static PgsTimeStamp FromMilliseconds(uint milliseconds)
+    public static PgsTimeStamp FromMilliseconds(long milliseconds)
     {
         if (milliseconds > MaxMilliseconds)
         {
@@ -171,7 +171,7 @@ public struct PgsTimeStamp : IEquatable<PgsTimeStamp>, IComparable<PgsTimeStamp>
     ///     The number of ticks as used by the PTS and DTS fields of PGS segments. 90,000 ticks
     ///     make one second.
     /// </returns>
-    public static implicit operator uint(PgsTimeStamp pts) => pts.Ticks;
+    public static implicit operator long(PgsTimeStamp pts) => pts.Ticks;
 
     /// <summary>
     ///     Implicitly creates a new instance using the provided <paramref name="ticks" />
@@ -181,5 +181,5 @@ public struct PgsTimeStamp : IEquatable<PgsTimeStamp>, IComparable<PgsTimeStamp>
     ///     The number of ticks as used by the PTS and DTS fields of PGS segments. 90,000 ticks
     ///     make one second.
     /// </param>
-    public static implicit operator PgsTimeStamp(uint ticks) => new PgsTimeStamp(ticks);
+    public static implicit operator PgsTimeStamp(long ticks) => new PgsTimeStamp(ticks);
 }

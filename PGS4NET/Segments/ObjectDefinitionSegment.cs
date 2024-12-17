@@ -19,7 +19,7 @@ public abstract class ObjectDefinitionSegment : Segment
     ///     The versioned ID of this object where the version should start at zero and then
     ///     increment by one each time the object is defined differently within a display set.
     /// </summary>
-    public VersionedId<ushort> VersionedId { get; set; }
+    public VersionedId<int> VersionedId { get; set; }
 
     /// <summary>
     ///     The RLE-compressed data for this portion of the completed object.
@@ -54,7 +54,7 @@ public abstract class ObjectDefinitionSegment : Segment
     ///     The RLE-compressed data for this portion of the completed object.
     /// </param>
     public ObjectDefinitionSegment(PgsTimeStamp pts, PgsTimeStamp dts
-        , VersionedId<ushort> versionedId, byte[] data) : base(pts, dts)
+        , VersionedId<int> versionedId, byte[] data) : base(pts, dts)
     {
         VersionedId = versionedId;
         Data = data;

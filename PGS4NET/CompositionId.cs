@@ -20,7 +20,7 @@ public struct CompositionId : IEquatable<CompositionId>
     /// <summary>
     ///     The object ID.
     /// </summary>
-    public ushort ObjectId { get; private set; }
+    public int ObjectId { get; private set; }
 
     /// <summary>
     ///     The window ID.
@@ -30,7 +30,7 @@ public struct CompositionId : IEquatable<CompositionId>
     /// <summary>
     ///     Initializes a new instance with the provided object and window IDs.
     /// </summary>
-    public CompositionId(ushort objectId, byte windowId)
+    public CompositionId(int objectId, byte windowId)
     {
         ObjectId = objectId;
         WindowId = windowId;

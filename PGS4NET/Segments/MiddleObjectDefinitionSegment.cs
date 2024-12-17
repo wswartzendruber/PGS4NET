@@ -48,7 +48,7 @@ public class MiddleObjectDefinitionSegment : ObjectDefinitionSegment
     ///     The RLE-compressed data for this portion of the completed object.
     /// </param>
     public MiddleObjectDefinitionSegment(PgsTimeStamp pts, PgsTimeStamp dts
-        , VersionedId<ushort> versionedId, byte[] data) : base(pts, dts, versionedId, data)
+        , VersionedId<int> versionedId, byte[] data) : base(pts, dts, versionedId, data)
     {
     }
 }

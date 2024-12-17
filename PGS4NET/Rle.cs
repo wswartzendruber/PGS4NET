@@ -51,7 +51,7 @@ public static class Rle
     /// <returns>
     ///     An RLE-compressed byte sequence.
     /// </returns>
-    public static byte[] Compress(byte[] input, ushort width, ushort height)
+    public static byte[] Compress(byte[] input, int width, int height)
     {
         if ((width == 0) ^ (height == 0))
         {
@@ -68,13 +68,13 @@ public static class Rle
 
         var output = new List<byte>();
         byte value = 0x00;
-        uint count = 0;
+        long count = 0;
 
-        for (uint x = 0; x < input.Length; x += width)
+        for (long x = 0; x < input.Length; x += width)
         {
             var end = x + width;
 
-            for (uint i = x; i < end; i++)
+            for (long i = x; i < end; i++)
             {
                 var current = input[i];
 
@@ -148,7 +148,7 @@ public static class Rle
     ///         </item>
     ///     </list>
     /// </exception>
-    public static byte[] Decompress(byte[] input, ushort width, ushort height)
+    public static byte[] Decompress(byte[] input, int width, int height)
     {
         if ((width == 0) ^ (height == 0))
         {
@@ -194,7 +194,7 @@ public static class Rle
                             if (inIndex < input.Length)
                             {
                                 var byte3 = input[inIndex++];
-                                var limit = ((ushort)byte2 & 0x3F) << 8 | (ushort)byte3;
+                                var limit = ((int)byte2 & 0x3F) << 8 | (int)byte3;
 
                                 for (var i = 0; i < limit; i++)
                                     output[outIndex++] = 0x00;
@@ -223,7 +223,7 @@ public static class Rle
                             if (inIndex < input.Length)
                             {
                                 var byte3 = input[inIndex++];
-                                var limit = ((ushort)byte2 & 0x3F) << 8 | (ushort)byte3;
+                                var limit = ((int)byte2 & 0x3F) << 8 | (int)byte3;
 
                                 if (inIndex < input.Length)
                                 {
@@ -269,7 +269,7 @@ public static class Rle
         return output;
     }
 
-    private static void OutputRleSequence(List<byte> output, byte value, uint count)
+    private static void OutputRleSequence(List<byte> output, byte value, long count)
     {
         if (value == 0x00)
         {

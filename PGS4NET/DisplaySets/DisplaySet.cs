@@ -60,13 +60,13 @@ public class DisplaySet
     ///     The width of the screen in pixels. This value should be consistent within a
     ///     presentation.
     /// </summary>
-    public ushort Width { get; set; }
+    public int Width { get; set; }
 
     /// <summary>
     ///     The height of the screen in pixels. This value should be consistent within a
     ///     presentation.
     /// </summary>
-    public ushort Height { get; set; }
+    public int Height { get; set; }
 
     /// <summary>
     ///     This value should be set to <c>0x10</c> but can otherwise be typically ignored.
@@ -97,13 +97,13 @@ public class DisplaySet
     /// <summary>
     ///     The collection of objects referenced by instance.
     /// </summary>
-    public IDictionary<VersionedId<ushort>, DisplayObject> Objects { get; set; }
+    public IDictionary<VersionedId<int>, DisplayObject> Objects { get; set; }
 
     /// <summary>
     ///     Starting at zero, this increments each time graphics are updated within a
     ///     presentation.
     /// </summary>
-    public ushort CompositionNumber { get; set; }
+    public int CompositionNumber { get; set; }
 
     /// <summary>
     ///     Defines the role of this instance within the larger epoch.
@@ -124,7 +124,7 @@ public class DisplaySet
     {
         Windows = new Dictionary<byte, DisplayWindow>();
         Palettes = new Dictionary<VersionedId<byte>, DisplayPalette>();
-        Objects = new Dictionary<VersionedId<ushort>, DisplayObject>();
+        Objects = new Dictionary<VersionedId<int>, DisplayObject>();
         Compositions = new Dictionary<CompositionId, DisplayComposition>();
     }
 
@@ -178,11 +178,11 @@ public class DisplaySet
     ///     A collection of composition objects, each mapped according to its compound ID
     ///     (object ID + window ID).
     /// </param>
-    public DisplaySet(PgsTimeStamp pts, PgsTimeStamp dts, ushort width, ushort height
+    public DisplaySet(PgsTimeStamp pts, PgsTimeStamp dts, int width, int height
         , byte frameRate, bool paletteUpdateOnly, byte paletteId
         , IDictionary<byte, DisplayWindow> windows
         , IDictionary<VersionedId<byte>, DisplayPalette> palettes
-        , IDictionary<VersionedId<ushort>, DisplayObject> objects, ushort compositionNumber
+        , IDictionary<VersionedId<int>, DisplayObject> objects, int compositionNumber
         , CompositionState compositionState
         , IDictionary<CompositionId, DisplayComposition> compositions)
     {
