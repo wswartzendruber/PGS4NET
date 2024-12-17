@@ -41,8 +41,8 @@ public struct VersionedId<T> : IEquatable<VersionedId<T>>
     ///     Determines if the values of this instance matches another one's.
     /// </summary>
     public bool Equals(VersionedId<T> other) =>
-        other.Id.Equals(this.Id)
-            && other.Version == this.Version;
+        other.Id.Equals(Id)
+            && other.Version == Version;
 
     /// <summary>
     ///     Determines if the type and values of this instance matches another one's.
@@ -60,7 +60,7 @@ public struct VersionedId<T> : IEquatable<VersionedId<T>>
             int hash = 17;
 
             hash = hash * 23 + Id.GetHashCode();
-            hash = hash * 23 + (int)Version;
+            hash = hash * 23 + Version;
 
             return hash;
         }

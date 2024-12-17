@@ -40,8 +40,8 @@ public struct CompositionId : IEquatable<CompositionId>
     ///     Determines if the values of this instance matches another one's.
     /// </summary>
     public bool Equals(CompositionId other) =>
-        other.ObjectId == this.ObjectId
-            && other.WindowId == this.WindowId;
+        other.ObjectId == ObjectId
+            && other.WindowId == WindowId;
 
     /// <summary>
     ///     Determines if the type and values of this instance matches another one's.
@@ -56,7 +56,7 @@ public struct CompositionId : IEquatable<CompositionId>
     {
         unchecked
         {
-            return ((int)ObjectId << 16) | ((int)WindowId << 8);
+            return ObjectId << 16 | WindowId << 8;
         }
     }
 

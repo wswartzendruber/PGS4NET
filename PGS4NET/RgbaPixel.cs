@@ -64,10 +64,10 @@ public struct RgbaPixel : IEquatable<RgbaPixel>
     ///     Determines if the values of this instance matches another one's.
     /// </summary>
     public bool Equals(RgbaPixel other) =>
-        other.Red == this.Red
-            && other.Green == this.Green
-            && other.Blue == this.Blue
-            && other.Alpha == this.Alpha;
+        other.Red == Red
+            && other.Green == Green
+            && other.Blue == Blue
+            && other.Alpha == Alpha;
 
     /// <summary>
     ///     Determines if the type and values of this instance matches another one's.

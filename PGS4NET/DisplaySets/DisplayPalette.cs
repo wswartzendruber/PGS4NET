@@ -9,7 +9,6 @@
  */
 
 using System.Collections.Generic;
-using PGS4NET.Segments;
 
 namespace PGS4NET.DisplaySets;
 

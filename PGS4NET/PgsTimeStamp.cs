@@ -88,12 +88,12 @@ public struct PgsTimeStamp : IEquatable<PgsTimeStamp>, IComparable<PgsTimeStamp>
     ///     </list>
     /// </returns>
     public int CompareTo(PgsTimeStamp other) =>
-        this.Ticks.CompareTo(other.Ticks);
+        Ticks.CompareTo(other.Ticks);
 
     /// <summary>
     ///     Determines if the value of this instance matches another one's.
     /// </summary>
-    public bool Equals(PgsTimeStamp other) => other.Ticks == this.Ticks;
+    public bool Equals(PgsTimeStamp other) => other.Ticks == Ticks;
 
     /// <summary>
     ///     Determines if the type and value of this instance matches another one's.

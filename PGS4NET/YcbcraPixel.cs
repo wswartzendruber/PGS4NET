@@ -76,10 +76,10 @@ public struct YcbcraPixel : IEquatable<YcbcraPixel>
     ///     Determines if the values of this instance matches another one's.
     /// </summary>
     public bool Equals(YcbcraPixel other) =>
-        other.Y == this.Y
-            && other.Cb == this.Cb
-            && other.Cr == this.Cr
-            && other.Alpha == this.Alpha;
+        other.Y == Y
+            && other.Cb == Cb
+            && other.Cr == Cr
+            && other.Alpha == Alpha;
 
     /// <summary>
     ///     Determines if the type and values of this instance matches another one's.
@@ -94,7 +94,7 @@ public struct YcbcraPixel : IEquatable<YcbcraPixel>
     {
         unchecked
         {
-            return (int)Y << 24 | (int)Cb << 16 | (int)Cr << 8 | (int)Alpha;
+            return Y << 24 | Cb << 16 | Cr << 8 | Alpha;
         }
     }
 

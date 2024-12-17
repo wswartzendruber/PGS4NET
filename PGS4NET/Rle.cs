@@ -27,8 +27,6 @@ public static class Rle
         = new("Incomplete RLE line.");
     private static readonly RleException InvalidRleLineLength
         = new("Invalid RLE line length.");
-    private static readonly RleException InvalidRleLineCount
-        = new("Invalid RLE line count.");
     private static readonly RleException IncompleteRleSequence
         = new("Incomplete RLE sequence.");
     private static readonly RleException InvalidRleSequence
@@ -194,7 +192,7 @@ public static class Rle
                             if (inIndex < input.Length)
                             {
                                 var byte3 = input[inIndex++];
-                                var limit = ((int)byte2 & 0x3F) << 8 | (int)byte3;
+                                var limit = (byte2 & 0x3F) << 8 | byte3;
 
                                 for (var i = 0; i < limit; i++)
                                     output[outIndex++] = 0x00;
@@ -223,7 +221,7 @@ public static class Rle
                             if (inIndex < input.Length)
                             {
                                 var byte3 = input[inIndex++];
-                                var limit = ((int)byte2 & 0x3F) << 8 | (int)byte3;
+                                var limit = (byte2 & 0x3F) << 8 | byte3;
 
                                 if (inIndex < input.Length)
                                 {

@@ -8,8 +8,6 @@
  * SPDX-License-Identifier: MPL-2.0
  */
 
-using System;
-
 namespace PGS4NET.Segments;
 
 /// <summary>

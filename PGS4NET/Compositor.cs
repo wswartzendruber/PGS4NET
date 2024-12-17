@@ -64,7 +64,7 @@ public class Compositor
     /// </summary>
     public Compositor(DisplayWindow displayWindow)
     {
-        Size = (long)(displayWindow.Width * displayWindow.Height);
+        Size = displayWindow.Width * displayWindow.Height;
         Palette = new YcbcraPixel[256];
         PrimaryPixels = new YcbcraPixel[Size];
         SecondaryPixels = new YcbcraPixel[Size];
