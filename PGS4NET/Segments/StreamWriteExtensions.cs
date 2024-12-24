@@ -1,12 +1,19 @@
-﻿﻿/*
- * Copyright 2024 William Swartzendruber
- *
- * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a
- * copy of the MPL was not distributed with this file, You can obtain one at
- * https://mozilla.org/MPL/2.0/.
- *
- * SPDX-License-Identifier: MPL-2.0
- */
+﻿/*
+* Copyright 2024 William Swartzendruber
+*
+* This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a
+* copy of the MPL was not distributed with this file, You can obtain one at
+* https://mozilla.org/MPL/2.0/.
+*
+* SPDX-License-Identifier: MPL-2.0
+*/
+
+//
+// Many thanks are in order for cubicibo for offering this file up as a reference point
+// for PGS validation.
+//
+// https://github.com/cubicibo/SUPer/blob/main/SUPer/pgstream.py
+//
 
 using System;
 using System.Collections.Generic;
@@ -21,6 +28,17 @@ namespace PGS4NET.Segments;
 /// </summary>
 public static class StreamWriteExtensions
 {
+    private static readonly SegmentException PaletteUpdateOnlyWithNonNormal
+        = new("PaletteUpdateOnly paired with non-Normal composition state.");
+    private static readonly SegmentException IllegalPaletteId
+        = new("PaletteId must be between 0 and 7 inclusive.");
+    private static readonly SegmentException TooManyWindowsDefined
+        = new("No more than two windows may be defined.");
+    private static readonly SegmentException TooManyPaletteEntries
+        = new("No more than 256 palette entries may be defined.");
+    private static readonly SegmentException IllegalObjectDimensions
+        = new("Object width and height must be between 8 and 4096 pixels inclusive.");
+
     /// <summary>
     ///     Writes all PGS segments in a collection to a <paramref name="stream" />.
     /// </summary>
@@ -250,6 +268,14 @@ public static class StreamWriteExtensions
 
     private static void WritePcs(Stream stream, PresentationCompositionSegment pcs)
     {
+        if (pcs.State != CompositionState.Normal)
+        {
+            if (pcs.PaletteUpdateOnly)
+                throw PaletteUpdateOnlyWithNonNormal;
+            if (pcs.PaletteId < 0 || 7 < pcs.PaletteId)
+                throw IllegalPaletteId;
+        }
+
         using var ms = new MemoryStream();
 
         WriteUInt16Be(ms, pcs.Width);
@@ -296,6 +322,9 @@ public static class StreamWriteExtensions
 
     private static void WriteWds(Stream stream, WindowDefinitionSegment wds)
     {
+        if (2 < wds.Definitions.Count)
+            throw TooManyWindowsDefined;
+
         using var ms = new MemoryStream();
 
         if (wds.Definitions.Count < 256)
@@ -318,6 +347,11 @@ public static class StreamWriteExtensions
 
     private static void WritePds(Stream stream, PaletteDefinitionSegment pds)
     {
+        if (pds.VersionedId.Id < 0 || 7 < pds.VersionedId.Id)
+            throw IllegalPaletteId;
+        if (256 < pds.Entries.Count)
+            throw TooManyPaletteEntries;
+
         using var ms = new MemoryStream();
 
         WriteUInt8(ms, pds.VersionedId.Id);
@@ -338,6 +372,9 @@ public static class StreamWriteExtensions
 
     private static void WriteSods(Stream stream, SingleObjectDefinitionSegment sods)
     {
+        if (Math.Min(sods.Width, sods.Height) < 8 || 4096 < Math.Max(sods.Width, sods.Height))
+            throw IllegalObjectDimensions;
+
         var dataLength = (sods.Data.Length <= 65_524)
             ? (long)sods.Data.Length + 4
             : throw new SegmentException("S-ODS data length exceeds 65,524.");
@@ -357,6 +394,9 @@ public static class StreamWriteExtensions
 
     private static void WriteIods(Stream stream, InitialObjectDefinitionSegment iods)
     {
+        if (Math.Min(iods.Width, iods.Height) < 8 || 4096 < Math.Max(iods.Width, iods.Height))
+            throw IllegalObjectDimensions;
+
         if (iods.Length > 16_777_216)
             throw new SegmentException("I-ODS declared data length exceeds 16,777,216.");
         if (iods.Data.Length > 65_524)
