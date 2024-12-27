@@ -14,37 +14,68 @@ using PGS4NET.Segments;
 
 namespace PGS4NET.Tests.Segments;
 
-public class Failures
+public class StreamExtensionTests
 {
     [Fact]
-    public void EmptyStream()
+    public void ReadWriteAllSegmentsEnumerable()
     {
-        using var stream = new MemoryStream();
+        using var inputStream = new MemoryStream(SintelSubtitles.Buffer);
+        using var outputStream = new MemoryStream();
 
-        if (stream.ReadSegment() is not null)
-            throw new Exception("Returned segment is not null.");
+        outputStream.WriteAllSegments(inputStream.Segments());
+
+        Assert.True(inputStream.ToArray().SequenceEqual(outputStream.ToArray()));
+    }
+
+#if NETCOREAPP3_0_OR_GREATER
+    [Fact]
+    public async Task ReadWriteAllSegmentsAsyncEnumerable()
+    {
+        using var inputStream = new MemoryStream(SintelSubtitles.Buffer);
+        using var outputStream = new MemoryStream();
+
+        await outputStream.WriteAllSegmentsAsync(inputStream.SegmentsAsync());
+
+        Assert.True(inputStream.ToArray().SequenceEqual(outputStream.ToArray()));
+    }
+#endif
+
+    [Fact]
+    public void ReadWriteAllSegments()
+    {
+        using var inputStream = new MemoryStream(SintelSubtitles.Buffer);
+        using var outputStream = new MemoryStream();
+
+        outputStream.WriteAllSegments(inputStream.ReadAllSegments());
+
+        Assert.True(inputStream.ToArray().SequenceEqual(outputStream.ToArray()));
     }
 
     [Fact]
-    public async Task EmptyStreamAsync()
+    public async Task ReadWriteAllSegmentsAsync()
     {
-        using var stream = new MemoryStream();
+        using var inputStream = new MemoryStream(SintelSubtitles.Buffer);
+        using var outputStream = new MemoryStream();
 
-        if (await stream.ReadSegmentAsync() is not null)
-            throw new Exception("Returned segment is not null.");
+        await outputStream.WriteAllSegmentsAsync(await inputStream.ReadAllSegmentsAsync());
+
+        Assert.True(inputStream.ToArray().SequenceEqual(outputStream.ToArray()));
     }
 
     [Fact]
-    public void NullByte()
+    public void TrailingNullByteEnumerable()
     {
         using var stream = new MemoryStream();
+        using var reader = new SegmentReader(stream);
+        var buffer = SegmentBuffers.Buffers["pcs-es"];
 
+        stream.Write(buffer, 0, buffer.Length);
         stream.WriteByte(0x00);
         stream.Position = 0;
 
         try
         {
-            stream.ReadSegment();
+            stream.Segments().ToList();
 
             throw new Exception("Successfully read a segment with a trailing null byte.");
         }
@@ -55,17 +86,21 @@ public class Failures
         }
     }
 
+#if NETCOREAPP3_0_OR_GREATER
     [Fact]
-    public async Task NullByteAsync()
+    public async Task TrailingNullByteAsyncEnumerable()
     {
         using var stream = new MemoryStream();
+        using var reader = new SegmentReader(stream);
+        var buffer = SegmentBuffers.Buffers["pcs-es"];
 
+        stream.Write(buffer, 0, buffer.Length);
         stream.WriteByte(0x00);
         stream.Position = 0;
 
         try
         {
-            await stream.ReadSegmentAsync();
+            await stream.SegmentsAsync().ToListAsync();
 
             throw new Exception("Successfully read a segment with a trailing null byte.");
         }
@@ -75,11 +110,13 @@ public class Failures
                 throw new Exception("Expected specific error message on header EOF.");
         }
     }
+#endif
 
     [Fact]
     public void TrailingNullByte()
     {
         using var stream = new MemoryStream();
+        using var reader = new SegmentReader(stream);
         var buffer = SegmentBuffers.Buffers["pcs-es"];
 
         stream.Write(buffer, 0, buffer.Length);
@@ -103,6 +140,7 @@ public class Failures
     public async Task TrailingNullByteAsync()
     {
         using var stream = new MemoryStream();
+        using var reader = new SegmentReader(stream);
         var buffer = SegmentBuffers.Buffers["pcs-es"];
 
         stream.Write(buffer, 0, buffer.Length);

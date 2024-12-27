@@ -20,9 +20,9 @@ namespace PGS4NET.Segments;
 ///     Reads PGS <see cref="Segment"/>s from an input <see cref="Stream"/>.
 /// </summary>
 #if NETSTANDARD2_1_OR_GREATER
-public class StreamReader : IDisposable, IAsyncDisposable
+public class SegmentReader : IDisposable, IAsyncDisposable
 #else
-public class StreamReader : IDisposable
+public class SegmentReader : IDisposable
 #endif
 {
     /// <summary>
@@ -46,7 +46,7 @@ public class StreamReader : IDisposable
     ///     Whether or not the <paramref name="input"/> stream will be left open once all
     ///     segments have been read.
     /// </param>
-    public StreamReader(Stream input, bool leaveOpen = false)
+    public SegmentReader(Stream input, bool leaveOpen = false)
     {
         Input = input;
         LeaveOpen = leaveOpen;
@@ -131,7 +131,7 @@ public class StreamReader : IDisposable
     /// <exception cref="IOException">
     ///     An underlying I/O error occurs while attempting to read the segment.
     /// </exception>
-    public async Task<Segment?> ReadSegmentAsync(CancellationToken cancellationToken = default)
+    public async Task<Segment?> ReadAsync(CancellationToken cancellationToken = default)
     {
         var headerBuffer = new byte[13];
         var headerBytesRead = await Input.ReadAsync(headerBuffer, 0, headerBuffer.Length

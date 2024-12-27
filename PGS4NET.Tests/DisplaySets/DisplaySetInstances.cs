@@ -130,22 +130,22 @@ internal static class DisplaySetInstances
                         RandomDisplayObject()
                     },
                     {
-                        new VersionedId<int>((int)(RandomUInt16(128) + 128)
+                        new VersionedId<int>(RandomUInt16(128) + 128
                             , RandomByte()),
                         RandomDisplayObject()
                     },
                     {
-                        new VersionedId<int>((int)(RandomUInt16(128) + 256)
+                        new VersionedId<int>(RandomUInt16(128) + 256
                             , RandomByte()),
                         RandomDisplayObject()
                     },
                     {
-                        new VersionedId<int>((int)(RandomUInt16(128) + 384)
+                        new VersionedId<int>(RandomUInt16(128) + 384
                             , RandomByte()),
                         RandomDisplayObject()
                     },
                     {
-                        new VersionedId<int>((int)(RandomUInt16(128) + 512)
+                        new VersionedId<int>(RandomUInt16(128) + 512
                             , RandomByte()),
                         RandomDisplayObject()
                     },
@@ -165,7 +165,7 @@ internal static class DisplaySetInstances
                         }
                     },
                     {
-                        new CompositionId((int)(RandomUInt16(128) + 128), RandomByte()),
+                        new CompositionId(RandomUInt16(128) + 128, RandomByte()),
                         new DisplayComposition
                         {
                             X = RandomUInt16(),
@@ -176,7 +176,7 @@ internal static class DisplaySetInstances
                         }
                     },
                     {
-                        new CompositionId((int)(RandomUInt16(128) + 256), RandomByte()),
+                        new CompositionId((RandomUInt16(128) + 256), RandomByte()),
                         new DisplayComposition
                         {
                             X = RandomUInt16(),
@@ -193,9 +193,9 @@ internal static class DisplaySetInstances
 
     private static byte RandomByte(byte max = byte.MaxValue) => (byte)Rng.Next(max);
 
-    private static int RandomUInt16(int max = int.MaxValue) => (int)Rng.Next(max);
+    private static int RandomUInt16(int max = int.MaxValue) => Rng.Next(max);
 
-    private static long RandomUInt32() => (long)Rng.Next();
+    private static long RandomUInt32() => Rng.Next();
 
     private static CompositionState RandomCompositionState()
     {

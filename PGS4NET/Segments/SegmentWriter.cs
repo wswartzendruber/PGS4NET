@@ -152,8 +152,7 @@ public class SegmentWriter : IDisposable
     /// <exception cref="IOException">
     ///     An underlying I/O error occurs while attempting to write the segment.
     /// </exception>
-    public async Task WriteSegmentAsync(Segment segment
-        , CancellationToken cancellationToken = default)
+    public async Task WriteAsync(Segment segment, CancellationToken cancellationToken = default)
     {
         using var buffer = new MemoryStream();
 
