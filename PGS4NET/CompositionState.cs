@@ -24,13 +24,13 @@ public enum CompositionState
     EpochStart,
 
     /// <summary>
-    ///     Similar to <see cref="EpochStart" />, except used to refresh the screen with the
+    ///     Similar to <see cref="EpochStart"/>, except used to refresh the screen with the
     ///     current composition. That is, the associated DS should redefine the same windows,
-    ///     objects, and palettes as the <see cref="EpochStart" /> DS. This allows, for example,
-    ///     a player to seek past an <see cref="EpochStart" /> and land in the middle of an
+    ///     objects, and palettes as the <see cref="EpochStart"/> DS. This allows, for example,
+    ///     a player to seek past an <see cref="EpochStart"/> and land in the middle of an
     ///     epoch, while still being able to show the relevant composition once the
-    ///     <see cref="AcquisitionPoint" /> is encountered. While it is technically possible to
-    ///     use this to alter the composition from what the <see cref="EpochStart" /> DS has
+    ///     <see cref="AcquisitionPoint"/> is encountered. While it is technically possible to
+    ///     use this to alter the composition from what the <see cref="EpochStart"/> DS has
     ///     defined, this practice is less common.
     /// </summary>
     AcquisitionPoint,

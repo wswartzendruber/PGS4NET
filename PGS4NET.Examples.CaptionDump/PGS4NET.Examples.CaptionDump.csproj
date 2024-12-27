@@ -20,7 +20,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\PGS4NET\PGS4NET.csproj" />
+    <ProjectReference Include="..\PGS4NET\PGS4NET.csproj"/>
   </ItemGroup>
 
 </Project>

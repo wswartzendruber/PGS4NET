@@ -11,271 +11,190 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace PGS4NET.Segments;
 
 /// <summary>
-///     Extension methods against <see cref="System.IO.Stream" /> for reading PGS segments.
+///     Reads PGS <see cref="Segment"/>s from an input <see cref="Stream"/>.
 /// </summary>
-public static class StreamReadExtensions
+#if NETSTANDARD2_1_OR_GREATER
+public class StreamReader : IDisposable, IAsyncDisposable
+#else
+public class StreamReader : IDisposable
+#endif
 {
     /// <summary>
-    ///     Attempts to read all PGS segments from a <paramref name="stream" />, one at a time,
-    ///     as each one is consumed by an enumerator.
+    ///     The stream that segments are being read from.
+    /// </summary>
+    public Stream Input { get; }
+
+    /// <summary>
+    ///     Whether or not the <see cref="Input"/> will be left open once all segments have been
+    ///     read.
+    /// </summary>
+    public bool LeaveOpen { get; }
+
+    /// <summary>
+    ///     Initializes a new instance.
+    /// </summary>
+    /// <param name="input">
+    ///     The stream that segments will be read from.
+    /// </param>
+    /// <param name="leaveOpen">
+    ///     Whether or not the <paramref name="input"/> stream will be left open once all
+    ///     segments have been read.
+    /// </param>
+    public StreamReader(Stream input, bool leaveOpen = false)
+    {
+        Input = input;
+        LeaveOpen = leaveOpen;
+    }
+
+    /// <summary>
+    ///     Attempts to read the next PGS segment from the <see cref="Input"/> stream.
     /// </summary>
     /// <remarks>
-    ///     The current position of the <paramref name="stream" /> must be at the beginning of a
-    ///     a segment. The stream must contain only complete PGS segments from this point on and
-    ///     there must be no trailing data.
+    ///     The current position of the <see cref="Input"/> stream must be at the beginning of a
+    ///     a segment.
     /// </remarks>
-    /// <param name="stream">
-    ///     The stream to read all segments from.
-    /// </param>
     /// <returns>
-    ///     An enumerator over segments being read.
+    ///     The PGS segment that was read or <see langword="null"/> if the <see cref="Input"/>
+    ///     stream is already EOF.
     /// </returns>
     /// <exception cref="SegmentException">
-    ///     An encoded value within a segment is invalid.
+    ///     An encoded value within the segment is invalid.
     /// </exception>
     /// <exception cref="IOException">
-    ///     An underlying I/O error occurs while attempting to read a segment.
+    ///     An underlying I/O error occurs while attempting to read the segment.
     /// </exception>
-    public static IEnumerable<Segment> Segments(this Stream stream)
+    public Segment? Read()
     {
-        while (stream.ReadSegment() is Segment segment)
-            yield return segment;
+        var headerBuffer = new byte[13];
+        var headerBytesRead = Input.Read(headerBuffer, 0, headerBuffer.Length);
+
+        if (headerBytesRead == 0)
+            return null;
+        else if (headerBytesRead != headerBuffer.Length)
+            throw new IOException("EOF reading segment header.");
+
+        var magicNumber = ReadUInt16Be(headerBuffer, 0)
+            ?? throw new InvalidOperationException();
+
+        if (magicNumber != 0x5047)
+            throw new SegmentException("Unrecognized segment magic number.");
+
+        var pts = ReadUInt32Be(headerBuffer, 2)
+            ?? throw new InvalidOperationException();
+        var dts = ReadUInt32Be(headerBuffer, 6)
+            ?? throw new InvalidOperationException();
+        var kind = ReadUInt8(headerBuffer, 10)
+            ?? throw new InvalidOperationException();
+        var size = ReadUInt16Be(headerBuffer, 11)
+            ?? throw new InvalidOperationException();
+        var payloadBuffer = new byte[size];
+        var payloadBytesRead = Input.Read(payloadBuffer, 0, payloadBuffer.Length);
+
+        if (payloadBytesRead != payloadBuffer.Length)
+            throw new IOException("EOF reading segment payload.");
+
+        return kind switch
+        {
+            0x14 => ParsePds(payloadBuffer, pts, dts),
+            0x15 => ParseOds(payloadBuffer, pts, dts),
+            0x16 => ParsePcs(payloadBuffer, pts, dts),
+            0x17 => ParseWds(payloadBuffer, pts, dts),
+            0x80 => new EndSegment(pts, dts),
+            _ => throw new SegmentException("Unrecognized segment kind."),
+        };
+    }
+
+    /// <summary>
+    ///     Attempts to asynchronously read the next PGS segment from the <see cref="Input"/>
+    ///     stream.
+    /// </summary>
+    /// <remarks>
+    ///     The current position of the <see cref="Input"/> stream must be at the beginning of a
+    ///     a segment.
+    /// </remarks>
+    /// <param name="cancellationToken">
+    ///     The token to monitor for cancellation requests.
+    /// </param>
+    /// <returns>
+    ///     The PGS segment that was read or <see langword="null"/> if the <see cref="Input"/>
+    ///     stream is already EOF.
+    /// </returns>
+    /// <exception cref="SegmentException">
+    ///     An encoded value within the segment is invalid.
+    /// </exception>
+    /// <exception cref="IOException">
+    ///     An underlying I/O error occurs while attempting to read the segment.
+    /// </exception>
+    public async Task<Segment?> ReadSegmentAsync(CancellationToken cancellationToken = default)
+    {
+        var headerBuffer = new byte[13];
+        var headerBytesRead = await Input.ReadAsync(headerBuffer, 0, headerBuffer.Length
+            , cancellationToken);
+
+        if (headerBytesRead == 0)
+            return null;
+        else if (headerBytesRead != headerBuffer.Length)
+            throw new IOException("EOF reading segment header.");
+
+        var magicNumber = ReadUInt16Be(headerBuffer, 0)
+            ?? throw new InvalidOperationException();
+
+        if (magicNumber != 0x5047)
+            throw new SegmentException("Unrecognized segment magic number.");
+
+        var pts = ReadUInt32Be(headerBuffer, 2)
+            ?? throw new InvalidOperationException();
+        var dts = ReadUInt32Be(headerBuffer, 6)
+            ?? throw new InvalidOperationException();
+        var kind = ReadUInt8(headerBuffer, 10)
+            ?? throw new InvalidOperationException();
+        var size = ReadUInt16Be(headerBuffer, 11)
+            ?? throw new InvalidOperationException();
+        var payloadBuffer = new byte[size];
+        var payloadBytesRead = await Input.ReadAsync(payloadBuffer, 0, payloadBuffer.Length
+            , cancellationToken);
+
+        if (payloadBytesRead != payloadBuffer.Length)
+            throw new IOException("EOF reading segment payload.");
+
+        return kind switch
+        {
+            0x14 => ParsePds(payloadBuffer, pts, dts),
+            0x15 => ParseOds(payloadBuffer, pts, dts),
+            0x16 => ParsePcs(payloadBuffer, pts, dts),
+            0x17 => ParseWds(payloadBuffer, pts, dts),
+            0x80 => new EndSegment(pts, dts),
+            _ => throw new SegmentException("Unrecognized segment kind."),
+        };
+    }
+
+    /// <summary>
+    ///     Disposes the <see cref="Input"/> stream if <see cref="LeaveOpen"/> is
+    ///     <see langword="false"/>.
+    /// </summary>
+    public void Dispose()
+    {
+        if (!LeaveOpen)
+            Input.Dispose();
     }
 
 #if NETSTANDARD2_1_OR_GREATER
     /// <summary>
-    ///     Attempts to asynchronously read all PGS segments from a <paramref name="stream" />,
-    ///     one at a time, as each one is consumed by an asynchronous enumerator.
+    ///     Asynchronously disposes the <see cref="Input"/> stream if <see cref="LeaveOpen"/> is
+    ///     <see langword="false"/>.
     /// </summary>
-    /// <remarks>
-    ///     The current position of the <paramref name="stream" /> must be at the beginning of a
-    ///     a segment. The stream must contain only complete PGS segments from this point on and
-    ///     there must be no trailing data.
-    /// </remarks>
-    /// <param name="stream">
-    ///     The stream to read all segments from.
-    /// </param>
-    /// <param name="cancellationToken">
-    ///     The token to monitor for cancellation requests.
-    /// </param>
-    /// <returns>
-    ///     An asynchronous enumerator over segments being read.
-    /// </returns>
-    /// <exception cref="SegmentException">
-    ///     An encoded value within a segment is invalid.
-    /// </exception>
-    /// <exception cref="IOException">
-    ///     An underlying I/O error occurs while attempting to read a segment.
-    /// </exception>
-    public static async IAsyncEnumerable<Segment> SegmentsAsync(this Stream stream,
-        [EnumeratorCancellation] CancellationToken cancellationToken = default)
+    public async ValueTask DisposeAsync()
     {
-        while (await stream.ReadSegmentAsync(cancellationToken) is Segment segment)
-            yield return segment;
+        if (!LeaveOpen)
+            await Input.DisposeAsync();
     }
 #endif
-
-    /// <summary>
-    ///     Attempts to read all PGS segments from a <paramref name="stream" /> in a single
-    ///     operation.
-    /// </summary>
-    /// <remarks>
-    ///     The current position of the <paramref name="stream" /> must be at the beginning of a
-    ///     a segment. The stream must contain only complete PGS segments from this point on and
-    ///     there must be no trailing data.
-    /// </remarks>
-    /// <param name="stream">
-    ///     The stream to read all segments from.
-    /// </param>
-    /// <returns>
-    ///     The collection of PGS segment that were read.
-    /// </returns>
-    /// <exception cref="SegmentException">
-    ///     An encoded value within a segment is invalid.
-    /// </exception>
-    /// <exception cref="IOException">
-    ///     An underlying I/O error occurs while attempting to read a segment.
-    /// </exception>
-    public static IList<Segment> ReadAllSegments(this Stream stream)
-    {
-        var returnValue = new List<Segment>();
-
-        while (stream.ReadSegment() is Segment segment)
-            returnValue.Add(segment);
-
-        return returnValue;
-    }
-
-    /// <summary>
-    ///     Attempts to asynchronously read all PGS segments from a <paramref name="stream" />
-    ///     in a single operation.
-    /// </summary>
-    /// <remarks>
-    ///     The current position of the <paramref name="stream" /> must be at the beginning of a
-    ///     a segment. The stream must contain only complete PGS segments from this point on and
-    ///     there must be no trailing data.
-    /// </remarks>
-    /// <param name="stream">
-    ///     The stream to read all segments from.
-    /// </param>
-    /// <param name="cancellationToken">
-    ///     The token to monitor for cancellation requests.
-    /// </param>
-    /// <returns>
-    ///     The collection of PGS segment that were read.
-    /// </returns>
-    /// <exception cref="SegmentException">
-    ///     An encoded value within a segment is invalid.
-    /// </exception>
-    /// <exception cref="IOException">
-    ///     An underlying I/O error occurs while attempting to read a segment.
-    /// </exception>
-    public static async Task<IList<Segment>> ReadAllSegmentsAsync(this Stream stream,
-        CancellationToken cancellationToken = default)
-    {
-        var returnValue = new List<Segment>();
-
-        while (await stream.ReadSegmentAsync(cancellationToken) is Segment segment)
-            returnValue.Add(segment);
-
-        return returnValue;
-    }
-
-    /// <summary>
-    ///     Attempts to read the next PGS segment from a <paramref name="stream" />.
-    /// </summary>
-    /// <remarks>
-    ///     The current position of the <paramref name="stream" /> must be at the beginning of a
-    ///     a segment.
-    /// </remarks>
-    /// <param name="stream">
-    ///     The stream to read the next segment from.
-    /// </param>
-    /// <returns>
-    ///     The PGS segment that was read or <see langword="null" /> if the
-    ///     <paramref name="stream" /> is already EOF.
-    /// </returns>
-    /// <exception cref="SegmentException">
-    ///     An encoded value within the segment is invalid.
-    /// </exception>
-    /// <exception cref="IOException">
-    ///     An underlying I/O error occurs while attempting to read the segment.
-    /// </exception>
-    public static Segment? ReadSegment(this Stream stream)
-    {
-        var headerBuffer = new byte[13];
-        var headerBytesRead = stream.Read(headerBuffer, 0, headerBuffer.Length);
-
-        if (headerBytesRead == 0)
-            return null;
-        else if (headerBytesRead != headerBuffer.Length)
-            throw new IOException("EOF reading segment header.");
-
-        var magicNumber = ReadUInt16Be(headerBuffer, 0)
-            ?? throw new InvalidOperationException();
-
-        if (magicNumber != 0x5047)
-            throw new SegmentException("Unrecognized segment magic number.");
-
-        var pts = ReadUInt32Be(headerBuffer, 2)
-            ?? throw new InvalidOperationException();
-        var dts = ReadUInt32Be(headerBuffer, 6)
-            ?? throw new InvalidOperationException();
-        var kind = ReadUInt8(headerBuffer, 10)
-            ?? throw new InvalidOperationException();
-        var size = ReadUInt16Be(headerBuffer, 11)
-            ?? throw new InvalidOperationException();
-        var payloadBuffer = new byte[size];
-        var payloadBytesRead = stream.Read(payloadBuffer, 0, payloadBuffer.Length);
-
-        if (payloadBytesRead != payloadBuffer.Length)
-            throw new IOException("EOF reading segment payload.");
-
-        return kind switch
-        {
-            0x14 => ParsePds(payloadBuffer, pts, dts),
-            0x15 => ParseOds(payloadBuffer, pts, dts),
-            0x16 => ParsePcs(payloadBuffer, pts, dts),
-            0x17 => ParseWds(payloadBuffer, pts, dts),
-            0x80 => new EndSegment(pts, dts),
-            _ => throw new SegmentException("Unrecognized segment kind."),
-        };
-    }
-
-    /// <summary>
-    ///     Attempts to asynchronously read the next PGS segment from a
-    ///     <paramref name="stream" />.
-    /// </summary>
-    /// <remarks>
-    ///     The current position of the <paramref name="stream" /> must be at the beginning of a
-    ///     a segment.
-    /// </remarks>
-    /// <param name="stream">
-    ///     The stream to read the next segment from.
-    /// </param>
-    /// <param name="cancellationToken">
-    ///     The token to monitor for cancellation requests.
-    /// </param>
-    /// <returns>
-    ///     The PGS segment that was read or <see langword="null" /> if the
-    ///     <paramref name="stream" /> is already EOF.
-    /// </returns>
-    /// <exception cref="SegmentException">
-    ///     An encoded value within the segment is invalid.
-    /// </exception>
-    /// <exception cref="IOException">
-    ///     An underlying I/O error occurs while attempting to read the segment.
-    /// </exception>
-    public static async Task<Segment?> ReadSegmentAsync(this Stream stream,
-        CancellationToken cancellationToken = default)
-    {
-        var headerBuffer = new byte[13];
-        var headerBytesRead = await stream.ReadAsync(headerBuffer, 0, headerBuffer.Length
-            , cancellationToken);
-
-        if (headerBytesRead == 0)
-            return null;
-        else if (headerBytesRead != headerBuffer.Length)
-            throw new IOException("EOF reading segment header.");
-
-        var magicNumber = ReadUInt16Be(headerBuffer, 0)
-            ?? throw new InvalidOperationException();
-
-        if (magicNumber != 0x5047)
-            throw new SegmentException("Unrecognized segment magic number.");
-
-        var pts = ReadUInt32Be(headerBuffer, 2)
-            ?? throw new InvalidOperationException();
-        var dts = ReadUInt32Be(headerBuffer, 6)
-            ?? throw new InvalidOperationException();
-        var kind = ReadUInt8(headerBuffer, 10)
-            ?? throw new InvalidOperationException();
-        var size = ReadUInt16Be(headerBuffer, 11)
-            ?? throw new InvalidOperationException();
-        var payloadBuffer = new byte[size];
-        var payloadBytesRead = await stream.ReadAsync(payloadBuffer, 0, payloadBuffer.Length
-            , cancellationToken);
-
-        if (payloadBytesRead != payloadBuffer.Length)
-            throw new IOException("EOF reading segment payload.");
-
-        return kind switch
-        {
-            0x14 => ParsePds(payloadBuffer, pts, dts),
-            0x15 => ParseOds(payloadBuffer, pts, dts),
-            0x16 => ParsePcs(payloadBuffer, pts, dts),
-            0x17 => ParseWds(payloadBuffer, pts, dts),
-            0x80 => new EndSegment(pts, dts),
-            _ => throw new SegmentException("Unrecognized segment kind."),
-        };
-    }
 
     private static PresentationCompositionSegment ParsePcs(byte[] buffer, long pts, long dts)
     {

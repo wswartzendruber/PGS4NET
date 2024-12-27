@@ -130,7 +130,7 @@ public class ColorSpace : IEquatable<ColorSpace>
     /// </param>
     /// <returns>
     ///     A limited-range or full-range YCbCrA pixel, according to the
-    ///     <paramref name="limitedRange" /> parameter.
+    ///     <paramref name="limitedRange"/> parameter.
     /// </returns>
     public YcbcraPixel RgbaToYcbcra(RgbaPixel rgbaPixel, bool limitedRange = true)
     {
@@ -158,7 +158,7 @@ public class ColorSpace : IEquatable<ColorSpace>
     /// </summary>
     /// <param name="ycbcraPixel">
     ///     The YCbCrA pixel to convert, which may be either limited-range or full-range
-    ///     according to the <paramref name="limitedRange" /> parameter.
+    ///     according to the <paramref name="limitedRange"/> parameter.
     /// </param>
     /// <param name="limitedRange">
     ///     Determines whether the input value is limited-range (typical) or full-range
@@ -186,13 +186,13 @@ public class ColorSpace : IEquatable<ColorSpace>
     }
 
     /// <summary>
-    ///     Determines if the values of two <see cref="ColorSpace" />s match each other.
+    ///     Determines if the values of two <see cref="ColorSpace"/>s match each other.
     /// </summary>
     public static bool operator ==(ColorSpace first, ColorSpace second) =>
         first.Equals(second);
 
     /// <summary>
-    ///     Determines if the values of two <see cref="ColorSpace" />s don't match each
+    ///     Determines if the values of two <see cref="ColorSpace"/>s don't match each
     ///     other.
     /// </summary>
     public static bool operator !=(ColorSpace first, ColorSpace second) =>

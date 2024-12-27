@@ -61,13 +61,13 @@ public struct CompositionId : IEquatable<CompositionId>
     }
 
     /// <summary>
-    ///     Determines if the values of two <see cref="CompositionId" />s match each other.
+    ///     Determines if the values of two <see cref="CompositionId"/>s match each other.
     /// </summary>
     public static bool operator ==(CompositionId first, CompositionId second) =>
         first.Equals(second);
 
     /// <summary>
-    ///     Determines if the values of two <see cref="CompositionId" />s don't match each
+    ///     Determines if the values of two <see cref="CompositionId"/>s don't match each
     ///     other.
     /// </summary>
     public static bool operator !=(CompositionId first, CompositionId second) =>

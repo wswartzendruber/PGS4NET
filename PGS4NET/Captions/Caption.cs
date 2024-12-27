@@ -48,7 +48,7 @@ public class Caption
     /// <summary>
     ///     An ordered list of object pixel data where each value contains a YCbCr pixel. The
     ///     collection scans horizontally from left to right, top to bottom. The length should
-    ///     be the product of the <see cref="Width" /> and the <see cref="Height" />.
+    ///     be the product of the <see cref="Width"/> and the <see cref="Height"/>.
     /// </summary>
     public YcbcraPixel[] Data { get; set; }
 
@@ -90,7 +90,7 @@ public class Caption
     /// <param name="data">
     ///     An ordered list of object pixel data where each value contains a YCbCr pixel. The
     ///     collection scans horizontally from left to right, top to bottom. The length should
-    ///     be the product of the <see cref="Width" /> and the <see cref="Height" />.
+    ///     be the product of the <see cref="Width"/> and the <see cref="Height"/>.
     /// </param>
     /// <param name="forced">
     ///     Whether or not the caption is forced. This is typically used to translate foreign

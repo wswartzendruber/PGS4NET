@@ -16,7 +16,6 @@
 //
 
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -24,9 +23,13 @@ using System.Threading.Tasks;
 namespace PGS4NET.Segments;
 
 /// <summary>
-///     Extension methods against <see cref="System.IO.Stream" /> for writing PGS segments.
+///     Writes PGS <see cref="Segment"/>s to an output <see cref="Stream"/>.
 /// </summary>
-public static class StreamWriteExtensions
+#if NETSTANDARD2_1_OR_GREATER
+public class SegmentWriter : IDisposable, IAsyncDisposable
+#else
+public class SegmentWriter : IDisposable
+#endif
 {
     private static readonly SegmentException PaletteUpdateOnlyWithNonNormal
         = new("PaletteUpdateOnly paired with non-Normal composition state.");
@@ -40,225 +43,193 @@ public static class StreamWriteExtensions
         = new("Object width and height must be between 8 and 4096 pixels inclusive.");
 
     /// <summary>
-    ///     Writes all PGS segments in a collection to a <paramref name="stream" />.
+    ///     The stream that segments are being written to.
     /// </summary>
-    /// <param name="stream">
-    ///     The stream to write all segments to.
+    public Stream Output { get; }
+
+    /// <summary>
+    ///     Whether or not the <see cref="Output"/> will be left open once all segments have been
+    ///     written.
+    /// </summary>
+    public bool LeaveOpen { get; }
+
+    /// <summary>
+    ///     Initializes a new instance.
+    /// </summary>
+    /// <param name="output">
+    ///     The stream that segments will be written to.
     /// </param>
-    /// <param name="segments">
-    ///     The collection of segments to write.
+    /// <param name="leaveOpen">
+    ///     Whether or not the <paramref name="output"/> stream will be left open once all
+    ///     segments have been written.
     /// </param>
-    /// <exception cref="SegmentException">
-    ///     A property of a <see cref="Segment" /> is invalid.
-    /// </exception>
-    /// <exception cref="IOException">
-    ///     An underlying I/O error occurs while attempting to write a segment.
-    /// </exception>
-    public static void WriteAllSegments(this Stream stream, IEnumerable<Segment> segments)
+    public SegmentWriter(Stream output, bool leaveOpen = false)
     {
-        foreach (var segment in segments)
-            stream.WriteSegment(segment);
+        Output = output;
+        LeaveOpen = leaveOpen;
     }
 
     /// <summary>
-    ///     Asynchronously writes all PGS segments in a collection to a
-    ///     <paramref name="stream" />.
+    ///     Attempts to write a PGS segment to the <see cref="Output"/> stream.
     /// </summary>
-    /// <param name="stream">
-    ///     The stream to write all segments to.
+    /// <param name="segment">
+    ///     The segment to write.
     /// </param>
-    /// <param name="segments">
-    ///     The collection of segments to write.
+    /// <exception cref="SegmentException">
+    ///     A property of the <see cref="Segment"/> is invalid.
+    /// </exception>
+    /// <exception cref="IOException">
+    ///     An underlying I/O error occurs while attempting to write the segment.
+    /// </exception>
+    public void Write(Segment segment)
+    {
+        using var buffer = new MemoryStream();
+
+        WriteUInt16Be(buffer, 0x5047);
+
+        switch (segment)
+        {
+            case PresentationCompositionSegment pcs:
+                WriteTs(buffer, segment);
+                WriteUInt8(buffer, 0x16);
+                WritePcs(buffer, pcs);
+                break;
+            case WindowDefinitionSegment wds:
+                WriteTs(buffer, segment);
+                WriteUInt8(buffer, 0x17);
+                WriteWds(buffer, wds);
+                break;
+            case PaletteDefinitionSegment pcs:
+                WriteTs(buffer, segment);
+                WriteUInt8(buffer, 0x14);
+                WritePds(buffer, pcs);
+                break;
+            case SingleObjectDefinitionSegment sods:
+                WriteTs(buffer, segment);
+                WriteUInt8(buffer, 0x15);
+                WriteSods(buffer, sods);
+                break;
+            case InitialObjectDefinitionSegment iods:
+                WriteTs(buffer, segment);
+                WriteUInt8(buffer, 0x15);
+                WriteIods(buffer, iods);
+                break;
+            case MiddleObjectDefinitionSegment mods:
+                WriteTs(buffer, segment);
+                WriteUInt8(buffer, 0x15);
+                WriteMods(buffer, mods);
+                break;
+            case FinalObjectDefinitionSegment fods:
+                WriteTs(buffer, segment);
+                WriteUInt8(buffer, 0x15);
+                WriteFods(buffer, fods);
+                break;
+            case EndSegment:
+                WriteTs(buffer, segment);
+                WriteUInt8(buffer, 0x80);
+                WriteUInt16Be(buffer, 0);
+                break;
+            default:
+                throw new ArgumentException("Segment type is not recognized.");
+        }
+
+        buffer.Seek(0, SeekOrigin.Begin);
+        buffer.CopyTo(Output);
+    }
+
+    /// <summary>
+    ///     Attempts to asynchronously write a PGS segment to the <see cref="Output"/> stream.
+    /// </summary>
+    /// <param name="segment">
+    ///     The segment to write.
     /// </param>
     /// <param name="cancellationToken">
     ///     The token to monitor for cancellation requests.
     /// </param>
     /// <exception cref="SegmentException">
-    ///     A property of a <see cref="Segment" /> is invalid.
+    ///     A property of the <see cref="Segment"/> is invalid.
     /// </exception>
     /// <exception cref="IOException">
-    ///     An underlying I/O error occurs while attempting to write a segment.
+    ///     An underlying I/O error occurs while attempting to write the segment.
     /// </exception>
-    public static async Task WriteAllSegmentsAsync(this Stream stream
-        , IEnumerable<Segment> segments, CancellationToken cancellationToken = default)
+    public async Task WriteSegmentAsync(Segment segment
+        , CancellationToken cancellationToken = default)
     {
-        foreach (var segment in segments)
-            await stream.WriteSegmentAsync(segment, cancellationToken);
+        using var buffer = new MemoryStream();
+
+        WriteUInt16Be(buffer, 0x5047);
+
+        switch (segment)
+        {
+            case PresentationCompositionSegment pcs:
+                WriteTs(buffer, segment);
+                WriteUInt8(buffer, 0x16);
+                WritePcs(buffer, pcs);
+                break;
+            case WindowDefinitionSegment wds:
+                WriteTs(buffer, segment);
+                WriteUInt8(buffer, 0x17);
+                WriteWds(buffer, wds);
+                break;
+            case PaletteDefinitionSegment pcs:
+                WriteTs(buffer, segment);
+                WriteUInt8(buffer, 0x14);
+                WritePds(buffer, pcs);
+                break;
+            case SingleObjectDefinitionSegment sods:
+                WriteTs(buffer, segment);
+                WriteUInt8(buffer, 0x15);
+                WriteSods(buffer, sods);
+                break;
+            case InitialObjectDefinitionSegment iods:
+                WriteTs(buffer, segment);
+                WriteUInt8(buffer, 0x15);
+                WriteIods(buffer, iods);
+                break;
+            case MiddleObjectDefinitionSegment mods:
+                WriteTs(buffer, segment);
+                WriteUInt8(buffer, 0x15);
+                WriteMods(buffer, mods);
+                break;
+            case FinalObjectDefinitionSegment fods:
+                WriteTs(buffer, segment);
+                WriteUInt8(buffer, 0x15);
+                WriteFods(buffer, fods);
+                break;
+            case EndSegment:
+                WriteTs(buffer, segment);
+                WriteUInt8(buffer, 0x80);
+                WriteUInt16Be(buffer, 0);
+                break;
+            default:
+                throw new ArgumentException("Segment type is not recognized.");
+        }
+
+        buffer.Seek(0, SeekOrigin.Begin);
+        await buffer.CopyToAsync(Output, 81_920, cancellationToken);
+    }
+
+    /// <summary>
+    ///     Disposes the <see cref="Output"/> stream if <see cref="LeaveOpen"/> is
+    ///     <see langword="false"/>.
+    /// </summary>
+    public void Dispose()
+    {
+        if (!LeaveOpen)
+            Output.Dispose();
     }
 
 #if NETSTANDARD2_1_OR_GREATER
     /// <summary>
-    ///     Asynchronously writes all PGS segments in an asynchronous collection to a
-    ///     <paramref name="stream" />.
+    ///     Asynchronously disposes the <see cref="Output"/> stream if <see cref="LeaveOpen"/>
+    ///     is <see langword="false"/>.
     /// </summary>
-    /// <param name="stream">
-    ///     The stream to write all segments to.
-    /// </param>
-    /// <param name="segments">
-    ///     The asynchronous collection of segments to write.
-    /// </param>
-    /// <param name="cancellationToken">
-    ///     The token to monitor for cancellation requests.
-    /// </param>
-    /// <exception cref="SegmentException">
-    ///     A property of a <see cref="Segment" /> is invalid.
-    /// </exception>
-    /// <exception cref="IOException">
-    ///     An underlying I/O error occurs while attempting to write a segment.
-    /// </exception>
-    public static async Task WriteAllSegmentsAsync(this Stream stream
-        , IAsyncEnumerable<Segment> segments, CancellationToken cancellationToken = default)
+    public async ValueTask DisposeAsync()
     {
-        await foreach (var segment in segments)
-            await stream.WriteSegmentAsync(segment, cancellationToken);
+        if (!LeaveOpen)
+            await Output.DisposeAsync();
     }
 #endif
-
-    /// <summary>
-    ///     Writes a PGS segment to a <paramref name="stream" />.
-    /// </summary>
-    /// <param name="stream">
-    ///     The stream to write the segment to.
-    /// </param>
-    /// <param name="segment">
-    ///     The segment to write.
-    /// </param>
-    /// <exception cref="SegmentException">
-    ///     A property of the <see cref="Segment" /> is invalid.
-    /// </exception>
-    /// <exception cref="IOException">
-    ///     An underlying I/O error occurs while attempting to write the segment.
-    /// </exception>
-    public static void WriteSegment(this Stream stream, Segment segment)
-    {
-        using var buffer = new MemoryStream();
-
-        WriteUInt16Be(buffer, 0x5047);
-
-        switch (segment)
-        {
-            case PresentationCompositionSegment pcs:
-                WriteTs(buffer, segment);
-                WriteUInt8(buffer, 0x16);
-                WritePcs(buffer, pcs);
-                break;
-            case WindowDefinitionSegment wds:
-                WriteTs(buffer, segment);
-                WriteUInt8(buffer, 0x17);
-                WriteWds(buffer, wds);
-                break;
-            case PaletteDefinitionSegment pcs:
-                WriteTs(buffer, segment);
-                WriteUInt8(buffer, 0x14);
-                WritePds(buffer, pcs);
-                break;
-            case SingleObjectDefinitionSegment sods:
-                WriteTs(buffer, segment);
-                WriteUInt8(buffer, 0x15);
-                WriteSods(buffer, sods);
-                break;
-            case InitialObjectDefinitionSegment iods:
-                WriteTs(buffer, segment);
-                WriteUInt8(buffer, 0x15);
-                WriteIods(buffer, iods);
-                break;
-            case MiddleObjectDefinitionSegment mods:
-                WriteTs(buffer, segment);
-                WriteUInt8(buffer, 0x15);
-                WriteMods(buffer, mods);
-                break;
-            case FinalObjectDefinitionSegment fods:
-                WriteTs(buffer, segment);
-                WriteUInt8(buffer, 0x15);
-                WriteFods(buffer, fods);
-                break;
-            case EndSegment:
-                WriteTs(buffer, segment);
-                WriteUInt8(buffer, 0x80);
-                WriteUInt16Be(buffer, 0);
-                break;
-            default:
-                throw new ArgumentException("Segment type is not recognized.");
-        }
-
-        buffer.Seek(0, SeekOrigin.Begin);
-        buffer.CopyTo(stream);
-    }
-
-    /// <summary>
-    ///     Asynchronously writes a PGS segment to a <paramref name="stream" />.
-    /// </summary>
-    /// <param name="stream">
-    ///     The stream to write the segment to.
-    /// </param>
-    /// <param name="segment">
-    ///     The segment to write.
-    /// </param>
-    /// <param name="cancellationToken">
-    ///     The token to monitor for cancellation requests.
-    /// </param>
-    /// <exception cref="SegmentException">
-    ///     A property of the <see cref="Segment" /> is invalid.
-    /// </exception>
-    /// <exception cref="IOException">
-    ///     An underlying I/O error occurs while attempting to write the segment.
-    /// </exception>
-    public static async Task WriteSegmentAsync(this Stream stream, Segment segment,
-        CancellationToken cancellationToken = default)
-    {
-        using var buffer = new MemoryStream();
-
-        WriteUInt16Be(buffer, 0x5047);
-
-        switch (segment)
-        {
-            case PresentationCompositionSegment pcs:
-                WriteTs(buffer, segment);
-                WriteUInt8(buffer, 0x16);
-                WritePcs(buffer, pcs);
-                break;
-            case WindowDefinitionSegment wds:
-                WriteTs(buffer, segment);
-                WriteUInt8(buffer, 0x17);
-                WriteWds(buffer, wds);
-                break;
-            case PaletteDefinitionSegment pcs:
-                WriteTs(buffer, segment);
-                WriteUInt8(buffer, 0x14);
-                WritePds(buffer, pcs);
-                break;
-            case SingleObjectDefinitionSegment sods:
-                WriteTs(buffer, segment);
-                WriteUInt8(buffer, 0x15);
-                WriteSods(buffer, sods);
-                break;
-            case InitialObjectDefinitionSegment iods:
-                WriteTs(buffer, segment);
-                WriteUInt8(buffer, 0x15);
-                WriteIods(buffer, iods);
-                break;
-            case MiddleObjectDefinitionSegment mods:
-                WriteTs(buffer, segment);
-                WriteUInt8(buffer, 0x15);
-                WriteMods(buffer, mods);
-                break;
-            case FinalObjectDefinitionSegment fods:
-                WriteTs(buffer, segment);
-                WriteUInt8(buffer, 0x15);
-                WriteFods(buffer, fods);
-                break;
-            case EndSegment:
-                WriteTs(buffer, segment);
-                WriteUInt8(buffer, 0x80);
-                WriteUInt16Be(buffer, 0);
-                break;
-            default:
-                throw new ArgumentException("Segment type is not recognized.");
-        }
-
-        buffer.Seek(0, SeekOrigin.Begin);
-        await buffer.CopyToAsync(stream, 81_920, cancellationToken);
-    }
 
     private static void WriteTs(Stream stream, Segment segment)
     {

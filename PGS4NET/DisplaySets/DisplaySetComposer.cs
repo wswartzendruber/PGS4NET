@@ -41,14 +41,14 @@ public class DisplaySetComposer
     private PresentationCompositionSegment? Pcs = null;
 
     /// <summary>
-    ///     Inputs a PGS segment into the composer, causing <see cref="NewDisplaySet" /> to fire
-    ///     each time a new <see cref="DisplaySet" /> becomes available.
+    ///     Inputs a PGS segment into the composer, causing <see cref="Ready"/> to fire each
+    ///     time a new <see cref="DisplaySet"/> becomes available.
     /// </summary>
     /// <param name="segment">
     ///     The segment to input.
     /// </param>
     /// <exception cref="DisplaySetException">
-    ///     The <paramref name="segment" /> is not valid given the composer's state.
+    ///     The <paramref name="segment"/> is not valid given the composer's state.
     /// </exception>
     public void Input(Segment segment)
     {
@@ -240,7 +240,7 @@ public class DisplaySetComposer
 
                     Reset();
 
-                    OnNewDisplaySet(newDisplaySet);
+                    OnReady(newDisplaySet);
 
                     break;
                 }
@@ -269,13 +269,13 @@ public class DisplaySetComposer
     /// <summary>
     ///     Invoked when a new display set is ready.
     /// </summary>
-    protected virtual void OnNewDisplaySet(DisplaySet displaySet)
+    protected virtual void OnReady(DisplaySet displaySet)
     {
-        NewDisplaySet?.Invoke(this, displaySet);
+        Ready?.Invoke(this, displaySet);
     }
 
     /// <summary>
     ///     Fires when a new display set is ready.
     /// </summary>
-    public event EventHandler<DisplaySet>? NewDisplaySet;
+    public event EventHandler<DisplaySet>? Ready;
 }

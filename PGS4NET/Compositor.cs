@@ -26,7 +26,7 @@ namespace PGS4NET;
 /// </summary>
 /// <remarks>
 ///     New captions, as they are completed, are pushed to subscribers via the
-///     <see cref="NewCaption" /> event.
+///     <see cref="NewCaption"/> event.
 /// </remarks>
 public class Compositor
 {
@@ -77,7 +77,7 @@ public class Compositor
 
     /// <summary>
     ///     Clears the graphics plane. Any content currently on the plane is completed into a
-    ///     new caption and pushed via the <see cref="NewCaption" /> event.
+    ///     new caption and pushed via the <see cref="NewCaption"/> event.
     /// </summary>
     /// <param name="timeStamp">
     ///     The time at which the graphics plane should be cleared.
@@ -97,7 +97,7 @@ public class Compositor
 
     /// <summary>
     ///     Draws a single composition onto the graphics plane, causing any completed captions
-    ///     to be pushed via the <see cref="NewCaption" /> event.
+    ///     to be pushed via the <see cref="NewCaption"/> event.
     /// </summary>
     /// <param name="timeStamp">
     ///     The time at which the composition should be drawn.
@@ -124,7 +124,7 @@ public class Compositor
 
     /// <summary>
     ///     Draws one or more compositions onto the graphics plane, causing any completed
-    ///     captions to be pushed via the <see cref="NewCaption" /> event.
+    ///     captions to be pushed via the <see cref="NewCaption"/> event.
     /// </summary>
     /// <param name="timeStamp">
     ///     The singular time at which the compositions should be drawn.

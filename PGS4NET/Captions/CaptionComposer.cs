@@ -29,14 +29,14 @@ public class CaptionComposer
     private readonly Dictionary<int, DisplayObject> Objects = new();
 
     /// <summary>
-    ///     Inputs a PGS display set into the composer, causing <see cref="NewCaption" /> to
-    ///     fire each time a new <see cref="Caption" /> becomes available.
+    ///     Inputs a PGS display set into the composer, causing <see cref="Ready"/> to fire
+    ///     each time a new <see cref="Caption"/> becomes available.
     /// </summary>
     /// <param name="displaySet">
     ///     The displaySet to input.
     /// </param>
     /// <exception cref="CaptionException">
-    ///     The <paramref name="displaySet" /> is not valid given the composer's state.
+    ///     The <paramref name="displaySet"/> is not valid given the composer's state.
     /// </exception>
     public void Input(DisplaySet displaySet)
     {
@@ -143,8 +143,8 @@ public class CaptionComposer
     }
 
     /// <summary>
-    ///     Flushes any graphics which are present, causing <see cref="NewCaption" /> to fire
-    ///     should any new <see cref="Caption" />s be available as a result.
+    ///     Flushes any graphics which are present, causing <see cref="NewCaption"/> to fire
+    ///     should any new <see cref="Caption"/>s be available as a result.
     /// </summary>
     public void Flush(PgsTimeStamp timeStamp)
     {
@@ -165,9 +165,9 @@ public class CaptionComposer
     /// <summary>
     ///     Invoked when a new caption is ready.
     /// </summary>
-    protected virtual void OnNewCaption(Caption caption)
+    protected virtual void OnReady(Caption caption)
     {
-        NewCaption?.Invoke(this, caption);
+        Ready?.Invoke(this, caption);
     }
 
     private Compositor BuildNewCompositor(DisplayWindow displayWindow)
@@ -176,7 +176,7 @@ public class CaptionComposer
 
         newCompositor.NewCaption += (_, caption) =>
         {
-            OnNewCaption(caption);
+            OnReady(caption);
         };
 
         return newCompositor;
@@ -185,5 +185,5 @@ public class CaptionComposer
     /// <summary>
     ///     Fires when a new caption is ready.
     /// </summary>
-    public event EventHandler<Caption>? NewCaption;
+    public event EventHandler<Caption>? Ready;
 }

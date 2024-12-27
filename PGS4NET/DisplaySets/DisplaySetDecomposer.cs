@@ -17,20 +17,17 @@ namespace PGS4NET.DisplaySets;
 /// <summary>
 ///     Deconstructs PGS display sets into segments.
 /// </summary>
-public static class DisplaySetDecomposer
+public class DisplaySetDecomposer
 {
     /// <summary>
-    ///     Deconstructs a PGS display set into a collection of segments.
+    ///     Inputs a PGS segment into the decomposer, causing <see cref="Ready"/> to fire each
+    ///     time a new <see cref="Segment"/> becomes available.
     /// </summary>
     /// <param name="displaySet">
-    ///     The display set to deconstruct.
+    ///     The display set to input.
     /// </param>
-    /// <returns>
-    ///     A list of segments representing the display set.
-    /// </returns>
-    public static IList<Segment> Decompose(DisplaySet displaySet)
+    public void Input(DisplaySet displaySet)
     {
-        var returnValue = new List<Segment>();
         var compositionObjects = new List<CompositionObject>();
 
         foreach (var item in displaySet.Compositions)
@@ -47,7 +44,7 @@ public static class DisplaySetDecomposer
             , displaySet.CompositionNumber, displaySet.CompositionState
             , displaySet.PaletteUpdateOnly, displaySet.PaletteId, compositionObjects);
 
-        returnValue.Add(pcs);
+        OnReady(pcs);
 
         if (displaySet.Windows.Count > 0)
         {
@@ -62,7 +59,7 @@ public static class DisplaySetDecomposer
             var wds = new WindowDefinitionSegment(displaySet.Pts, displaySet.Dts
                 , windowEntries);
 
-            returnValue.Add(wds);
+            OnReady(wds);
         }
 
         foreach (var palette in displaySet.Palettes)
@@ -81,7 +78,7 @@ public static class DisplaySetDecomposer
             var pds = new PaletteDefinitionSegment(displaySet.Pts, displaySet.Dts, palette.Key
                 , paletteEntries);
 
-            returnValue.Add(pds);
+            OnReady(pds);
         }
 
         foreach (var displayObject in displaySet.Objects)
@@ -101,7 +98,7 @@ public static class DisplaySetDecomposer
                     , displayObject.Key, displayObject.Value.Width, displayObject.Value.Height
                     , (long)data.Length + 4, iodsBuffer);
 
-                returnValue.Add(iods);
+                OnReady(iods);
 
                 index += InitialObjectDefinitionSegment.MaxDataSize;
                 size -= InitialObjectDefinitionSegment.MaxDataSize;
@@ -115,7 +112,7 @@ public static class DisplaySetDecomposer
                     var mods = new MiddleObjectDefinitionSegment(displaySet.Pts, displaySet.Dts
                         , displayObject.Key,  modsBuffer);
 
-                    returnValue.Add(mods);
+                    OnReady(mods);
 
                     index += MiddleObjectDefinitionSegment.MaxDataSize;
                     size -= MiddleObjectDefinitionSegment.MaxDataSize;
@@ -128,7 +125,7 @@ public static class DisplaySetDecomposer
                 var fods = new FinalObjectDefinitionSegment(displaySet.Pts, displaySet.Dts
                     , displayObject.Key, fodsBuffer);
 
-                returnValue.Add(fods);
+                OnReady(fods);
             }
             else
             {
@@ -136,14 +133,25 @@ public static class DisplaySetDecomposer
                     , displayObject.Key, displayObject.Value.Width, displayObject.Value.Height
                     , data);
 
-                returnValue.Add(sods);
+                OnReady(sods);
             }
         }
 
         var es = new EndSegment(displaySet.Pts, displaySet.Dts);
 
-        returnValue.Add(es);
-
-        return returnValue;
+        OnReady(es);
     }
+
+    /// <summary>
+    ///     Invoked when a new segment is ready.
+    /// </summary>
+    protected virtual void OnReady(Segment segment)
+    {
+        Ready?.Invoke(this, segment);
+    }
+
+    /// <summary>
+    ///     Fires when a new segment is ready.
+    /// </summary>
+    public event EventHandler<Segment>? Ready;
 }

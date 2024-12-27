@@ -38,7 +38,7 @@ public static class Rle
     /// <param name="input">
     ///     An ordered list of object pixel data where each byte addresses a palette entry
     ///     during playback. The length of the input must be the product of the
-    ///     <paramref name="width" /> and the <paramref name="height" />.
+    ///     <paramref name="width"/> and the <paramref name="height"/>.
     /// </param>
     /// <param name="width">
     ///     The width of the object in pixels.
@@ -115,7 +115,7 @@ public static class Rle
     /// <returns>
     ///     An ordered list of object pixel data where each byte addresses a palette entry
     ///     during playback. The length of the input will be the product of the
-    ///     <see name="width" /> and the <paramref name="height" />.
+    ///     <see name="width"/> and the <paramref name="height"/>.
     /// </returns>
     /// <exception cref="RleException">
     ///     <list type="bullet">
@@ -136,12 +136,12 @@ public static class Rle
     ///         </item>
     ///         <item>
     ///             <description>
-    ///                 An RLE line has a length other than <paramref name="width" />.
+    ///                 An RLE line has a length other than <paramref name="width"/>.
     ///             </description>
     ///         </item>
     ///         <item>
     ///             <description>
-    ///                 The number of RLE lines contradicts <paramref name="height" />.
+    ///                 The number of RLE lines contradicts <paramref name="height"/>.
     ///             </description>
     ///         </item>
     ///     </list>

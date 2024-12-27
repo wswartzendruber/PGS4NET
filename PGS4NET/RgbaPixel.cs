@@ -103,13 +103,13 @@ public struct RgbaPixel : IEquatable<RgbaPixel>
     }
 
     /// <summary>
-    ///     Determines if the values of two <see cref="RgbaPixel" />s match each other.
+    ///     Determines if the values of two <see cref="RgbaPixel"/>s match each other.
     /// </summary>
     public static bool operator ==(RgbaPixel first, RgbaPixel second) =>
         first.Equals(second);
 
     /// <summary>
-    ///     Determines if the values of two <see cref="RgbaPixel" />s don't match each other.
+    ///     Determines if the values of two <see cref="RgbaPixel"/>s don't match each other.
     /// </summary>
     public static bool operator !=(RgbaPixel first, RgbaPixel second) =>
         !first.Equals(second);

@@ -20,27 +20,27 @@ namespace PGS4NET.Segments;
 ///     <list type="number">
 ///         <item>
 ///             <description>
-///                 <see cref="PresentationCompositionSegment" />
+///                 <see cref="PresentationCompositionSegment"/>
 ///             </description>
 ///         </item>
 ///         <item>
 ///             <description>
-///                 <see cref="WindowDefinitionSegment" />
+///                 <see cref="WindowDefinitionSegment"/>
 ///             </description>
 ///         </item>
 ///         <item>
 ///             <description>
-///                 <see cref="PaletteDefinitionSegment" />
+///                 <see cref="PaletteDefinitionSegment"/>
 ///             </description>
 ///         </item>
 ///         <item>
 ///             <description>
-///                 <see cref="ObjectDefinitionSegment" />
+///                 <see cref="ObjectDefinitionSegment"/>
 ///             </description>
 ///         </item>
 ///         <item>
 ///             <description>
-///                 <see cref="EndSegment" />
+///                 <see cref="EndSegment"/>
 ///             </description>
 ///         </item>
 ///     </list>

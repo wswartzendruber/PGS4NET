@@ -109,13 +109,13 @@ public struct YcbcraPixel : IEquatable<YcbcraPixel>
     }
 
     /// <summary>
-    ///     Determines if the values of two <see cref="YcbcraPixel" />s match each other.
+    ///     Determines if the values of two <see cref="YcbcraPixel"/>s match each other.
     /// </summary>
     public static bool operator ==(YcbcraPixel first, YcbcraPixel second) =>
         first.Equals(second);
 
     /// <summary>
-    ///     Determines if the values of two <see cref="YcbcraPixel" />s don't match each other.
+    ///     Determines if the values of two <see cref="YcbcraPixel"/>s don't match each other.
     /// </summary>
     public static bool operator !=(YcbcraPixel first, YcbcraPixel second) =>
         !first.Equals(second);

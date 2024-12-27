@@ -17,7 +17,7 @@ using PGS4NET.Captions;
 namespace PGS4NET.Windows;
 
 /// <summary>
-///     Extension methods against <see cref="System.Drawing.Image" /> for interoperating
+///     Extension methods against <see cref="System.Drawing.Image"/> for interoperating
 ///     with PGS4NET.
 /// </summary>
 public static class BitmapExtensions
@@ -44,13 +44,13 @@ public static class BitmapExtensions
     /// </param>
     /// <param name="colorSpace">
     ///     The color space to use for conversion, with
-    ///     <see cref="ColorSpace.Bt709ColorSpace" /> being typical for legacy Blu-ray releases
-    ///     and <see cref="ColorSpace.Bt2020ColorSpace" /> being typical for 4K UltraHD Blu-ray
+    ///     <see cref="ColorSpace.Bt709ColorSpace"/> being typical for legacy Blu-ray releases
+    ///     and <see cref="ColorSpace.Bt2020ColorSpace"/> being typical for 4K UltraHD Blu-ray
     ///     releases.
     /// </param>
     /// <param name="limitedRange">
     ///     Whether the caption uses limited-range values, which is commonly
-    ///     <see langword="true" />.
+    ///     <see langword="true"/>.
     /// </param>
     /// <returns>
     ///     A PGS4NET caption.
