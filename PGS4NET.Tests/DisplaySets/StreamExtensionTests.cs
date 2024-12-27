@@ -10,148 +10,146 @@
  * SPDX-License-Identifier: CC0-1.0
  */
 
-using PGS4NET.Segments;
+using PGS4NET.DisplaySets;
+using PGS4NET.Tests.Segments;
 
-namespace PGS4NET.Tests.Segments;
+namespace PGS4NET.Tests.DisplaySets;
 
 public class StreamExtensionTests
 {
     [Fact]
-    public void ReadWriteAllSegmentsEnumerable()
+    public void ReadWriteAllDisplaySetsEnumerable()
     {
         using var inputStream = new MemoryStream(SintelSubtitles.Buffer);
         using var outputStream = new MemoryStream();
 
-        outputStream.WriteAllSegments(inputStream.Segments());
+        outputStream.WriteAllDisplaySets(inputStream.DisplaySets());
 
         Assert.True(inputStream.ToArray().SequenceEqual(outputStream.ToArray()));
     }
 
 #if NETCOREAPP3_0_OR_GREATER
     [Fact]
-    public async Task ReadWriteAllSegmentsAsyncEnumerable()
+    public async Task ReadWriteAllDisplaySetsAsyncEnumerable()
     {
         using var inputStream = new MemoryStream(SintelSubtitles.Buffer);
         using var outputStream = new MemoryStream();
 
-        await outputStream.WriteAllSegmentsAsync(inputStream.SegmentsAsync());
+        await outputStream.WriteAllDisplaySetsAsync(inputStream.DisplaySetsAsync());
 
         Assert.True(inputStream.ToArray().SequenceEqual(outputStream.ToArray()));
     }
 #endif
 
     [Fact]
-    public void ReadWriteAllSegments()
+    public void ReadWriteAllDisplaySets()
     {
         using var inputStream = new MemoryStream(SintelSubtitles.Buffer);
         using var outputStream = new MemoryStream();
 
-        outputStream.WriteAllSegments(inputStream.ReadAllSegments());
+        outputStream.WriteAllDisplaySets(inputStream.ReadAllDisplaySets());
 
         Assert.True(inputStream.ToArray().SequenceEqual(outputStream.ToArray()));
     }
 
     [Fact]
-    public async Task ReadWriteAllSegmentsAsync()
+    public async Task ReadWriteAllDisplaySetsAsync()
     {
         using var inputStream = new MemoryStream(SintelSubtitles.Buffer);
         using var outputStream = new MemoryStream();
 
-        await outputStream.WriteAllSegmentsAsync(await inputStream.ReadAllSegmentsAsync());
+        await outputStream.WriteAllDisplaySetsAsync(
+            await inputStream.ReadAllDisplaySetsAsync());
 
         Assert.True(inputStream.ToArray().SequenceEqual(outputStream.ToArray()));
     }
 
     [Fact]
-    public void TrailingNullByteEnumerable()
+    public void PartialDisplaySetEnumerable()
     {
         using var stream = new MemoryStream();
         var buffer = SegmentBuffers.Buffers["pcs-es"];
 
         stream.Write(buffer, 0, buffer.Length);
-        stream.WriteByte(0x00);
         stream.Position = 0;
 
         try
         {
-            stream.Segments().ToList();
+            stream.DisplaySets().ToList();
 
-            throw new Exception("Successfully read a segment with a trailing null byte.");
+            throw new Exception("Successfully read an incomplete display set.");
         }
-        catch (IOException ioe)
+        catch (DisplaySetException dse)
         {
-            if (ioe.Message != "EOF reading segment header.")
+            if (dse.Message != "Successfully read an incomplete display set.")
                 throw new Exception("Expected specific error message on header EOF.");
         }
     }
 
 #if NETCOREAPP3_0_OR_GREATER
     [Fact]
-    public async Task TrailingNullByteAsyncEnumerable()
+    public async Task PartialDisplaySetAsyncEnumerable()
     {
         using var stream = new MemoryStream();
         var buffer = SegmentBuffers.Buffers["pcs-es"];
 
         stream.Write(buffer, 0, buffer.Length);
-        stream.WriteByte(0x00);
         stream.Position = 0;
 
         try
         {
-            await stream.SegmentsAsync().ToListAsync();
+            await stream.DisplaySetsAsync().ToListAsync();
 
-            throw new Exception("Successfully read a segment with a trailing null byte.");
+            throw new Exception("Successfully read an incomplete display set.");
         }
-        catch (IOException ioe)
+        catch (DisplaySetException dse)
         {
-            if (ioe.Message != "EOF reading segment header.")
+            if (dse.Message != "Successfully read an incomplete display set.")
                 throw new Exception("Expected specific error message on header EOF.");
         }
     }
 #endif
 
     [Fact]
-    public void TrailingNullByte()
+    public void PartialDisplaySet()
     {
         using var stream = new MemoryStream();
         var buffer = SegmentBuffers.Buffers["pcs-es"];
 
         stream.Write(buffer, 0, buffer.Length);
-        stream.WriteByte(0x00);
         stream.Position = 0;
 
         try
         {
-            stream.ReadAllSegments();
+            stream.ReadAllDisplaySets();
 
-            throw new Exception("Successfully read a segment with a trailing null byte.");
+            throw new Exception("Successfully read an incomplete display set.");
         }
-        catch (IOException ioe)
+        catch (DisplaySetException dse)
         {
-            if (ioe.Message != "EOF reading segment header.")
+            if (dse.Message != "Successfully read an incomplete display set.")
                 throw new Exception("Expected specific error message on header EOF.");
         }
     }
 
     [Fact]
-    public async Task TrailingNullByteAsync()
+    public async Task PartialDisplaySetAsync()
     {
         using var stream = new MemoryStream();
         var buffer = SegmentBuffers.Buffers["pcs-es"];
 
         stream.Write(buffer, 0, buffer.Length);
-        stream.WriteByte(0x00);
         stream.Position = 0;
 
         try
         {
-            await stream.ReadAllSegmentsAsync();
+            await stream.ReadAllDisplaySetsAsync();
 
-            throw new Exception("Successfully read a segment with a trailing null byte.");
+            throw new Exception("Successfully read an incomplete display set.");
         }
-        catch (IOException ioe)
+        catch (DisplaySetException dse)
         {
-            if (ioe.Message != "EOF reading segment header.")
+            if (dse.Message != "Successfully read an incomplete display set.")
                 throw new Exception("Expected specific error message on header EOF.");
         }
     }

@@ -41,6 +41,24 @@ public class DisplaySetComposer
     private PresentationCompositionSegment? Pcs = null;
 
     /// <summary>
+    ///     Returns <see langword="true"/> if the composer has pending segments that have not
+    ///     been written out as a new display set.
+    /// </summary>
+    public bool Pending
+    {
+        get
+        {
+            return InitialObject is not null
+                || MiddleObjects.Count > 0
+                || Windows.Count > 0
+                || Palettes.Count > 0
+                || Objects.Count > 0
+                || Compositions.Count > 0
+                || Pcs is not null;
+        }
+    }
+
+    /// <summary>
     ///     Inputs a PGS segment into the composer, causing <see cref="Ready"/> to fire each
     ///     time a new <see cref="DisplaySet"/> becomes available.
     /// </summary>
