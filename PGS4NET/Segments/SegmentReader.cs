@@ -26,13 +26,13 @@ public class SegmentReader : IDisposable
 #endif
 {
     /// <summary>
-    ///     The stream that segments are being read from.
+    ///     The stream that <see cref="Segment"/>s are being read from.
     /// </summary>
     public Stream Input { get; }
 
     /// <summary>
-    ///     Whether or not the <see cref="Input"/> will be left open once all segments have been
-    ///     read.
+    ///     Whether or not the <see cref="Input"/> stream will be left open once all
+    ///     <see cref="Segment"/>s have been read.
     /// </summary>
     public bool LeaveOpen { get; }
 
@@ -40,11 +40,11 @@ public class SegmentReader : IDisposable
     ///     Initializes a new instance.
     /// </summary>
     /// <param name="input">
-    ///     The stream that segments will be read from.
+    ///     The stream that <see cref="Segment"/>s will be read from.
     /// </param>
     /// <param name="leaveOpen">
     ///     Whether or not the <paramref name="input"/> stream will be left open once all
-    ///     segments have been read.
+    ///     <see cref="Segment"/>s have been read.
     /// </param>
     public SegmentReader(Stream input, bool leaveOpen = false)
     {

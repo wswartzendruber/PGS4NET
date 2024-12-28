@@ -43,13 +43,13 @@ public class SegmentWriter : IDisposable
         = new("Object width and height must be between 8 and 4096 pixels inclusive.");
 
     /// <summary>
-    ///     The stream that segments are being written to.
+    ///     The stream that <see cref="Segment"/>s are being written to.
     /// </summary>
     public Stream Output { get; }
 
     /// <summary>
-    ///     Whether or not the <see cref="Output"/> will be left open once all segments have been
-    ///     written.
+    ///     Whether or not the <see cref="Output"/> stream will be left open once all
+    ///     <see cref="Segment"/>s have been written.
     /// </summary>
     public bool LeaveOpen { get; }
 
@@ -57,11 +57,11 @@ public class SegmentWriter : IDisposable
     ///     Initializes a new instance.
     /// </summary>
     /// <param name="output">
-    ///     The stream that segments will be written to.
+    ///     The stream that <see cref="Segment"/>s will be written to.
     /// </param>
     /// <param name="leaveOpen">
     ///     Whether or not the <paramref name="output"/> stream will be left open once all
-    ///     segments have been written.
+    ///     <see cref="Segment"/>s have been written.
     /// </param>
     public SegmentWriter(Stream output, bool leaveOpen = false)
     {
@@ -76,7 +76,7 @@ public class SegmentWriter : IDisposable
     ///     The segment to write.
     /// </param>
     /// <exception cref="SegmentException">
-    ///     A property of the <see cref="Segment"/> is invalid.
+    ///     A property of the segment is invalid.
     /// </exception>
     /// <exception cref="IOException">
     ///     An underlying I/O error occurs while attempting to write the segment.
@@ -147,7 +147,7 @@ public class SegmentWriter : IDisposable
     ///     The token to monitor for cancellation requests.
     /// </param>
     /// <exception cref="SegmentException">
-    ///     A property of the <see cref="Segment"/> is invalid.
+    ///     A property of the segment is invalid.
     /// </exception>
     /// <exception cref="IOException">
     ///     An underlying I/O error occurs while attempting to write the segment.

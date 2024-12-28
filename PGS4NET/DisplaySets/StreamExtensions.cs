@@ -2,168 +2,78 @@
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using PGS4NET.Segments;
 
 namespace PGS4NET.DisplaySets;
 
 public static class StreamExtensions
 {
-    private static readonly DisplaySetException PendingSegments
-        = new("Successfully read an incomplete display set.");
-
     public static IEnumerable<DisplaySet> DisplaySets(this Stream stream)
     {
-        using var reader = new SegmentReader(stream, true);
-        var displaySetComposer = new DisplaySetComposer();
-        var queue = new Queue<DisplaySet>();
+        using var reader = new DisplaySetReader(stream, true);
 
-        displaySetComposer.Ready += (_, displaySet) =>
-        {
-            queue.Enqueue(displaySet);
-        };
-
-        while (reader.Read() is Segment segment)
-        {
-            displaySetComposer.Input(segment);
-
-            while (queue.Count > 0)
-                yield return queue.Dequeue();
-        }
-
-        if (displaySetComposer.Pending)
-            throw PendingSegments;
+        while (reader.Read() is DisplaySet displaySet)
+            yield return displaySet;
     }
-
+    
 #if NETSTANDARD2_1_OR_GREATER
     public static async IAsyncEnumerable<DisplaySet> DisplaySetsAsync(this Stream stream
         , CancellationToken cancellationToken = default)
     {
-        using var reader = new SegmentReader(stream, true);
-        var displaySetComposer = new DisplaySetComposer();
-        var queue = new Queue<DisplaySet>();
+        using var reader = new DisplaySetReader(stream, true);
 
-        displaySetComposer.Ready += (_, displaySet) =>
-        {
-            queue.Enqueue(displaySet);
-        };
-
-        while (await reader.ReadAsync(cancellationToken) is Segment segment)
-        {
-            displaySetComposer.Input(segment);
-
-            while (queue.Count > 0)
-                yield return queue.Dequeue();
-        }
-
-        if (displaySetComposer.Pending)
-            throw PendingSegments;
+        while (await reader.ReadAsync() is DisplaySet displaySet)
+            yield return displaySet;
     }
 #endif
 
     public static IList<DisplaySet> ReadAllDisplaySets(this Stream stream)
     {
-        using var reader = new SegmentReader(stream, true);
-        var displaySetComposer = new DisplaySetComposer();
         var displaySets = new List<DisplaySet>();
+        using var reader = new DisplaySetReader(stream, true);
 
-        displaySetComposer.Ready += (_, displaySet) =>
-        {
+        while (reader.Read() is DisplaySet displaySet)
             displaySets.Add(displaySet);
-        };
-
-        while (reader.Read() is Segment segment)
-            displaySetComposer.Input(segment);
-
-        if (displaySetComposer.Pending)
-            throw PendingSegments;
-
+        
         return displaySets;
     }
 
     public static async Task<IList<DisplaySet>> ReadAllDisplaySetsAsync(this Stream stream
         , CancellationToken cancellationToken = default)
     {
-        using var reader = new SegmentReader(stream, true);
-        var displaySetComposer = new DisplaySetComposer();
         var displaySets = new List<DisplaySet>();
+        using var reader = new DisplaySetReader(stream, true);
 
-        displaySetComposer.Ready += (_, displaySet) =>
-        {
+        while (await reader.ReadAsync(cancellationToken) is DisplaySet displaySet)
             displaySets.Add(displaySet);
-        };
-
-        while (await reader.ReadAsync(cancellationToken) is Segment segment)
-            displaySetComposer.Input(segment);
-
-        if (displaySetComposer.Pending)
-            throw PendingSegments;
 
         return displaySets;
     }
 
-    public static void WriteAllDisplaySets(this Stream stream
-        , IEnumerable<DisplaySet> displaySets)
+    public static void WriteAllDisplaySets(this Stream stream, IEnumerable<DisplaySet> displaySets)
     {
-        using var writer = new SegmentWriter(stream, true);
-        var decomposer = new DisplaySetDecomposer();
-        var queue = new Queue<Segment>();
-
-        decomposer.Ready += (_, segment) =>
-        {
-            queue.Enqueue(segment);
-        };
+        using var writer = new DisplaySetWriter(stream, true);
 
         foreach (var displaySet in displaySets)
-        {
-            decomposer.Input(displaySet);
-
-            while (queue.Count > 0)
-                writer.Write(queue.Dequeue());
-        }
+            writer.Write(displaySet);
     }
 
     public static async Task WriteAllDisplaySetsAsync(this Stream stream
         , IEnumerable<DisplaySet> displaySets,  CancellationToken cancellationToken = default)
     {
-        using var writer = new SegmentWriter(stream, true);
-        var decomposer = new DisplaySetDecomposer();
-        var queue = new Queue<Segment>();
-
-        decomposer.Ready += (_, segment) =>
-        {
-            queue.Enqueue(segment);
-        };
+        using var writer = new DisplaySetWriter(stream, true);
 
         foreach (var displaySet in displaySets)
-        {
-            decomposer.Input(displaySet);
-
-            while (queue.Count > 0)
-                await writer.WriteAsync(queue.Dequeue(), cancellationToken);
-        }
+            await writer.WriteAsync(displaySet, cancellationToken);
     }
 
 #if NETSTANDARD2_1_OR_GREATER
     public static async Task WriteAllDisplaySetsAsync(this Stream stream
-        , IAsyncEnumerable<DisplaySet> displaySets
-        , CancellationToken cancellationToken = default)
+        , IAsyncEnumerable<DisplaySet> displaySets, CancellationToken cancellationToken = default)
     {
-        using var writer = new SegmentWriter(stream, true);
-        var decomposer = new DisplaySetDecomposer();
-        var queue = new Queue<Segment>();
-
-        decomposer.Ready += (_, segment) =>
-        {
-            queue.Enqueue(segment);
-        };
+        using var writer = new DisplaySetWriter(stream, true);
 
         await foreach (var displaySet in displaySets)
-        {
-            decomposer.Input(displaySet);
-
-            while (queue.Count > 0)
-                await writer.WriteAsync(queue.Dequeue(), cancellationToken);
-        }
+            await writer.WriteAsync(displaySet, cancellationToken);
     }
 #endif
 }

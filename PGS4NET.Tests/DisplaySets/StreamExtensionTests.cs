@@ -81,7 +81,7 @@ public class StreamExtensionTests
         }
         catch (DisplaySetException dse)
         {
-            if (dse.Message != "Successfully read an incomplete display set.")
+            if (dse.Message != "Display set is incomplete.")
                 throw new Exception("Expected specific error message on header EOF.");
         }
     }
@@ -104,7 +104,7 @@ public class StreamExtensionTests
         }
         catch (DisplaySetException dse)
         {
-            if (dse.Message != "Successfully read an incomplete display set.")
+            if (dse.Message != "Display set is incomplete.")
                 throw new Exception("Expected specific error message on header EOF.");
         }
     }
@@ -127,7 +127,7 @@ public class StreamExtensionTests
         }
         catch (DisplaySetException dse)
         {
-            if (dse.Message != "Successfully read an incomplete display set.")
+            if (dse.Message != "Display set is incomplete.")
                 throw new Exception("Expected specific error message on header EOF.");
         }
     }
@@ -149,7 +149,7 @@ public class StreamExtensionTests
         }
         catch (DisplaySetException dse)
         {
-            if (dse.Message != "Successfully read an incomplete display set.")
+            if (dse.Message != "Display set is incomplete.")
                 throw new Exception("Expected specific error message on header EOF.");
         }
     }
