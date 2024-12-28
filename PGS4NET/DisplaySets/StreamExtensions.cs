@@ -21,7 +21,7 @@ public static class StreamExtensions
     {
         using var reader = new DisplaySetReader(stream, true);
 
-        while (await reader.ReadAsync() is DisplaySet displaySet)
+        while (await reader.ReadAsync(cancellationToken) is DisplaySet displaySet)
             yield return displaySet;
     }
 #endif

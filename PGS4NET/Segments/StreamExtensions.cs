@@ -21,7 +21,7 @@ public static class StreamExtensions
     {
         using var reader = new SegmentReader(stream, true);
 
-        while (await reader.ReadAsync() is Segment segment)
+        while (await reader.ReadAsync(cancellationToken) is Segment segment)
             yield return segment;
     }
 #endif

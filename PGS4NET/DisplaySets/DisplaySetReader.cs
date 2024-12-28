@@ -138,7 +138,7 @@ public class DisplaySetReader : IDisposable
 
         var segmentRead = false;
 
-        while (Queue.Count < 1 && await Reader.ReadAsync() is Segment segment)
+        while (Queue.Count < 1 && await Reader.ReadAsync(cancellationToken) is Segment segment)
         {
             segmentRead = true;
             Composer.Input(segment);
