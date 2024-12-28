@@ -60,6 +60,11 @@ public class Compositor
     public int Height { get; }
 
     /// <summary>
+    ///     Gets whether or not the graphics plane has anything drawn to it.
+    /// </summary>
+    public bool Pending => PrimaryPlaneHasSomething;
+
+    /// <summary>
     ///     Initializes a new instance for the provided window.
     /// </summary>
     public Compositor(DisplayWindow displayWindow)

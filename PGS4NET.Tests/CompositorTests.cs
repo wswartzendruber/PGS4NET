@@ -94,7 +94,9 @@ public class CompositorTests
         };
 
         compositor.Draw(TimeStamp1, object1, composition, palette);
+        Assert.True(compositor.Pending);
         compositor.Clear(TimeStamp2);
+        Assert.False(compositor.Pending);
 
         Assert.True(captions.Count == 1);
         Assert.True(captions[0].TimeStamp == TimeStamp1);
@@ -148,7 +150,9 @@ public class CompositorTests
         };
 
         compositor.Draw(TimeStamp1, object1, composition, palette);
+        Assert.True(compositor.Pending);
         compositor.Clear(TimeStamp2);
+        Assert.False(compositor.Pending);
 
         Assert.True(captions.Count == 1);
         Assert.True(captions[0].TimeStamp == TimeStamp1);
@@ -206,7 +210,9 @@ public class CompositorTests
         };
 
         compositor.Draw(TimeStamp1, object1, composition, palette);
+        Assert.True(compositor.Pending);
         compositor.Clear(TimeStamp2);
+        Assert.False(compositor.Pending);
 
         Assert.True(captions.Count == 1);
         Assert.True(captions[0].TimeStamp == TimeStamp1);
@@ -262,7 +268,9 @@ public class CompositorTests
         };
 
         compositor.Draw(TimeStamp1, object1, composition, palette);
+        Assert.True(compositor.Pending);
         compositor.Clear(TimeStamp2);
+        Assert.False(compositor.Pending);
 
         Assert.True(captions.Count == 1);
         Assert.True(captions[0].TimeStamp == TimeStamp1);
@@ -320,7 +328,9 @@ public class CompositorTests
         };
 
         compositor.Draw(TimeStamp1, object1, composition, palette);
+        Assert.True(compositor.Pending);
         compositor.Clear(TimeStamp2);
+        Assert.False(compositor.Pending);
 
         Assert.True(captions.Count == 1);
         Assert.True(captions[0].TimeStamp == TimeStamp1);
@@ -376,7 +386,9 @@ public class CompositorTests
         };
 
         compositor.Draw(TimeStamp1, object1, composition, palette);
+        Assert.True(compositor.Pending);
         compositor.Clear(TimeStamp2);
+        Assert.False(compositor.Pending);
 
         Assert.True(captions.Count == 1);
         Assert.True(captions[0].TimeStamp == TimeStamp1);
@@ -425,7 +437,9 @@ public class CompositorTests
         };
 
         compositor.Draw(TimeStamp1, object1, composition, palette);
+        Assert.False(compositor.Pending);
         compositor.Clear(TimeStamp2);
+        Assert.False(compositor.Pending);
 
         Assert.True(captions.Count == 0);
     }
@@ -466,7 +480,9 @@ public class CompositorTests
         };
 
         compositor.Draw(TimeStamp1, object1, composition, palette);
+        Assert.False(compositor.Pending);
         compositor.Clear(TimeStamp2);
+        Assert.False(compositor.Pending);
 
         Assert.True(captions.Count == 0);
     }
@@ -535,11 +551,17 @@ public class CompositorTests
         };
 
         compositor.Draw(TimeStamp1, object1, composition, palette);
+        Assert.True(compositor.Pending);
         compositor.Draw(TimeStamp2, object2, composition, palette);
+        Assert.True(compositor.Pending);
         compositor.Clear(TimeStamp3);
+        Assert.False(compositor.Pending);
         compositor.Draw(TimeStamp4, object3, composition, palette);
+        Assert.False(compositor.Pending);
         compositor.Draw(TimeStamp5, object4, composition, palette);
+        Assert.True(compositor.Pending);
         compositor.Clear(TimeStamp6);
+        Assert.False(compositor.Pending);
 
         Assert.True(captions.Count == 3);
         Assert.True(captions[0].TimeStamp == TimeStamp1);
@@ -633,14 +655,23 @@ public class CompositorTests
         };
 
         compositor.Draw(TimeStamp1, object1, composition1, palette);
+        Assert.True(compositor.Pending);
         compositor.Draw(TimeStamp2, object2, composition2, palette);
+        Assert.True(compositor.Pending);
         compositor.Draw(TimeStamp3, object3, composition1, palette);
+        Assert.True(compositor.Pending);
         compositor.Clear(TimeStamp4);
+        Assert.False(compositor.Pending);
         compositor.Draw(TimeStamp5, object4, composition2, palette);
+        Assert.False(compositor.Pending);
         compositor.Clear(TimeStamp6);
+        Assert.False(compositor.Pending);
         compositor.Draw(TimeStamp7, object4, composition2, palette);
+        Assert.False(compositor.Pending);
         compositor.Draw(TimeStamp8, object4, composition1, palette);
+        Assert.False(compositor.Pending);
         compositor.Draw(TimeStamp9, object4, composition2, palette);
+        Assert.False(compositor.Pending);
 
         Assert.True(captions.Count == 3);
         Assert.True(captions[0].TimeStamp == TimeStamp1);

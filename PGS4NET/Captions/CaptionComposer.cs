@@ -29,6 +29,24 @@ public class CaptionComposer
     private readonly Dictionary<int, DisplayObject> Objects = new();
 
     /// <summary>
+    ///     Returns <see langword="true"/> if the composer has pending segments that have not
+    ///     been written out as a new display set.
+    /// </summary>
+    public bool Pending
+    {
+        get
+        {
+            foreach (var compositor in Compositors.Values)
+            {
+                if (compositor.Pending)
+                    return true;
+            }
+
+            return false;
+        }
+    }
+
+    /// <summary>
     ///     Inputs a PGS display set into the composer, causing <see cref="Ready"/> to fire
     ///     each time a new <see cref="Caption"/> becomes available.
     /// </summary>
