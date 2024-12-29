@@ -10,9 +10,8 @@
  * SPDX-License-Identifier: CC0-1.0
  */
 
-using PGS4NET;
-using PGS4NET.Captions;
 using PGS4NET.DisplaySets;
+using PGS4NET.Captions;
 
 namespace PGS4NET.Tests;
 

@@ -18,6 +18,12 @@ using CompositionEnumerable = System.Collections.Generic.IEnumerable<
         PGS4NET.DisplaySets.DisplayComposition
     >
 >;
+using CompositionSet = System.Collections.Generic.HashSet<
+    System.Tuple<
+        PGS4NET.DisplaySets.DisplayObject,
+        PGS4NET.DisplaySets.DisplayComposition
+    >
+>;
 
 namespace PGS4NET;
 
@@ -34,6 +40,7 @@ public class Compositor
     private readonly YcbcraPixel[] Palette;
     private readonly YcbcraPixel[] PrimaryPixels;
     private readonly YcbcraPixel[] SecondaryPixels;
+    private readonly CompositionSet CurrentCompositions;
 
     private PgsTimeStamp StartTimeStamp = default;
     private bool Forced = false;
@@ -160,6 +167,15 @@ public class Compositor
         }
 
         //
+        // REMOVE MISSING COMPOSITIONS
+        //
+
+        foreach (var currentComposition in CurrentCompositions)
+        {
+            // TODO: Pick up here.
+        }
+
+        //
         // BUILD PALETTE
         //
 
@@ -174,6 +190,10 @@ public class Compositor
             Palette[i] = pixel;
         }
         while (i++ != 255);
+
+        //
+        // DRAW NEW/CURRENT COMPOSITIONS
+        //
 
         foreach (var composition in compositions)
         {
