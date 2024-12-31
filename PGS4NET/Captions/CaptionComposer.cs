@@ -58,9 +58,11 @@ public class CaptionComposer
     /// </exception>
     public void Input(DisplaySet displaySet)
     {
+        var timeStamp = displaySet.Pts;
+
         if (displaySet.CompositionState == CompositionState.EpochStart)
         {
-            Flush(displaySet.Pts);
+            Flush(timeStamp);
             Reset();
         }
 
@@ -79,18 +81,13 @@ public class CaptionComposer
                     || compositor.Width != displayWindow.Width
                     || compositor.Height != displayWindow.Height)
                 {
-                    compositor.Flush(displaySet.Pts);
-
-                    var newCompositor = BuildNewCompositor(displayWindow);
-
-                    Compositors[windowId] = newCompositor;
+                    compositor.Flush(timeStamp);
+                    Compositors[windowId] = BuildNewCompositor(displayWindow);
                 }
             }
             else
             {
-                var newCompositor = BuildNewCompositor(displayWindow);
-
-                Compositors[windowId] = newCompositor;
+                Compositors[windowId] = BuildNewCompositor(displayWindow);
             }
         }
 
@@ -115,55 +112,45 @@ public class CaptionComposer
         // COMPOSITION AGGREGATION
         //
 
-        var compositions = new Dictionary<byte, Dictionary<int, DisplayComposition>>();
+        var allCompositorCompositions = new Dictionary<byte, List<CompositorComposition>>();
 
-        foreach (var displayComposition in displaySet.Compositions)
+        foreach (var composition in displaySet.Compositions)
         {
-            var windowId = displayComposition.Key.WindowId;
-            var objectId = displayComposition.Key.ObjectId;
+            var windowId = composition.Key.WindowId;
+            var objectId = composition.Key.ObjectId;
+            var displayComposition = composition.Value;
 
-            if (!compositions.ContainsKey(windowId))
-                compositions[windowId] = new();
+            if (!Objects.TryGetValue(objectId, out var displayObject))
+                throw ObjectUndefinedException;
 
-            compositions[windowId][objectId] = displayComposition.Value;
+            var compositorComposition = new CompositorComposition(displayComposition
+                , displayObject, displayPalette);
+
+            if (!allCompositorCompositions.ContainsKey(windowId))
+                allCompositorCompositions[windowId] = new();
+
+            allCompositorCompositions[windowId].Add(compositorComposition);
         }
 
         //
         // COMPOSITING
         //
 
-        foreach (var compositionsByWindow in compositions)
+        foreach (var compositorByWindowId in Compositors)
         {
-            var windowId = compositionsByWindow.Key;
+            var windowId = compositorByWindowId.Key;
+            var compositor = compositorByWindowId.Value;
 
-            if (Compositors.TryGetValue(windowId, out var compositor))
-            {
-                var compositorCompositions = new List<CompositorComposition>();
-
-                foreach (var compositionsByObject in compositionsByWindow.Value)
-                {
-                    var objectId = compositionsByObject.Key;
-                    var composition = compositionsByObject.Value;
-
-                    if (!Objects.TryGetValue(objectId, out var displayObject))
-                        throw ObjectUndefinedException;
-
-                    compositorCompositions.Add(new CompositorComposition(composition
-                        , displayObject, displayPalette));
-                }
-
-                compositor.Draw(displaySet.Pts, compositorCompositions);
-            }
+            if (allCompositorCompositions.TryGetValue(windowId, out var compositorCompositions))
+                compositor.Draw(timeStamp, compositorCompositions);
             else
-            {
-                throw new Exception("Internal state error.");
-            }
+                compositor.Flush(timeStamp);
         }
     }
 
     /// <summary>
-    ///     Flushes any graphics which are present, causing <see cref="NewCaption"/> to fire
-    ///     should any new <see cref="Caption"/>s be available as a result.
+    ///     Flushes any graphics which are present, causing <see cref="Ready"/> to fire should
+    ///     any new <see cref="Caption"/>s be available as a result.
     /// </summary>
     public void Flush(PgsTimeStamp timeStamp)
     {

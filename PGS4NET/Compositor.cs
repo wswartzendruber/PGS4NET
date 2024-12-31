@@ -269,6 +269,12 @@ public class Compositor
     /// </param>
     public void Flush(PgsTimeStamp timeStamp)
     {
+        if (timeStamp <= StartTimeStamp)
+        {
+            throw new CaptionException(
+                "Current time stamp is less than or equal to previous one.");
+        }
+
         if (LastCompositorState.PrimaryPlaneDirty)
         {
             var caption = new Caption(StartTimeStamp, timeStamp - StartTimeStamp, X, Y, Width

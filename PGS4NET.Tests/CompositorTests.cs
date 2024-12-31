@@ -46,7 +46,7 @@ public class CompositorTests
             captions.Add(caption);
         };
 
-        compositor.Flush(default);
+        compositor.Flush(TimeStamp1);
 
         Assert.True(captions.Count == 0);
     }
