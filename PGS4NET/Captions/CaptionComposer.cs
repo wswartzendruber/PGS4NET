@@ -79,7 +79,7 @@ public class CaptionComposer
                     || compositor.Width != displayWindow.Width
                     || compositor.Height != displayWindow.Height)
                 {
-                    compositor.Clear(displaySet.Pts);
+                    compositor.Flush(displaySet.Pts);
 
                     var newCompositor = BuildNewCompositor(displayWindow);
 
@@ -138,7 +138,7 @@ public class CaptionComposer
 
             if (Compositors.TryGetValue(windowId, out var compositor))
             {
-                var pairs = new List<Tuple<DisplayObject, DisplayComposition>>();
+                var compositorCompositions = new List<CompositorComposition>();
 
                 foreach (var compositionsByObject in compositionsByWindow.Value)
                 {
@@ -148,10 +148,11 @@ public class CaptionComposer
                     if (!Objects.TryGetValue(objectId, out var displayObject))
                         throw ObjectUndefinedException;
 
-                    pairs.Add(Tuple.Create(displayObject, composition));
+                    compositorCompositions.Add(new CompositorComposition(composition
+                        , displayObject, displayPalette));
                 }
 
-                compositor.Draw(displaySet.Pts, pairs, displayPalette);
+                compositor.Draw(displaySet.Pts, compositorCompositions);
             }
             else
             {
@@ -167,7 +168,7 @@ public class CaptionComposer
     public void Flush(PgsTimeStamp timeStamp)
     {
         foreach (var compositor in Compositors.Values)
-            compositor.Clear(timeStamp);
+            compositor.Flush(timeStamp);
     }
 
     /// <summary>

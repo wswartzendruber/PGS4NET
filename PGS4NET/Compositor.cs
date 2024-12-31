@@ -9,21 +9,9 @@
  */
 
 using System;
+using System.Collections.Generic;
 using PGS4NET.Captions;
 using PGS4NET.DisplaySets;
-
-using CompositionEnumerable = System.Collections.Generic.IEnumerable<
-    System.Tuple<
-        PGS4NET.DisplaySets.DisplayObject,
-        PGS4NET.DisplaySets.DisplayComposition
-    >
->;
-using CompositionSet = System.Collections.Generic.HashSet<
-    System.Tuple<
-        PGS4NET.DisplaySets.DisplayObject,
-        PGS4NET.DisplaySets.DisplayComposition
-    >
->;
 
 namespace PGS4NET;
 
@@ -37,14 +25,13 @@ namespace PGS4NET;
 public class Compositor
 {
     private readonly long Size;
-    private readonly YcbcraPixel[] Palette;
     private readonly YcbcraPixel[] PrimaryPixels;
     private readonly YcbcraPixel[] SecondaryPixels;
-    private readonly CompositionSet CurrentCompositions;
+    private readonly YcbcraPixel[] ClearPixels;
 
-    private PgsTimeStamp StartTimeStamp = default;
     private bool Forced = false;
-    private bool PrimaryPlaneHasSomething = false;
+    private PgsTimeStamp StartTimeStamp = default;
+    private CompositorState LastCompositorState = new(false, false, false);
 
     /// <summary>
     ///     The horizontal offset of the window's top-left corner within the screen.
@@ -69,7 +56,7 @@ public class Compositor
     /// <summary>
     ///     Gets whether or not the graphics plane has anything drawn to it.
     /// </summary>
-    public bool Pending => PrimaryPlaneHasSomething;
+    public bool Pending => LastCompositorState.PrimaryPlaneDirty;
 
     /// <summary>
     ///     Initializes a new instance for the provided window.
@@ -77,34 +64,14 @@ public class Compositor
     public Compositor(DisplayWindow displayWindow)
     {
         Size = displayWindow.Width * displayWindow.Height;
-        Palette = new YcbcraPixel[256];
         PrimaryPixels = new YcbcraPixel[Size];
         SecondaryPixels = new YcbcraPixel[Size];
+        ClearPixels = new YcbcraPixel[Size];
 
         X = displayWindow.X;
         Y = displayWindow.Y;
         Width = displayWindow.Width;
         Height = displayWindow.Height;
-    }
-
-    /// <summary>
-    ///     Clears the graphics plane. Any content currently on the plane is completed into a
-    ///     new caption and pushed via the <see cref="NewCaption"/> event.
-    /// </summary>
-    /// <param name="timeStamp">
-    ///     The time at which the graphics plane should be cleared.
-    /// </param>
-    public void Clear(PgsTimeStamp timeStamp)
-    {
-        if (PrimaryPlaneHasSomething)
-        {
-            var caption = new Caption(StartTimeStamp, timeStamp - StartTimeStamp, X, Y, Width
-                , Height, CopyPlane(PrimaryPixels), Forced);
-
-            OnNewCaption(caption);
-        }
-
-        Reset(timeStamp, PrimaryPlaneHasSomething);
     }
 
     /// <summary>
@@ -114,24 +81,14 @@ public class Compositor
     /// <param name="timeStamp">
     ///     The time at which the composition should be drawn.
     /// </param>
-    /// <param name="displayObject">
-    ///     The object to be drawn.
+    /// <param name="composition">
+    ///     The composition operation to draw.
     /// </param>
-    /// <param name="displayComposition">
-    ///     The composition which defines the object's location within the window along with
-    ///     whether or not it is forced. The location defined by the composition is relative to
-    ///     the screen.
-    /// </param>
-    /// <param name="displayPalette">
-    ///     The palette to use when drawing the object.
-    /// </param>
-    public void Draw(PgsTimeStamp timeStamp, DisplayObject displayObject
-        , DisplayComposition displayComposition, DisplayPalette displayPalette)
+    public void Draw(PgsTimeStamp timeStamp, CompositorComposition composition)
     {
-        var composition = Tuple.Create(displayObject, displayComposition);
-        var compositions = new Tuple<DisplayObject, DisplayComposition>[] { composition };
+        var compositions = new[] { composition };
 
-        Draw(timeStamp, compositions, displayPalette);
+        Draw(timeStamp, compositions);
     }
 
     /// <summary>
@@ -142,21 +99,15 @@ public class Compositor
     ///     The singular time at which the compositions should be drawn.
     /// </param>
     /// <param name="compositions">
-    ///     A collection of object+composition tuples. Each one is drawn to the graphics plane.
-    ///     Each composition defines the corresponding object's location within the window along
-    ///     with whether or not it is forced. The location defined by each composition is
-    ///     relative to the screen. If any compositions are forced then all compositions in that
-    ///     invocation become forced.
-    /// </param>
-    /// <param name="displayPalette">
-    ///     The palette to use when drawing the objects.
+    ///     A collection of operations to draw. If any operations are forced (via the
+    ///     <see cref="CompositorComposition.DisplayComposition"/> property), then all
+    ///     compositions in the collection become forced.
     /// </param>
     /// <exception cref="CaptionException">
     ///     The PTS value of a display set is less than or equal to the PTS value of the
     ///     previous display set.
     /// </exception>
-    public void Draw(PgsTimeStamp timeStamp, CompositionEnumerable compositions
-        , DisplayPalette displayPalette)
+    public void Draw(PgsTimeStamp timeStamp, IEnumerable<CompositorComposition> compositions)
     {
         var forced = false;
 
@@ -167,29 +118,10 @@ public class Compositor
         }
 
         //
-        // REMOVE MISSING COMPOSITIONS
+        // CLEAR PRIMARY PLANE
         //
 
-        foreach (var currentComposition in CurrentCompositions)
-        {
-            // TODO: Pick up here.
-        }
-
-        //
-        // BUILD PALETTE
-        //
-
-        byte i = 0;
-
-        do
-        {
-            var pixel = displayPalette.Entries.TryGetValue(i, out YcbcraPixel entry)
-                ? entry
-                : default;
-
-            Palette[i] = pixel;
-        }
-        while (i++ != 255);
+        Array.Copy(ClearPixels, PrimaryPixels, Size);
 
         //
         // DRAW NEW/CURRENT COMPOSITIONS
@@ -197,8 +129,26 @@ public class Compositor
 
         foreach (var composition in compositions)
         {
-            var displayObject = composition.Item1;
-            var displayComposition = composition.Item2;
+            var displayObject = composition.DisplayObject;
+            var displayComposition = composition.DisplayComposition;
+            var displayPalette = composition.DisplayPalette;
+            var generatedPalette = new YcbcraPixel[256];
+
+            //
+            // GENERATE PALETTE
+            //
+
+            byte i = 0;
+
+            do
+            {
+                var pixel = displayPalette.Entries.TryGetValue(i, out YcbcraPixel entry)
+                    ? entry
+                    : default;
+
+                generatedPalette[i] = pixel;
+            }
+            while (i++ != 255);
 
             //
             // CALCULATE POSITIONING
@@ -250,7 +200,7 @@ public class Compositor
                 for (int x = 0; x < width; x++)
                 {
                     var dot = displayObject.Data[sBase + x];
-                    var pixel = Palette[dot];
+                    var pixel = generatedPalette[dot];
 
                     PrimaryPixels[dBase + x] = pixel;
                 }
@@ -265,17 +215,17 @@ public class Compositor
 
         var state = GetCompositorState();
 
-        if (!PrimaryPlaneHasSomething && !state.PrimaryPlaneHasSomething)
+        if (!state.PrimaryPlaneDirty && !state.SecondaryPlaneDirty)
         {
             // We had nothing before and we have nothing now.
         }
-        else if (!PrimaryPlaneHasSomething && state.PrimaryPlaneHasSomething)
+        else if (state.PrimaryPlaneDirty && !state.SecondaryPlaneDirty)
         {
             // We had nothing before but we have something now.
 
             StartTimeStamp = timeStamp;
         }
-        else if (PrimaryPlaneHasSomething && !state.PrimaryPlaneHasSomething)
+        else if (!state.PrimaryPlaneDirty && state.SecondaryPlaneDirty)
         {
             // We had something before but we have nothing now.
 
@@ -284,7 +234,7 @@ public class Compositor
 
             OnNewCaption(caption);
         }
-        else if (PrimaryPlaneHasSomething && state.PrimaryPlaneHasSomething)
+        else if (state.PrimaryPlaneDirty && state.SecondaryPlaneDirty)
         {
             // We had something before and we have something now.
 
@@ -305,27 +255,43 @@ public class Compositor
         }
 
         Forced = forced;
-        PrimaryPlaneHasSomething = state.PrimaryPlaneHasSomething;
+        LastCompositorState = state;
 
-        SyncSecondaryPlane();
+        Array.Copy(PrimaryPixels, SecondaryPixels, Size);
+    }
+
+    /// <summary>
+    ///     Flushes the graphics plane. Any content currently on the plane is completed into a
+    ///     new caption and pushed via the <see cref="NewCaption"/> event.
+    /// </summary>
+    /// <param name="timeStamp">
+    ///     The time at which any remaining graphics should be flushed out.
+    /// </param>
+    public void Flush(PgsTimeStamp timeStamp)
+    {
+        if (LastCompositorState.PrimaryPlaneDirty)
+        {
+            var caption = new Caption(StartTimeStamp, timeStamp - StartTimeStamp, X, Y, Width
+                , Height, CopyPlane(PrimaryPixels), Forced);
+
+            OnNewCaption(caption);
+        }
+
+        Reset();
     }
 
     /// <summary>
     ///     Completely resets the internal state of this instance. No otherwise completed
-    ///     captions are pushed.
+    ///     captions are flushed.
     /// </summary>
     public void Reset()
     {
-        Reset(default, true);
-    }
+        Forced = false;
+        StartTimeStamp = default;
+        LastCompositorState = new(false, false, false);
 
-    private YcbcraPixel[] CopyPlane(YcbcraPixel[] plane)
-    {
-        var returnValue = new YcbcraPixel[plane.Length];
-
-        Array.Copy(plane, returnValue, returnValue.Length);
-
-        return returnValue;
+        Array.Copy(ClearPixels, PrimaryPixels, Size);
+        Array.Copy(ClearPixels, SecondaryPixels, Size);
     }
 
     /// <summary>
@@ -337,6 +303,31 @@ public class Compositor
     protected virtual void OnNewCaption(Caption caption)
     {
         NewCaption?.Invoke(this, caption);
+    }
+
+    private YcbcraPixel[] CopyPlane(YcbcraPixel[] plane)
+    {
+        var returnValue = new YcbcraPixel[plane.Length];
+
+        Array.Copy(plane, returnValue, returnValue.Length);
+
+        return returnValue;
+    }
+
+    private CompositorState GetCompositorState()
+    {
+        bool primaryPlaneDirty = false;
+        bool secondaryPlaneDirty = false;
+        bool planesDiffer = false;
+
+        for (long i = 0; i < Size; i++)
+        {
+            primaryPlaneDirty |= PrimaryPixels[i] != default;
+            secondaryPlaneDirty |= SecondaryPixels[i] != default;
+            planesDiffer |= PrimaryPixels[i] != SecondaryPixels[i];
+        }
+
+        return new CompositorState(primaryPlaneDirty, secondaryPlaneDirty, planesDiffer);
     }
 
     private Area? GetOverlappingArea(Area one, Area two)
@@ -359,44 +350,6 @@ public class Compositor
         int yoe = Math.Min(y1e, y2e);
 
         return new Area(xos, yos, xoe - xos, yoe - yos);
-    }
-
-    private CompositorState GetCompositorState()
-    {
-        bool primaryPlaneHasSomething = false;
-        bool planesDiffer = false;
-
-        for (long i = 0; i < Size; i++)
-        {
-            if (PrimaryPixels[i] != SecondaryPixels[i])
-                planesDiffer = true;
-
-            if (PrimaryPixels[i] != default)
-                primaryPlaneHasSomething = true;
-        }
-
-        return new CompositorState(primaryPlaneHasSomething, planesDiffer);
-    }
-
-    private void Reset(PgsTimeStamp timeStamp, bool resetPixels)
-    {
-        StartTimeStamp = timeStamp;
-        Forced = false;
-
-        if (resetPixels)
-        {
-            PrimaryPlaneHasSomething = false;
-
-            for (long i = 0; i < Size; i++)
-                PrimaryPixels[i] = default;
-
-            SyncSecondaryPlane();
-        }
-    }
-
-    private void SyncSecondaryPlane()
-    {
-        Array.Copy(PrimaryPixels, SecondaryPixels, Size);
     }
 
     /// <summary>
@@ -438,13 +391,15 @@ public class Compositor
 
     private struct CompositorState
     {
-        public bool PrimaryPlaneHasSomething;
+        internal readonly bool PrimaryPlaneDirty;
+        internal readonly bool SecondaryPlaneDirty;
+        internal readonly bool PlanesDiffer;
 
-        public bool PlanesDiffer;
-
-        public CompositorState(bool primaryPlaneHasSomething, bool planesDiffer)
+        public CompositorState(bool primaryPlaneDirty, bool secondaryPlaneDirty
+            , bool planesDiffer)
         {
-            PrimaryPlaneHasSomething = primaryPlaneHasSomething;
+            PrimaryPlaneDirty = primaryPlaneDirty;
+            SecondaryPlaneDirty = secondaryPlaneDirty;
             PlanesDiffer = planesDiffer;
         }
     }
