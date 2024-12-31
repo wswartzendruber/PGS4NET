@@ -25,16 +25,16 @@ public class PgsTimeStampTests
         var b = new PgsTimeStamp(1);
         var c = new PgsTimeStamp(2);
 
-        Assert.True(a.Ticks == 1);
-        Assert.True(b.Ticks == 1);
-        Assert.True(c.Ticks == 2);
+        Assert.Equal(1, a.Ticks);
+        Assert.Equal(1, b.Ticks);
+        Assert.Equal(2, c.Ticks);
     }
 
     [Fact]
     public void Milliseconds()
     {
         for (long ms = 0; ms <= PgsTimeStamp.MaxMilliseconds; ms++)
-            Assert.True(PgsTimeStamp.FromMilliseconds(ms).ToMilliseconds() == ms);
+            Assert.Equal(ms, PgsTimeStamp.FromMilliseconds(ms).ToMilliseconds());
     }
 
     [Fact]
@@ -97,8 +97,8 @@ public class PgsTimeStampTests
         PgsTimeStamp ap = 1;
         PgsTimeStamp cp = 2;
 
-        Assert.True(au == 1);
-        Assert.True(cu == 2);
+        Assert.Equal(1, au);
+        Assert.Equal(2, cu);
         Assert.True(ap == a);
         Assert.True(cp == c);
     }
@@ -110,7 +110,7 @@ public class PgsTimeStampTests
         {
             _ = PgsTimeStamp.FromMilliseconds(PgsTimeStamp.MaxMilliseconds + 1);
 
-            throw new Exception("Implementation failed to throw exception.");
+            Assert.Fail("Was able to create PgsTimeStamp with excessive millisecond count.");
         }
         catch (ArgumentOutOfRangeException aoore)
         {

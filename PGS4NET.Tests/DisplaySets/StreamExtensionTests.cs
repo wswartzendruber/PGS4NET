@@ -25,7 +25,7 @@ public class StreamExtensionTests
 
         outputStream.WriteAllDisplaySets(inputStream.DisplaySets());
 
-        Assert.True(inputStream.ToArray().SequenceEqual(outputStream.ToArray()));
+        Assert.Equal(inputStream.ToArray(), outputStream.ToArray());
     }
 
 #if NETCOREAPP3_0_OR_GREATER
@@ -37,7 +37,7 @@ public class StreamExtensionTests
 
         await outputStream.WriteAllDisplaySetsAsync(inputStream.DisplaySetsAsync());
 
-        Assert.True(inputStream.ToArray().SequenceEqual(outputStream.ToArray()));
+        Assert.Equal(inputStream.ToArray(), outputStream.ToArray());
     }
 #endif
 
@@ -49,7 +49,7 @@ public class StreamExtensionTests
 
         outputStream.WriteAllDisplaySets(inputStream.ReadAllDisplaySets());
 
-        Assert.True(inputStream.ToArray().SequenceEqual(outputStream.ToArray()));
+        Assert.Equal(inputStream.ToArray(), outputStream.ToArray());
     }
 
     [Fact]
@@ -61,7 +61,7 @@ public class StreamExtensionTests
         await outputStream.WriteAllDisplaySetsAsync(
             await inputStream.ReadAllDisplaySetsAsync());
 
-        Assert.True(inputStream.ToArray().SequenceEqual(outputStream.ToArray()));
+        Assert.Equal(inputStream.ToArray(), outputStream.ToArray());
     }
 
     [Fact]
@@ -77,12 +77,11 @@ public class StreamExtensionTests
         {
             stream.DisplaySets().ToList();
 
-            throw new Exception("Successfully read an incomplete display set.");
+            Assert.Fail("Was able to read an incomplete display set.");
         }
         catch (DisplaySetException dse)
         {
-            if (dse.Message != "Display set is incomplete.")
-                throw new Exception("Expected specific error message on header EOF.");
+            Assert.Equal("Display set is incomplete.", dse.Message);
         }
     }
 
@@ -100,12 +99,11 @@ public class StreamExtensionTests
         {
             await stream.DisplaySetsAsync().ToListAsync();
 
-            throw new Exception("Successfully read an incomplete display set.");
+            Assert.Fail("Was able to read an incomplete display set.");
         }
         catch (DisplaySetException dse)
         {
-            if (dse.Message != "Display set is incomplete.")
-                throw new Exception("Expected specific error message on header EOF.");
+            Assert.Equal("Display set is incomplete.", dse.Message);
         }
     }
 #endif
@@ -123,12 +121,11 @@ public class StreamExtensionTests
         {
             stream.ReadAllDisplaySets();
 
-            throw new Exception("Successfully read an incomplete display set.");
+            Assert.Fail("Was able to read an incomplete display set.");
         }
         catch (DisplaySetException dse)
         {
-            if (dse.Message != "Display set is incomplete.")
-                throw new Exception("Expected specific error message on header EOF.");
+            Assert.Equal("Display set is incomplete.", dse.Message);
         }
     }
 
@@ -145,12 +142,11 @@ public class StreamExtensionTests
         {
             await stream.ReadAllDisplaySetsAsync();
 
-            throw new Exception("Successfully read an incomplete display set.");
+            Assert.Fail("Was able to read an incomplete display set.");
         }
         catch (DisplaySetException dse)
         {
-            if (dse.Message != "Display set is incomplete.")
-                throw new Exception("Expected specific error message on header EOF.");
+            Assert.Equal("Display set is incomplete.", dse.Message);
         }
     }
 }

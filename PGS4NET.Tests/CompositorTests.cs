@@ -41,14 +41,13 @@ public class CompositorTests
 
         compositor.NewCaption += (sender, caption) =>
         {
-            Assert.True(sender == compositor);
+            Assert.Equal(compositor, sender);
 
             captions.Add(caption);
         };
 
         compositor.Flush(TimeStamp1);
-
-        Assert.True(captions.Count == 0);
+        Assert.Empty(captions);
     }
 
     [Fact]
@@ -87,7 +86,7 @@ public class CompositorTests
 
         compositor.NewCaption += (sender, caption) =>
         {
-            Assert.True(sender == compositor);
+            Assert.Equal(compositor, sender);
 
             captions.Add(caption);
         };
@@ -97,15 +96,15 @@ public class CompositorTests
         compositor.Flush(TimeStamp2);
         Assert.False(compositor.Pending);
 
-        Assert.True(captions.Count == 1);
-        Assert.True(captions[0].TimeStamp == TimeStamp1);
-        Assert.True(captions[0].Duration == TimeStamp2 - TimeStamp1);
-        Assert.True(captions[0].X == 8);
-        Assert.True(captions[0].Y == 16);
-        Assert.True(captions[0].Width == 4);
-        Assert.True(captions[0].Height == 5);
-        Assert.True(captions[0].Forced == false);
-        Assert.True(captions[0].Data.SequenceEqual(expectedPixels1));
+        Assert.Single(captions);
+        Assert.Equal(TimeStamp1, captions[0].TimeStamp);
+        Assert.Equal(TimeStamp2 - TimeStamp1, captions[0].Duration);
+        Assert.Equal(8, captions[0].X);
+        Assert.Equal(16, captions[0].Y);
+        Assert.Equal(4, captions[0].Width);
+        Assert.Equal(5, captions[0].Height);
+        Assert.False(captions[0].Forced);
+        Assert.Equal(expectedPixels1, captions[0].Data);
     }
 
     [Fact]
@@ -143,7 +142,7 @@ public class CompositorTests
 
         compositor.NewCaption += (sender, caption) =>
         {
-            Assert.True(sender == compositor);
+            Assert.Equal(compositor, sender);
 
             captions.Add(caption);
         };
@@ -153,15 +152,15 @@ public class CompositorTests
         compositor.Flush(TimeStamp2);
         Assert.False(compositor.Pending);
 
-        Assert.True(captions.Count == 1);
-        Assert.True(captions[0].TimeStamp == TimeStamp1);
-        Assert.True(captions[0].Duration == TimeStamp2 - TimeStamp1);
-        Assert.True(captions[0].X == 8);
-        Assert.True(captions[0].Y == 16);
-        Assert.True(captions[0].Width == 2);
-        Assert.True(captions[0].Height == 3);
-        Assert.True(captions[0].Forced == false);
-        Assert.True(captions[0].Data.SequenceEqual(expectedPixels1));
+        Assert.Single(captions);
+        Assert.Equal(TimeStamp1, captions[0].TimeStamp);
+        Assert.Equal(TimeStamp2 - TimeStamp1, captions[0].Duration);
+        Assert.Equal(8, captions[0].X);
+        Assert.Equal(16, captions[0].Y);
+        Assert.Equal(2, captions[0].Width);
+        Assert.Equal(3, captions[0].Height);
+        Assert.False(captions[0].Forced);
+        Assert.Equal(expectedPixels1, captions[0].Data);
     }
 
     [Fact]
@@ -203,7 +202,7 @@ public class CompositorTests
 
         compositor.NewCaption += (sender, caption) =>
         {
-            Assert.True(sender == compositor);
+            Assert.Equal(compositor, sender);
 
             captions.Add(caption);
         };
@@ -213,15 +212,15 @@ public class CompositorTests
         compositor.Flush(TimeStamp2);
         Assert.False(compositor.Pending);
 
-        Assert.True(captions.Count == 1);
-        Assert.True(captions[0].TimeStamp == TimeStamp1);
-        Assert.True(captions[0].Duration == TimeStamp2 - TimeStamp1);
-        Assert.True(captions[0].X == 8);
-        Assert.True(captions[0].Y == 16);
-        Assert.True(captions[0].Width == 6);
-        Assert.True(captions[0].Height == 7);
-        Assert.True(captions[0].Forced == false);
-        Assert.True(captions[0].Data.SequenceEqual(expectedPixels1));
+        Assert.Single(captions);
+        Assert.Equal(TimeStamp1, captions[0].TimeStamp);
+        Assert.Equal(TimeStamp2 - TimeStamp1, captions[0].Duration);
+        Assert.Equal(8, captions[0].X);
+        Assert.Equal(16, captions[0].Y);
+        Assert.Equal(6, captions[0].Width);
+        Assert.Equal(7, captions[0].Height);
+        Assert.False(captions[0].Forced);
+        Assert.Equal(expectedPixels1, captions[0].Data);
     }
 
     [Fact]
@@ -261,7 +260,7 @@ public class CompositorTests
 
         compositor.NewCaption += (sender, caption) =>
         {
-            Assert.True(sender == compositor);
+            Assert.Equal(compositor, sender);
 
             captions.Add(caption);
         };
@@ -271,15 +270,15 @@ public class CompositorTests
         compositor.Flush(TimeStamp2);
         Assert.False(compositor.Pending);
 
-        Assert.True(captions.Count == 1);
-        Assert.True(captions[0].TimeStamp == TimeStamp1);
-        Assert.True(captions[0].Duration == TimeStamp2 - TimeStamp1);
-        Assert.True(captions[0].X == 8);
-        Assert.True(captions[0].Y == 16);
-        Assert.True(captions[0].Width == 4);
-        Assert.True(captions[0].Height == 5);
-        Assert.True(captions[0].Forced == false);
-        Assert.True(captions[0].Data.SequenceEqual(expectedPixels1));
+        Assert.Single(captions);
+        Assert.Equal(TimeStamp1, captions[0].TimeStamp);
+        Assert.Equal(TimeStamp2 - TimeStamp1, captions[0].Duration);
+        Assert.Equal(8, captions[0].X);
+        Assert.Equal(16, captions[0].Y);
+        Assert.Equal(4, captions[0].Width);
+        Assert.Equal(5, captions[0].Height);
+        Assert.False(captions[0].Forced);
+        Assert.Equal(expectedPixels1, captions[0].Data);
     }
 
     [Fact]
@@ -321,7 +320,7 @@ public class CompositorTests
 
         compositor.NewCaption += (sender, caption) =>
         {
-            Assert.True(sender == compositor);
+            Assert.Equal(compositor, sender);
 
             captions.Add(caption);
         };
@@ -331,15 +330,15 @@ public class CompositorTests
         compositor.Flush(TimeStamp2);
         Assert.False(compositor.Pending);
 
-        Assert.True(captions.Count == 1);
-        Assert.True(captions[0].TimeStamp == TimeStamp1);
-        Assert.True(captions[0].Duration == TimeStamp2 - TimeStamp1);
-        Assert.True(captions[0].X == 8);
-        Assert.True(captions[0].Y == 16);
-        Assert.True(captions[0].Width == 4);
-        Assert.True(captions[0].Height == 5);
-        Assert.True(captions[0].Forced == false);
-        Assert.True(captions[0].Data.SequenceEqual(expectedPixels1));
+        Assert.Single(captions);
+        Assert.Equal(TimeStamp1, captions[0].TimeStamp);
+        Assert.Equal(TimeStamp2 - TimeStamp1, captions[0].Duration);
+        Assert.Equal(8, captions[0].X);
+        Assert.Equal(16, captions[0].Y);
+        Assert.Equal(4, captions[0].Width);
+        Assert.Equal(5, captions[0].Height);
+        Assert.False(captions[0].Forced);
+        Assert.Equal(expectedPixels1, captions[0].Data);
     }
 
     [Fact]
@@ -379,7 +378,7 @@ public class CompositorTests
 
         compositor.NewCaption += (sender, caption) =>
         {
-            Assert.True(sender == compositor);
+            Assert.Equal(compositor, sender);
 
             captions.Add(caption);
         };
@@ -389,15 +388,15 @@ public class CompositorTests
         compositor.Flush(TimeStamp2);
         Assert.False(compositor.Pending);
 
-        Assert.True(captions.Count == 1);
-        Assert.True(captions[0].TimeStamp == TimeStamp1);
-        Assert.True(captions[0].Duration == TimeStamp2 - TimeStamp1);
-        Assert.True(captions[0].X == 8);
-        Assert.True(captions[0].Y == 16);
-        Assert.True(captions[0].Width == 2);
-        Assert.True(captions[0].Height == 3);
-        Assert.True(captions[0].Forced == false);
-        Assert.True(captions[0].Data.SequenceEqual(expectedPixels1));
+        Assert.Single(captions);
+        Assert.Equal(TimeStamp1, captions[0].TimeStamp);
+        Assert.Equal(TimeStamp2 - TimeStamp1, captions[0].Duration);
+        Assert.Equal(8, captions[0].X);
+        Assert.Equal(16, captions[0].Y);
+        Assert.Equal(2, captions[0].Width);
+        Assert.Equal(3, captions[0].Height);
+        Assert.False(captions[0].Forced);
+        Assert.Equal(expectedPixels1, captions[0].Data);
     }
 
     [Fact]
@@ -430,7 +429,7 @@ public class CompositorTests
 
         compositor.NewCaption += (sender, caption) =>
         {
-            Assert.True(sender == compositor);
+            Assert.Equal(compositor, sender);
 
             captions.Add(caption);
         };
@@ -440,7 +439,7 @@ public class CompositorTests
         compositor.Flush(TimeStamp2);
         Assert.False(compositor.Pending);
 
-        Assert.True(captions.Count == 0);
+        Assert.Empty(captions);
     }
 
     [Fact]
@@ -473,7 +472,7 @@ public class CompositorTests
 
         compositor.NewCaption += (sender, caption) =>
         {
-            Assert.True(sender == compositor);
+            Assert.Equal(compositor, sender);
 
             captions.Add(caption);
         };
@@ -483,7 +482,7 @@ public class CompositorTests
         compositor.Flush(TimeStamp2);
         Assert.False(compositor.Pending);
 
-        Assert.True(captions.Count == 0);
+        Assert.Empty(captions);
     }
 
     [Fact]
@@ -544,7 +543,7 @@ public class CompositorTests
 
         compositor.NewCaption += (sender, caption) =>
         {
-            Assert.True(sender == compositor);
+            Assert.Equal(compositor, sender);
 
             captions.Add(caption);
         };
@@ -562,31 +561,31 @@ public class CompositorTests
         compositor.Flush(TimeStamp6);
         Assert.False(compositor.Pending);
 
-        Assert.True(captions.Count == 3);
-        Assert.True(captions[0].TimeStamp == TimeStamp1);
-        Assert.True(captions[0].Duration == TimeStamp2 - TimeStamp1);
-        Assert.True(captions[0].X == 0);
-        Assert.True(captions[0].Y == 0);
-        Assert.True(captions[0].Width == 2);
-        Assert.True(captions[0].Height == 2);
-        Assert.True(captions[0].Forced == false);
-        Assert.True(captions[0].Data.SequenceEqual(expectedPixels1));
-        Assert.True(captions[1].TimeStamp == TimeStamp2);
-        Assert.True(captions[1].Duration == TimeStamp3 - TimeStamp2);
-        Assert.True(captions[1].X == 0);
-        Assert.True(captions[1].Y == 0);
-        Assert.True(captions[1].Width == 2);
-        Assert.True(captions[1].Height == 2);
-        Assert.True(captions[1].Forced == false);
-        Assert.True(captions[1].Data.SequenceEqual(expectedPixels2));
-        Assert.True(captions[2].TimeStamp == TimeStamp5);
-        Assert.True(captions[2].Duration == TimeStamp6 - TimeStamp5);
-        Assert.True(captions[2].X == 0);
-        Assert.True(captions[2].Y == 0);
-        Assert.True(captions[2].Width == 2);
-        Assert.True(captions[2].Height == 2);
-        Assert.True(captions[2].Forced == false);
-        Assert.True(captions[2].Data.SequenceEqual(expectedPixels4));
+        Assert.Equal(3, captions.Count);
+        Assert.Equal(TimeStamp1, captions[0].TimeStamp);
+        Assert.Equal(TimeStamp2 - TimeStamp1, captions[0].Duration);
+        Assert.Equal(0, captions[0].X);
+        Assert.Equal(0, captions[0].Y);
+        Assert.Equal(2, captions[0].Width);
+        Assert.Equal(2, captions[0].Height);
+        Assert.False(captions[0].Forced);
+        Assert.Equal(expectedPixels1, captions[0].Data);
+        Assert.Equal(TimeStamp2, captions[1].TimeStamp);
+        Assert.Equal(TimeStamp3 - TimeStamp2, captions[1].Duration);
+        Assert.Equal(0, captions[1].X);
+        Assert.Equal(0, captions[1].Y);
+        Assert.Equal(2, captions[1].Width);
+        Assert.Equal(2, captions[1].Height);
+        Assert.False(captions[1].Forced);
+        Assert.Equal(expectedPixels2, captions[1].Data);
+        Assert.Equal(TimeStamp5, captions[2].TimeStamp);
+        Assert.Equal(TimeStamp6 - TimeStamp5, captions[2].Duration);
+        Assert.Equal(0, captions[2].X);
+        Assert.Equal(0, captions[2].Y);
+        Assert.Equal(2, captions[2].Width);
+        Assert.Equal(2, captions[2].Height);
+        Assert.False(captions[2].Forced);
+        Assert.Equal(expectedPixels4, captions[2].Data);
     }
 
     [Fact]
@@ -648,7 +647,7 @@ public class CompositorTests
 
         compositor.NewCaption += (sender, caption) =>
         {
-            Assert.True(sender == compositor);
+            Assert.Equal(compositor, sender);
 
             captions.Add(caption);
         };
@@ -672,31 +671,31 @@ public class CompositorTests
         compositor.Draw(TimeStamp9, new CompositorComposition(composition2, object4, palette));
         Assert.False(compositor.Pending);
 
-        Assert.True(captions.Count == 3);
-        Assert.True(captions[0].TimeStamp == TimeStamp1);
-        Assert.True(captions[0].Duration == TimeStamp2 - TimeStamp1);
-        Assert.True(captions[0].X == 0);
-        Assert.True(captions[0].Y == 0);
-        Assert.True(captions[0].Width == 2);
-        Assert.True(captions[0].Height == 2);
-        Assert.True(captions[0].Forced == false);
-        Assert.True(captions[0].Data.SequenceEqual(expectedPixels1));
-        Assert.True(captions[1].TimeStamp == TimeStamp2);
-        Assert.True(captions[1].Duration == TimeStamp3 - TimeStamp2);
-        Assert.True(captions[1].X == 0);
-        Assert.True(captions[1].Y == 0);
-        Assert.True(captions[1].Width == 2);
-        Assert.True(captions[1].Height == 2);
-        Assert.True(captions[1].Forced == true);
-        Assert.True(captions[1].Data.SequenceEqual(expectedPixels2));
-        Assert.True(captions[2].TimeStamp == TimeStamp3);
-        Assert.True(captions[2].Duration == TimeStamp4 - TimeStamp3);
-        Assert.True(captions[2].X == 0);
-        Assert.True(captions[2].Y == 0);
-        Assert.True(captions[2].Width == 2);
-        Assert.True(captions[2].Height == 2);
-        Assert.True(captions[2].Forced == false);
-        Assert.True(captions[2].Data.SequenceEqual(expectedPixels3));
+        Assert.Equal(3, captions.Count);
+        Assert.Equal(TimeStamp1, captions[0].TimeStamp);
+        Assert.Equal(TimeStamp2 - TimeStamp1, captions[0].Duration);
+        Assert.Equal(0, captions[0].X);
+        Assert.Equal(0, captions[0].Y);
+        Assert.Equal(2, captions[0].Width);
+        Assert.Equal(2, captions[0].Height);
+        Assert.False(captions[0].Forced);
+        Assert.Equal(expectedPixels1, captions[0].Data);
+        Assert.Equal(TimeStamp2, captions[1].TimeStamp);
+        Assert.Equal(TimeStamp3 - TimeStamp2, captions[1].Duration);
+        Assert.Equal(0, captions[1].X);
+        Assert.Equal(0, captions[1].Y);
+        Assert.Equal(2, captions[1].Width);
+        Assert.Equal(2, captions[1].Height);
+        Assert.True(captions[1].Forced);
+        Assert.Equal(expectedPixels2, captions[1].Data);
+        Assert.Equal(TimeStamp3, captions[2].TimeStamp);
+        Assert.Equal(TimeStamp4 - TimeStamp3, captions[2].Duration);
+        Assert.Equal(0, captions[2].X);
+        Assert.Equal(0, captions[2].Y);
+        Assert.Equal(2, captions[2].Width);
+        Assert.Equal(2, captions[2].Height);
+        Assert.False(captions[2].Forced);
+        Assert.Equal(expectedPixels3, captions[2].Data);
     }
 
     [Fact]
@@ -740,8 +739,8 @@ public class CompositorTests
         }
         catch (CompositorException ce)
         {
-            Assert.True(ce.Message
-                == "Current time stamp is less than or equal to previous one.");
+            Assert.Equal("Current time stamp is less than or equal to previous one."
+                , ce.Message);
         }
     }
 
@@ -785,8 +784,8 @@ public class CompositorTests
         }
         catch (CompositorException ce)
         {
-            Assert.True(ce.Message
-                == "Current time stamp is less than or equal to previous one.");
+            Assert.Equal("Current time stamp is less than or equal to previous one."
+                , ce.Message);
         }
     }
 }

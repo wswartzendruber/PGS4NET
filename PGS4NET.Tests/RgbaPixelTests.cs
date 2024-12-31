@@ -23,10 +23,10 @@ public class RgbaPixelTests
     {
         var a = new RgbaPixel(0.01, 0.02, 0.03, 0.04);
 
-        Assert.True(a.Red == 0.01);
-        Assert.True(a.Green == 0.02);
-        Assert.True(a.Blue == 0.03);
-        Assert.True(a.Alpha == 0.04);
+        Assert.Equal(0.01, a.Red);
+        Assert.Equal(0.02, a.Green);
+        Assert.Equal(0.03, a.Blue);
+        Assert.Equal(0.04, a.Alpha);
     }
 
     [Fact]

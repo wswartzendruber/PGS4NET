@@ -22,8 +22,7 @@ public class SegmentReaderTests
         using var stream = new MemoryStream();
         using var reader = new SegmentReader(stream);
 
-        if (reader.Read() is not null)
-            throw new Exception("Returned segment is not null.");
+        Assert.Null(reader.Read());
     }
 
     [Fact]
@@ -32,8 +31,7 @@ public class SegmentReaderTests
         using var stream = new MemoryStream();
         using var reader = new SegmentReader(stream);
 
-        if (await reader.ReadAsync() is not null)
-            throw new Exception("Returned segment is not null.");
+        Assert.Null(await reader.ReadAsync());
     }
 
     [Fact]
@@ -49,12 +47,11 @@ public class SegmentReaderTests
         {
             reader.Read();
 
-            throw new Exception("Successfully read a segment with a trailing null byte.");
+            Assert.Fail("Was able to read a segment with a trailing null byte.");
         }
         catch (IOException ioe)
         {
-            if (ioe.Message != "EOF reading segment header.")
-                throw new Exception("Expected specific error message on header EOF.");
+            Assert.Equal("EOF reading segment header.", ioe.Message);
         }
     }
 
@@ -71,12 +68,11 @@ public class SegmentReaderTests
         {
             await reader.ReadAsync();
 
-            throw new Exception("Successfully read a segment with a trailing null byte.");
+            Assert.Fail("Was able to read a segment with a trailing null byte.");
         }
         catch (IOException ioe)
         {
-            if (ioe.Message != "EOF reading segment header.")
-                throw new Exception("Expected specific error message on header EOF.");
+            Assert.Equal("EOF reading segment header.", ioe.Message);
         }
     }
 }

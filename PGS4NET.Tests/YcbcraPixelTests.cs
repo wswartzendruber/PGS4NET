@@ -23,10 +23,10 @@ public class YcbcraPixelTests
     {
         var a = new YcbcraPixel(0x01, 0x02, 0x03, 0x04);
 
-        Assert.True(a.Y == 0x01);
-        Assert.True(a.Cb == 0x02);
-        Assert.True(a.Cr == 0x03);
-        Assert.True(a.Alpha == 0x04);
+        Assert.Equal(0x01, a.Y);
+        Assert.Equal(0x02, a.Cb);
+        Assert.Equal(0x03, a.Cr);
+        Assert.Equal(0x04, a.Alpha);
     }
 
     [Fact]

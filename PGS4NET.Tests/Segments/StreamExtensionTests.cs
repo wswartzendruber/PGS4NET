@@ -24,7 +24,7 @@ public class StreamExtensionTests
 
         outputStream.WriteAllSegments(inputStream.Segments());
 
-        Assert.True(inputStream.ToArray().SequenceEqual(outputStream.ToArray()));
+        Assert.Equal(inputStream.ToArray(), outputStream.ToArray());
     }
 
 #if NETCOREAPP3_0_OR_GREATER
@@ -36,7 +36,7 @@ public class StreamExtensionTests
 
         await outputStream.WriteAllSegmentsAsync(inputStream.SegmentsAsync());
 
-        Assert.True(inputStream.ToArray().SequenceEqual(outputStream.ToArray()));
+        Assert.Equal(inputStream.ToArray(), outputStream.ToArray());
     }
 #endif
 
@@ -48,7 +48,7 @@ public class StreamExtensionTests
 
         outputStream.WriteAllSegments(inputStream.ReadAllSegments());
 
-        Assert.True(inputStream.ToArray().SequenceEqual(outputStream.ToArray()));
+        Assert.Equal(inputStream.ToArray(), outputStream.ToArray());
     }
 
     [Fact]
@@ -59,7 +59,7 @@ public class StreamExtensionTests
 
         await outputStream.WriteAllSegmentsAsync(await inputStream.ReadAllSegmentsAsync());
 
-        Assert.True(inputStream.ToArray().SequenceEqual(outputStream.ToArray()));
+        Assert.Equal(inputStream.ToArray(), outputStream.ToArray());
     }
 
     [Fact]
@@ -76,12 +76,11 @@ public class StreamExtensionTests
         {
             stream.Segments().ToList();
 
-            throw new Exception("Successfully read a segment with a trailing null byte.");
+            Assert.Fail("Was able to read a segment with a trailing null byte.");
         }
         catch (IOException ioe)
         {
-            if (ioe.Message != "EOF reading segment header.")
-                throw new Exception("Expected specific error message on header EOF.");
+            Assert.Equal("EOF reading segment header.", ioe.Message);
         }
     }
 
@@ -100,12 +99,11 @@ public class StreamExtensionTests
         {
             await stream.SegmentsAsync().ToListAsync();
 
-            throw new Exception("Successfully read a segment with a trailing null byte.");
+            Assert.Fail("Was able to read a segment with a trailing null byte.");
         }
         catch (IOException ioe)
         {
-            if (ioe.Message != "EOF reading segment header.")
-                throw new Exception("Expected specific error message on header EOF.");
+            Assert.Equal("EOF reading segment header.", ioe.Message);
         }
     }
 #endif
@@ -124,12 +122,11 @@ public class StreamExtensionTests
         {
             stream.ReadAllSegments();
 
-            throw new Exception("Successfully read a segment with a trailing null byte.");
+            Assert.Fail("Was able to read a segment with a trailing null byte.");
         }
         catch (IOException ioe)
         {
-            if (ioe.Message != "EOF reading segment header.")
-                throw new Exception("Expected specific error message on header EOF.");
+            Assert.Equal("EOF reading segment header.", ioe.Message);
         }
     }
 
@@ -147,12 +144,11 @@ public class StreamExtensionTests
         {
             await stream.ReadAllSegmentsAsync();
 
-            throw new Exception("Successfully read a segment with a trailing null byte.");
+            Assert.Fail("Was able to read a segment with a trailing null byte.");
         }
         catch (IOException ioe)
         {
-            if (ioe.Message != "EOF reading segment header.")
-                throw new Exception("Expected specific error message on header EOF.");
+            Assert.Equal("EOF reading segment header.", ioe.Message);
         }
     }
 }

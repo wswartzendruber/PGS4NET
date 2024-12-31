@@ -23,9 +23,9 @@ public class ColorSpaceTests
     {
         var a = new ColorSpace(0.01, 0.02, 0.03);
 
-        Assert.True(a.Red == 0.01);
-        Assert.True(a.Green == 0.02);
-        Assert.True(a.Blue == 0.03);
+        Assert.Equal(0.01, a.Red);
+        Assert.Equal(0.02, a.Green);
+        Assert.Equal(0.03, a.Blue);
     }
 
     [Fact]
@@ -75,7 +75,7 @@ public class ColorSpaceTests
                         var outPixel = colorSpace.RgbaToYcbcra(
                             colorSpace.YcbcraToRgba(inPixel, true), true);
 
-                        Assert.True(inPixel == outPixel);
+                        Assert.Equal(inPixel, outPixel);
                     }
                 }
             }
@@ -85,7 +85,7 @@ public class ColorSpaceTests
         var finalOutPixel = colorSpace.RgbaToYcbcra(
             colorSpace.YcbcraToRgba(finalInPixel, true), true);
 
-        Assert.True(finalInPixel == finalOutPixel);
+        Assert.Equal(finalInPixel, finalOutPixel);
     }
 
     [Fact]
@@ -105,7 +105,7 @@ public class ColorSpaceTests
                         var outPixel = colorSpace.RgbaToYcbcra(
                             colorSpace.YcbcraToRgba(inPixel, false), false);
 
-                        Assert.True(inPixel == outPixel);
+                        Assert.Equal(inPixel, outPixel);
                     }
                 }
             }
@@ -115,6 +115,6 @@ public class ColorSpaceTests
         var finalOutPixel = colorSpace.RgbaToYcbcra(
             colorSpace.YcbcraToRgba(finalInPixel, false), false);
 
-        Assert.True(finalInPixel == finalOutPixel);
+        Assert.Equal(finalInPixel, finalOutPixel);
     }
 }

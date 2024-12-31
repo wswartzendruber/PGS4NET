@@ -10,15 +10,10 @@
  * SPDX-License-Identifier: CC0-1.0
  */
 
-using PGS4NET;
-
 namespace PGS4NET.Tests;
 
 public class RleTests
 {
-    private static readonly Exception ExceptionFailedException
-        = new("Expected exception was not thrown.");
-
     [Fact]
     public void SingleLineEmptyBuffer()
     {
@@ -26,8 +21,8 @@ public class RleTests
         var expected = new byte[] { };
         var received = Rle.Decompress(input, 0, 0);
 
-        Assert.True(received.SequenceEqual(expected));
-        Assert.True(Rle.Compress(received, 0, 0).SequenceEqual(input));
+        Assert.Equal(expected, received);
+        Assert.Equal(input, Rle.Compress(received, 0, 0));;
     }
 
     [Fact]
@@ -37,8 +32,8 @@ public class RleTests
         var expected = new byte[] { 0x00 };
         var received = Rle.Decompress(input, 1, 1);
 
-        Assert.True(received.SequenceEqual(expected));
-        Assert.True(Rle.Compress(received, 1, 1).SequenceEqual(input));
+        Assert.Equal(expected, received);
+        Assert.Equal(input, Rle.Compress(received, 1, 1));;
     }
 
     [Fact]
@@ -48,8 +43,8 @@ public class RleTests
         var expected = NewPopulatedByteArray(0x00, 63);
         var received = Rle.Decompress(input, 63, 1);
 
-        Assert.True(received.SequenceEqual(expected));
-        Assert.True(Rle.Compress(received, 63, 1).SequenceEqual(input));
+        Assert.Equal(expected, received);
+        Assert.Equal(input, Rle.Compress(received, 63, 1));
     }
 
     [Fact]
@@ -59,8 +54,8 @@ public class RleTests
         var expected = NewPopulatedByteArray(0x00, 64);
         var received = Rle.Decompress(input, 64, 1);
 
-        Assert.True(received.SequenceEqual(expected));
-        Assert.True(Rle.Compress(received, 64, 1).SequenceEqual(input));
+        Assert.Equal(expected, received);
+        Assert.Equal(input, Rle.Compress(received, 64, 1));
     }
 
     [Fact]
@@ -70,8 +65,8 @@ public class RleTests
         var expected = NewPopulatedByteArray(0x00, 16_383);
         var received = Rle.Decompress(input, 16_383, 1);
 
-        Assert.True(received.SequenceEqual(expected));
-        Assert.True(Rle.Compress(received, 16_383, 1).SequenceEqual(input));
+        Assert.Equal(expected, received);
+        Assert.Equal(input, Rle.Compress(received, 16_383, 1));
     }
 
     [Fact]
@@ -81,8 +76,8 @@ public class RleTests
         var expected = new byte[] { 0x01 };
         var received = Rle.Decompress(input, 1, 1);
 
-        Assert.True(received.SequenceEqual(expected));
-        Assert.True(Rle.Compress(received, 1, 1).SequenceEqual(input));
+        Assert.Equal(expected, received);
+        Assert.Equal(input, Rle.Compress(received, 1, 1));
     }
 
     [Fact]
@@ -92,8 +87,8 @@ public class RleTests
         var expected = new byte[] { 0x01, 0x01 };
         var received = Rle.Decompress(input, 2, 1);
 
-        Assert.True(received.SequenceEqual(expected));
-        Assert.True(Rle.Compress(received, 2, 1).SequenceEqual(input));
+        Assert.Equal(expected, received);
+        Assert.Equal(input, Rle.Compress(received, 2, 1));
     }
 
     [Fact]
@@ -103,8 +98,8 @@ public class RleTests
         var expected = new byte[] { 0x01, 0x01, 0x01 };
         var received = Rle.Decompress(input, 3, 1);
 
-        Assert.True(received.SequenceEqual(expected));
-        Assert.True(Rle.Compress(received, 3, 1).SequenceEqual(input));
+        Assert.Equal(expected, received);
+        Assert.Equal(input, Rle.Compress(received, 3, 1));
     }
 
     [Fact]
@@ -114,8 +109,8 @@ public class RleTests
         var expected = NewPopulatedByteArray(0x01, 63);
         var received = Rle.Decompress(input, 63, 1);
 
-        Assert.True(received.SequenceEqual(expected));
-        Assert.True(Rle.Compress(received, 63, 1).SequenceEqual(input));
+        Assert.Equal(expected, received);
+        Assert.Equal(input, Rle.Compress(received, 63, 1));
     }
 
     [Fact]
@@ -125,8 +120,8 @@ public class RleTests
         var expected = NewPopulatedByteArray(0x01, 64);
         var received = Rle.Decompress(input, 64, 1);
 
-        Assert.True(received.SequenceEqual(expected));
-        Assert.True(Rle.Compress(received, 64, 1).SequenceEqual(input));
+        Assert.Equal(expected, received);
+        Assert.Equal(input, Rle.Compress(received, 64, 1));
     }
 
     [Fact]
@@ -136,8 +131,8 @@ public class RleTests
         var expected = NewPopulatedByteArray(0x01, 16_383);
         var received = Rle.Decompress(input, 16_383, 1);
 
-        Assert.True(received.SequenceEqual(expected));
-        Assert.True(Rle.Compress(received, 16_383, 1).SequenceEqual(input));
+        Assert.Equal(expected, received);
+        Assert.Equal(input, Rle.Compress(received, 16_383, 1));
     }
 
     [Fact]
@@ -147,8 +142,8 @@ public class RleTests
         var expected = new byte[] { 0x00, 0x01 };
         var received = Rle.Decompress(input, 1, 2);
 
-        Assert.True(received.SequenceEqual(expected));
-        Assert.True(Rle.Compress(received, 1, 2).SequenceEqual(input));
+        Assert.Equal(expected, received);
+        Assert.Equal(input, Rle.Compress(received, 1, 2));
     }
 
     [Fact]
@@ -160,8 +155,8 @@ public class RleTests
         var expected = expected1.Concat(expected2).ToArray();
         var received = Rle.Decompress(input, 63, 2);
 
-        Assert.True(received.SequenceEqual(expected));
-        Assert.True(Rle.Compress(received, 63, 2).SequenceEqual(input));
+        Assert.Equal(expected, received);
+        Assert.Equal(input, Rle.Compress(received, 63, 2));
     }
 
     [Fact]
@@ -176,8 +171,8 @@ public class RleTests
         var expected = expected1.Concat(expected2).ToArray();
         var received = Rle.Decompress(input, 64, 2);
 
-        Assert.True(received.SequenceEqual(expected));
-        Assert.True(Rle.Compress(received, 64, 2).SequenceEqual(input));
+        Assert.Equal(expected, received);
+        Assert.Equal(input, Rle.Compress(received, 64, 2));
     }
 
     [Fact]
@@ -192,8 +187,8 @@ public class RleTests
         var expected = expected1.Concat(expected2).ToArray();
         var received = Rle.Decompress(input, 16_383, 2);
 
-        Assert.True(received.SequenceEqual(expected));
-        Assert.True(Rle.Compress(received, 16_383, 2).SequenceEqual(input));
+        Assert.Equal(expected, received);
+        Assert.Equal(input, Rle.Compress(received, 16_383, 2));
     }
 
     [Fact]
@@ -205,12 +200,13 @@ public class RleTests
         {
             Rle.Decompress(input, 0, 1);
 
-            throw ExceptionFailedException;
+            Assert.Fail("Was able to compress a single line with zero width.");
         }
         catch (ArgumentException ae)
         {
-            Assert.True(ae.Message
-                == "The width and height parameters may not be zero unless both are zero.");
+            Assert.Equal(
+                "The width and height parameters may not be zero unless both are zero."
+                , ae.Message);
         }
     }
 
@@ -223,12 +219,13 @@ public class RleTests
         {
             Rle.Decompress(input, 1, 0);
 
-            throw ExceptionFailedException;
+            Assert.Fail("Was able to compress a single line with zero height.");
         }
         catch (ArgumentException ae)
         {
-            Assert.True(ae.Message
-                == "The width and height parameters may not be zero unless both are zero.");
+            Assert.Equal(
+                "The width and height parameters may not be zero unless both are zero."
+                , ae.Message);
         }
     }
 

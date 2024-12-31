@@ -12,6 +12,7 @@
 
 using System.Drawing;
 using PGS4NET.Captions;
+using Xunit;
 
 namespace PGS4NET.Windows.Tests;
 
@@ -49,48 +50,20 @@ public class CaptionTests
         var bitmap = inCaption.ToBitmap(colorSpace, limitedRange);
         var outCaption = bitmap.ToCaption(new Point(x, y), timeStamp, duration, forced, colorSpace, limitedRange);
 
-        AssertCaptionsEqual(inCaption, outCaption);
-    }
-
-    private void AssertCaptionsEqual(Caption first, Caption second)
-    {
-        Assert.True(first.TimeStamp == second.TimeStamp);
-        Assert.True(first.Duration == second.Duration);
-        Assert.True(first.X == second.X);
-        Assert.True(first.Y == second.Y);
-        Assert.True(first.Width == second.Width);
-        Assert.True(first.Height == second.Height);
-        Assert.True(first.Data.Length == second.Data.Length);
-        Assert.True(PixelSequenceNearlyEqual(first.Data, second.Data));
-        Assert.True(first.Forced == second.Forced);
-    }
-
-    private bool PixelSequenceNearlyEqual(YcbcraPixel[] first, YcbcraPixel[] second)
-    {
-        if (first.Length != second.Length)
-            return false;
-
-        var length = first.Length;
-
-        for (int index = 0; index < length; index++)
+        Assert.Equal(inCaption.TimeStamp, outCaption.TimeStamp);
+        Assert.Equal(inCaption.Duration, outCaption.Duration);
+        Assert.Equal(inCaption.X, outCaption.X);
+        Assert.Equal(inCaption.Y, outCaption.Y);
+        Assert.Equal(inCaption.Width, outCaption.Width);
+        Assert.Equal(inCaption.Height, outCaption.Height);
+        Assert.Equal(inCaption.Data.Length, outCaption.Data.Length);
+        Assert.Equal(inCaption.Forced, outCaption.Forced);
+        Assert.Equal(inCaption.Data, outCaption.Data, (expected, actual) =>
         {
-            if (!PixelsNearlyEqual(first[index], second[index]))
-            {
-                var firstPixel = first[index];
-                var secondPixel = second[index];
-
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    private bool PixelsNearlyEqual(YcbcraPixel first, YcbcraPixel second)
-    {
-        return Math.Abs(first.Y - second.Y) <= 6
-            && Math.Abs(first.Cb - second.Cb) <= 6
-            && Math.Abs(first.Cr - second.Cr) <= 6
-            && Math.Abs(first.Alpha - second.Alpha) <= 6;
+            return Math.Abs(expected.Y - actual.Y) <= 6
+                && Math.Abs(expected.Cb - actual.Cb) <= 6
+                && Math.Abs(expected.Cr - actual.Cr) <= 6
+                && Math.Abs(expected.Alpha - actual.Alpha) <= 6;
+        });
     }
 }
