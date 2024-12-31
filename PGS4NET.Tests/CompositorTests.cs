@@ -698,4 +698,95 @@ public class CompositorTests
         Assert.True(captions[2].Forced == false);
         Assert.True(captions[2].Data.SequenceEqual(expectedPixels3));
     }
+
+    [Fact]
+    public void IllegalDrawTimeStamp()
+    {
+        var entries = new Dictionary<byte, YcbcraPixel>
+        {
+            { 0, default },
+            { 1, Pixel1 },
+            { 2, Pixel2 },
+            { 3, Pixel3 },
+            { 4, Pixel4 },
+        };
+        var data1 = new byte[]
+        {
+            1, 1,
+            1, 1,
+        };
+        var data2 = new byte[]
+        {
+            2, 2,
+            2, 2,
+        };
+        var palette = new DisplayPalette(entries);
+        var object1 = new DisplayObject(2, 2, data1);
+        var object2 = new DisplayObject(2, 2, data2);
+        var window = new DisplayWindow(0, 0, 2, 2);
+        var composition = new DisplayComposition(0, 0, false, null);
+        var compositor = new Compositor(window);
+        var captions = new List<Caption>();
+
+        compositor.Draw(TimeStamp2, new CompositorComposition(composition, object1, palette));
+        Assert.True(compositor.Pending);
+
+        try
+        {
+            compositor.Draw(TimeStamp1, new CompositorComposition(composition, object2
+                , palette));
+
+            Assert.Fail("Was able to draw with illegal time stamp.");
+        }
+        catch (CompositorException ce)
+        {
+            Assert.True(ce.Message
+                == "Current time stamp is less than or equal to previous one.");
+        }
+    }
+
+    [Fact]
+    public void IllegalFlushTimeStamp()
+    {
+        var entries = new Dictionary<byte, YcbcraPixel>
+        {
+            { 0, default },
+            { 1, Pixel1 },
+            { 2, Pixel2 },
+            { 3, Pixel3 },
+            { 4, Pixel4 },
+        };
+        var data1 = new byte[]
+        {
+            1, 1,
+            1, 1,
+        };
+        var data2 = new byte[]
+        {
+            2, 2,
+            2, 2,
+        };
+        var palette = new DisplayPalette(entries);
+        var object1 = new DisplayObject(2, 2, data1);
+        var object2 = new DisplayObject(2, 2, data2);
+        var window = new DisplayWindow(0, 0, 2, 2);
+        var composition = new DisplayComposition(0, 0, false, null);
+        var compositor = new Compositor(window);
+        var captions = new List<Caption>();
+
+        compositor.Draw(TimeStamp2, new CompositorComposition(composition, object1, palette));
+        Assert.True(compositor.Pending);
+
+        try
+        {
+            compositor.Flush(TimeStamp1);
+
+            Assert.Fail("Was able to flush with illegal time stamp.");
+        }
+        catch (CompositorException ce)
+        {
+            Assert.True(ce.Message
+                == "Current time stamp is less than or equal to previous one.");
+        }
+    }
 }

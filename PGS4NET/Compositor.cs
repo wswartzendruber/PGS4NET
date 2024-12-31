@@ -24,6 +24,9 @@ namespace PGS4NET;
 /// </remarks>
 public class Compositor
 {
+    private static readonly CompositorException IllegalTimeStamp
+        = new("Current time stamp is less than or equal to previous one.");
+
     private readonly long Size;
     private readonly YcbcraPixel[] PrimaryPixels;
     private readonly YcbcraPixel[] SecondaryPixels;
@@ -112,10 +115,7 @@ public class Compositor
         var forced = false;
 
         if (timeStamp <= StartTimeStamp)
-        {
-            throw new CaptionException(
-                "Current time stamp is less than or equal to previous one.");
-        }
+            throw IllegalTimeStamp;
 
         //
         // CLEAR PRIMARY PLANE
@@ -270,10 +270,7 @@ public class Compositor
     public void Flush(PgsTimeStamp timeStamp)
     {
         if (timeStamp <= StartTimeStamp)
-        {
-            throw new CaptionException(
-                "Current time stamp is less than or equal to previous one.");
-        }
+            throw IllegalTimeStamp;
 
         if (LastCompositorState.PrimaryPlaneDirty)
         {
