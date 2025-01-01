@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2024 William Swartzendruber
+ * Copyright 2025 William Swartzendruber
  *
  * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a
  * copy of the MPL was not distributed with this file, You can obtain one at
@@ -11,25 +11,25 @@
 namespace PGS4NET.DisplaySets;
 
 /// <summary>
-///     Defines an object within a display set.
+///     Defines an object within a <see cref="DisplaySet"/>.
 /// </summary>
 public class DisplayObject
 {
     /// <summary>
-    ///     The width of this object in pixels.
+    ///     The width of the object in pixels.
     /// </summary>
     public int Width { get; set; }
 
     /// <summary>
-    ///     The height of this object in pixels.
+    ///     The height of the object in pixels.
     /// </summary>
     public int Height { get; set; }
 
     /// <summary>
-    ///     An ordered list of object pixel data where each byte addresses a palette entry
-    ///     during playback. The collection scans horizontally from left to right, top to
-    ///     bottom. The length should be the product of the <see cref="Width"/> and the
-    ///     <see cref="Height"/>.
+    ///     An ordered list of object pixel data where each value addresses a key in
+    ///     <see cref="DisplayPalette.Entries"/>. The collection scans horizontally from left to
+    ///     right, top to bottom. Its length should be the product of the <see cref="Width"/>
+    ///     and the <see cref="Height"/>.
     /// </summary>
     public byte[] Data { get; set; }
 
@@ -45,16 +45,16 @@ public class DisplayObject
     ///     Initializes a new instance with the provided values.
     /// </summary>
     /// <param name="width">
-    ///     The width of this object in pixels.
+    ///     The width of the object in pixels.
     /// </param>
     /// <param name="height">
-    ///     The height of this object in pixels.
+    ///     The height of the object in pixels.
     /// </param>
     /// <param name="data">
-    ///     An ordered list of object pixel data where each byte addresses a palette entry
-    ///     during playback. The collection scans horizontally from left to right, top to
-    ///     bottom. The length should be the product of the <see cref="Width"/> and the
-    ///     <see cref="Height"/>.
+    ///     An ordered list of object pixel data where each value addresses a key in
+    ///     <see cref="DisplayPalette.Entries"/>. The collection scans horizontally from left to
+    ///     right, top to bottom. Its length should be the product of the
+    ///     <paramref name="width"/> and the <paramref name="height"/>.
     /// </param>
     public DisplayObject(int width, int height, byte[] data)
     {

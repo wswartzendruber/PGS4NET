@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2024 William Swartzendruber
+ * Copyright 2025 William Swartzendruber
  *
  * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a
  * copy of the MPL was not distributed with this file, You can obtain one at
@@ -26,27 +26,27 @@ public class Caption
     public PgsTimeStamp Duration { get; set; }
 
     /// <summary>
-    ///     The horizontal offset of the caption's top-left corner within the screen.
+    ///     The horizontal offset in pixels of the caption's top-left corner within the screen.
     /// </summary>
     public int X { get; set; }
 
     /// <summary>
-    ///     The vertical offset of the caption's top-left corner within the screen.
+    ///     The vertical offset in pixels of the caption's top-left corner within the screen.
     /// </summary>
     public int Y { get; set; }
 
     /// <summary>
-    ///     The width of the caption.
+    ///     The width of the caption in pixels.
     /// </summary>
     public int Width { get; set; }
 
     /// <summary>
-    ///     The height of the caption.
+    ///     The height of the caption in pixels.
     /// </summary>
     public int Height { get; set; }
 
     /// <summary>
-    ///     An ordered list of object pixel data where each value contains a YCbCr pixel. The
+    ///     An ordered list of caption pixel data where each value contains a YCbCr pixel. The
     ///     collection scans horizontally from left to right, top to bottom. Its length should
     ///     be the product of the <see cref="Width"/> and the <see cref="Height"/>.
     /// </summary>
@@ -76,19 +76,19 @@ public class Caption
     ///     The duration for which the caption is visible.
     /// </param>
     /// <param name="x">
-    ///     The horizontal offset of the caption's top-left corner within the screen.
+    ///     The horizontal offset in pixels of the caption's top-left corner within the screen.
     /// </param>
     /// <param name="y">
-    ///     The vertical offset of the caption's top-left corner within the screen.
+    ///     The vertical offset in pixels of the caption's top-left corner within the screen.
     /// </param>
     /// <param name="width">
-    ///     The width of the caption.
+    ///     The width of the caption in pixels.
     /// </param>
     /// <param name="height">
-    ///     The height of the caption.
+    ///     The height of the caption in pixels.
     /// </param>
     /// <param name="data">
-    ///     An ordered list of object pixel data where each value contains a YCbCr pixel. The
+    ///     An ordered list of caption pixel data where each value contains a YCbCr pixel. The
     ///     collection scans horizontally from left to right, top to bottom. Its length should
     ///     be the product of the <paramref name="width"/> and the <paramref name="height"/>.
     /// </param>
