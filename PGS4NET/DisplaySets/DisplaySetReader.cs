@@ -75,8 +75,8 @@ public class DisplaySetReader : IDisposable
     ///     <see cref="Input"/> stream is already EOF.
     /// </returns>
     /// <exception cref="DisplaySetException">
-    ///     A display set can not be composed from the individual <see cref="Segment"/>s that
-    ///     are read.
+    ///     A <see cref="DisplaySet"/> can not be composed from the individual
+    ///     <see cref="Segment"/>s that are read.
     /// </exception>
     /// <exception cref="SegmentException">
     ///     An encoded value within a <see cref="Segment"/> is invalid.
@@ -122,8 +122,8 @@ public class DisplaySetReader : IDisposable
     ///     <see cref="Input"/> stream is already EOF.
     /// </returns>
     /// <exception cref="DisplaySetException">
-    ///     A display set can not be composed from the individual <see cref="Segment"/>s that
-    ///     are read.
+    ///     A <see cref="DisplaySet"/> can not be composed from the individual
+    ///     <see cref="Segment"/>s that are read.
     /// </exception>
     /// <exception cref="SegmentException">
     ///     An encoded value within a <see cref="Segment"/> is invalid.

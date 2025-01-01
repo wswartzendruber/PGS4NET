@@ -15,7 +15,7 @@ using PGS4NET.DisplaySets;
 namespace PGS4NET.Captions;
 
 /// <summary>
-///     Constructs captions from PGS segments.
+///     Constructs <see cref="Caption"/>s from PGS <see cref="DisplaySet"/>s.
 /// </summary>
 public class CaptionComposer
 {
@@ -29,9 +29,13 @@ public class CaptionComposer
     private readonly Dictionary<int, DisplayObject> Objects = new();
 
     /// <summary>
-    ///     Returns <see langword="true"/> if the composer has pending display sets that have
-    ///     not been written out as a new caption.
+    ///     Returns <see langword="true"/> if the composer has any buffered graphics that have
+    ///     not been written out as one or more <see cref="Caption"/>s.
     /// </summary>
+    /// <remarks>
+    ///     Buffered graphics can be forced out via the <see cref="Flush(PgsTimeStamp)"/>
+    ///     method, if necessary.
+    /// </remarks>
     public bool Pending
     {
         get
@@ -47,8 +51,26 @@ public class CaptionComposer
     }
 
     /// <summary>
-    ///     Inputs a PGS display set into the composer, causing <see cref="Ready"/> to fire
-    ///     each time a new <see cref="Caption"/> becomes available.
+    ///     Flushes any graphics which are buffered, causing <see cref="Ready"/> to fire for any
+    ///     new <see cref="Caption"/> that becomes available as a result.
+    /// </summary>
+    /// <remarks>
+    ///     It should not be necessary to call this method with conformant PGS streams as they
+    ///     will automatically cause buffered graphics to be flushed out.
+    /// </remarks>
+    /// <param name="timeStamp">
+    ///     The time at which any buffered captions should disappear from the screen during
+    ///     playback.
+    /// </param>
+    public void Flush(PgsTimeStamp timeStamp)
+    {
+        foreach (var compositor in Compositors.Values)
+            compositor.Flush(timeStamp);
+    }
+
+    /// <summary>
+    ///     Inputs a PGS display set into the composer, causing <see cref="Ready"/> to fire for
+    ///     any new <see cref="Caption"/> that becomes available as a result.
     /// </summary>
     /// <param name="displaySet">
     ///     The display set to input.
@@ -57,7 +79,7 @@ public class CaptionComposer
     ///     The <paramref name="displaySet"/> is not valid given the composer's state.
     /// </exception>
     /// <exception cref="CompositorException">
-    ///     The internal compositor encountered an error attempting to render an object.
+    ///     The internal compositor encountered an error attempting to render a composition.
     /// </exception>
     public void Input(DisplaySet displaySet)
     {
@@ -149,16 +171,6 @@ public class CaptionComposer
             else
                 compositor.Flush(timeStamp);
         }
-    }
-
-    /// <summary>
-    ///     Flushes any graphics which are present, causing <see cref="Ready"/> to fire should
-    ///     any new <see cref="Caption"/>s be available as a result.
-    /// </summary>
-    public void Flush(PgsTimeStamp timeStamp)
-    {
-        foreach (var compositor in Compositors.Values)
-            compositor.Flush(timeStamp);
     }
 
     /// <summary>

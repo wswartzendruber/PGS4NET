@@ -68,7 +68,7 @@ public class CaptionReader : IDisposable
     /// </summary>
     /// <remarks>
     ///     The current position of the <see cref="Input"/> stream must be at the beginning of a
-    ///     a caption. Internally, <see cref="Segments"/>s are read and composed into
+    ///     a caption. Internally, <see cref="Segment"/>s are read and composed into
     ///     <see cref="DisplaySet"/>s, which is done until a caption can in turn be composed.
     /// </remarks>
     /// <returns>
@@ -80,8 +80,8 @@ public class CaptionReader : IDisposable
     ///     composed.
     /// </exception>
     /// <exception cref="DisplaySetException">
-    ///     A display set can not be composed from the individual <see cref="Segment"/>s that
-    ///     are read.
+    ///     A <see cref="DisplaySet"/> can not be composed from the individual
+    ///     <see cref="Segment"/>s that are read.
     /// </exception>
     /// <exception cref="SegmentException">
     ///     An encoded value within a <see cref="Segment"/> is invalid.
@@ -116,7 +116,7 @@ public class CaptionReader : IDisposable
     /// </summary>
     /// <remarks>
     ///     The current position of the <see cref="Input"/> stream must be at the beginning of a
-    ///     a caption. Internally, <see cref="Segments"/>s are read and composed into
+    ///     a caption. Internally, <see cref="Segment"/>s are read and composed into
     ///     <see cref="DisplaySet"/>s, which is done until a caption can in turn be composed.
     /// </remarks>
     /// <param name="cancellationToken">
@@ -131,8 +131,8 @@ public class CaptionReader : IDisposable
     ///     composed.
     /// </exception>
     /// <exception cref="DisplaySetException">
-    ///     A display set can not be composed from the individual <see cref="Segment"/>s that
-    ///     are read.
+    ///     A <see cref="DisplaySet"/> can not be composed from the individual
+    ///     <see cref="Segment"/>s that are read.
     /// </exception>
     /// <exception cref="SegmentException">
     ///     An encoded value within a <see cref="Segment"/> is invalid.

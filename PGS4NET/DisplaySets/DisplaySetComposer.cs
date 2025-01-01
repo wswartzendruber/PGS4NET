@@ -15,7 +15,7 @@ using PGS4NET.Segments;
 namespace PGS4NET.DisplaySets;
 
 /// <summary>
-///     Constructs PGS display sets from segments.
+///     Constructs <see cref="DisplaySet"/>s from PGS <see cref="Segment"/>s.
 /// </summary>
 public class DisplaySetComposer
 {
@@ -41,8 +41,8 @@ public class DisplaySetComposer
     private PresentationCompositionSegment? Pcs = null;
 
     /// <summary>
-    ///     Returns <see langword="true"/> if the composer has pending segments that have not
-    ///     been written out as a new display set.
+    ///     Returns <see langword="true"/> if the composer has pending <see cref="Segment"/>s
+    ///     that have not been written out as a new <see cref="DisplaySet"/>.
     /// </summary>
     public bool Pending
     {
@@ -59,8 +59,8 @@ public class DisplaySetComposer
     }
 
     /// <summary>
-    ///     Inputs a PGS segment into the composer, causing <see cref="Ready"/> to fire each
-    ///     time a new <see cref="DisplaySet"/> becomes available.
+    ///     Inputs a PGS segment into the composer, causing <see cref="Ready"/> to fire for any
+    ///     new <see cref="DisplaySet"/> that becomes available as a result.
     /// </summary>
     /// <param name="segment">
     ///     The segment to input.
