@@ -38,14 +38,14 @@ public struct VersionedId<T> : IEquatable<VersionedId<T>>
     }
 
     /// <summary>
-    ///     Determines if the values of this instance matches another one's.
+    ///     Determines if the values of this instance match another one's.
     /// </summary>
     public bool Equals(VersionedId<T> other) =>
         other.Id.Equals(Id)
             && other.Version == Version;
 
     /// <summary>
-    ///     Determines if the type and values of this instance matches another one's.
+    ///     Determines if the type and values of this instance match another one's.
     /// </summary>
     public override bool Equals(object? other) =>
         other?.GetType() == typeof(VersionedId<T>) && Equals((VersionedId<T>)other);

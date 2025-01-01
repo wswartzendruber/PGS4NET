@@ -13,7 +13,7 @@ using System;
 namespace PGS4NET;
 
 /// <summary>
-///     Represents a RGBA pixel, which is always full-range.
+///     Represents an RGBA pixel, which is always full-range.
 /// </summary>
 public struct RgbaPixel : IEquatable<RgbaPixel>
 {
@@ -61,7 +61,7 @@ public struct RgbaPixel : IEquatable<RgbaPixel>
     }
 
     /// <summary>
-    ///     Determines if the values of this instance matches another one's.
+    ///     Determines if the values of this instance match another one's.
     /// </summary>
     public bool Equals(RgbaPixel other) =>
         other.Red == Red
@@ -70,7 +70,7 @@ public struct RgbaPixel : IEquatable<RgbaPixel>
             && other.Alpha == Alpha;
 
     /// <summary>
-    ///     Determines if the type and values of this instance matches another one's.
+    ///     Determines if the type and values of this instance match another one's.
     /// </summary>
     public override bool Equals(object? other) =>
         other?.GetType() == typeof(RgbaPixel) && Equals((RgbaPixel)other);

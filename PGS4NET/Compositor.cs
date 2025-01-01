@@ -16,16 +16,19 @@ using PGS4NET.DisplaySets;
 namespace PGS4NET;
 
 /// <summary>
-///     Renders the compositions for a given window onto a two-dimensional plane.
+///     Renders <see cref="CompositorComposition"/>s for a given <see cref="DisplayWindow"/>
+///     onto a two-dimensional plane causing <see cref="Caption"/>s to be generated as they
+///     become available.
 /// </summary>
 /// <remarks>
-///     New captions, as they are completed, are pushed to subscribers via the
-///     <see cref="NewCaption"/> event.
+///     This is primarily an internal class used by the more accessible parts of this library.
+///     It has been made <see langword="public"/> in the event any user needs to do compositing
+///     of their own, for whatever reason.
 /// </remarks>
-public class Compositor
+public sealed class Compositor
 {
     private static readonly CompositorException IllegalTimeStamp
-        = new("Current time stamp is less than or equal to previous one.");
+        = new("Current time stamp is less than or equal to the previous one.");
 
     private readonly long Size;
     private readonly YcbcraPixel[] PrimaryPixels;
@@ -37,22 +40,26 @@ public class Compositor
     private CompositorState LastCompositorState = new(false, false, false);
 
     /// <summary>
-    ///     The horizontal offset of the window's top-left corner within the screen.
+    ///     The horizontal offset of the window's top-left corner within the screen, which will
+    ///     also apply to any resulting <see cref="Caption"/>s.
     /// </summary>
     public int X { get; }
 
     /// <summary>
-    ///     The vertical offset of the window's top-left corner within the screen.
+    ///     The vertical offset of the window's top-left corner within the screen, which will
+    ///     also apply to any resulting <see cref="Caption"/>s.
     /// </summary>
     public int Y { get; }
 
     /// <summary>
-    ///     The width of the window.
+    ///     The width of the window, which will also apply to any resulting
+    ///     <see cref="Caption"/>s.
     /// </summary>
     public int Width { get; }
 
     /// <summary>
-    ///     The height of the window.
+    ///     The height of the window, which will also apply to any resulting
+    ///     <see cref="Caption"/>s.
     /// </summary>
     public int Height { get; }
 
@@ -62,8 +69,11 @@ public class Compositor
     public bool Pending => LastCompositorState.PrimaryPlaneDirty;
 
     /// <summary>
-    ///     Initializes a new instance for the provided window.
+    ///     Initializes a new instance for the provided <see cref="DisplayWindow"/>.
     /// </summary>
+    /// <param name="displayWindow">
+    ///     Defines the window, which will also apply to any resulting <see cref="Caption"/>s.
+    /// </param>
     public Compositor(DisplayWindow displayWindow)
     {
         Size = displayWindow.Width * displayWindow.Height;
@@ -78,8 +88,9 @@ public class Compositor
     }
 
     /// <summary>
-    ///     Draws a single composition onto the graphics plane, causing any completed captions
-    ///     to be pushed via the <see cref="NewCaption"/> event.
+    ///     Inputs a <see cref="CompositorComposition"/> into the composer, causing
+    ///     <see cref="Ready"/> to fire for any new <see cref="Caption"/> that becomes
+    ///     available as a result.
     /// </summary>
     /// <param name="timeStamp">
     ///     The time at which the composition should be drawn.
@@ -87,6 +98,9 @@ public class Compositor
     /// <param name="composition">
     ///     The composition operation to draw.
     /// </param>
+    /// <exception cref="CaptionException">
+    ///     The provided <paramref name="timeStamp"/> is less than or equal to the previous one.
+    /// </exception>
     public void Draw(PgsTimeStamp timeStamp, CompositorComposition composition)
     {
         var compositions = new[] { composition };
@@ -95,20 +109,20 @@ public class Compositor
     }
 
     /// <summary>
-    ///     Draws one or more compositions onto the graphics plane, causing any completed
-    ///     captions to be pushed via the <see cref="NewCaption"/> event.
+    ///     Inputs a collection of <see cref="CompositorComposition"/>s into the composer,
+    ///     causing <see cref="Ready"/> to fire for any new <see cref="Caption"/> that becomes
+    ///     available as a result.
     /// </summary>
     /// <param name="timeStamp">
-    ///     The singular time at which the compositions should be drawn.
+    ///     The time at which the compositions should be drawn.
     /// </param>
     /// <param name="compositions">
-    ///     A collection of operations to draw. If any operations are forced (via the
-    ///     <see cref="CompositorComposition.DisplayComposition"/> property), then all
-    ///     compositions in the collection become forced.
+    ///     A collection of composition operations to draw. If any operations are forced (via
+    ///     the <see cref="CompositorComposition.DisplayComposition"/> property), then the
+    ///     resulting <see cref="Caption"/> as a whole becomes forced.
     /// </param>
     /// <exception cref="CaptionException">
-    ///     The PTS value of a display set is less than or equal to the PTS value of the
-    ///     previous display set.
+    ///     The provided <paramref name="timeStamp"/> is less than or equal to the previous one.
     /// </exception>
     public void Draw(PgsTimeStamp timeStamp, IEnumerable<CompositorComposition> compositions)
     {
@@ -232,7 +246,7 @@ public class Compositor
             var caption = new Caption(StartTimeStamp, timeStamp - StartTimeStamp, X, Y, Width
                 , Height, CopyPlane(SecondaryPixels), Forced);
 
-            OnNewCaption(caption);
+            OnReady(caption);
         }
         else if (state.PrimaryPlaneDirty && state.SecondaryPlaneDirty)
         {
@@ -243,7 +257,7 @@ public class Compositor
                 var caption = new Caption(StartTimeStamp, timeStamp - StartTimeStamp, X, Y
                     , Width, Height, CopyPlane(SecondaryPixels), Forced);
 
-                OnNewCaption(caption);
+                OnReady(caption);
 
                 StartTimeStamp = timeStamp;
             }
@@ -261,11 +275,12 @@ public class Compositor
     }
 
     /// <summary>
-    ///     Flushes the graphics plane. Any content currently on the plane is completed into a
-    ///     new caption and pushed via the <see cref="NewCaption"/> event.
+    ///     Flushes any graphics which are drawn, causing <see cref="Ready"/> to fire for any
+    ///     new <see cref="Caption"/> that becomes available as a result.
     /// </summary>
     /// <param name="timeStamp">
-    ///     The time at which any remaining graphics should be flushed out.
+    ///     The time at which any drawn graphics should disappear from the screen during
+    ///     playback.
     /// </param>
     public void Flush(PgsTimeStamp timeStamp)
     {
@@ -277,15 +292,14 @@ public class Compositor
             var caption = new Caption(StartTimeStamp, timeStamp - StartTimeStamp, X, Y, Width
                 , Height, CopyPlane(PrimaryPixels), Forced);
 
-            OnNewCaption(caption);
+            OnReady(caption);
         }
 
         Reset();
     }
 
     /// <summary>
-    ///     Completely resets the internal state of this instance. No otherwise completed
-    ///     captions are flushed.
+    ///     Resets the state of the compositor.
     /// </summary>
     public void Reset()
     {
@@ -295,17 +309,6 @@ public class Compositor
 
         Array.Copy(ClearPixels, PrimaryPixels, Size);
         Array.Copy(ClearPixels, SecondaryPixels, Size);
-    }
-
-    /// <summary>
-    ///     Called when a new caption becomes available.
-    /// </summary>
-    /// <param name="caption">
-    ///     The newly completed caption that is available.
-    /// </param>
-    protected virtual void OnNewCaption(Caption caption)
-    {
-        NewCaption?.Invoke(this, caption);
     }
 
     private YcbcraPixel[] CopyPlane(YcbcraPixel[] plane)
@@ -355,10 +358,15 @@ public class Compositor
         return new Area(xos, yos, xoe - xos, yoe - yos);
     }
 
+    private void OnReady(Caption caption)
+    {
+        Ready?.Invoke(this, caption);
+    }
+
     /// <summary>
-    ///     Triggered when a new caption becomes available.
+    ///     Fires when a new <see cref="Caption"/> is ready.
     /// </summary>
-    public event EventHandler<Caption>? NewCaption;
+    public event EventHandler<Caption>? Ready;
 
     private struct Area
     {

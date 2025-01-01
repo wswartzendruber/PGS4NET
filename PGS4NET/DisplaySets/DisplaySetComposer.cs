@@ -15,9 +15,9 @@ using PGS4NET.Segments;
 namespace PGS4NET.DisplaySets;
 
 /// <summary>
-///     Constructs <see cref="DisplaySet"/>s from PGS <see cref="Segment"/>s.
+///     Constructs <see cref="DisplaySet"/>s from <see cref="Segment"/>s.
 /// </summary>
-public class DisplaySetComposer
+public sealed class DisplaySetComposer
 {
     private static readonly DisplaySetException DuplicateObjectVid
         = new("Duplicate object VID.");
@@ -59,8 +59,8 @@ public class DisplaySetComposer
     }
 
     /// <summary>
-    ///     Inputs a PGS segment into the composer, causing <see cref="Ready"/> to fire for any
-    ///     new <see cref="DisplaySet"/> that becomes available as a result.
+    ///     Inputs a <see cref="Segment"/> into the composer, causing <see cref="Ready"/> to
+    ///     fire for any new <see cref="DisplaySet"/> that becomes available as a result.
     /// </summary>
     /// <param name="segment">
     ///     The segment to input.
@@ -284,16 +284,13 @@ public class DisplaySetComposer
         Pcs = null;
     }
 
-    /// <summary>
-    ///     Invoked when a new display set is ready.
-    /// </summary>
-    protected virtual void OnReady(DisplaySet displaySet)
+    private void OnReady(DisplaySet displaySet)
     {
         Ready?.Invoke(this, displaySet);
     }
 
     /// <summary>
-    ///     Fires when a new display set is ready.
+    ///     Fires when a new <see cref="DisplaySet"/> is ready.
     /// </summary>
     public event EventHandler<DisplaySet>? Ready;
 }

@@ -15,9 +15,9 @@ using PGS4NET.DisplaySets;
 namespace PGS4NET.Captions;
 
 /// <summary>
-///     Constructs <see cref="Caption"/>s from PGS <see cref="DisplaySet"/>s.
+///     Constructs <see cref="Caption"/>s from <see cref="DisplaySet"/>s.
 /// </summary>
-public class CaptionComposer
+public sealed class CaptionComposer
 {
     private static readonly CaptionException PaletteUndefinedException
         = new("A display set referenced an undefined palette ID.");
@@ -52,14 +52,14 @@ public class CaptionComposer
 
     /// <summary>
     ///     Flushes any graphics which are buffered, causing <see cref="Ready"/> to fire for any
-    ///     new <see cref="Caption"/> that becomes available as a result.
+    ///     new <see cref="Caption"/>s that become available as a result.
     /// </summary>
     /// <remarks>
     ///     It should not be necessary to call this method with conformant PGS streams as they
     ///     will automatically cause buffered graphics to be flushed out.
     /// </remarks>
     /// <param name="timeStamp">
-    ///     The time at which any buffered captions should disappear from the screen during
+    ///     The time at which any buffered graphics should disappear from the screen during
     ///     playback.
     /// </param>
     public void Flush(PgsTimeStamp timeStamp)
@@ -69,8 +69,8 @@ public class CaptionComposer
     }
 
     /// <summary>
-    ///     Inputs a PGS display set into the composer, causing <see cref="Ready"/> to fire for
-    ///     any new <see cref="Caption"/> that becomes available as a result.
+    ///     Inputs a <see cref="DisplaySet"/> into the composer, causing <see cref="Ready"/> to
+    ///     fire for any new <see cref="Caption"/>s that become available as a result.
     /// </summary>
     /// <param name="displaySet">
     ///     The display set to input.
@@ -183,28 +183,17 @@ public class CaptionComposer
         Objects.Clear();
     }
 
-    /// <summary>
-    ///     Invoked when a new caption is ready.
-    /// </summary>
-    protected virtual void OnReady(Caption caption)
-    {
-        Ready?.Invoke(this, caption);
-    }
-
     private Compositor BuildNewCompositor(DisplayWindow displayWindow)
     {
         var newCompositor = new Compositor(displayWindow);
 
-        newCompositor.NewCaption += (_, caption) =>
-        {
-            OnReady(caption);
-        };
+        newCompositor.Ready += Ready;
 
         return newCompositor;
     }
 
     /// <summary>
-    ///     Fires when a new caption is ready.
+    ///     Fires when a new <see cref="Caption"/> is ready.
     /// </summary>
     public event EventHandler<Caption>? Ready;
 }

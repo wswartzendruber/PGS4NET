@@ -15,13 +15,13 @@ using PGS4NET.Segments;
 namespace PGS4NET.DisplaySets;
 
 /// <summary>
-///     Deconstructs PGS display sets into segments.
+///     Deconstructs <see cref="DisplaySet"/>s into <see cref="Segment"/>s.
 /// </summary>
-public class DisplaySetDecomposer
+public sealed class DisplaySetDecomposer
 {
     /// <summary>
-    ///     Inputs a PGS segment into the decomposer, causing <see cref="Ready"/> to fire each
-    ///     time a new <see cref="Segment"/> becomes available.
+    ///     Inputs a <see cref="DisplaySet"/> into the decomposer, causing <see cref="Ready"/>
+    ///     to fire for each new <see cref="Segment"/> that becomes available as a result.
     /// </summary>
     /// <param name="displaySet">
     ///     The display set to input.
@@ -142,16 +142,13 @@ public class DisplaySetDecomposer
         OnReady(es);
     }
 
-    /// <summary>
-    ///     Invoked when a new segment is ready.
-    /// </summary>
-    protected virtual void OnReady(Segment segment)
+    private void OnReady(Segment segment)
     {
         Ready?.Invoke(this, segment);
     }
 
     /// <summary>
-    ///     Fires when a new segment is ready.
+    ///     Fires each time a new <see cref="Segment"/> is ready.
     /// </summary>
     public event EventHandler<Segment>? Ready;
 }

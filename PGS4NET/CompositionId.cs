@@ -13,7 +13,7 @@ using System;
 namespace PGS4NET;
 
 /// <summary>
-///     Defines a composition ID, combining an object and window identifier.
+///     Defines a composition ID, combining object and window IDs.
 /// </summary>
 public struct CompositionId : IEquatable<CompositionId>
 {
@@ -37,14 +37,14 @@ public struct CompositionId : IEquatable<CompositionId>
     }
 
     /// <summary>
-    ///     Determines if the values of this instance matches another one's.
+    ///     Determines if the values of this instance match another one's.
     /// </summary>
     public bool Equals(CompositionId other) =>
         other.ObjectId == ObjectId
             && other.WindowId == WindowId;
 
     /// <summary>
-    ///     Determines if the type and values of this instance matches another one's.
+    ///     Determines if the type and values of this instance match another one's.
     /// </summary>
     public override bool Equals(object? other) =>
         other?.GetType() == typeof(CompositionId) && Equals((CompositionId)other);

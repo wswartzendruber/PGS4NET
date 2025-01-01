@@ -13,7 +13,7 @@ using System;
 namespace PGS4NET;
 
 /// <summary>
-///     Represents a RGB pixel.
+///     Represents an RGB color space.
 /// </summary>
 public class ColorSpace : IEquatable<ColorSpace>
 {
@@ -88,7 +88,7 @@ public class ColorSpace : IEquatable<ColorSpace>
     }
 
     /// <summary>
-    ///     Determines if the values of this instance matches another one's.
+    ///     Determines if the values of this instance match another one's.
     /// </summary>
     public bool Equals(ColorSpace other) =>
         other.Red == this.Red
@@ -96,7 +96,7 @@ public class ColorSpace : IEquatable<ColorSpace>
             && other.Blue == this.Blue;
 
     /// <summary>
-    ///     Determines if the type and values of this instance matches another one's.
+    ///     Determines if the type and values of this instance match another one's.
     /// </summary>
     public override bool Equals(object? other) =>
         other?.GetType() == typeof(ColorSpace) && Equals((ColorSpace)other);
@@ -119,7 +119,7 @@ public class ColorSpace : IEquatable<ColorSpace>
     }
 
     /// <summary>
-    ///     Converts a RGBA pixel to a YCbCrA pixel.
+    ///     Converts an RGBA pixel to a YCbCrA pixel.
     /// </summary>
     /// <param name="rgbaPixel">
     ///     The RGBA pixel to convert, which is always full-range.
@@ -154,7 +154,7 @@ public class ColorSpace : IEquatable<ColorSpace>
     }
 
     /// <summary>
-    ///     Converts a YCbCrA pixel to a RGBA pixel.
+    ///     Converts a YCbCrA pixel to an RGBA pixel.
     /// </summary>
     /// <param name="ycbcraPixel">
     ///     The YCbCrA pixel to convert, which may be either limited-range or full-range

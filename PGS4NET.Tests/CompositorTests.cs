@@ -39,7 +39,7 @@ public class CompositorTests
         var compositor = new Compositor(window);
         var captions = new List<Caption>();
 
-        compositor.NewCaption += (sender, caption) =>
+        compositor.Ready += (sender, caption) =>
         {
             Assert.Equal(compositor, sender);
 
@@ -84,7 +84,7 @@ public class CompositorTests
             Pixel2, default, default, Pixel1,
         };
 
-        compositor.NewCaption += (sender, caption) =>
+        compositor.Ready += (sender, caption) =>
         {
             Assert.Equal(compositor, sender);
 
@@ -140,7 +140,7 @@ public class CompositorTests
             Pixel1, Pixel4,
         };
 
-        compositor.NewCaption += (sender, caption) =>
+        compositor.Ready += (sender, caption) =>
         {
             Assert.Equal(compositor, sender);
 
@@ -200,7 +200,7 @@ public class CompositorTests
             default, default, default, default, default, default,
         };
 
-        compositor.NewCaption += (sender, caption) =>
+        compositor.Ready += (sender, caption) =>
         {
             Assert.Equal(compositor, sender);
 
@@ -258,7 +258,7 @@ public class CompositorTests
             default, default, default, default,
         };
 
-        compositor.NewCaption += (sender, caption) =>
+        compositor.Ready += (sender, caption) =>
         {
             Assert.Equal(compositor, sender);
 
@@ -318,7 +318,7 @@ public class CompositorTests
             Pixel3, default, Pixel1, Pixel2,
         };
 
-        compositor.NewCaption += (sender, caption) =>
+        compositor.Ready += (sender, caption) =>
         {
             Assert.Equal(compositor, sender);
 
@@ -376,7 +376,7 @@ public class CompositorTests
             Pixel1, Pixel2,
         };
 
-        compositor.NewCaption += (sender, caption) =>
+        compositor.Ready += (sender, caption) =>
         {
             Assert.Equal(compositor, sender);
 
@@ -427,7 +427,7 @@ public class CompositorTests
         var compositor = new Compositor(window);
         var captions = new List<Caption>();
 
-        compositor.NewCaption += (sender, caption) =>
+        compositor.Ready += (sender, caption) =>
         {
             Assert.Equal(compositor, sender);
 
@@ -470,7 +470,7 @@ public class CompositorTests
         var compositor = new Compositor(window);
         var captions = new List<Caption>();
 
-        compositor.NewCaption += (sender, caption) =>
+        compositor.Ready += (sender, caption) =>
         {
             Assert.Equal(compositor, sender);
 
@@ -541,7 +541,7 @@ public class CompositorTests
             Pixel4, Pixel4,
         };
 
-        compositor.NewCaption += (sender, caption) =>
+        compositor.Ready += (sender, caption) =>
         {
             Assert.Equal(compositor, sender);
 
@@ -645,7 +645,7 @@ public class CompositorTests
             Pixel1, Pixel1,
         };
 
-        compositor.NewCaption += (sender, caption) =>
+        compositor.Ready += (sender, caption) =>
         {
             Assert.Equal(compositor, sender);
 
@@ -739,7 +739,7 @@ public class CompositorTests
         }
         catch (CompositorException ce)
         {
-            Assert.Equal("Current time stamp is less than or equal to previous one."
+            Assert.Equal("Current time stamp is less than or equal to the previous one."
                 , ce.Message);
         }
     }
@@ -784,7 +784,7 @@ public class CompositorTests
         }
         catch (CompositorException ce)
         {
-            Assert.Equal("Current time stamp is less than or equal to previous one."
+            Assert.Equal("Current time stamp is less than or equal to the previous one."
                 , ce.Message);
         }
     }
