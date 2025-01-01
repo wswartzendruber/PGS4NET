@@ -29,8 +29,8 @@ public class CaptionComposer
     private readonly Dictionary<int, DisplayObject> Objects = new();
 
     /// <summary>
-    ///     Returns <see langword="true"/> if the composer has pending segments that have not
-    ///     been written out as a new display set.
+    ///     Returns <see langword="true"/> if the composer has pending display sets that have
+    ///     not been written out as a new caption.
     /// </summary>
     public bool Pending
     {
@@ -51,10 +51,13 @@ public class CaptionComposer
     ///     each time a new <see cref="Caption"/> becomes available.
     /// </summary>
     /// <param name="displaySet">
-    ///     The displaySet to input.
+    ///     The display set to input.
     /// </param>
     /// <exception cref="CaptionException">
     ///     The <paramref name="displaySet"/> is not valid given the composer's state.
+    /// </exception>
+    /// <exception cref="CompositorException">
+    ///     The internal compositor encountered an error attempting to render an object.
     /// </exception>
     public void Input(DisplaySet displaySet)
     {

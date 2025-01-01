@@ -23,10 +23,17 @@ public class CaptionComposerTests
         using var inputStream = new MemoryStream(SintelSubtitles.Buffer);
         var composer = new CaptionComposer();
         var displaySets = inputStream.ReadAllDisplaySets();
+        var captions = 0;
+
+        composer.Ready += (sender, caption) =>
+        {
+            captions++;
+        };
 
         foreach (var displaySet in displaySets)
             composer.Input(displaySet);
         
+        Assert.Equal(26, captions);
         Assert.False(composer.Pending);
     }
 }
