@@ -171,18 +171,18 @@ internal static class DisplaySetInstances
                             X = RandomUInt16(),
                             Y = RandomUInt16(),
                             Forced = false,
-                            Crop = new Crop(RandomUInt16(), RandomUInt16(), RandomUInt16()
+                            Crop = new Area(RandomUInt16(), RandomUInt16(), RandomUInt16()
                                 , RandomUInt16()),
                         }
                     },
                     {
-                        new CompositionId((RandomUInt16(128) + 256), RandomByte()),
+                        new CompositionId(RandomUInt16(128) + 256, RandomByte()),
                         new DisplayComposition
                         {
                             X = RandomUInt16(),
                             Y = RandomUInt16(),
                             Forced = true,
-                            Crop = new Crop(RandomUInt16(), RandomUInt16(), RandomUInt16()
+                            Crop = new Area(RandomUInt16(), RandomUInt16(), RandomUInt16()
                                 , RandomUInt16()),
                         }
                     },
@@ -214,8 +214,8 @@ internal static class DisplaySetInstances
 
     private static DisplayObject RandomDisplayObject()
     {
-        var width = (int)(RandomUInt16(99) + 1);
-        var height = (int)(RandomUInt16(99) + 1);
+        var width = RandomUInt16(99) + 1;
+        var height = RandomUInt16(99) + 1;
         var max = UInt24Max / 2;
         var count = 32;
         var eachMax = max / count;
@@ -223,11 +223,6 @@ internal static class DisplaySetInstances
 
         Rng.NextBytes(data);
 
-        return new DisplayObject
-        {
-            Width = width,
-            Height = height,
-            Data = data,
-        };
+        return new DisplayObject(width, height, data);
     }
 }

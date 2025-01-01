@@ -243,7 +243,7 @@ public class SegmentReader : IDisposable
             var y = ReadUInt16Be(buffer, offset + 6)
                 ?? throw new IOException($"EOS reading PCS[{i}] Y position.");
             var forced = (flags & 0x40) != 0;
-            Crop? crop;
+            Area? crop;
 
             if ((flags & 0x80) != 0)
             {
@@ -256,7 +256,7 @@ public class SegmentReader : IDisposable
                 var cropHeight = ReadUInt16Be(buffer, offset + 14)
                     ?? throw new IOException($"EOS reading PCS[{i}] cropped height.");
 
-                crop = new Crop(cropX, cropY, cropWidth, cropHeight);
+                crop = new Area(cropX, cropY, cropWidth, cropHeight);
                 offset += 16;
             }
             else

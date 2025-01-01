@@ -277,7 +277,7 @@ public class SegmentWriter : IDisposable
             WriteUInt16Be(ms, co.X);
             WriteUInt16Be(ms, co.Y);
 
-            if (co.Crop is Crop crop)
+            if (co.Crop is Area crop)
             {
                 WriteUInt16Be(ms, crop.X);
                 WriteUInt16Be(ms, crop.Y);

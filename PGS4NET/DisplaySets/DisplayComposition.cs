@@ -37,7 +37,7 @@ public class DisplayComposition
     ///     If set, defines the visible area of the <see cref="DisplayObject"/>. Otherwise, the
     ///     entire object is shown.
     /// </summary>
-    public Crop? Crop { get; set; }
+    public Area? Crop { get; set; }
 
     /// <summary>
     ///     Initializes a new instance with default values.
@@ -65,7 +65,7 @@ public class DisplayComposition
     ///     If set, defines the visible area of the <see cref="DisplayObject"/>. Otherwise, the
     ///     entire object is shown.
     /// </param>
-    public DisplayComposition(int x, int y, bool forced, Crop? crop)
+    public DisplayComposition(int x, int y, bool forced, Area? crop)
     {
         X = x;
         Y = y;

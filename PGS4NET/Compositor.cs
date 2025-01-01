@@ -173,13 +173,12 @@ public sealed class Compositor
             int esx = Math.Max(X - displayComposition.X, 0);
             int esy = Math.Max(Y - displayComposition.Y, 0);
             var objectArea = new Area(0, 0, displayObject.Width, displayObject.Height);
-            var cropArea = displayComposition.Crop is Crop crop ? new Area(crop) : objectArea;
-            var sourceArea_ = GetOverlappingArea(objectArea, cropArea.AddOffset(esx, esy));
+            var cropArea = displayComposition.Crop ?? objectArea;
+            var sourceArea = GetOverlappingArea(objectArea, AddOffsetToArea(cropArea, esx, esy));
 
-            if (sourceArea_ is null)
+            if (sourceArea is null)
                 return;
 
-            var sourceArea = sourceArea_.Value;
             int soX = sourceArea.X;
             int soY = sourceArea.Y;
 
@@ -188,12 +187,11 @@ public sealed class Compositor
             var windowArea = new Area(X, Y, Width, Height);
             var compositionArea = new Area(displayComposition.X, displayComposition.Y
                 , sourceArea.Width, sourceArea.Height);
-            var drawArea_ = GetOverlappingArea(windowArea, compositionArea);
+            var drawArea = GetOverlappingArea(windowArea, compositionArea);
 
-            if (drawArea_ is null)
+            if (drawArea is null)
                 return;
 
-            var drawArea = drawArea_.Value;
             int doX = drawArea.X - X;
             int doY = drawArea.Y - Y;
 
@@ -310,6 +308,10 @@ public sealed class Compositor
         Array.Copy(ClearPixels, PrimaryPixels, Size);
         Array.Copy(ClearPixels, SecondaryPixels, Size);
     }
+    private Area AddOffsetToArea(Area area, int x, int y)
+    {
+        return new Area(area.X + x, area.Y + y, area.Width, area.Height);
+    }
 
     private YcbcraPixel[] CopyPlane(YcbcraPixel[] plane)
     {
@@ -367,38 +369,6 @@ public sealed class Compositor
     ///     Fires when a new <see cref="Caption"/> is ready.
     /// </summary>
     public event EventHandler<Caption>? Ready;
-
-    private struct Area
-    {
-        public int X;
-
-        public int Y;
-
-        public int Width;
-
-        public int Height;
-
-        public Area(Crop crop)
-        {
-            X = crop.X;
-            Y = crop.Y;
-            Width = crop.Width;
-            Height = crop.Height;
-        }
-
-        public Area(int x, int y, int width, int height)
-        {
-            X = x;
-            Y = y;
-            Width = width;
-            Height = height;
-        }
-
-        public Area AddOffset(int x, int y)
-        {
-            return new Area(X + x, Y + y, Width, Height);
-        }
-    }
 
     private struct CompositorState
     {

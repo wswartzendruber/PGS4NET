@@ -11,27 +11,27 @@
 namespace PGS4NET;
 
 /// <summary>
-///     Defines the visible region within an object.
+///     Defines an area within a larger plane.
 /// </summary>
-public class Crop
+public class Area
 {
     /// <summary>
-    ///     The horizontal offset of the visible area's top-left corner within the object.
+    ///     The horizontal offset of the area's top-left corner within the object.
     /// </summary>
     public int X { get; set; }
 
     /// <summary>
-    ///     The vertical offset of the visible area's top-left corner within the object.
+    ///     The vertical offset of the area's top-left corner within the object.
     /// </summary>
     public int Y { get; set; }
 
     /// <summary>
-    ///     The width of the visible area.
+    ///     The width of the area.
     /// </summary>
     public int Width { get; set; }
 
     /// <summary>
-    ///     The height of the visible area.
+    ///     The height of the area.
     /// </summary>
     public int Height { get; set; }
 
@@ -39,18 +39,18 @@ public class Crop
     ///     Initializes a new instance with the provided offset and size.
     /// </summary>
     /// <param name="x">
-    ///     The horizontal offset of the visible area's top-left corner within the object.
+    ///     The horizontal offset of the area's top-left corner within the object.
     /// </param>
     /// <param name="y">
-    ///     The vertical offset of the visible area's top-left corner within the object.
+    ///     The vertical offset of the area's top-left corner within the object.
     /// </param>
     /// <param name="width">
-    ///     The width of the visible area.
+    ///     The width of the area.
     /// </param>
     /// <param name="height">
-    ///     The height of the visible area.
+    ///     The height of the area.
     /// </param>
-    public Crop(int x, int y, int width, int height)
+    public Area(int x, int y, int width, int height)
     {
         X = x;
         Y = y;

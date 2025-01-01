@@ -42,7 +42,7 @@ public class CompositionObject
     ///     If set, defines the visible area of the object. Otherwise, the entire object is
     ///     shown.
     /// </summary>
-    public Crop? Crop { get; set; }
+    public Area? Crop { get; set; }
 
     /// <summary>
     ///     Initializes a new instance with default values.
@@ -73,7 +73,7 @@ public class CompositionObject
     ///     If set, defines the visible area of the object. Otherwise, the entire object is
     ///     shown.
     /// </param>
-    public CompositionObject(CompositionId id, int x, int y, bool forced, Crop? crop)
+    public CompositionObject(CompositionId id, int x, int y, bool forced, Area? crop)
     {
         Id = id;
         X = x;

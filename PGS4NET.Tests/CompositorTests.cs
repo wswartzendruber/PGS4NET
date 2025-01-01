@@ -130,7 +130,7 @@ public class CompositorTests
         var palette = new DisplayPalette(entries);
         var object1 = new DisplayObject(4, 5, data1);
         var window = new DisplayWindow(8, 16, 2, 3);
-        var composition = new DisplayComposition(8, 16, false, new Crop(1, 1, 2, 3));
+        var composition = new DisplayComposition(8, 16, false, new Area(1, 1, 2, 3));
         var compositor = new Compositor(window);
         var captions = new List<Caption>();
         var expectedPixels1 = new YcbcraPixel[]
@@ -246,7 +246,7 @@ public class CompositorTests
         var palette = new DisplayPalette(entries);
         var object1 = new DisplayObject(4, 5, data1);
         var window = new DisplayWindow(8, 16, 4, 5);
-        var composition = new DisplayComposition(9, 17, false, new Crop(1, 1, 2, 3));
+        var composition = new DisplayComposition(9, 17, false, new Area(1, 1, 2, 3));
         var compositor = new Compositor(window);
         var captions = new List<Caption>();
         var expectedPixels1 = new YcbcraPixel[]
@@ -366,7 +366,7 @@ public class CompositorTests
         var palette = new DisplayPalette(entries);
         var object1 = new DisplayObject(6, 7, data1);
         var window = new DisplayWindow(8, 16, 2, 3);
-        var composition = new DisplayComposition(7, 15, false, new Crop(1, 1, 4, 5));
+        var composition = new DisplayComposition(7, 15, false, new Area(1, 1, 4, 5));
         var compositor = new Compositor(window);
         var captions = new List<Caption>();
         var expectedPixels1 = new YcbcraPixel[]
@@ -466,7 +466,7 @@ public class CompositorTests
         var palette = new DisplayPalette(entries);
         var object1 = new DisplayObject(6, 6, data1);
         var window = new DisplayWindow(8, 16, 2, 2);
-        var composition = new DisplayComposition(10, 15, false, new Crop(1, 1, 4, 4));
+        var composition = new DisplayComposition(10, 15, false, new Area(1, 1, 4, 4));
         var compositor = new Compositor(window);
         var captions = new List<Caption>();
 
