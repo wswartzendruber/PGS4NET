@@ -16,14 +16,16 @@ namespace PGS4NET.DisplaySets;
 public class DisplayComposition
 {
     /// <summary>
-    ///     The horizontal offset of the <see cref="DisplayObject"/>'s top-left corner within
-    ///     the screen. If the object is cropped, then this applies only to the visible area.
+    ///     The horizontal offset in pixels of the <see cref="DisplayObject"/>'s top-left corner
+    ///     within the screen. If the object is cropped, then this applies only to the visible
+    ///     area.
     /// </summary>
     public int X { get; set; }
 
     /// <summary>
-    ///     The vertical offset of the <see cref="DisplayObject"/>'s top-left corner within the
-    ///     screen. If the object is cropped, then this applies only to the visible area.
+    ///     The vertical offset in pixels of the <see cref="DisplayObject"/>'s top-left corner
+    ///     within the screen. If the object is cropped, then this applies only to the visible
+    ///     area.
     /// </summary>
     public int Y { get; set; }
 
@@ -50,12 +52,14 @@ public class DisplayComposition
     ///     Initializes a new instance with the provided values.
     /// </summary>
     /// <param name="x">
-    ///     The horizontal offset of the <see cref="DisplayObject"/>'s top-left corner within
-    ///     the screen. If the object is cropped, then this applies only to the visible area.
+    ///     The horizontal offset in pixels of the <see cref="DisplayObject"/>'s top-left corner
+    ///     within the screen. If the object is cropped, then this applies only to the visible
+    ///     area.
     /// </param>
     /// <param name="y">
-    ///     The vertical offset of the <see cref="DisplayObject"/>'s top-left corner within the
-    ///     screen. If the object is cropped, then this applies only to the visible area.
+    ///     The vertical offset in pixels of the <see cref="DisplayObject"/>'s top-left corner
+    ///     within the screen. If the object is cropped, then this applies only to the visible
+    ///     area.
     /// </param>
     /// <param name="forced">
     ///     Whether or not the <see cref="DisplayObject"/> is forced. This is typically used to

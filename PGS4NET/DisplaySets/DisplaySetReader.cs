@@ -18,7 +18,7 @@ using PGS4NET.Segments;
 namespace PGS4NET.DisplaySets;
 
 /// <summary>
-///     Reads PGS <see cref="DisplaySet"/>s from an input <see cref="Stream"/>.
+///     Reads <see cref="DisplaySet"/>s from a <see cref="Stream"/>.
 /// </summary>
 #if NETSTANDARD2_1_OR_GREATER
 public class DisplaySetReader : IDisposable, IAsyncDisposable
@@ -34,13 +34,13 @@ public class DisplaySetReader : IDisposable
     private readonly Queue<DisplaySet> Queue = new();
 
     /// <summary>
-    ///     The stream that <see cref="DisplaySet"/>s are being read from.
+    ///     The stream to read <see cref="DisplaySet"/>s from.
     /// </summary>
     public Stream Input { get; }
 
     /// <summary>
-    ///     Whether or not the <see cref="Input"/> stream will be left open once all
-    ///     <see cref="DisplaySet"/>s have been read.
+    ///     Whether or not the <see cref="Input"/> stream will be left open when
+    ///     <see cref="Dispose"/> is called.
     /// </summary>
     public bool LeaveOpen { get; }
 
@@ -48,11 +48,11 @@ public class DisplaySetReader : IDisposable
     ///     Initializes a new instance.
     /// </summary>
     /// <param name="input">
-    ///     The stream that <see cref="DisplaySet"/>s will be read from.
+    ///     The stream to read <see cref="DisplaySet"/>s from.
     /// </param>
     /// <param name="leaveOpen">
-    ///     Whether or not the <paramref name="input"/> stream will be left open once all
-    ///     <see cref="DisplaySet"/>s have been read.
+    ///     Whether or not the <paramref name="input"/> stream will be left open when
+    ///     <see cref="Dispose"/> is called.
     /// </param>
     public DisplaySetReader(Stream input, bool leaveOpen = false)
     {
@@ -63,15 +63,15 @@ public class DisplaySetReader : IDisposable
     }
 
     /// <summary>
-    ///     Attempts to read the next PGS display set from the <see cref="Input"/> stream.
+    ///     Attempts to read the next <see cref="DisplaySet"/> from the <see cref="Input"/> stream.
     /// </summary>
     /// <remarks>
     ///     The current position of the <see cref="Input"/> stream must be at the beginning of a
-    ///     a display set. Internally, <see cref="Segment"/>s are read until a display set can
-    ///     be composed.
+    ///     <see cref="DisplaySet"/>. Internally, <see cref="Segment"/>s are read until a
+    ///     display set can be composed.
     /// </remarks>
     /// <returns>
-    ///     The PGS display set that was read or <see langword="null"/> if the
+    ///     The <see cref="DisplaySet"/> that was read or <see langword="null"/> if the
     ///     <see cref="Input"/> stream is already EOF.
     /// </returns>
     /// <exception cref="DisplaySetException">
@@ -106,19 +106,19 @@ public class DisplaySetReader : IDisposable
     }
 
     /// <summary>
-    ///     Attempts to asynchronously read the next PGS display set from the
+    ///     Attempts asynchronously to read the next <see cref="DisplaySet"/> from the
     ///     <see cref="Input"/> stream.
     /// </summary>
     /// <remarks>
     ///     The current position of the <see cref="Input"/> stream must be at the beginning of a
-    ///     a display set. Internally, <see cref="Segment"/>s are read until a display set can
-    ///     be composed.
+    ///     <see cref="DisplaySet"/>. Internally, <see cref="Segment"/>s are read until a
+    ///     display set can be composed.
     /// </remarks>
     /// <param name="cancellationToken">
     ///     The token to monitor for cancellation requests.
     /// </param>
     /// <returns>
-    ///     The PGS display set that was read or <see langword="null"/> if the
+    ///     The <see cref="DisplaySet"/> that was read or <see langword="null"/> if the
     ///     <see cref="Input"/> stream is already EOF.
     /// </returns>
     /// <exception cref="DisplaySetException">

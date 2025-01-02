@@ -41,8 +41,8 @@ public sealed class DisplaySetComposer
     private PresentationCompositionSegment? Pcs = null;
 
     /// <summary>
-    ///     Returns <see langword="true"/> if the composer has pending <see cref="Segment"/>s
-    ///     that have not been written out as a new <see cref="DisplaySet"/>.
+    ///     Returns <see langword="true"/> if the composer has any buffered
+    ///     <see cref="Segment"/>s that have not been written out as a <see cref="DisplaySet"/>.
     /// </summary>
     public bool Pending
     {

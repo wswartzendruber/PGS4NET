@@ -11,7 +11,7 @@
 namespace PGS4NET.DisplaySets;
 
 /// <summary>
-///     Defines a window area within a display set.
+///     Defines a window within a <see cref="DisplaySet"/>.
 /// </summary>
 public class DisplayWindow
 {

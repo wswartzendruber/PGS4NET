@@ -13,8 +13,7 @@ using System.Collections.Generic;
 namespace PGS4NET.DisplaySets;
 
 /// <summary>
-///     A collection of segments that, when composed together, perform an operation. Multiple
-///     display sets form an epoch.
+///     Defines a PGS display set.
 /// </summary>
 /// <remarks>
 ///     A display set is principally responsible for performing four distinct functions:
@@ -31,7 +30,7 @@ namespace PGS4NET.DisplaySets;
 ///         </item>
 ///         <item>
 ///             <description>
-///                 Modify a composition that is already on the screen.
+///                 Update a composition that is already on the screen.
 ///             </description>
 ///         </item>
 ///         <item>
@@ -40,18 +39,18 @@ namespace PGS4NET.DisplaySets;
 ///             </description>
 ///         </item>
 ///     </list>
+///     Conceptually, a display set is composed from multiple PGS segments.
 /// </remarks>
 public class DisplaySet
 {
     /// <summary>
-    ///     The timestamp indicating when composition decoding should start. In practice, this
-    ///     is the time at which the composition is displayed, repeated, modified, or removed.
+    ///     The time at which any compositions are displayed, repeated, updated, or removed.
     /// </summary>
     public PgsTimeStamp Pts { get; set; }
 
     /// <summary>
-    ///     The timestamp indicating when the composition should be enacted. In practice, this
-    ///     value is always zero.
+    ///     The time at which any compositions should be enacted. In practice, this value is
+    ///     always zero.
     /// </summary>
     public PgsTimeStamp Dts { get; set; }
 
@@ -73,9 +72,10 @@ public class DisplaySet
     public byte FrameRate { get; set; }
 
     /// <summary>
-    ///     If <see langword="true"/>, defines that this instance is responsible for redefining
-    ///     one or more <see cref="DisplayPalette"/>s in order to update one or more
-    ///     <see cref="DisplayObject"/>s defined by previous instances within the same epoch.
+    ///     If <see langword="true"/>, defines that this display set is responsible for
+    ///     redefining one or more <see cref="DisplayPalette"/>s earlier in the current epoch in
+    ///     order to update the appearances of one or more <see cref="DisplayObject"/>s already
+    ///     drawn to the screen.
     /// </summary>
     public bool PaletteUpdateOnly { get; set; }
 
@@ -86,18 +86,18 @@ public class DisplaySet
     public byte PaletteId { get; set; }
 
     /// <summary>
-    ///     The collection of windows referenced by the current epoch. This collection should be
-    ///     consistent within an epoch.
+    ///     The collection of <see cref="DisplayWindow"/>s referenced by the current epoch. This
+    ///     collection should be consistent within each display set of an epoch.
     /// </summary>
     public IDictionary<byte, DisplayWindow> Windows { get; set; }
 
     /// <summary>
-    ///     The collection of palettes referenced by the display set.
+    ///     The collection of <see cref="DisplayPalette"/>s referenced by the display set.
     /// </summary>
     public IDictionary<VersionedId<byte>, DisplayPalette> Palettes { get; set; }
 
     /// <summary>
-    ///     The collection of objects referenced by the display set.
+    ///     The collection of <see cref="DisplayObject"/>s referenced by the display set.
     /// </summary>
     public IDictionary<VersionedId<int>, DisplayObject> Objects { get; set; }
 
@@ -107,13 +107,13 @@ public class DisplaySet
     public int CompositionNumber { get; set; }
 
     /// <summary>
-    ///     Defines the role of this instance within the larger epoch.
+    ///     Defines the role of this display set within the larger epoch.
     /// </summary>
     public CompositionState CompositionState { get; set; }
 
     /// <summary>
-    ///     A collection of composition objects, each mapped according to its compound ID
-    ///     (object ID + window ID).
+    ///     The collection of <see cref="DisplayComposition"/>s, which map
+    ///     <see cref="DisplayObject"/>s to <see cref="DisplayWindow"/>s.
     /// </summary>
     public IDictionary<CompositionId, DisplayComposition> Compositions { get; set; }
 
@@ -133,12 +133,11 @@ public class DisplaySet
     ///     Initializes a new instance with the provided values.
     /// </summary>
     /// <param name="pts">
-    ///     The timestamp indicating when composition decoding should start. In practice, this
-    ///     is the time at which the composition is displayed, repeated, modified, or removed.
+    ///     The time at which any compositions are displayed, repeated, updated, or removed.
     /// </param>
     /// <param name="dts">
-    ///     The width of the screen in pixels. This value should be consistent within a
-    ///     presentation.
+    ///     The time at which any compositions should be enacted. In practice, this value is
+    ///     always zero.
     /// </param>
     /// <param name="width">
     ///     The width of the screen in pixels. This value should be consistent within a
@@ -152,33 +151,34 @@ public class DisplaySet
     ///     This value should be set to <c>0x10</c> but can otherwise be typically ignored.
     /// </param>
     /// <param name="paletteUpdateOnly">
-    ///     If <see langword="true"/>, defines that this instance is responsible for redefining
-    ///     one or more <see cref="DisplayPalette"/>s in order to update one or more
-    ///     <see cref="DisplayObject"/>s defined by previous instances within the same epoch.
+    ///     If <see langword="true"/>, defines that this display set is responsible for
+    ///     redefining one or more <see cref="DisplayPalette"/>s earlier in the current epoch in
+    ///     order to update the appearances of one or more <see cref="DisplayObject"/>s already
+    ///     drawn to the screen.
     /// </param>
     /// <param name="paletteId">
     ///     The palette to use when rendering <see cref="DisplayObject"/>s where the value
-    ///     addresses a <see cref="VersionedId{T}.Id"/> key in <paramref name="palettes"/>.
+    ///     addresses a <see cref="VersionedId{T}.Id"/> key in <see cref="Palettes"/>.
     /// </param>
     /// <param name="windows">
-    ///     The collection of windows referenced by the current epoch. This collection should be
-    ///     consistent within an epoch.
+    ///     The collection of <see cref="DisplayWindow"/>s referenced by the current epoch. This
+    ///     collection should be consistent within each display set of an epoch.
     /// </param>
     /// <param name="palettes">
-    ///     The collection of palettes referenced by the display set.
+    ///     The collection of <see cref="DisplayPalette"/>s referenced by the display set.
     /// </param>
     /// <param name="objects">
-    ///     The collection of objects referenced by the display set.
+    ///     The collection of <see cref="DisplayObject"/>s referenced by the display set.
     /// </param>
     /// <param name="compositionNumber">
     ///     Starting at zero, this increments for each display set in a presentation.
     /// </param>
     /// <param name="compositionState">
-    ///     Defines the role of this instance within the larger epoch.
+    ///     Defines the role of this display set within the larger epoch.
     /// </param>
     /// <param name="compositions">
-    ///     A collection of composition objects, each mapped according to its compound ID
-    ///     (object ID + window ID).
+    ///     The collection of <see cref="DisplayComposition"/>s, which map
+    ///     <see cref="DisplayObject"/>s to <see cref="DisplayWindow"/>s.
     /// </param>
     public DisplaySet(PgsTimeStamp pts, PgsTimeStamp dts, int width, int height
         , byte frameRate, bool paletteUpdateOnly, byte paletteId

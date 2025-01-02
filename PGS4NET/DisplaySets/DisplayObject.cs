@@ -26,10 +26,10 @@ public class DisplayObject
     public int Height { get; set; }
 
     /// <summary>
-    ///     An ordered list of object pixel data where each value addresses a key in
-    ///     <see cref="DisplayPalette.Entries"/>. The collection scans horizontally from left to
-    ///     right, top to bottom. Its length should be the product of the <see cref="Width"/>
-    ///     and the <see cref="Height"/>.
+    ///     An ordered list of object pixel data where each value addresses a key in a
+    ///     corresponding <see cref="DisplayPalette.Entries"/> dictionary. The data scans
+    ///     horizontally from left to right, top to bottom. Its length should be the product of
+    ///     the <see cref="Width"/> and the <see cref="Height"/>.
     /// </summary>
     public byte[] Data { get; set; }
 
@@ -51,10 +51,10 @@ public class DisplayObject
     ///     The height of the object in pixels.
     /// </param>
     /// <param name="data">
-    ///     An ordered list of object pixel data where each value addresses a key in
-    ///     <see cref="DisplayPalette.Entries"/>. The collection scans horizontally from left to
-    ///     right, top to bottom. Its length should be the product of the
-    ///     <paramref name="width"/> and the <paramref name="height"/>.
+    ///     An ordered list of object pixel data where each value addresses a key in a
+    ///     corresponding <see cref="DisplayPalette.Entries"/> dictionary. The data scans
+    ///     horizontally from left to right, top to bottom. Its length should be the product of
+    ///     the <paramref name="width"/> and the <paramref name="height"/>.
     /// </param>
     public DisplayObject(int width, int height, byte[] data)
     {

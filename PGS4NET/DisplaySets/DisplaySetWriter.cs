@@ -18,7 +18,7 @@ using PGS4NET.Segments;
 namespace PGS4NET.DisplaySets;
 
 /// <summary>
-///     Writes PGS <see cref="DisplaySet"/>s to an output <see cref="Stream"/>.
+///     Writes <see cref="DisplaySet"/>s to a <see cref="Stream"/>.
 /// </summary>
 #if NETSTANDARD2_1_OR_GREATER
 public class DisplaySetWriter : IDisposable, IAsyncDisposable
@@ -31,13 +31,13 @@ public class DisplaySetWriter : IDisposable
     private readonly Queue<Segment> Queue = new();
 
     /// <summary>
-    ///     The stream that <see cref="DisplaySet"/>s are being written to.
+    ///     The stream to write <see cref="DisplaySet"/>s to.
     /// </summary>
     public Stream Output { get; }
 
     /// <summary>
-    ///     Whether or not the <see cref="Output"/> stream will be left open once all
-    ///     <see cref="DisplaySet"/>s have been written.
+    ///     Whether or not the <see cref="Output"/> stream will be left open when
+    ///     <see cref="Dispose"/> is called.
     /// </summary>
     public bool LeaveOpen { get; }
 
@@ -45,11 +45,11 @@ public class DisplaySetWriter : IDisposable
     ///     Initializes a new instance.
     /// </summary>
     /// <param name="output">
-    ///     The stream that <see cref="DisplaySet"/>s will be written to.
+    ///     The stream to write <see cref="DisplaySet"/>s to.
     /// </param>
     /// <param name="leaveOpen">
-    ///     Whether or not the <paramref name="output"/> stream will be left open once all
-    ///     <see cref="DisplaySet"/>s have been written.
+    ///     Whether or not the <paramref name="output"/> stream will be left open when
+    ///     <see cref="Dispose"/> is called.
     /// </param>
     public DisplaySetWriter(Stream output, bool leaveOpen = false)
     {
@@ -60,17 +60,18 @@ public class DisplaySetWriter : IDisposable
     }
 
     /// <summary>
-    ///     Attempts to write a PGS display set to the <see cref="Output"/> stream.
+    ///     Attempts to write a <see cref="DisplaySet"/> to the <see cref="Output"/> stream.
     /// </summary>
     /// <remarks>
-    ///     Internally, the display set is decomposed into <see cref="Segment"/>s where each one
-    ///     is then written to the <see cref="Output"/> stream.
+    ///     Internally, the <paramref name="displaySet"/> is decomposed into
+    ///     <see cref="Segment"/>s where each one is then written to the <see cref="Output"/>
+    ///     stream.
     /// </remarks>
     /// <param name="displaySet">
     ///     The display set to write.
     /// </param>
     /// <exception cref="SegmentException">
-    ///     An property of a <see cref="Segment"/> is invalid.
+    ///     A property of a <see cref="Segment"/> is invalid.
     /// </exception>
     /// <exception cref="IOException">
     ///     An underlying I/O error occurs while attempting to write a <see cref="Segment"/>.
@@ -84,11 +85,13 @@ public class DisplaySetWriter : IDisposable
     }
 
     /// <summary>
-    ///     Attempts to asynchronously write a PGS segment to the <see cref="Output"/> stream.
+    ///     Attempts to asynchronously write a <see cref="DisplaySet"/> to the
+    ///     <see cref="Output"/> stream.
     /// </summary>
     /// <remarks>
-    ///     Internally, the display set is decomposed into <see cref="Segment"/>s where each one
-    ///     is then written to the <see cref="Output"/> stream.
+    ///     Internally, the <paramref name="displaySet"/> is decomposed into
+    ///     <see cref="Segment"/>s where each one is then written to the <see cref="Output"/>
+    ///     stream.
     /// </remarks>
     /// <param name="displaySet">
     ///     The display set to write.
@@ -97,7 +100,7 @@ public class DisplaySetWriter : IDisposable
     ///     The token to monitor for cancellation requests.
     /// </param>
     /// <exception cref="SegmentException">
-    ///     An property of a <see cref="Segment"/> is invalid.
+    ///     A property of a <see cref="Segment"/> is invalid.
     /// </exception>
     /// <exception cref="IOException">
     ///     An underlying I/O error occurs while attempting to write a <see cref="Segment"/>.
@@ -132,7 +135,10 @@ public class DisplaySetWriter : IDisposable
             await Output.DisposeAsync();
     }
 #endif
-
+    /// <summary>
+    ///     Asynchronously disposes the <see cref="Output"/> stream if <see cref="LeaveOpen"/> is
+    ///     <see langword="false"/>.
+    /// </summary>
     private void Ready(object sender, Segment segment)
     {
         Queue.Enqueue(segment);

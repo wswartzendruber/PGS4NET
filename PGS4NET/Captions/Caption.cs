@@ -13,6 +13,9 @@ namespace PGS4NET.Captions;
 /// <summary>
 ///     Represents a graphic with a defined location that appears for a specific amount of time.
 /// </summary>
+/// <remarks>
+///     Conceptually, one or more captions are composed from multiple PGS display sets.
+/// </remarks>
 public class Caption
 {
     /// <summary>

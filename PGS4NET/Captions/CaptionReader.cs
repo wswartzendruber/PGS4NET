@@ -19,7 +19,7 @@ using PGS4NET.Segments;
 namespace PGS4NET.Captions;
 
 /// <summary>
-///     Reads PGS <see cref="Caption"/>s from an input <see cref="Stream"/>.
+///     Reads <see cref="Caption"/>s from a <see cref="Stream"/>.
 /// </summary>
 #if NETSTANDARD2_1_OR_GREATER
 public class CaptionReader : IDisposable, IAsyncDisposable
@@ -35,13 +35,13 @@ public class CaptionReader : IDisposable
     private readonly Queue<Caption> Queue = new();
 
     /// <summary>
-    ///     The stream that <see cref="Caption"/>s are being read from.
+    ///     The stream to read <see cref="Caption"/>s from.
     /// </summary>
     public Stream Input { get; }
 
     /// <summary>
-    ///     Whether or not the <see cref="Input"/> stream will be left open once all
-    ///     <see cref="Caption"/>s have been read.
+    ///     Whether or not the <see cref="Input"/> stream will be left open when
+    ///     <see cref="Dispose"/> is called.
     /// </summary>
     public bool LeaveOpen { get; }
 
@@ -49,11 +49,11 @@ public class CaptionReader : IDisposable
     ///     Initializes a new instance.
     /// </summary>
     /// <param name="input">
-    ///     The stream that <see cref="Caption"/>s will be read from.
+    ///     The stream to read <see cref="Caption"/>s from.
     /// </param>
     /// <param name="leaveOpen">
-    ///     Whether or not the <paramref name="input"/> stream will be left open once all
-    ///     <see cref="Caption"/>s have been read.
+    ///     Whether or not the <paramref name="input"/> stream will be left open when
+    ///     <see cref="Dispose"/> is called.
     /// </param>
     public CaptionReader(Stream input, bool leaveOpen = false)
     {
@@ -64,20 +64,21 @@ public class CaptionReader : IDisposable
     }
 
     /// <summary>
-    ///     Attempts to read the next PGS caption from the <see cref="Input"/> stream.
+    ///     Attempts to read the next <see cref="Caption"/> from the <see cref="Input"/> stream.
     /// </summary>
     /// <remarks>
     ///     The current position of the <see cref="Input"/> stream must be at the beginning of a
-    ///     a caption. Internally, <see cref="Segment"/>s are read and composed into
-    ///     <see cref="DisplaySet"/>s, which is done until a caption can in turn be composed.
+    ///     a <see cref="Caption"/>. Internally, <see cref="Segment"/>s are read and composed
+    ///     into <see cref="DisplaySet"/>s, which is done until a caption can in turn be
+    ///     composed.
     /// </remarks>
     /// <returns>
-    ///     The PGS caption that was read or <see langword="null"/> if the <see cref="Input"/>
-    ///     stream is already EOF.
+    ///     The <see cref="Caption"/> that was read or <see langword="null"/> if the
+    ///     <see cref="Input"/> stream is already EOF.
     /// </returns>
     /// <exception cref="CaptionException">
-    ///     A caption can not be composed from the individual <see cref="DisplaySet"/>s that are
-    ///     composed.
+    ///     A <see cref="Caption"/> can not be composed from the individual
+    ///     <see cref="DisplaySet"/>s that are composed.
     /// </exception>
     /// <exception cref="DisplaySetException">
     ///     A <see cref="DisplaySet"/> can not be composed from the individual
@@ -111,24 +112,25 @@ public class CaptionReader : IDisposable
     }
 
     /// <summary>
-    ///     Attempts to asynchronously read the next PGS caption from the <see cref="Input"/>
-    ///     stream.
+    ///     Attempts to asynchronously read the next <see cref="Caption"/> from the
+    ///     <see cref="Input"/> stream.
     /// </summary>
     /// <remarks>
     ///     The current position of the <see cref="Input"/> stream must be at the beginning of a
-    ///     a caption. Internally, <see cref="Segment"/>s are read and composed into
-    ///     <see cref="DisplaySet"/>s, which is done until a caption can in turn be composed.
+    ///     a <see cref="Caption"/>. Internally, <see cref="Segment"/>s are read and composed
+    ///     into <see cref="DisplaySet"/>s, which is done until a caption can in turn be
+    ///     composed.
     /// </remarks>
     /// <param name="cancellationToken">
     ///     The token to monitor for cancellation requests.
     /// </param>
     /// <returns>
-    ///     The PGS caption that was read or <see langword="null"/> if the <see cref="Input"/>
-    ///     stream is already EOF.
+    ///     The <see cref="Caption"/> that was read or <see langword="null"/> if the
+    ///     <see cref="Input"/> stream is already EOF.
     /// </returns>
     /// <exception cref="CaptionException">
-    ///     A caption can not be composed from the individual <see cref="DisplaySet"/>s that are
-    ///     composed.
+    ///     A <see cref="Caption"/> can not be composed from the individual
+    ///     <see cref="DisplaySet"/>s that are composed.
     /// </exception>
     /// <exception cref="DisplaySetException">
     ///     A <see cref="DisplaySet"/> can not be composed from the individual
