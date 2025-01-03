@@ -40,8 +40,8 @@ public class CaptionReader : IDisposable
     public Stream Input { get; }
 
     /// <summary>
-    ///     Whether or not the <see cref="Input"/> stream will be left open when
-    ///     <see cref="Dispose"/> is called.
+    ///     Whether or not the <see cref="Input"/> stream will be left open when this instance
+    ///     is disposed.
     /// </summary>
     public bool LeaveOpen { get; }
 
@@ -52,8 +52,8 @@ public class CaptionReader : IDisposable
     ///     The stream to read <see cref="Caption"/>s from.
     /// </param>
     /// <param name="leaveOpen">
-    ///     Whether or not the <paramref name="input"/> stream will be left open when
-    ///     <see cref="Dispose"/> is called.
+    ///     Whether or not the <paramref name="input"/> stream will be left open when this
+    ///     instance is disposed.
     /// </param>
     public CaptionReader(Stream input, bool leaveOpen = false)
     {

@@ -8,13 +8,6 @@
 * SPDX-License-Identifier: MPL-2.0
 */
 
-//
-// Many thanks are in order for cubicibo for offering this file up as a reference point
-// for PGS validation.
-//
-// https://github.com/cubicibo/SUPer/blob/main/SUPer/pgstream.py
-//
-
 using System;
 using System.IO;
 using System.Threading;
@@ -23,7 +16,7 @@ using System.Threading.Tasks;
 namespace PGS4NET.Segments;
 
 /// <summary>
-///     Writes PGS <see cref="Segment"/>s to an output <see cref="Stream"/>.
+///     Writes <see cref="Segment"/>s to a <see cref="Stream"/>.
 /// </summary>
 #if NETSTANDARD2_1_OR_GREATER
 public class SegmentWriter : IDisposable, IAsyncDisposable
@@ -43,13 +36,13 @@ public class SegmentWriter : IDisposable
         = new("Object width and height must be between 8 and 4096 pixels inclusive.");
 
     /// <summary>
-    ///     The stream that <see cref="Segment"/>s are being written to.
+    ///     The stream to write <see cref="Segment"/>s to.
     /// </summary>
     public Stream Output { get; }
 
     /// <summary>
-    ///     Whether or not the <see cref="Output"/> stream will be left open once all
-    ///     <see cref="Segment"/>s have been written.
+    ///     Whether or not the <see cref="Output"/> stream will be left open when this instance
+    ///     is disposed.
     /// </summary>
     public bool LeaveOpen { get; }
 
@@ -57,11 +50,11 @@ public class SegmentWriter : IDisposable
     ///     Initializes a new instance.
     /// </summary>
     /// <param name="output">
-    ///     The stream that <see cref="Segment"/>s will be written to.
+    ///     The stream to write <see cref="Segment"/>s to.
     /// </param>
     /// <param name="leaveOpen">
-    ///     Whether or not the <paramref name="output"/> stream will be left open once all
-    ///     <see cref="Segment"/>s have been written.
+    ///     Whether or not the <paramref name="output"/> stream will be left open when this
+    ///     instance is disposed.
     /// </param>
     public SegmentWriter(Stream output, bool leaveOpen = false)
     {
@@ -70,16 +63,16 @@ public class SegmentWriter : IDisposable
     }
 
     /// <summary>
-    ///     Attempts to write a PGS segment to the <see cref="Output"/> stream.
+    ///     Attempts to write a <see cref="Segment"/> to the <see cref="Output"/> stream.
     /// </summary>
     /// <param name="segment">
     ///     The segment to write.
     /// </param>
     /// <exception cref="SegmentException">
-    ///     A property of the segment is invalid.
+    ///     A property of a <see cref="Segment"/> is invalid.
     /// </exception>
     /// <exception cref="IOException">
-    ///     An underlying I/O error occurs while attempting to write the segment.
+    ///     An underlying I/O error occurs while attempting to write a <see cref="Segment"/>.
     /// </exception>
     public void Write(Segment segment)
     {
@@ -138,7 +131,8 @@ public class SegmentWriter : IDisposable
     }
 
     /// <summary>
-    ///     Attempts to asynchronously write a PGS segment to the <see cref="Output"/> stream.
+    ///     Attempts to asynchronously write a <see cref="Segment"/> to the <see cref="Output"/>
+    ///     stream.
     /// </summary>
     /// <param name="segment">
     ///     The segment to write.
@@ -147,10 +141,10 @@ public class SegmentWriter : IDisposable
     ///     The token to monitor for cancellation requests.
     /// </param>
     /// <exception cref="SegmentException">
-    ///     A property of the segment is invalid.
+    ///     A property of a <see cref="Segment"/> is invalid.
     /// </exception>
     /// <exception cref="IOException">
-    ///     An underlying I/O error occurs while attempting to write the segment.
+    ///     An underlying I/O error occurs while attempting to write a <see cref="Segment"/>.
     /// </exception>
     public async Task WriteAsync(Segment segment, CancellationToken cancellationToken = default)
     {

@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 namespace PGS4NET.Segments;
 
 /// <summary>
-///     Reads PGS <see cref="Segment"/>s from an input <see cref="Stream"/>.
+///     Reads <see cref="Segment"/>s from a <see cref="Stream"/>.
 /// </summary>
 #if NETSTANDARD2_1_OR_GREATER
 public class SegmentReader : IDisposable, IAsyncDisposable
@@ -26,13 +26,13 @@ public class SegmentReader : IDisposable
 #endif
 {
     /// <summary>
-    ///     The stream that <see cref="Segment"/>s are being read from.
+    ///     The stream to read <see cref="Segment"/>s from.
     /// </summary>
     public Stream Input { get; }
 
     /// <summary>
-    ///     Whether or not the <see cref="Input"/> stream will be left open once all
-    ///     <see cref="Segment"/>s have been read.
+    ///     Whether or not the <see cref="Input"/> stream will be left open when this instance
+    ///     is disposed.
     /// </summary>
     public bool LeaveOpen { get; }
 
@@ -40,11 +40,11 @@ public class SegmentReader : IDisposable
     ///     Initializes a new instance.
     /// </summary>
     /// <param name="input">
-    ///     The stream that <see cref="Segment"/>s will be read from.
+    ///     The stream to read <see cref="Segment"/>s from.
     /// </param>
     /// <param name="leaveOpen">
-    ///     Whether or not the <paramref name="input"/> stream will be left open once all
-    ///     <see cref="Segment"/>s have been read.
+    ///     Whether or not the <paramref name="input"/> stream will be left open when this
+    ///     instance is disposed.
     /// </param>
     public SegmentReader(Stream input, bool leaveOpen = false)
     {
@@ -53,21 +53,21 @@ public class SegmentReader : IDisposable
     }
 
     /// <summary>
-    ///     Attempts to read the next PGS segment from the <see cref="Input"/> stream.
+    ///     Attempts to read the next <see cref="Segment"/> from the <see cref="Input"/> stream.
     /// </summary>
     /// <remarks>
     ///     The current position of the <see cref="Input"/> stream must be at the beginning of a
-    ///     a segment.
+    ///     <see cref="Segment"/>.
     /// </remarks>
     /// <returns>
-    ///     The PGS segment that was read or <see langword="null"/> if the <see cref="Input"/>
-    ///     stream is already EOF.
+    ///     The <see cref="Segment"/> that was read or <see langword="null"/> if the
+    ///     <see cref="Input"/> stream is already EOF.
     /// </returns>
     /// <exception cref="SegmentException">
-    ///     An encoded value within the segment is invalid.
+    ///     An encoded value within a <see cref="Segment"/> is invalid.
     /// </exception>
     /// <exception cref="IOException">
-    ///     An underlying I/O error occurs while attempting to read the segment.
+    ///     An underlying I/O error occurs while attempting to read a <see cref="Segment"/>.
     /// </exception>
     public Segment? Read()
     {
@@ -111,25 +111,25 @@ public class SegmentReader : IDisposable
     }
 
     /// <summary>
-    ///     Attempts to asynchronously read the next PGS segment from the <see cref="Input"/>
-    ///     stream.
+    ///     Attempts to asynchronously read the next <see cref="Segment"/> from the
+    ///     <see cref="Input"/> stream.
     /// </summary>
     /// <remarks>
     ///     The current position of the <see cref="Input"/> stream must be at the beginning of a
-    ///     a segment.
+    ///     <see cref="Segment"/>.
     /// </remarks>
     /// <param name="cancellationToken">
     ///     The token to monitor for cancellation requests.
     /// </param>
     /// <returns>
-    ///     The PGS segment that was read or <see langword="null"/> if the <see cref="Input"/>
-    ///     stream is already EOF.
+    ///     The <see cref="Segment"/> that was read or <see langword="null"/> if the
+    ///     <see cref="Input"/> stream is already EOF.
     /// </returns>
     /// <exception cref="SegmentException">
-    ///     An encoded value within the segment is invalid.
+    ///     An encoded value within a <see cref="Segment"/> is invalid.
     /// </exception>
     /// <exception cref="IOException">
-    ///     An underlying I/O error occurs while attempting to read the segment.
+    ///     An underlying I/O error occurs while attempting to read a <see cref="Segment"/>.
     /// </exception>
     public async Task<Segment?> ReadAsync(CancellationToken cancellationToken = default)
     {

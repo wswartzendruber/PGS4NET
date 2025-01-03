@@ -36,8 +36,8 @@ public class DisplaySetWriter : IDisposable
     public Stream Output { get; }
 
     /// <summary>
-    ///     Whether or not the <see cref="Output"/> stream will be left open when
-    ///     <see cref="Dispose"/> is called.
+    ///     Whether or not the <see cref="Output"/> stream will be left open when this instance
+    ///     is disposed.
     /// </summary>
     public bool LeaveOpen { get; }
 
@@ -48,8 +48,8 @@ public class DisplaySetWriter : IDisposable
     ///     The stream to write <see cref="DisplaySet"/>s to.
     /// </param>
     /// <param name="leaveOpen">
-    ///     Whether or not the <paramref name="output"/> stream will be left open when
-    ///     <see cref="Dispose"/> is called.
+    ///     Whether or not the <paramref name="output"/> stream will be left open when this
+    ///     instance is disposed.
     /// </param>
     public DisplaySetWriter(Stream output, bool leaveOpen = false)
     {

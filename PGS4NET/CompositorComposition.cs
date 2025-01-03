@@ -18,6 +18,11 @@ namespace PGS4NET;
 ///     that can be passed to a <see cref="Compositor"/> instance in order to perform a draw
 ///     operation.
 /// </summary>
+/// <remarks>
+///     This is primarily an internal class used by the more accessible parts of this library.
+///     It has been made <see langword="public"/> in the event any user needs to do compositing
+///     of their own, for whatever reason.
+/// </remarks>
 public class CompositorComposition
 {
     /// <summary>

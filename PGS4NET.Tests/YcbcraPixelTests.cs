@@ -12,8 +12,6 @@
 
 #pragma warning disable 1718
 
-using PGS4NET;
-
 namespace PGS4NET.Tests;
 
 public class YcbcraPixelTests

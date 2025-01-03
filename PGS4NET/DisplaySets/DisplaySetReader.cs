@@ -39,8 +39,8 @@ public class DisplaySetReader : IDisposable
     public Stream Input { get; }
 
     /// <summary>
-    ///     Whether or not the <see cref="Input"/> stream will be left open when
-    ///     <see cref="Dispose"/> is called.
+    ///     Whether or not the <see cref="Input"/> stream will be left open when this instance
+    ///     is disposed.
     /// </summary>
     public bool LeaveOpen { get; }
 
@@ -51,8 +51,8 @@ public class DisplaySetReader : IDisposable
     ///     The stream to read <see cref="DisplaySet"/>s from.
     /// </param>
     /// <param name="leaveOpen">
-    ///     Whether or not the <paramref name="input"/> stream will be left open when
-    ///     <see cref="Dispose"/> is called.
+    ///     Whether or not the <paramref name="input"/> stream will be left open when this
+    ///     instance is disposed.
     /// </param>
     public DisplaySetReader(Stream input, bool leaveOpen = false)
     {
