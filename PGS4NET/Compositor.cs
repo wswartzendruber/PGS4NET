@@ -69,7 +69,7 @@ public sealed class Compositor
     public bool Pending => LastCompositorState.PrimaryPlaneDirty;
 
     /// <summary>
-    ///     Initializes a new instance for the provided <see cref="DisplayWindow"/>.
+    ///     Initializes a new instance using the provided <see cref="DisplayWindow"/>.
     /// </summary>
     /// <param name="displayWindow">
     ///     Defines the window, which will also apply to any resulting <see cref="Caption"/>s.
@@ -174,7 +174,8 @@ public sealed class Compositor
             int esy = Math.Max(Y - displayComposition.Y, 0);
             var objectArea = new Area(0, 0, displayObject.Width, displayObject.Height);
             var cropArea = displayComposition.Crop ?? objectArea;
-            var sourceArea = GetOverlappingArea(objectArea, AddOffsetToArea(cropArea, esx, esy));
+            var sourceArea = GetOverlappingArea(objectArea
+                , AddOffsetToArea(cropArea, esx, esy));
 
             if (sourceArea is null)
                 return;

@@ -29,8 +29,14 @@ public struct VersionedId<T> : IEquatable<VersionedId<T>>
     public byte Version { get; private set; }
 
     /// <summary>
-    ///     Initializes a new instance with the provided ID and version.
+    ///     Initializes a new instance with the provided values.
     /// </summary>
+    /// <param name="id">
+    ///     The ID.
+    /// </param>
+    /// <param name="version">
+    ///     The version.
+    /// </param>
     public VersionedId(T id, byte version)
     {
         Id = id;
@@ -38,14 +44,15 @@ public struct VersionedId<T> : IEquatable<VersionedId<T>>
     }
 
     /// <summary>
-    ///     Determines if the values of this instance match another one's.
+    ///     Determines if the state of the <paramref name="other"/> instance equals this one's.
     /// </summary>
     public bool Equals(VersionedId<T> other) =>
         other.Id.Equals(Id)
             && other.Version == Version;
 
     /// <summary>
-    ///     Determines if the type and values of this instance match another one's.
+    ///     Determines if the type and state of the <paramref name="other"/> instance equals
+    ///     this one's.
     /// </summary>
     public override bool Equals(object? other) =>
         other?.GetType() == typeof(VersionedId<T>) && Equals((VersionedId<T>)other);
@@ -67,14 +74,15 @@ public struct VersionedId<T> : IEquatable<VersionedId<T>>
     }
 
     /// <summary>
-    ///     Determines if the values of two <see cref="VersionedId{T}"/>s match each other.
+    ///     Determines if the state of the <paramref name="first"/> instance equals the
+    ///     state of the <paramref name="second"/> one.
     /// </summary>
     public static bool operator ==(VersionedId<T> first, VersionedId<T> second) =>
         first.Equals(second);
 
     /// <summary>
-    ///     Determines if the values of two <see cref="VersionedId{T}"/>s don't match each
-    ///     other.
+    ///     Determines if the state of the <paramref name="first"/> instance doesn't equal the
+    ///     state of the <paramref name="second"/> one.
     /// </summary>
     public static bool operator !=(VersionedId<T> first, VersionedId<T> second) =>
         !first.Equals(second);

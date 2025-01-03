@@ -28,8 +28,14 @@ public struct CompositionId : IEquatable<CompositionId>
     public byte WindowId { get; private set; }
 
     /// <summary>
-    ///     Initializes a new instance with the provided object and window IDs.
+    ///     Initializes a new instance with the provided values.
     /// </summary>
+    /// <param name="objectId">
+    ///     The object ID.
+    /// </param>
+    /// <param name="windowId">
+    ///     The window ID.
+    /// </param>
     public CompositionId(int objectId, byte windowId)
     {
         ObjectId = objectId;
@@ -37,14 +43,15 @@ public struct CompositionId : IEquatable<CompositionId>
     }
 
     /// <summary>
-    ///     Determines if the values of this instance match another one's.
+    ///     Determines if the state of the <paramref name="other"/> instance equals this one's.
     /// </summary>
     public bool Equals(CompositionId other) =>
         other.ObjectId == ObjectId
             && other.WindowId == WindowId;
 
     /// <summary>
-    ///     Determines if the type and values of this instance match another one's.
+    ///     Determines if the type and state of the <paramref name="other"/> instance equals
+    ///     this one's.
     /// </summary>
     public override bool Equals(object? other) =>
         other?.GetType() == typeof(CompositionId) && Equals((CompositionId)other);
@@ -61,14 +68,15 @@ public struct CompositionId : IEquatable<CompositionId>
     }
 
     /// <summary>
-    ///     Determines if the values of two <see cref="CompositionId"/>s match each other.
+    ///     Determines if the state of the <paramref name="first"/> instance equals the
+    ///     state of the <paramref name="second"/> one.
     /// </summary>
     public static bool operator ==(CompositionId first, CompositionId second) =>
         first.Equals(second);
 
     /// <summary>
-    ///     Determines if the values of two <see cref="CompositionId"/>s don't match each
-    ///     other.
+    ///     Determines if the state of the <paramref name="first"/> instance doesn't equal the
+    ///     state of the <paramref name="second"/> one.
     /// </summary>
     public static bool operator !=(CompositionId first, CompositionId second) =>
         !first.Equals(second);

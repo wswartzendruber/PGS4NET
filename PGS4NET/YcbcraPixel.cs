@@ -44,7 +44,7 @@ public struct YcbcraPixel : IEquatable<YcbcraPixel>
     public readonly byte Alpha;
 
     /// <summary>
-    ///     Creates a new instance with the provided color values.
+    ///     Initializes a new instance with the provided values.
     /// </summary>
     /// <param name="y">
     ///     The gamma-corrected luminosity value of the pixel. In the typical case of
@@ -73,7 +73,7 @@ public struct YcbcraPixel : IEquatable<YcbcraPixel>
     }
 
     /// <summary>
-    ///     Determines if the values of this instance match another one's.
+    ///     Determines if the state of the <paramref name="other"/> instance equals this one's.
     /// </summary>
     public bool Equals(YcbcraPixel other) =>
         other.Y == Y
@@ -82,7 +82,8 @@ public struct YcbcraPixel : IEquatable<YcbcraPixel>
             && other.Alpha == Alpha;
 
     /// <summary>
-    ///     Determines if the type and values of this instance match another one's.
+    ///     Determines if the type and state of the <paramref name="other"/> instance equals
+    ///     this one's.
     /// </summary>
     public override bool Equals(object? other) =>
         other?.GetType() == typeof(YcbcraPixel) && Equals((YcbcraPixel)other);
@@ -109,13 +110,15 @@ public struct YcbcraPixel : IEquatable<YcbcraPixel>
     }
 
     /// <summary>
-    ///     Determines if the values of two <see cref="YcbcraPixel"/>s match each other.
+    ///     Determines if the state of the <paramref name="first"/> instance equals the
+    ///     state of the <paramref name="second"/> one.
     /// </summary>
     public static bool operator ==(YcbcraPixel first, YcbcraPixel second) =>
         first.Equals(second);
 
     /// <summary>
-    ///     Determines if the values of two <see cref="YcbcraPixel"/>s don't match each other.
+    ///     Determines if the state of the <paramref name="first"/> instance doesn't equal the
+    ///     state of the <paramref name="second"/> one.
     /// </summary>
     public static bool operator !=(YcbcraPixel first, YcbcraPixel second) =>
         !first.Equals(second);

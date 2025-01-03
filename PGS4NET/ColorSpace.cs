@@ -18,7 +18,7 @@ namespace PGS4NET;
 public class ColorSpace : IEquatable<ColorSpace>
 {
     /// <summary>
-    ///     Preconfigured RGB coefficients for BT.709.
+    ///     Preconfigured instance for BT.709.
     /// </summary>
     /// <remarks>
     ///     These should be used for the original incarnation of Blu-ray (in the blue cases) and
@@ -28,7 +28,7 @@ public class ColorSpace : IEquatable<ColorSpace>
     public static readonly ColorSpace Bt709ColorSpace = new(0.2126, 0.7152, 0.0722);
 
     /// <summary>
-    ///     Preconfigured RGB coefficients for BT.2020.
+    ///     Preconfigured instance for BT.2020.
     /// </summary>
     /// <remarks>
     ///     These should be used for the later 4K-UHD incarnation of Blu-ray (in the black
@@ -61,7 +61,7 @@ public class ColorSpace : IEquatable<ColorSpace>
     private readonly double Rr3;
 
     /// <summary>
-    ///     Creates a new instance with the provided color coefficients.
+    ///     Initializes a new instance with the provided RGB coefficients.
     /// </summary>
     /// <param name="red">
     ///     The red coefficient.
@@ -88,7 +88,7 @@ public class ColorSpace : IEquatable<ColorSpace>
     }
 
     /// <summary>
-    ///     Determines if the values of this instance match another one's.
+    ///     Determines if the state of the <paramref name="other"/> instance equals this one's.
     /// </summary>
     public bool Equals(ColorSpace other) =>
         other.Red == this.Red
@@ -96,7 +96,8 @@ public class ColorSpace : IEquatable<ColorSpace>
             && other.Blue == this.Blue;
 
     /// <summary>
-    ///     Determines if the type and values of this instance match another one's.
+    ///     Determines if the type and state of the <paramref name="other"/> instance equals
+    ///     this one's.
     /// </summary>
     public override bool Equals(object? other) =>
         other?.GetType() == typeof(ColorSpace) && Equals((ColorSpace)other);
@@ -186,14 +187,15 @@ public class ColorSpace : IEquatable<ColorSpace>
     }
 
     /// <summary>
-    ///     Determines if the values of two <see cref="ColorSpace"/>s match each other.
+    ///     Determines if the state of the <paramref name="first"/> instance equals the
+    ///     state of the <paramref name="second"/> one.
     /// </summary>
     public static bool operator ==(ColorSpace first, ColorSpace second) =>
         first.Equals(second);
 
     /// <summary>
-    ///     Determines if the values of two <see cref="ColorSpace"/>s don't match each
-    ///     other.
+    ///     Determines if the state of the <paramref name="first"/> instance doesn't equal the
+    ///     state of the <paramref name="second"/> one.
     /// </summary>
     public static bool operator !=(ColorSpace first, ColorSpace second) =>
         !first.Equals(second);

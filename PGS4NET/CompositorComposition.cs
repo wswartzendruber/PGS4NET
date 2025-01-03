@@ -21,17 +21,17 @@ namespace PGS4NET;
 public class CompositorComposition
 {
     /// <summary>
-    ///     The PGS composition information.
+    ///     The display set composition information.
     /// </summary>
     public DisplayComposition DisplayComposition { get; set; }
 
     /// <summary>
-    ///     The PGS object information.
+    ///     The display set object information.
     /// </summary>
     public DisplayObject DisplayObject { get; set; }
 
     /// <summary>
-    ///     The PGS palette information.
+    ///     The display set palette information.
     /// </summary>
     public DisplayPalette DisplayPalette { get; set; }
 
@@ -39,13 +39,13 @@ public class CompositorComposition
     ///     Initializes a new instance with the provided values.
     /// </summary>
     /// <param name="displayComposition">
-    ///     The PGS composition information.
+    ///     The display set composition information.
     /// </param>
     /// <param name="displayObject">
-    ///     The PGS object information.
+    ///     The display set object information.
     /// </param>
     /// <param name="displayPalette">
-    ///     The PGS palette information.
+    ///     The display set palette information.
     /// </param>
     public CompositorComposition(DisplayComposition displayComposition
         , DisplayObject displayObject, DisplayPalette displayPalette)

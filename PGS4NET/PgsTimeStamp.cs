@@ -24,12 +24,12 @@ public struct PgsTimeStamp : IEquatable<PgsTimeStamp>, IComparable<PgsTimeStamp>
 
     /// <summary>
     ///     The number of ticks as used by the PTS and DTS fields of PGS segments. 90,000 ticks
-    ///     make one second.
+    ///     make one second. This is fundamentally the value of the class.
     /// </summary>
     public long Ticks { get; private set; }
 
     /// <summary>
-    ///     Initializes a new instance with the given tick count.
+    ///     Initializes a new instance with the provided tick count.
     /// </summary>
     /// <param name="ticks">
     ///     The number of ticks as used by the PTS and DTS fields of PGS segments. 90,000 ticks
@@ -41,8 +41,8 @@ public struct PgsTimeStamp : IEquatable<PgsTimeStamp>, IComparable<PgsTimeStamp>
     }
 
     /// <summary>
-    ///     Returns the number of milliseconds represented by the time stamp. The return value
-    ///     is rounded down to the nearest millisecond.
+    ///     Returns the number of milliseconds represented by the <see cref="Ticks"/> property
+    ///     rounded down to the nearest millisecond.
     /// </summary>
     public long ToMilliseconds() => Ticks / 90;
 
@@ -50,7 +50,7 @@ public struct PgsTimeStamp : IEquatable<PgsTimeStamp>, IComparable<PgsTimeStamp>
     ///     Initializes a new instance using the specified millisecond value.
     /// </summary>
     /// <param name="milliseconds">
-    ///     The millisecond count which must not exceed 47,721,858.
+    ///     The millisecond value which must not exceed <see cref="MaxMilliseconds"/>.
     /// </param>
     public static PgsTimeStamp FromMilliseconds(long milliseconds)
     {
@@ -64,7 +64,8 @@ public struct PgsTimeStamp : IEquatable<PgsTimeStamp>, IComparable<PgsTimeStamp>
     }
 
     /// <summary>
-    ///     Compares this instance to another <see cref="PgsTimeStamp"/> one.
+    ///     Compares the value of this instance to the value of the <paramref name="other"/>
+    ///     one.
     /// </summary>
     /// <returns>
     ///     <list type="bullet">
@@ -91,12 +92,13 @@ public struct PgsTimeStamp : IEquatable<PgsTimeStamp>, IComparable<PgsTimeStamp>
         Ticks.CompareTo(other.Ticks);
 
     /// <summary>
-    ///     Determines if the value of this instance matches another one's.
+    ///     Determines if the state of the <paramref name="other"/> instance equals this one's.
     /// </summary>
     public bool Equals(PgsTimeStamp other) => other.Ticks == Ticks;
 
     /// <summary>
-    ///     Determines if the type and value of this instance matches another one's.
+    ///     Determines if the type and state of the <paramref name="other"/> instance equals
+    ///     this one's.
     /// </summary>
     public override bool Equals(object? other) =>
         other?.GetType() == typeof(PgsTimeStamp) && Equals((PgsTimeStamp)other);
@@ -113,53 +115,57 @@ public struct PgsTimeStamp : IEquatable<PgsTimeStamp>, IComparable<PgsTimeStamp>
     }
 
     /// <summary>
-    ///     Determines if the values of two <see cref="PgsTimeStamp"/>s match each other.
+    ///     Determines if the state of the <paramref name="first"/> instance equals the
+    ///     state of the <paramref name="second"/> one.
     /// </summary>
     public static bool operator ==(PgsTimeStamp first, PgsTimeStamp second) =>
         first.Equals(second);
 
     /// <summary>
-    ///     Determines if the values of two <see cref="PgsTimeStamp"/>s don't match each other.
+    ///     Determines if the state of the <paramref name="first"/> instance doesn't equal the
+    ///     state of the <paramref name="second"/> one.
     /// </summary>
     public static bool operator !=(PgsTimeStamp first, PgsTimeStamp second) =>
         !first.Equals(second);
 
     /// <summary>
-    ///     Determines if the <paramref name="left"/> value is greater than the
-    ///     <paramref name="right"/> value.
+    ///     Determines if the value of the <paramref name="left"/> instance is greater than the
+    ///     value the <paramref name="right"/> one.
     /// </summary>
     public static bool operator >(PgsTimeStamp left, PgsTimeStamp right) =>
         left.Ticks > right.Ticks;
 
     /// <summary>
-    ///     Determines if the <paramref name="left"/> value is less than the
-    ///     <paramref name="right"/> value.
+    ///     Determines if the value of the <paramref name="left"/> instance is less than than
+    ///     the value the <paramref name="right"/> one.
     /// </summary>
     public static bool operator <(PgsTimeStamp left, PgsTimeStamp right) =>
         left.Ticks < right.Ticks;
 
     /// <summary>
-    ///     Determines if the <paramref name="left"/> value is greater than or equal to the
-    ///     <paramref name="right"/> value.
+    ///     Determines if the value of the <paramref name="left"/> instance is greater than or
+    ///     equal to the value the <paramref name="right"/> one.
     /// </summary>
     public static bool operator >=(PgsTimeStamp left, PgsTimeStamp right) =>
         left.Ticks >= right.Ticks;
 
     /// <summary>
-    ///     Determines if the <paramref name="left"/> value is less than or equal to the
-    ///     <paramref name="right"/> value.
+    ///     Determines if the value of the <paramref name="left"/> instance is less than or
+    ///     equal to the value the <paramref name="right"/> one.
     /// </summary>
     public static bool operator <=(PgsTimeStamp left, PgsTimeStamp right) =>
         left.Ticks <= right.Ticks;
 
     /// <summary>
-    ///     Adds the <paramref name="addend"/> to the <paramref name="augend"/>.
+    ///     Adds the value of the <paramref name="addend"/> to the value of the
+    ///     <paramref name="augend"/>.
     /// </summary>
     public static PgsTimeStamp operator +(PgsTimeStamp augend, PgsTimeStamp addend) =>
         new PgsTimeStamp(augend.Ticks + addend.Ticks);
 
     /// <summary>
-    ///     Subtracts the <paramref name="subtrahend"/> from the <paramref name="minuend"/>.
+    ///     Subtracts the value of the <paramref name="subtrahend"/> from the value of the
+    ///     <paramref name="minuend"/>.
     /// </summary>
     public static PgsTimeStamp operator -(PgsTimeStamp minuend, PgsTimeStamp subtrahend) =>
         new PgsTimeStamp(minuend.Ticks - subtrahend.Ticks);
@@ -171,7 +177,7 @@ public struct PgsTimeStamp : IEquatable<PgsTimeStamp>, IComparable<PgsTimeStamp>
     ///     The number of ticks as used by the PTS and DTS fields of PGS segments. 90,000 ticks
     ///     make one second.
     /// </returns>
-    public static implicit operator long(PgsTimeStamp pts) => pts.Ticks;
+    public static implicit operator long(PgsTimeStamp timeStamp) => timeStamp.Ticks;
 
     /// <summary>
     ///     Implicitly creates a new instance using the provided <paramref name="ticks"/>

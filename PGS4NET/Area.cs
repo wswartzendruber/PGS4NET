@@ -11,17 +11,17 @@
 namespace PGS4NET;
 
 /// <summary>
-///     Defines an area within a larger plane.
+///     Defines an area within a larger area.
 /// </summary>
 public class Area
 {
     /// <summary>
-    ///     The horizontal offset of the area's top-left corner within the object.
+    ///     The horizontal offset of the area's top-left corner within the larger area.
     /// </summary>
     public int X { get; set; }
 
     /// <summary>
-    ///     The vertical offset of the area's top-left corner within the object.
+    ///     The vertical offset of the area's top-left corner within the larger area.
     /// </summary>
     public int Y { get; set; }
 
@@ -36,13 +36,13 @@ public class Area
     public int Height { get; set; }
 
     /// <summary>
-    ///     Initializes a new instance with the provided offset and size.
+    ///     Initializes a new instance with the provided values.
     /// </summary>
     /// <param name="x">
-    ///     The horizontal offset of the area's top-left corner within the object.
+    ///     The horizontal offset of the area's top-left corner within the larger area.
     /// </param>
     /// <param name="y">
-    ///     The vertical offset of the area's top-left corner within the object.
+    ///     The vertical offset of the area's top-left corner within the larger area.
     /// </param>
     /// <param name="width">
     ///     The width of the area.
