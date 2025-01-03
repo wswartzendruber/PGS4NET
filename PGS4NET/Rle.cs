@@ -33,7 +33,7 @@ public static class Rle
         = new("Invalid RLE sequence.");
 
     /// <summary>
-    ///     Compresses the provided object data using PGS RLE.
+    ///     Compresses the provided object data into a buffer using the PGS RLE algorithm.
     /// </summary>
     /// <param name="input">
     ///     An ordered list of object pixel data where each byte addresses a palette entry
@@ -101,7 +101,7 @@ public static class Rle
     }
 
     /// <summary>
-    ///     Decompresses the provided PGS RLE buffer into object data.
+    ///     Decompresses the provided buffer into object data using the PGS RLE algorithm.
     /// </summary>
     /// <param name="input">
     ///     An RLE-compressed byte sequence.

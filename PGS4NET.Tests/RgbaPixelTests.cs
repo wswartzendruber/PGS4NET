@@ -62,4 +62,12 @@ public class RgbaPixelTests
         Assert.True(a != e);
         Assert.True(a != f);
     }
+
+    [Fact]
+    public void ToStringValue()
+    {
+        var pixel = new RgbaPixel(0.2222, 0.4444, 0.6666, 0.8888);
+
+        Assert.Equal("R[0.222]-G[0.444]-B[0.667]-A[0.889]", pixel.ToString());
+    }
 }

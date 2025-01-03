@@ -62,4 +62,12 @@ public class YcbcraPixelTests
         Assert.True(a != e);
         Assert.True(a != f);
     }
+
+    [Fact]
+    public void ToStringValue()
+    {
+        var pixel = new YcbcraPixel(0x02, 0x46, 0x8A, 0xCE);
+
+        Assert.Equal("02-46-8A-CE", pixel.ToString());
+    }
 }
