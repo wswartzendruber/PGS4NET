@@ -13,10 +13,9 @@ using PGS4NET.DisplaySets;
 namespace PGS4NET;
 
 /// <summary>
-///     Represents the combination of a <see cref="DisplaySets.DisplayComposition"/>,
-///     <see cref="DisplaySets.DisplayObject"/>, and <see cref="DisplaySets.DisplayPalette"/>
-///     that can be passed to a <see cref="Compositor"/> instance in order to perform a draw
-///     operation.
+///     Represents the combination of a <see cref="DisplaySets.DisplayComposition"/> and
+///     <see cref="DisplaySets.DisplayObject"/> that can be passed to a <see cref="Compositor"/>
+///     instance in order to perform a draw operation.
 /// </summary>
 /// <remarks>
 ///     This is primarily an internal class used by the more accessible parts of this library.
@@ -36,11 +35,6 @@ public class CompositorComposition
     public DisplayObject DisplayObject { get; set; }
 
     /// <summary>
-    ///     The display set palette information.
-    /// </summary>
-    public DisplayPalette DisplayPalette { get; set; }
-
-    /// <summary>
     ///     Initializes a new instance with the provided values.
     /// </summary>
     /// <param name="displayComposition">
@@ -49,14 +43,10 @@ public class CompositorComposition
     /// <param name="displayObject">
     ///     The display set object information.
     /// </param>
-    /// <param name="displayPalette">
-    ///     The display set palette information.
-    /// </param>
     public CompositorComposition(DisplayComposition displayComposition
-        , DisplayObject displayObject, DisplayPalette displayPalette)
+        , DisplayObject displayObject)
     {
         DisplayComposition = displayComposition;
         DisplayObject = displayObject;
-        DisplayPalette = displayPalette;
     }
 }

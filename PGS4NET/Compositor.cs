@@ -31,9 +31,10 @@ public sealed class Compositor
         = new("Current time stamp is less than or equal to the previous one.");
 
     private readonly long Size;
-    private readonly YcbcraPixel[] PrimaryPixels;
-    private readonly YcbcraPixel[] SecondaryPixels;
-    private readonly YcbcraPixel[] ClearPixels;
+    private readonly byte[] PalettePixels;
+    private readonly YcbcraPixel[] PrimaryYcbcraPixels;
+    private readonly YcbcraPixel[] SecondaryYcbcraPixels;
+    private readonly YcbcraPixel[] ClearYcbcraPixels;
 
     private bool Forced = false;
     private PgsTimeStamp StartTimeStamp = default;
@@ -77,9 +78,10 @@ public sealed class Compositor
     public Compositor(DisplayWindow displayWindow)
     {
         Size = displayWindow.Width * displayWindow.Height;
-        PrimaryPixels = new YcbcraPixel[Size];
-        SecondaryPixels = new YcbcraPixel[Size];
-        ClearPixels = new YcbcraPixel[Size];
+        PalettePixels = new byte[Size];
+        PrimaryYcbcraPixels = new YcbcraPixel[Size];
+        SecondaryYcbcraPixels = new YcbcraPixel[Size];
+        ClearYcbcraPixels = new YcbcraPixel[Size];
 
         X = displayWindow.X;
         Y = displayWindow.Y;
@@ -88,12 +90,29 @@ public sealed class Compositor
     }
 
     /// <summary>
+    ///     Updates the effective palette of anything that has been drawn.
+    /// </summary>
+    /// <param name="timeStamp">
+    ///     The time at which the composition should be updated.
+    /// </param>
+    /// <param name="palette">
+    ///     The effective palette to render any <see cref="DisplayObject"/> pixel values with.
+    /// </param>
+    public void Update(PgsTimeStamp timeStamp, DisplayPalette palette)
+    {
+
+    }
+
+    /// <summary>
     ///     Inputs a <see cref="CompositorComposition"/> into the composer, causing
     ///     <see cref="Ready"/> to fire for any new <see cref="Caption"/> that becomes
     ///     available as a result.
     /// </summary>
     /// <param name="timeStamp">
-    ///     The time at which the composition should be drawn.
+    ///     The time at which the composition should be updated.
+    /// </param>
+    /// <param name="palette">
+    ///     The effective palette to render any <see cref="DisplayObject"/> pixel values with.
     /// </param>
     /// <param name="composition">
     ///     The composition operation to draw.
@@ -101,11 +120,12 @@ public sealed class Compositor
     /// <exception cref="CaptionException">
     ///     The provided <paramref name="timeStamp"/> is less than or equal to the previous one.
     /// </exception>
-    public void Draw(PgsTimeStamp timeStamp, CompositorComposition composition)
+    public void Update(PgsTimeStamp timeStamp, DisplayPalette palette
+        , CompositorComposition composition)
     {
         var compositions = new[] { composition };
 
-        Draw(timeStamp, compositions);
+        Update(timeStamp, palette, compositions);
     }
 
     /// <summary>
@@ -114,7 +134,10 @@ public sealed class Compositor
     ///     available as a result.
     /// </summary>
     /// <param name="timeStamp">
-    ///     The time at which the compositions should be drawn.
+    ///     The time at which the composition should be updated.
+    /// </param>
+    /// <param name="palette">
+    ///     The effective palette to render any <see cref="DisplayObject"/> pixel values with.
     /// </param>
     /// <param name="compositions">
     ///     A collection of composition operations to draw. If any operations are forced (via
@@ -124,7 +147,8 @@ public sealed class Compositor
     /// <exception cref="CaptionException">
     ///     The provided <paramref name="timeStamp"/> is less than or equal to the previous one.
     /// </exception>
-    public void Draw(PgsTimeStamp timeStamp, IEnumerable<CompositorComposition> compositions)
+    public void Update(PgsTimeStamp timeStamp, DisplayPalette palette
+        , IEnumerable<CompositorComposition> compositions)
     {
         var forced = false;
 
@@ -135,7 +159,7 @@ public sealed class Compositor
         // CLEAR PRIMARY PLANE
         //
 
-        Array.Copy(ClearPixels, PrimaryPixels, Size);
+        Array.Copy(ClearYcbcraPixels, PrimaryYcbcraPixels, Size);
 
         //
         // DRAW NEW/CURRENT COMPOSITIONS
@@ -145,24 +169,7 @@ public sealed class Compositor
         {
             var displayObject = composition.DisplayObject;
             var displayComposition = composition.DisplayComposition;
-            var displayPalette = composition.DisplayPalette;
-            var generatedPalette = new YcbcraPixel[256];
-
-            //
-            // GENERATE PALETTE
-            //
-
-            byte i = 0;
-
-            do
-            {
-                var pixel = displayPalette.Entries.TryGetValue(i, out YcbcraPixel entry)
-                    ? entry
-                    : default;
-
-                generatedPalette[i] = pixel;
-            }
-            while (i++ != 255);
+            var generatedPalette = PaletteArray(palette);
 
             //
             // CALCULATE POSITIONING
@@ -215,7 +222,7 @@ public sealed class Compositor
                     var dot = displayObject.Data[sBase + x];
                     var pixel = generatedPalette[dot];
 
-                    PrimaryPixels[dBase + x] = pixel;
+                    PrimaryYcbcraPixels[dBase + x] = pixel;
                 }
             }
 
@@ -243,7 +250,7 @@ public sealed class Compositor
             // We had something before but we have nothing now.
 
             var caption = new Caption(StartTimeStamp, timeStamp - StartTimeStamp, X, Y, Width
-                , Height, CopyPlane(SecondaryPixels), Forced);
+                , Height, CopyPlane(SecondaryYcbcraPixels), Forced);
 
             OnReady(caption);
         }
@@ -254,7 +261,7 @@ public sealed class Compositor
             if (state.PlanesDiffer || Forced != forced)
             {
                 var caption = new Caption(StartTimeStamp, timeStamp - StartTimeStamp, X, Y
-                    , Width, Height, CopyPlane(SecondaryPixels), Forced);
+                    , Width, Height, CopyPlane(SecondaryYcbcraPixels), Forced);
 
                 OnReady(caption);
 
@@ -270,7 +277,7 @@ public sealed class Compositor
         Forced = forced;
         LastCompositorState = state;
 
-        Array.Copy(PrimaryPixels, SecondaryPixels, Size);
+        Array.Copy(PrimaryYcbcraPixels, SecondaryYcbcraPixels, Size);
     }
 
     /// <summary>
@@ -289,7 +296,7 @@ public sealed class Compositor
         if (LastCompositorState.PrimaryPlaneDirty)
         {
             var caption = new Caption(StartTimeStamp, timeStamp - StartTimeStamp, X, Y, Width
-                , Height, CopyPlane(PrimaryPixels), Forced);
+                , Height, CopyPlane(PrimaryYcbcraPixels), Forced);
 
             OnReady(caption);
         }
@@ -306,8 +313,8 @@ public sealed class Compositor
         StartTimeStamp = default;
         LastCompositorState = new(false, false, false);
 
-        Array.Copy(ClearPixels, PrimaryPixels, Size);
-        Array.Copy(ClearPixels, SecondaryPixels, Size);
+        Array.Copy(ClearYcbcraPixels, PrimaryYcbcraPixels, Size);
+        Array.Copy(ClearYcbcraPixels, SecondaryYcbcraPixels, Size);
     }
     private Area AddOffsetToArea(Area area, int x, int y)
     {
@@ -331,9 +338,9 @@ public sealed class Compositor
 
         for (long i = 0; i < Size; i++)
         {
-            primaryPlaneDirty |= PrimaryPixels[i] != default;
-            secondaryPlaneDirty |= SecondaryPixels[i] != default;
-            planesDiffer |= PrimaryPixels[i] != SecondaryPixels[i];
+            primaryPlaneDirty |= PrimaryYcbcraPixels[i] != default;
+            secondaryPlaneDirty |= SecondaryYcbcraPixels[i] != default;
+            planesDiffer |= PrimaryYcbcraPixels[i] != SecondaryYcbcraPixels[i];
         }
 
         return new CompositorState(primaryPlaneDirty, secondaryPlaneDirty, planesDiffer);
@@ -364,6 +371,24 @@ public sealed class Compositor
     private void OnReady(Caption caption)
     {
         Ready?.Invoke(this, caption);
+    }
+
+    private YcbcraPixel[] PaletteArray(DisplayPalette palette)
+    {
+        var ycbcraPixels = new YcbcraPixel[256];
+        byte i = 0;
+
+        do
+        {
+            var pixel = palette.Entries.TryGetValue(i, out YcbcraPixel entry)
+                ? entry
+                : default;
+
+            ycbcraPixels[i] = pixel;
+        }
+        while (i++ != 255);
+
+        return ycbcraPixels;
     }
 
     /// <summary>

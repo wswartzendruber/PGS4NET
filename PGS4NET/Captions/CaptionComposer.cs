@@ -149,7 +149,7 @@ public sealed class CaptionComposer
                 throw ObjectUndefinedException;
 
             var compositorComposition = new CompositorComposition(displayComposition
-                , displayObject, displayPalette);
+                , displayObject);
 
             if (!allCompositorCompositions.ContainsKey(windowId))
                 allCompositorCompositions[windowId] = new();
@@ -167,7 +167,7 @@ public sealed class CaptionComposer
             var compositor = compositorByWindowId.Value;
 
             if (allCompositorCompositions.TryGetValue(windowId, out var compositorCompositions))
-                compositor.Draw(timeStamp, compositorCompositions);
+                compositor.Update(timeStamp, displayPalette, compositorCompositions);
             else
                 compositor.Flush(timeStamp);
         }
