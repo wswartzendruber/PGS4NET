@@ -13,14 +13,14 @@ using System;
 namespace PGS4NET;
 
 /// <summary>
-///     Represents a compositor error.
+///     Represents a PGS error.
 /// </summary>
-public class CompositorException : Exception
+public class PgsException : Exception
 {
     /// <summary>
     ///     Initializes a new instance of the class.
     /// </summary>
-    public CompositorException()
+    public PgsException()
     {
     }
 
@@ -30,7 +30,7 @@ public class CompositorException : Exception
     /// <param name="message">
     ///     The message that describes the error.
     /// </param>
-    public CompositorException(string message) : base(message)
+    public PgsException(string message) : base(message)
     {
     }
 
@@ -44,7 +44,7 @@ public class CompositorException : Exception
     /// <param name="inner">
     ///     The exception that is the cause of the current exception.
     /// </param>
-    public CompositorException(string message, Exception inner) : base(message, inner)
+    public PgsException(string message, Exception inner) : base(message, inner)
     {
     }
 }

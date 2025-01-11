@@ -15,7 +15,7 @@ namespace PGS4NET.Segments;
 /// <summary>
 ///     Represents a PGS bitstream error.
 /// </summary>
-public class SegmentException : Exception
+public class SegmentException : PgsException
 {
     /// <summary>
     ///     Initializes a new instance of the class.

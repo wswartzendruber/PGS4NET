@@ -15,7 +15,7 @@ namespace PGS4NET.DisplaySets;
 /// <summary>
 ///     Represents a display set error.
 /// </summary>
-public class DisplaySetException : Exception
+public class DisplaySetException : PgsException
 {
     /// <summary>
     ///     Initializes a new instance of the class.

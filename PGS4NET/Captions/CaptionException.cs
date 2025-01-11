@@ -15,7 +15,7 @@ namespace PGS4NET.Captions;
 /// <summary>
 ///     Represents a caption error.
 /// </summary>
-public class CaptionException : Exception
+public class CaptionException : PgsException
 {
     /// <summary>
     ///     Initializes a new instance of the class.
