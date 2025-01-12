@@ -10,13 +10,13 @@
 
 namespace PGS4NET;
 
-internal class GraphicsState
+internal class WindowState
 {
     internal readonly bool PrimaryPlaneDirty;
     internal readonly bool SecondaryPlaneDirty;
     internal readonly bool PlanesDiffer;
 
-    public GraphicsState(bool primaryPlaneDirty, bool secondaryPlaneDirty
+    public WindowState(bool primaryPlaneDirty, bool secondaryPlaneDirty
         , bool planesDiffer)
     {
         PrimaryPlaneDirty = primaryPlaneDirty;
