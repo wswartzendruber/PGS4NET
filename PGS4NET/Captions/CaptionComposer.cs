@@ -26,14 +26,16 @@ public sealed class CaptionComposer
     private static readonly CaptionException ObjectUndefinedException
         = new("A composition object referenced an undefined object ID.");
     
-    private readonly Dictionary<int, DisplayObject> StoredObjects = new();
-    private readonly Dictionary<byte, StoredWindow> StoredWindows = new();
+    private readonly Dictionary<int, AreaState> AreaStates = new();
+    private readonly Dictionary<int, DisplayObject> Objects = new();
+    private readonly Dictionary<int, DisplayPalette> Palettes = new();
+    private readonly HashSet<int> PalettesForced = new();
+    private readonly HashSet<int> YcbcrasForced = new();
 
     private int Size = 0;
     private byte[] PalettePixels = new byte[0];
     private byte[] ClearPalettePixels = new byte[0];
-    private YcbcraPixel[] PrimaryYcbcraPixels = new YcbcraPixel[0];
-    private YcbcraPixel[] SecondaryYcbcraPixels = new YcbcraPixel[0];
+    private YcbcraPixel[] YcbcraPixels = new YcbcraPixel[0];
     private YcbcraPixel[] ClearYcbcraPixels = new YcbcraPixel[0];
     private PgsTimeStamp LastTimeStamp;
 
@@ -82,30 +84,8 @@ public sealed class CaptionComposer
         if (timeStamp <= LastTimeStamp)
             throw IllegalTimeStamp;
 
-        foreach (var storedWindow in StoredWindows.Values)
+        foreach (var storedArea in AreaStates.Values)
         {
-            if (storedWindow.WindowState.PrimaryPlaneDirty)
-            {
-                var displayWindow = storedWindow.DisplayWindow;
-                var x = displayWindow.X;
-                var y = displayWindow.Y;
-                var width = displayWindow.Width;
-                var height = displayWindow.Height;
-                var size = width * height;
-                var data = new YcbcraPixel[size];
-                var dataIndex = 0;
-                var forced = storedWindow.Forced;
-
-                EachWindowPixel(displayWindow, (pixelsIndex, _, _) =>
-                {
-                    data[dataIndex++] = PrimaryYcbcraPixels[pixelsIndex];
-                });
-
-                var caption = new Caption(LastTimeStamp, timeStamp - LastTimeStamp, x, y, width
-                    , height, data, forced);
-
-                OnReady(caption);
-            }
         }
 
         Clear(timeStamp);
@@ -123,21 +103,144 @@ public sealed class CaptionComposer
     /// </exception>
     public void Input(DisplaySet displaySet)
     {
+        var timeStamp = displaySet.Pts;
+
         if (displaySet.CompositionState == CompositionState.EpochStart)
         {
             if (Pending)
-                Flush(displaySet.Pts);
+                Flush(timeStamp);
             else
                 Clear();
         }
 
         EnlargeIfNecessary(displaySet);
 
-        if (displaySet.PaletteUpdateOnly)
+        if (!displaySet.PaletteUpdateOnly)
         {
+            foreach (var dcEntry in displaySet.Compositions)
+            {
+                var dcObjectId = dcEntry.Key.ObjectId;
+                var version = 0;
+
+                foreach (var doEntry in displaySet.Objects)
+                {
+                    var doKey = doEntry.Key;
+
+                    if (doKey.Id == dcObjectId && doKey.Version >= version)
+                    {
+                        version = doKey.Version;
+                        Objects[dcObjectId] = doEntry.Value;
+                    }
+                }
+            }
+
+            foreach (var dwEntry in displaySet.Windows)
+            {
+                var dwId = dwEntry.Key;
+                var dw = dwEntry.Value;
+                var windowArea = new Area(dw.X, dw.Y, dw.Width, dw.Height);
+
+                EachAreaPixel(windowArea, planeIndex =>
+                {
+                    PalettePixels[planeIndex] = default;
+                });
+
+                foreach (var dcEntry in displaySet.Compositions)
+                {
+                    if (dcEntry.Key.WindowId == dwId)
+                    {
+                        var dcObjectId = dcEntry.Key.ObjectId;
+                        var dc = dcEntry.Value;
+
+                        if (dc.Forced)
+                            PalettesForced.Add(dcObjectId);
+                        
+                        if (!Objects.TryGetValue(dcObjectId, out var do_))
+                            throw ObjectUndefinedException;
+
+                        var objectData = do_.Data;
+                        
+                        if (dc.Crop is Area crop)
+                        {
+                            var objectArea = new Area(dc.X, dc.Y, crop.Width, crop.Height);
+                            var objectCropData = new byte[crop.Width * crop.Height];
+                            var objectReadCropDataIndex = 0;
+                            var objectWriteCropDataIndex = 0;
+
+                            EachAreaPixel(do_, crop, objectDataIndex =>
+                            {
+                                objectCropData[objectWriteCropDataIndex++]
+                                    = objectData[objectDataIndex];
+                            });
+                            EachAreaPixel(objectArea, planeIndex =>
+                            {
+                                PalettePixels[planeIndex]
+                                    = objectCropData[objectReadCropDataIndex++];
+                            });
+
+                            AreaStates[dcObjectId] = new AreaState(objectArea, dc.Forced);
+                        }
+                        else
+                        {
+                            var objectArea = new Area(dc.X, dc.Y, do_.Width, do_.Height);
+                            var objectDataIndex = 0;
+
+                            EachAreaPixel(objectArea, planeIndex =>
+                            {
+                                PalettePixels[planeIndex] = objectData[objectDataIndex++];
+                            });
+
+                            AreaStates[dcObjectId] = new AreaState(objectArea, dc.Forced);
+                        }
+                    }
+                }
+            }
         }
-        else
+
+        var areaStatesToRemove = new HashSet<int>();
+        YcbcraPixel[]? paletteArray = null;
+
+        foreach (var areaStateEntry in AreaStates)
         {
+            if (paletteArray is null)
+            {
+                if (!Palettes.TryGetValue(displaySet.PaletteId, out var displayPalette))
+                    throw PaletteUndefinedException;
+
+                paletteArray = PaletteArray(displayPalette);
+            }
+
+            var areaState = areaStateEntry.Value;
+            var anything = false;
+            var different = false;
+
+            EachAreaPixel(areaState.Area, planeIndex =>
+            {
+                var oldYcbcraPixel = YcbcraPixels[planeIndex];
+                var newYcbcraPixel = paletteArray[PalettePixels[planeIndex]];
+
+                anything |= newYcbcraPixel != default;
+                different |= newYcbcraPixel != oldYcbcraPixel;
+
+                YcbcraPixels[planeIndex] = newYcbcraPixel;
+            });
+
+            if (different)
+            {
+                OnReady(AreaToCaption(areaState.Area));
+
+                areaState.PendingTimeStamp = anything ? timeStamp : null;
+
+                if (!anything)
+                    areaStatesToRemove.Add(areaStateEntry.Key);
+            }
+        }
+
+        LastTimeStamp = timeStamp;
+
+        foreach (var objectId in areaStatesToRemove)
+        { 
+            AreaStates.Remove(objectId);
 
         }
     }
@@ -147,17 +250,34 @@ public sealed class CaptionComposer
     /// </summary>
     public void Reset()
     {
-        StoredObjects.Clear();
-        StoredWindows.Clear();
+        AreaStates.Clear();
+        Objects.Clear();
+        Palettes.Clear();
+        PaletteForced.Clear();
+        YcbcraForced.Clear();
         Width = 0;
         Height = 0;
         Size = 0;
         PalettePixels = new byte[Size];
         ClearPalettePixels = new byte[Size];
-        PrimaryYcbcraPixels = new YcbcraPixel[Size];
-        SecondaryYcbcraPixels = new YcbcraPixel[Size];
+        YcbcraPixels = new YcbcraPixel[Size];
         ClearYcbcraPixels = new YcbcraPixel[Size];
         LastTimeStamp = default;
+    }
+
+    private Caption AreaToCaption(Area area, PgsTimeStamp timeStamp, PgsTimeStamp duration
+        , bool forced)
+    {
+        var data = new YcbcraPixel[area.Width * area.Height];
+        var dataIndex = 0;
+
+        EachAreaPixel(area, planeIndex =>
+        {
+            data[dataIndex++] = YcbcraPixels[planeIndex];
+        });
+
+        return new Caption(timeStamp, duration, area.X, area.Y, area.Width, area.Height, data
+            , forced);
     }
 
     private void Clear(PgsTimeStamp timeStamp)
@@ -168,41 +288,27 @@ public sealed class CaptionComposer
 
     private void Clear()
     {
-        StoredObjects.Clear();
-        StoredWindows.Clear();
+        AreaStates.Clear();
+        Objects.Clear();
+        Palettes.Clear();
+        PaletteForced.Clear();
+        YcbcraForced.Clear();
         Array.Copy(ClearPalettePixels, PalettePixels, Size);
-        Array.Copy(ClearYcbcraPixels, PrimaryYcbcraPixels, Size);
-        Array.Copy(ClearYcbcraPixels, SecondaryYcbcraPixels, Size);
+        Array.Copy(ClearYcbcraPixels, YcbcraPixels, Size);
     }
 
-    private WindowState DetermineWindowState(DisplayWindow displayWindow)
+    private void EachAreaPixel(Area area, Action<int> action)
     {
-        bool primaryPlaneDirty = false;
-        bool secondaryPlaneDirty = false;
-        bool planesDiffer = false;
-
-        EachWindowPixel(displayWindow, (index, _, _) =>
-        {
-            primaryPlaneDirty |= PrimaryYcbcraPixels[index] != default;
-            secondaryPlaneDirty |= SecondaryYcbcraPixels[index] != default;
-            planesDiffer |= PrimaryYcbcraPixels[index] != SecondaryYcbcraPixels[index];
-        });
-
-        return new WindowState(primaryPlaneDirty, secondaryPlaneDirty, planesDiffer);
-    }
-
-    private void EachWindowPixel(DisplayWindow displayWindow, Action<int, int, int> action)
-    {
-        var iStart = Width * displayWindow.Y;
-        var iEnd = Width * (displayWindow.Y + displayWindow.Height);
+        var iStart = Width * area.Y;
+        var iEnd = Width * (area.Y + area.Height);
 
         for (var i = iStart; i < iEnd; i += Width)
         {
-            var jStart = i + displayWindow.X;
-            var jEnd = jStart + displayWindow.Width;
+            var jStart = i + area.X;
+            var jEnd = jStart + area.Width;
 
             for (var j = jStart; j < jEnd; j++)
-                action(j, j % Width, j / Width);
+                action(j);
         }
     }
 
@@ -214,10 +320,9 @@ public sealed class CaptionComposer
         if (newWidth > Width || newHeight > Height)
         {
             var oldPalettePixels = PalettePixels;
-            var oldPrimaryYcbcraPixels = PrimaryYcbcraPixels;
-            var oldSecondaryYcbcraPixels = SecondaryYcbcraPixels;
+            var oldYcbcraPixels = YcbcraPixels;
             var newSize = newWidth * newHeight;
-            var fauxDisplayWindow = new DisplayWindow(0, 0, Width, Height);
+            var area = new Area(0, 0, Width, Height);
             var oldIndex = 0;
 
             Width = newWidth;
@@ -225,15 +330,13 @@ public sealed class CaptionComposer
             Size = newWidth * newHeight;
             PalettePixels = new byte[Size];
             ClearPalettePixels = new byte[Size];
-            PrimaryYcbcraPixels = new YcbcraPixel[Size];
-            SecondaryYcbcraPixels = new YcbcraPixel[Size];
+            YcbcraPixels = new YcbcraPixel[Size];
             ClearYcbcraPixels = new YcbcraPixel[Size];
 
-            EachWindowPixel(fauxDisplayWindow, (newIndex, _, _) =>
+            EachAreaPixel(area, newIndex =>
             {
                 PalettePixels[newIndex] = oldPalettePixels[oldIndex];
-                PrimaryYcbcraPixels[newIndex] = oldPrimaryYcbcraPixels[oldIndex];
-                SecondaryYcbcraPixels[newIndex] = oldSecondaryYcbcraPixels[oldIndex];
+                YcbcraPixels[newIndex] = oldYcbcraPixels[oldIndex];
 
                 oldIndex++;
             });
@@ -245,86 +348,43 @@ public sealed class CaptionComposer
         Ready?.Invoke(this, caption);
     }
 
-    private void PostProcessRegion(PgsTimeStamp timeStamp, StoredWindow storedWindow
-        , bool isForced)
-    {
-        var displayWindow = storedWindow.DisplayWindow;
-        var wasForced = storedWindow.Forced;
-        var state = DetermineWindowState(displayWindow);
-
-        if (!state.PrimaryPlaneDirty && !state.SecondaryPlaneDirty)
-        {
-            // We had nothing before and we have nothing now.
-        }
-        else if (state.PrimaryPlaneDirty && !state.SecondaryPlaneDirty)
-        {
-            // We had nothing before but we have something now.
-
-            LastTimeStamp = timeStamp;
-        }
-        else if (!state.PrimaryPlaneDirty && state.SecondaryPlaneDirty)
-        {
-            // We had something before but we have nothing now.
-
-            var x = displayWindow.X;
-            var y = displayWindow.Y;
-            var width = displayWindow.Width;
-            var height = displayWindow.Height;
-            var size = width * height;
-            var data = new YcbcraPixel[size];
-            var dataIndex = 0;
-
-            EachWindowPixel(displayWindow, (pixelsIndex, _, _) =>
-            {
-                data[dataIndex++] = SecondaryYcbcraPixels[pixelsIndex];
-            });
-
-            var caption = new Caption(LastTimeStamp, timeStamp - LastTimeStamp, x, y, width
-                , height, data, wasForced);
-
-            OnReady(caption);
-        }
-        else if (state.PrimaryPlaneDirty && state.SecondaryPlaneDirty)
-        {
-            // We had something before and we have something now.
-
-            if (state.PlanesDiffer || wasForced != isForced)
-            {
-                var x = displayWindow.X;
-                var y = displayWindow.Y;
-                var width = displayWindow.Width;
-                var height = displayWindow.Height;
-                var size = width * height;
-                var data = new YcbcraPixel[size];
-                var dataIndex = 0;
-
-                EachWindowPixel(displayWindow, (pixelsIndex, _, _) =>
-                {
-                    data[dataIndex++] = SecondaryYcbcraPixels[pixelsIndex];
-                });
-
-                var caption = new Caption(LastTimeStamp, timeStamp - LastTimeStamp, x, y, width
-                    , height, data, wasForced);
-
-                OnReady(caption);
-
-                LastTimeStamp = timeStamp;
-            }
-        }
-        else
-        {
-            // We shouldn't ever be here...
-            throw new InvalidOperationException("Illegal state.");
-        }
-
-        storedWindow.Forced = isForced;
-        storedWindow.WindowState = state;
-
-        Array.Copy(PrimaryYcbcraPixels, SecondaryYcbcraPixels, Size);
-    }
-
     /// <summary>
     ///     Fires when a new <see cref="Caption"/> is ready.
     /// </summary>
     public event EventHandler<Caption>? Ready;
+
+    private static void EachAreaPixel(DisplayObject displayObject, Area area
+        , Action<int> action)
+    {
+        var doWidth = displayObject.Width;
+        var iStart = doWidth * area.Y;
+        var iEnd = doWidth * (area.Y + area.Height);
+
+        for (var i = iStart; i < iEnd; i += doWidth)
+        {
+            var jStart = i + area.X;
+            var jEnd = jStart + area.Width;
+
+            for (var j = jStart; j < jEnd; j++)
+                action(j);
+        }
+    }
+
+    private static YcbcraPixel[] PaletteArray(DisplayPalette displayPalette)
+    {
+        var ycbcraPixels = new YcbcraPixel[256];
+        byte i = 0;
+
+        do
+        {
+            var pixel = displayPalette.Entries.TryGetValue(i, out YcbcraPixel entry)
+                ? entry
+                : default;
+
+            ycbcraPixels[i] = pixel;
+        }
+        while (i++ != 255);
+
+        return ycbcraPixels;
+    }
 }
