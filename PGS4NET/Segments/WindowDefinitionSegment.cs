@@ -51,8 +51,8 @@ public class WindowDefinitionSegment : Segment
     ///     Defines the window regions within the screen for this epoch. All definitions within
     ///     an epoch should match and be defined for every display set of that epoch.
     /// </param>
-    public WindowDefinitionSegment(PgsTimeStamp pts, PgsTimeStamp dts
-        , IList<WindowDefinitionEntry> definitions) : base(pts, dts)
+    public WindowDefinitionSegment(PgsTimeStamp pts, PgsTimeStamp dts,
+        IList<WindowDefinitionEntry> definitions) : base(pts, dts)
     {
         Definitions = definitions;
     }

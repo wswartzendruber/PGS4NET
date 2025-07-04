@@ -59,18 +59,18 @@ internal static class DisplaySetInstances
                 {
                     {
                         RandomByte(64),
-                        new DisplayWindow(RandomUInt16(), RandomUInt16(), RandomUInt16()
-                            , RandomUInt16())
+                        new DisplayWindow(RandomUInt16(), RandomUInt16(), RandomUInt16(),
+                            RandomUInt16())
                     },
                     {
                         (byte)(RandomByte(64) + 64),
-                        new DisplayWindow(RandomUInt16(), RandomUInt16(), RandomUInt16()
-                            , RandomUInt16())
+                        new DisplayWindow(RandomUInt16(), RandomUInt16(), RandomUInt16(),
+                            RandomUInt16())
                     },
                     {
                         (byte)(RandomByte(64) + 128),
-                        new DisplayWindow(RandomUInt16(), RandomUInt16(), RandomUInt16()
-                            , RandomUInt16())
+                        new DisplayWindow(RandomUInt16(), RandomUInt16(), RandomUInt16(),
+                            RandomUInt16())
                     },
                 },
                 Palettes = new Dictionary<VersionedId<byte>, DisplayPalette>
@@ -92,8 +92,8 @@ internal static class DisplaySetInstances
                             {
                                 {
                                     RandomByte(),
-                                    new YcbcraPixel(RandomByte(), RandomByte(), RandomByte()
-                                        , RandomByte())
+                                    new YcbcraPixel(RandomByte(), RandomByte(), RandomByte(),
+                                        RandomByte())
                                 },
                             },
                         }
@@ -106,18 +106,18 @@ internal static class DisplaySetInstances
                             {
                                 {
                                     RandomByte(64),
-                                    new YcbcraPixel(RandomByte(), RandomByte(), RandomByte()
-                                        , RandomByte())
+                                    new YcbcraPixel(RandomByte(), RandomByte(), RandomByte(),
+                                        RandomByte())
                                 },
                                 {
                                     (byte)(RandomByte(64) + 64),
-                                    new YcbcraPixel(RandomByte(), RandomByte(), RandomByte()
-                                        , RandomByte())
+                                    new YcbcraPixel(RandomByte(), RandomByte(), RandomByte(),
+                                        RandomByte())
                                 },
                                 {
                                     (byte)(RandomByte(64) + 128),
-                                    new YcbcraPixel(RandomByte(), RandomByte(), RandomByte()
-                                        , RandomByte())
+                                    new YcbcraPixel(RandomByte(), RandomByte(), RandomByte(),
+                                        RandomByte())
                                 },
                             },
                         }
@@ -130,23 +130,23 @@ internal static class DisplaySetInstances
                         RandomDisplayObject()
                     },
                     {
-                        new VersionedId<int>(RandomUInt16(128) + 128
-                            , RandomByte()),
+                        new VersionedId<int>(RandomUInt16(128) + 128,
+                            RandomByte()),
                         RandomDisplayObject()
                     },
                     {
-                        new VersionedId<int>(RandomUInt16(128) + 256
-                            , RandomByte()),
+                        new VersionedId<int>(RandomUInt16(128) + 256,
+                            RandomByte()),
                         RandomDisplayObject()
                     },
                     {
-                        new VersionedId<int>(RandomUInt16(128) + 384
-                            , RandomByte()),
+                        new VersionedId<int>(RandomUInt16(128) + 384,
+                            RandomByte()),
                         RandomDisplayObject()
                     },
                     {
-                        new VersionedId<int>(RandomUInt16(128) + 512
-                            , RandomByte()),
+                        new VersionedId<int>(RandomUInt16(128) + 512,
+                            RandomByte()),
                         RandomDisplayObject()
                     },
                 },
@@ -171,8 +171,8 @@ internal static class DisplaySetInstances
                             X = RandomUInt16(),
                             Y = RandomUInt16(),
                             Forced = false,
-                            Crop = new Area(RandomUInt16(), RandomUInt16(), RandomUInt16()
-                                , RandomUInt16()),
+                            Crop = new Area(RandomUInt16(), RandomUInt16(), RandomUInt16(),
+                                RandomUInt16()),
                         }
                     },
                     {
@@ -182,8 +182,8 @@ internal static class DisplaySetInstances
                             X = RandomUInt16(),
                             Y = RandomUInt16(),
                             Forced = true,
-                            Crop = new Area(RandomUInt16(), RandomUInt16(), RandomUInt16()
-                                , RandomUInt16()),
+                            Crop = new Area(RandomUInt16(), RandomUInt16(), RandomUInt16(),
+                                RandomUInt16()),
                         }
                     },
                 },

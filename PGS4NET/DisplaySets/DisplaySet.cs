@@ -180,13 +180,12 @@ public class DisplaySet
     ///     The collection of <see cref="DisplayComposition"/>s, which map
     ///     <see cref="DisplayObject"/>s to <see cref="DisplayWindow"/>s.
     /// </param>
-    public DisplaySet(PgsTimeStamp pts, PgsTimeStamp dts, int width, int height
-        , byte frameRate, bool paletteUpdateOnly, byte paletteId
-        , IDictionary<byte, DisplayWindow> windows
-        , IDictionary<VersionedId<byte>, DisplayPalette> palettes
-        , IDictionary<VersionedId<int>, DisplayObject> objects, int compositionNumber
-        , CompositionState compositionState
-        , IDictionary<CompositionId, DisplayComposition> compositions)
+    public DisplaySet(PgsTimeStamp pts, PgsTimeStamp dts, int width, int height, byte frameRate,
+        bool paletteUpdateOnly, byte paletteId, IDictionary<byte, DisplayWindow> windows,
+        IDictionary<VersionedId<byte>, DisplayPalette> palettes,
+        IDictionary<VersionedId<int>, DisplayObject> objects, int compositionNumber,
+        CompositionState compositionState,
+        IDictionary<CompositionId, DisplayComposition> compositions)
     {
         Pts = pts;
         Dts = dts;

@@ -33,16 +33,16 @@ public sealed class DisplaySetDecomposer
         foreach (var item in displaySet.Compositions)
         {
             var cid = new CompositionId(item.Key.ObjectId, item.Key.WindowId);
-            var co = new CompositionObject(cid, item.Value.X, item.Value.Y, item.Value.Forced
-                , item.Value.Crop);
+            var co = new CompositionObject(cid, item.Value.X, item.Value.Y, item.Value.Forced,
+                item.Value.Crop);
 
             compositionObjects.Add(co);
         }
 
-        var pcs = new PresentationCompositionSegment(displaySet.Pts, displaySet.Dts
-            , displaySet.Width, displaySet.Height, displaySet.FrameRate
-            , displaySet.CompositionNumber, displaySet.CompositionState
-            , displaySet.PaletteUpdateOnly, displaySet.PaletteId, compositionObjects);
+        var pcs = new PresentationCompositionSegment(displaySet.Pts, displaySet.Dts,
+            displaySet.Width, displaySet.Height, displaySet.FrameRate,
+            displaySet.CompositionNumber, displaySet.CompositionState,
+            displaySet.PaletteUpdateOnly, displaySet.PaletteId, compositionObjects);
 
         OnReady(pcs);
 
@@ -52,12 +52,12 @@ public sealed class DisplaySetDecomposer
 
             foreach (var window in displaySet.Windows)
             {
-                windowEntries.Add(new WindowDefinitionEntry(window.Key, window.Value.X
-                    , window.Value.Y, window.Value.Width, window.Value.Height));
+                windowEntries.Add(new WindowDefinitionEntry(window.Key, window.Value.X,
+                    window.Value.Y, window.Value.Width, window.Value.Height));
             }
 
-            var wds = new WindowDefinitionSegment(displaySet.Pts, displaySet.Dts
-                , windowEntries);
+            var wds = new WindowDefinitionSegment(displaySet.Pts, displaySet.Dts,
+                windowEntries);
 
             OnReady(wds);
         }
@@ -68,23 +68,23 @@ public sealed class DisplaySetDecomposer
 
             foreach (var paletteEntry in palette.Value.Entries)
             {
-                var pixel = new YcbcraPixel(paletteEntry.Value.Y, paletteEntry.Value.Cb
-                    , paletteEntry.Value.Cr, paletteEntry.Value.Alpha);
+                var pixel = new YcbcraPixel(paletteEntry.Value.Y, paletteEntry.Value.Cb,
+                    paletteEntry.Value.Cr, paletteEntry.Value.Alpha);
                 var pde = new PaletteDefinitionEntry(paletteEntry.Key, pixel);
 
                 paletteEntries.Add(pde);
             }
 
-            var pds = new PaletteDefinitionSegment(displaySet.Pts, displaySet.Dts, palette.Key
-                , paletteEntries);
+            var pds = new PaletteDefinitionSegment(displaySet.Pts, displaySet.Dts, palette.Key,
+                paletteEntries);
 
             OnReady(pds);
         }
 
         foreach (var displayObject in displaySet.Objects)
         {
-            var data = Rle.Compress(displayObject.Value.Data, displayObject.Value.Width
-                , displayObject.Value.Height);
+            var data = Rle.Compress(displayObject.Value.Data, displayObject.Value.Width,
+                displayObject.Value.Height);
 
             if (data.Length > InitialObjectDefinitionSegment.MaxDataSize)
             {
@@ -94,9 +94,9 @@ public sealed class DisplaySetDecomposer
 
                 Array.Copy(data, iodsBuffer, iodsBuffer.Length);
 
-                var iods = new InitialObjectDefinitionSegment(displaySet.Pts, displaySet.Dts
-                    , displayObject.Key, displayObject.Value.Width, displayObject.Value.Height
-                    , (long)data.Length + 4, iodsBuffer);
+                var iods = new InitialObjectDefinitionSegment(displaySet.Pts, displaySet.Dts,
+                    displayObject.Key, displayObject.Value.Width, displayObject.Value.Height,
+                    (long)data.Length + 4, iodsBuffer);
 
                 OnReady(iods);
 
@@ -109,8 +109,8 @@ public sealed class DisplaySetDecomposer
 
                     Array.Copy(data, index, modsBuffer, 0, modsBuffer.Length);
 
-                    var mods = new MiddleObjectDefinitionSegment(displaySet.Pts, displaySet.Dts
-                        , displayObject.Key,  modsBuffer);
+                    var mods = new MiddleObjectDefinitionSegment(displaySet.Pts, displaySet.Dts,
+                        displayObject.Key, modsBuffer);
 
                     OnReady(mods);
 
@@ -122,16 +122,16 @@ public sealed class DisplaySetDecomposer
 
                 Array.Copy(data, index, fodsBuffer, 0, fodsBuffer.Length);
 
-                var fods = new FinalObjectDefinitionSegment(displaySet.Pts, displaySet.Dts
-                    , displayObject.Key, fodsBuffer);
+                var fods = new FinalObjectDefinitionSegment(displaySet.Pts, displaySet.Dts,
+                    displayObject.Key, fodsBuffer);
 
                 OnReady(fods);
             }
             else
             {
-                var sods = new SingleObjectDefinitionSegment(displaySet.Pts, displaySet.Dts
-                    , displayObject.Key, displayObject.Value.Width, displayObject.Value.Height
-                    , data);
+                var sods = new SingleObjectDefinitionSegment(displaySet.Pts, displaySet.Dts,
+                    displayObject.Key, displayObject.Value.Width, displayObject.Value.Height,
+                    data);
 
                 OnReady(sods);
             }

@@ -57,8 +57,8 @@ public class SingleObjectDefinitionSegment : ObjectDefinitionSegment
     /// <param name="data">
     ///     The RLE-compressed data for this portion of the completed object.
     /// </param>
-    public SingleObjectDefinitionSegment(PgsTimeStamp pts, PgsTimeStamp dts
-        , VersionedId<int> versionedId, int width, int height, byte[] data)
+    public SingleObjectDefinitionSegment(PgsTimeStamp pts, PgsTimeStamp dts,
+        VersionedId<int> versionedId, int width, int height, byte[] data)
         : base(pts, dts, versionedId, data)
     {
         Width = width;

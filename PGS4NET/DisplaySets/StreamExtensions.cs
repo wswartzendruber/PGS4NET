@@ -17,8 +17,8 @@ public static class StreamExtensions
     }
 
 #if NETSTANDARD2_1_OR_GREATER
-    public static async IAsyncEnumerable<DisplaySet> DisplaySetsAsync(this Stream stream
-        , [EnumeratorCancellation] CancellationToken cancellationToken = default)
+    public static async IAsyncEnumerable<DisplaySet> DisplaySetsAsync(this Stream stream,
+        [EnumeratorCancellation] CancellationToken cancellationToken = default)
     {
         using var reader = new DisplaySetReader(stream, true);
 
@@ -38,8 +38,8 @@ public static class StreamExtensions
         return displaySets;
     }
 
-    public static async Task<IList<DisplaySet>> ReadAllDisplaySetsAsync(this Stream stream
-        , CancellationToken cancellationToken = default)
+    public static async Task<IList<DisplaySet>> ReadAllDisplaySetsAsync(this Stream stream,
+        CancellationToken cancellationToken = default)
     {
         var displaySets = new List<DisplaySet>();
         using var reader = new DisplaySetReader(stream, true);
@@ -58,8 +58,8 @@ public static class StreamExtensions
             writer.Write(displaySet);
     }
 
-    public static async Task WriteAllDisplaySetsAsync(this Stream stream
-        , IEnumerable<DisplaySet> displaySets,  CancellationToken cancellationToken = default)
+    public static async Task WriteAllDisplaySetsAsync(this Stream stream,
+        IEnumerable<DisplaySet> displaySets, CancellationToken cancellationToken = default)
     {
         using var writer = new DisplaySetWriter(stream, true);
 
@@ -68,8 +68,8 @@ public static class StreamExtensions
     }
 
 #if NETSTANDARD2_1_OR_GREATER
-    public static async Task WriteAllDisplaySetsAsync(this Stream stream
-        , IAsyncEnumerable<DisplaySet> displaySets, CancellationToken cancellationToken = default)
+    public static async Task WriteAllDisplaySetsAsync(this Stream stream,
+        IAsyncEnumerable<DisplaySet> displaySets, CancellationToken cancellationToken = default)
     {
         using var writer = new DisplaySetWriter(stream, true);
 

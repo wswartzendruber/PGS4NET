@@ -71,8 +71,8 @@ public class InitialObjectDefinitionSegment : ObjectDefinitionSegment
     /// <param name="data">
     ///     The RLE-compressed data for this portion of the completed object.
     /// </param>
-    public InitialObjectDefinitionSegment(PgsTimeStamp pts, PgsTimeStamp dts
-        , VersionedId<int> versionedId, int width, int height, long length, byte[] data)
+    public InitialObjectDefinitionSegment(PgsTimeStamp pts, PgsTimeStamp dts,
+        VersionedId<int> versionedId, int width, int height, long length, byte[] data)
         : base(pts, dts, versionedId, data)
     {
         Length = length;

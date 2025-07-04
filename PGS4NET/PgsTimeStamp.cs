@@ -56,8 +56,8 @@ public struct PgsTimeStamp : IEquatable<PgsTimeStamp>, IComparable<PgsTimeStamp>
     {
         if (milliseconds > MaxMilliseconds)
         {
-            throw new ArgumentOutOfRangeException("milliseconds", milliseconds
-                , "The milliseconds value cannot exceed 47,721,858.");
+            throw new ArgumentOutOfRangeException("milliseconds", milliseconds,
+                "The milliseconds value cannot exceed 47,721,858.");
         }
 
         return new PgsTimeStamp(milliseconds * 90);

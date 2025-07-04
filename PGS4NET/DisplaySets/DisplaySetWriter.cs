@@ -105,8 +105,8 @@ public class DisplaySetWriter : IDisposable
     /// <exception cref="IOException">
     ///     An underlying I/O error occurs while attempting to write a <see cref="Segment"/>.
     /// </exception>
-    public async Task WriteAsync(DisplaySet displaySet
-        , CancellationToken cancellationToken = default)
+    public async Task WriteAsync(DisplaySet displaySet,
+        CancellationToken cancellationToken = default)
     {
         Decomposer.Input(displaySet);
 

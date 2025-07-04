@@ -134,8 +134,8 @@ public class SegmentReader : IDisposable
     public async Task<Segment?> ReadAsync(CancellationToken cancellationToken = default)
     {
         var headerBuffer = new byte[13];
-        var headerBytesRead = await Input.ReadAsync(headerBuffer, 0, headerBuffer.Length
-            , cancellationToken);
+        var headerBytesRead = await Input.ReadAsync(headerBuffer, 0, headerBuffer.Length,
+            cancellationToken);
 
         if (headerBytesRead == 0)
             return null;
@@ -157,8 +157,8 @@ public class SegmentReader : IDisposable
         var size = ReadUInt16Be(headerBuffer, 11)
             ?? throw new InvalidOperationException();
         var payloadBuffer = new byte[size];
-        var payloadBytesRead = await Input.ReadAsync(payloadBuffer, 0, payloadBuffer.Length
-            , cancellationToken);
+        var payloadBytesRead = await Input.ReadAsync(payloadBuffer, 0, payloadBuffer.Length,
+            cancellationToken);
 
         if (payloadBytesRead != payloadBuffer.Length)
             throw new IOException("EOF reading segment payload.");
@@ -271,9 +271,9 @@ public class SegmentReader : IDisposable
             compositionObjects.Add(co);
         }
 
-        return new PresentationCompositionSegment(pts, dts, width, height, frameRate
-            , compositionNumber, compositionState, paletteUpdateOnly, paletteId
-            , compositionObjects);
+        return new PresentationCompositionSegment(pts, dts, width, height, frameRate,
+            compositionNumber, compositionState, paletteUpdateOnly, paletteId,
+            compositionObjects);
     }
 
     private static WindowDefinitionSegment ParseWds(byte[] buffer, long pts, long dts)
@@ -356,8 +356,8 @@ public class SegmentReader : IDisposable
         };
     }
 
-    private static SingleObjectDefinitionSegment ParseSods(byte[] buffer, long pts, long dts
-        , int id, byte version)
+    private static SingleObjectDefinitionSegment ParseSods(byte[] buffer, long pts, long dts,
+        int id, byte version)
     {
         var versionedId = new VersionedId<int>(id, version);
         var dataLength = ReadUInt24Be(buffer, 4)
@@ -377,8 +377,8 @@ public class SegmentReader : IDisposable
         return new SingleObjectDefinitionSegment(pts, dts, versionedId, width, height, data);
     }
 
-    private static InitialObjectDefinitionSegment ParseIods(byte[] buffer, long pts, long dts
-        , int id, byte version)
+    private static InitialObjectDefinitionSegment ParseIods(byte[] buffer, long pts, long dts,
+        int id, byte version)
     {
         var versionedId = new VersionedId<int>(id, version);
         var dataLength = ReadUInt24Be(buffer, 4)
@@ -391,12 +391,12 @@ public class SegmentReader : IDisposable
 
         Array.Copy(buffer, 11, data, 0, data.Length);
 
-        return new InitialObjectDefinitionSegment(pts, dts, versionedId, width, height
-            , dataLength, data);
+        return new InitialObjectDefinitionSegment(pts, dts, versionedId, width, height,
+            dataLength, data);
     }
 
-    private static MiddleObjectDefinitionSegment ParseMods(byte[] buffer, long pts, long dts
-        , int id, byte version)
+    private static MiddleObjectDefinitionSegment ParseMods(byte[] buffer, long pts, long dts,
+        int id, byte version)
     {
         var versionedId = new VersionedId<int>(id, version);
         var data = new byte[buffer.Length - 4];
@@ -406,8 +406,8 @@ public class SegmentReader : IDisposable
         return new MiddleObjectDefinitionSegment(pts, dts, versionedId, data);
     }
 
-    private static FinalObjectDefinitionSegment ParseFods(byte[] buffer, long pts, long dts
-        , int id, byte version)
+    private static FinalObjectDefinitionSegment ParseFods(byte[] buffer, long pts, long dts,
+        int id, byte version)
     {
         var versionedId = new VersionedId<int>(id, version);
         var data = new byte[buffer.Length - 4];

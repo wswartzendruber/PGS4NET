@@ -55,15 +55,15 @@ public static class BitmapExtensions
     /// <returns>
     ///     A PGS4NET caption.
     /// </returns>
-    public static Caption ToCaption(this Bitmap bitmap, Point location, PgsTimeStamp timeStamp
-        , PgsTimeStamp duration, bool forced, ColorSpace colorSpace, bool limitedRange = true)
+    public static Caption ToCaption(this Bitmap bitmap, Point location, PgsTimeStamp timeStamp,
+        PgsTimeStamp duration, bool forced, ColorSpace colorSpace, bool limitedRange = true)
     {
         var x = Convert.ToUInt16(location.X);
         var y = Convert.ToUInt16(location.Y);
         var width = Convert.ToUInt16(bitmap.Width);
         var height = Convert.ToUInt16(bitmap.Height);
-        var data = bitmap.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.ReadOnly
-            , bitmap.PixelFormat);
+        var data = bitmap.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.ReadOnly,
+            bitmap.PixelFormat);
         var pointer = data.Scan0;
         var stride = Math.Abs(data.Stride);
         var length = stride * bitmap.Height;

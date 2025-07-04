@@ -205,8 +205,8 @@ public class RleTests
         catch (ArgumentException ae)
         {
             Assert.Equal(
-                "The width and height parameters may not be zero unless both are zero."
-                , ae.Message);
+                "The width and height parameters may not be zero unless both are zero.",
+                ae.Message);
         }
     }
 
@@ -224,8 +224,8 @@ public class RleTests
         catch (ArgumentException ae)
         {
             Assert.Equal(
-                "The width and height parameters may not be zero unless both are zero."
-                , ae.Message);
+                "The width and height parameters may not be zero unless both are zero.",
+                ae.Message);
         }
     }
 

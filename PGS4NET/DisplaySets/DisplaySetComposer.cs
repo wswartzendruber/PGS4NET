@@ -118,8 +118,8 @@ public sealed class DisplaySetComposer
 
                     foreach (var entry in pds.Entries)
                     {
-                        entries[entry.Id] = new YcbcraPixel(entry.Pixel.Y, entry.Pixel.Cb
-                            , entry.Pixel.Cr, entry.Pixel.Alpha);
+                        entries[entry.Id] = new YcbcraPixel(entry.Pixel.Y, entry.Pixel.Cb,
+                            entry.Pixel.Cr, entry.Pixel.Alpha);
                     }
 
                     Palettes[vid] = new DisplayPalette(entries);
@@ -140,8 +140,9 @@ public sealed class DisplaySetComposer
                         if (Objects.ContainsKey(vid))
                             throw DuplicateObjectVid;
 
-                        Objects[vid] = new DisplayObject(sods.Width, sods.Height
-                            , Rle.Decompress(sods.Data, sods.Width, sods.Height));
+                        var pixels = Rle.Decompress(sods.Data, sods.Width, sods.Height);
+
+                        Objects[vid] = new DisplayObject(sods.Width, sods.Height, pixels);
                     }
                     else
                     {
@@ -218,9 +219,11 @@ public sealed class DisplaySetComposer
                             data.AddRange(middleObject.Data);
                         data.AddRange(fods.Data);
 
-                        Objects[vid] = new DisplayObject(InitialObject.Width
-                            , InitialObject.Height, Rle.Decompress(data.ToArray()
-                            , InitialObject.Width, InitialObject.Height));
+                        var pixels = Rle.Decompress(data.ToArray(), InitialObject.Width,
+                            InitialObject.Height);
+
+                        Objects[vid] = new DisplayObject(InitialObject.Width,
+                            InitialObject.Height, pixels);
 
                         InitialObject = null;
                         MiddleObjects.Clear();
@@ -244,17 +247,17 @@ public sealed class DisplaySetComposer
 
                     foreach (var compositionObject in Pcs.CompositionObjects)
                     {
-                        var cid = new CompositionId(compositionObject.Id.ObjectId
-                            , compositionObject.Id.WindowId);
+                        var cid = new CompositionId(compositionObject.Id.ObjectId,
+                            compositionObject.Id.WindowId);
 
-                        Compositions[cid] = new DisplayComposition(compositionObject.X
-                            , compositionObject.Y, compositionObject.Forced
-                            , compositionObject.Crop);
+                        Compositions[cid] = new DisplayComposition(compositionObject.X,
+                            compositionObject.Y, compositionObject.Forced,
+                            compositionObject.Crop);
                     }
 
-                    var newDisplaySet = new DisplaySet(Pcs.Pts, Pcs.Dts, Pcs.Width, Pcs.Height
-                        , Pcs.FrameRate, Pcs.PaletteUpdateOnly, Pcs.PaletteId, Windows
-                        , Palettes, Objects, Pcs.Number, Pcs.State, Compositions);
+                    var newDisplaySet = new DisplaySet(Pcs.Pts, Pcs.Dts, Pcs.Width, Pcs.Height,
+                        Pcs.FrameRate, Pcs.PaletteUpdateOnly, Pcs.PaletteId, Windows, Palettes,
+                        Objects, Pcs.Number, Pcs.State, Compositions);
 
                     Reset();
 

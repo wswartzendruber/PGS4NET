@@ -59,8 +59,8 @@ public class PaletteDefinitionSegment : Segment
     /// <param name="entries">
     ///     The individual palette entries in this set.
     /// </param>
-    public PaletteDefinitionSegment(PgsTimeStamp pts, PgsTimeStamp dts
-        , VersionedId<byte> versionedId, IList<PaletteDefinitionEntry> entries) : base(pts, dts)
+    public PaletteDefinitionSegment(PgsTimeStamp pts, PgsTimeStamp dts,
+        VersionedId<byte> versionedId, IList<PaletteDefinitionEntry> entries) : base(pts, dts)
     {
         VersionedId = versionedId;
         Entries = entries;

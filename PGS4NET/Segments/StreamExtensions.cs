@@ -17,8 +17,8 @@ public static class StreamExtensions
     }
 
 #if NETSTANDARD2_1_OR_GREATER
-    public static async IAsyncEnumerable<Segment> SegmentsAsync(this Stream stream
-        , [EnumeratorCancellation] CancellationToken cancellationToken = default)
+    public static async IAsyncEnumerable<Segment> SegmentsAsync(this Stream stream,
+        [EnumeratorCancellation] CancellationToken cancellationToken = default)
     {
         using var reader = new SegmentReader(stream, true);
 
@@ -38,8 +38,8 @@ public static class StreamExtensions
         return segments;
     }
 
-    public static async Task<IList<Segment>> ReadAllSegmentsAsync(this Stream stream
-        , CancellationToken cancellationToken = default)
+    public static async Task<IList<Segment>> ReadAllSegmentsAsync(this Stream stream,
+        CancellationToken cancellationToken = default)
     {
         var segments = new List<Segment>();
         using var reader = new SegmentReader(stream, true);
@@ -58,8 +58,8 @@ public static class StreamExtensions
             writer.Write(segment);
     }
 
-    public static async Task WriteAllSegmentsAsync(this Stream stream
-        , IEnumerable<Segment> segments,  CancellationToken cancellationToken = default)
+    public static async Task WriteAllSegmentsAsync(this Stream stream,
+        IEnumerable<Segment> segments, CancellationToken cancellationToken = default)
     {
         using var writer = new SegmentWriter(stream, true);
 
@@ -68,8 +68,8 @@ public static class StreamExtensions
     }
 
 #if NETSTANDARD2_1_OR_GREATER
-    public static async Task WriteAllSegmentsAsync(this Stream stream
-        , IAsyncEnumerable<Segment> segments, CancellationToken cancellationToken = default)
+    public static async Task WriteAllSegmentsAsync(this Stream stream,
+        IAsyncEnumerable<Segment> segments, CancellationToken cancellationToken = default)
     {
         using var writer = new SegmentWriter(stream, true);
 

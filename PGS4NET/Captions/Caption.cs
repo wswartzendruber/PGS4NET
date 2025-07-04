@@ -99,8 +99,8 @@ public class Caption
     ///     Whether or not the caption is forced. This is typically used to translate foreign
     ///     dialogue or text that appears.
     /// </param>
-    public Caption(PgsTimeStamp timeStamp, PgsTimeStamp duration, int x, int y
-        , int width, int height, YcbcraPixel[] data, bool forced)
+    public Caption(PgsTimeStamp timeStamp, PgsTimeStamp duration, int x, int y, int width,
+        int height, YcbcraPixel[] data, bool forced)
     {
         TimeStamp = timeStamp;
         Duration = duration;
