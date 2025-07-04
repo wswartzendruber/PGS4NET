@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -14,10 +15,10 @@ public static class StreamExtensions
         while (reader.Read() is DisplaySet displaySet)
             yield return displaySet;
     }
-    
+
 #if NETSTANDARD2_1_OR_GREATER
     public static async IAsyncEnumerable<DisplaySet> DisplaySetsAsync(this Stream stream
-        , CancellationToken cancellationToken = default)
+        , [EnumeratorCancellation] CancellationToken cancellationToken = default)
     {
         using var reader = new DisplaySetReader(stream, true);
 
@@ -33,7 +34,7 @@ public static class StreamExtensions
 
         while (reader.Read() is DisplaySet displaySet)
             displaySets.Add(displaySet);
-        
+
         return displaySets;
     }
 
