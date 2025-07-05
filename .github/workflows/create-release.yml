@@ -20,7 +20,7 @@ env:
 jobs:
   build:
     name: 'Build & Publish'
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
     - name: 'Checkout'
       uses: actions/checkout@v2
@@ -29,7 +29,7 @@ jobs:
     - name: '.NET: Setup'
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 6.0.x
+        dotnet-version: 8.0.x
     - name: 'NuGet: Setup'
       uses: nuget/setup-nuget@v1
       with:
