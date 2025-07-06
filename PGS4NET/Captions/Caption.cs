@@ -21,12 +21,12 @@ public class Caption
     /// <summary>
     ///     The time at which the caption appears.
     /// </summary>
-    public PgsTimeStamp TimeStamp { get; set; }
+    public PgsTime TimeStamp { get; set; }
 
     /// <summary>
     ///     The duration for which the caption is visible.
     /// </summary>
-    public PgsTimeStamp Duration { get; set; }
+    public PgsTime Duration { get; set; }
 
     /// <summary>
     ///     The horizontal offset in pixels of the caption's top-left corner within the screen.
@@ -99,8 +99,8 @@ public class Caption
     ///     Whether or not the caption is forced. This is typically used to translate foreign
     ///     dialogue or text that appears.
     /// </param>
-    public Caption(PgsTimeStamp timeStamp, PgsTimeStamp duration, int x, int y, int width,
-        int height, YcbcraPixel[] data, bool forced)
+    public Caption(PgsTime timeStamp, PgsTime duration, int x, int y, int width, int height,
+        YcbcraPixel[] data, bool forced)
     {
         TimeStamp = timeStamp;
         Duration = duration;

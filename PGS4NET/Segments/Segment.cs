@@ -51,13 +51,13 @@ public abstract class Segment
     ///     The timestamp indicating when composition decoding should start. In practice, this
     ///     is the time at which the composition is displayed, repeated, modified, or removed.
     /// </summary>
-    public PgsTimeStamp Pts { get; set; }
+    public PgsTime Pts { get; set; }
 
     /// <summary>
     ///     The timestamp indicating when the composition should be enacted. In practice, this
     ///     value is always zero.
     /// </summary>
-    public PgsTimeStamp Dts { get; set; }
+    public PgsTime Dts { get; set; }
 
     /// <summary>
     ///     Initializes a new instance with default values.
@@ -78,7 +78,7 @@ public abstract class Segment
     ///     The timestamp indicating when the composition should be enacted. In practice, this
     ///     value is always zero.
     /// </param>
-    protected Segment(PgsTimeStamp pts, PgsTimeStamp dts)
+    protected Segment(PgsTime pts, PgsTime dts)
     {
         Pts = pts;
         Dts = dts;

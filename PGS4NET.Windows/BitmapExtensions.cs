@@ -55,8 +55,8 @@ public static class BitmapExtensions
     /// <returns>
     ///     A PGS4NET caption.
     /// </returns>
-    public static Caption ToCaption(this Bitmap bitmap, Point location, PgsTimeStamp timeStamp,
-        PgsTimeStamp duration, bool forced, ColorSpace colorSpace, bool limitedRange = true)
+    public static Caption ToCaption(this Bitmap bitmap, Point location, PgsTime timeStamp,
+        PgsTime duration, bool forced, ColorSpace colorSpace, bool limitedRange = true)
     {
         var x = Convert.ToUInt16(location.X);
         var y = Convert.ToUInt16(location.Y);

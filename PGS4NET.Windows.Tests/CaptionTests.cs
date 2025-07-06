@@ -24,8 +24,8 @@ public class CaptionTests
     {
         var limitedRange = false;
         var colorSpace = ColorSpace.Bt2020ColorSpace;
-        var timeStamp = new PgsTimeStamp(Rng.Next());
-        var duration = new PgsTimeStamp(Rng.Next());
+        var timeStamp = new PgsTime(Rng.Next());
+        var duration = new PgsTime(Rng.Next());
         int x = 17;
         int y = 23;
         int width = 1024;

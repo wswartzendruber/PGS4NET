@@ -34,7 +34,7 @@ public class EndSegment : Segment
     ///     The timestamp indicating when the composition should be enacted. In practice, this
     ///     value is always zero.
     /// </param>
-    public EndSegment(PgsTimeStamp pts, PgsTimeStamp dts) : base(pts, dts)
+    public EndSegment(PgsTime pts, PgsTime dts) : base(pts, dts)
     {
     }
 }

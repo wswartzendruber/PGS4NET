@@ -18,9 +18,9 @@ internal class CompositionArea
 
     private int X;
     private int Y;
-    private PgsTimeStamp LastTimeStamp;
+    private PgsTime LastTimeStamp;
 
-    internal CompositionArea(PgsTimeStamp timeStamp, int x, int y, int width, int height,
+    internal CompositionArea(PgsTime timeStamp, int x, int y, int width, int height,
         bool forced)
     {
         Size = width * height;
@@ -68,7 +68,7 @@ internal class CompositionArea
         }
     }
 
-    internal void Flush(PgsTimeStamp timeStamp)
+    internal void Flush(PgsTime timeStamp)
     {
         //if (Pending)
         //{
@@ -86,7 +86,7 @@ internal class CompositionArea
         //LastTimeStamp = timeStamp;
     }
 
-    internal void UpdatePalette(PgsTimeStamp timeStamp, YcbcraPixel[] palette)
+    internal void UpdatePalette(PgsTime timeStamp, YcbcraPixel[] palette)
     {
         var different = false;
         var hadSomething = Pending;
@@ -107,7 +107,7 @@ internal class CompositionArea
             Array.Copy(CurrentYcbcraPlane, PreviousYcbcraPlane, Size);
             LastTimeStamp = timeStamp;
         }
-        
+
         Pending = hasSomething;
     }
 
@@ -116,7 +116,7 @@ internal class CompositionArea
         Ready?.Invoke(this, caption);
     }
 
-    private void OutputCaption(PgsTimeStamp timeStamp)
+    private void OutputCaption(PgsTime timeStamp)
     {
         var duration = timeStamp - LastTimeStamp;
         var data = (YcbcraPixel[])PreviousYcbcraPlane.Clone();

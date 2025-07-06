@@ -16,14 +16,14 @@ using PGS4NET;
 
 namespace PGS4NET.Tests;
 
-public class PgsTimeStampTests
+public class PgsTimeTests
 {
     [Fact]
     public void Ticks()
     {
-        var a = new PgsTimeStamp(1);
-        var b = new PgsTimeStamp(1);
-        var c = new PgsTimeStamp(2);
+        var a = new PgsTime(1);
+        var b = new PgsTime(1);
+        var c = new PgsTime(2);
 
         Assert.Equal(1, a.Ticks);
         Assert.Equal(1, b.Ticks);
@@ -33,16 +33,16 @@ public class PgsTimeStampTests
     [Fact]
     public void Milliseconds()
     {
-        for (long ms = 0; ms <= PgsTimeStamp.MaxMilliseconds; ms++)
-            Assert.Equal(ms, PgsTimeStamp.FromMilliseconds(ms).ToMilliseconds());
+        for (long ms = 0; ms <= PgsTime.MaxMilliseconds; ms++)
+            Assert.Equal(ms, PgsTime.FromMilliseconds(ms).ToMilliseconds());
     }
 
     [Fact]
     public void Comparison()
     {
-        var a = new PgsTimeStamp(1);
-        var b = new PgsTimeStamp(1);
-        var c = new PgsTimeStamp(2);
+        var a = new PgsTime(1);
+        var b = new PgsTime(1);
+        var c = new PgsTime(2);
 
         Assert.True(a.CompareTo(a) == 0);
         Assert.True(a.CompareTo(b) == 0);
@@ -65,8 +65,8 @@ public class PgsTimeStampTests
     [Fact]
     public void HashCodes()
     {
-        var a = new PgsTimeStamp(1);
-        var b = new PgsTimeStamp(1);
+        var a = new PgsTime(1);
+        var b = new PgsTime(1);
 
         Assert.True(a.GetHashCode() == a.GetHashCode());
         Assert.True(a.GetHashCode() == b.GetHashCode());
@@ -75,9 +75,9 @@ public class PgsTimeStampTests
     [Fact]
     public void Equality()
     {
-        var a = new PgsTimeStamp(1);
-        var b = new PgsTimeStamp(1);
-        var c = new PgsTimeStamp(2);
+        var a = new PgsTime(1);
+        var b = new PgsTime(1);
+        var c = new PgsTime(2);
 
         Assert.True(a.Equals(a));
         Assert.True(a.Equals(b));
@@ -90,12 +90,12 @@ public class PgsTimeStampTests
     [Fact]
     public void Casting()
     {
-        var a = new PgsTimeStamp(1);
-        var c = new PgsTimeStamp(2);
+        var a = new PgsTime(1);
+        var c = new PgsTime(2);
         long au = a;
         long cu = c;
-        PgsTimeStamp ap = 1;
-        PgsTimeStamp cp = 2;
+        PgsTime ap = 1;
+        PgsTime cp = 2;
 
         Assert.Equal(1, au);
         Assert.Equal(2, cu);
@@ -108,9 +108,9 @@ public class PgsTimeStampTests
     {
         try
         {
-            _ = PgsTimeStamp.FromMilliseconds(PgsTimeStamp.MaxMilliseconds + 1);
+            _ = PgsTime.FromMilliseconds(PgsTime.MaxMilliseconds + 1);
 
-            Assert.Fail("Was able to create PgsTimeStamp with excessive millisecond count.");
+            Assert.Fail("Was able to create PgsTime with excessive millisecond count.");
         }
         catch (ArgumentOutOfRangeException aoore)
         {

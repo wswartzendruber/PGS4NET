@@ -42,8 +42,8 @@ public class FinalObjectDefinitionSegment : ObjectDefinitionSegment
     /// <param name="data">
     ///     The RLE-compressed data for this portion of the completed object.
     /// </param>
-    public FinalObjectDefinitionSegment(PgsTimeStamp pts, PgsTimeStamp dts,
-        VersionedId<int> versionedId, byte[] data) : base(pts, dts, versionedId, data)
+    public FinalObjectDefinitionSegment(PgsTime pts, PgsTime dts, VersionedId<int> versionedId,
+        byte[] data) : base(pts, dts, versionedId, data)
     {
     }
 }

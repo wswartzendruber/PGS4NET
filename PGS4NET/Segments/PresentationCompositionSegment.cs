@@ -113,8 +113,8 @@ public class PresentationCompositionSegment : Segment
     /// <param name="compositionObjects">
     ///     Maps an epoch's objects (or areas within them) to its windows.
     /// </param>
-    public PresentationCompositionSegment(PgsTimeStamp pts, PgsTimeStamp dts, int width,
-        int height, byte frameRate, int number, CompositionState state, bool paletteUpdateOnly,
+    public PresentationCompositionSegment(PgsTime pts, PgsTime dts, int width, int height,
+        byte frameRate, int number, CompositionState state, bool paletteUpdateOnly,
         byte paletteId, IList<CompositionObject> compositionObjects) : base(pts, dts)
     {
         Width = width;

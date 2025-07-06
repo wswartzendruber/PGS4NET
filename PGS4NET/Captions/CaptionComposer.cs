@@ -29,8 +29,8 @@ public sealed class CaptionComposer
     ///     not been written out as one or more <see cref="Caption"/>s.
     /// </summary>
     /// <remarks>
-    ///     Buffered graphics can be forced out via the <see cref="Flush(PgsTimeStamp)"/>
-    ///     method, if necessary.
+    ///     Buffered graphics can be forced out via the <see cref="Flush(PgsTime)"/> method, if
+    ///     necessary.
     /// </remarks>
     public bool Pending
     {
@@ -58,7 +58,7 @@ public sealed class CaptionComposer
     ///     The time at which any buffered graphics should disappear from the screen during
     ///     playback.
     /// </param>
-    public void Flush(PgsTimeStamp timeStamp)
+    public void Flush(PgsTime timeStamp)
     {
         foreach (var compositionArea in CompositionAreas.Values)
             compositionArea.Flush(timeStamp);
@@ -143,7 +143,7 @@ public sealed class CaptionComposer
                             newCompositionArea.Ready += CompositionAreaReady;
 
                             CompositionAreas[compositionId] = newCompositionArea;
-                                
+
                         }
 
                         var compositionArea = CompositionAreas[compositionId];
@@ -177,9 +177,9 @@ public sealed class CaptionComposer
 
         foreach (var entry in displayPalette.Entries)
             paletteArray[entry.Key] = entry.Value;
-        
+
         paletteArray[255] = default;
-        
+
         return paletteArray;
     }
 

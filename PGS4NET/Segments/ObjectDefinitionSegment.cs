@@ -53,8 +53,8 @@ public abstract class ObjectDefinitionSegment : Segment
     /// <param name="data">
     ///     The RLE-compressed data for this portion of the completed object.
     /// </param>
-    public ObjectDefinitionSegment(PgsTimeStamp pts, PgsTimeStamp dts,
-        VersionedId<int> versionedId, byte[] data) : base(pts, dts)
+    public ObjectDefinitionSegment(PgsTime pts, PgsTime dts, VersionedId<int> versionedId,
+        byte[] data) : base(pts, dts)
     {
         VersionedId = versionedId;
         Data = data;
