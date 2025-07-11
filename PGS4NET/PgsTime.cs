@@ -44,27 +44,47 @@ public struct PgsTime : IEquatable<PgsTime>, IComparable<PgsTime>
     }
 
     /// <summary>
-    ///     Returns the number of milliseconds represented by the <see cref="Ticks"/> property
-    ///     rounded down to the nearest millisecond.
+    ///     Returns a standard <see cref="TimeSpan"/> for this instance.
     /// </summary>
-    public long ToMilliseconds() =>
-        Ticks / 90;
+    /// <param name="mode">
+    ///     The rounding strategy to use.
+    /// </param>
+    /// <remarks>
+    ///     The return value will be rounded to the nearest 100 nanoseconds using the provided
+    ///     <paramref name="mode"/>.
+    /// </remarks>
+    public TimeSpan ToTimeSpan(MidpointRounding mode = MidpointRounding.ToEven)
+    {
+        var ticks = (long)Math.Round(Ticks * 111.11111111111111, mode);
+
+        return TimeSpan.FromTicks(ticks);
+    }
 
     /// <summary>
-    ///     Initializes a new instance using the specified millisecond value.
+    ///     Initializes a new instance using the provided <see cref="TimeSpan"/>.
     /// </summary>
-    /// <param name="milliseconds">
-    ///     The millisecond value which must not exceed <see cref="MaxMilliseconds"/>.
+    /// <param name="timeSpan">
+    ///     The time span to initialize a new instance from. The maximum duration that can be
+    ///     converted is roughly 13:15:21.859.
     /// </param>
-    public static PgsTime FromMilliseconds(long milliseconds)
+    /// <param name="mode">
+    ///     The rounding strategy to use.
+    /// </param>
+    /// <exception cref="ArgumentOutOfRangeException">
+    ///     The <paramref name="timeSpan"/>'s duration exceeds the maximum.
+    /// </exception>
+    public static PgsTime FromTimeSpan(TimeSpan timeSpan,
+        MidpointRounding mode = MidpointRounding.ToEven)
     {
-        if (milliseconds > MaxMilliseconds)
+        var ticks = (long)Math.Round(timeSpan.Ticks / 111.11111111111111, mode);
+
+        if (ticks > int.MaxValue)
         {
-            throw new ArgumentOutOfRangeException("milliseconds", milliseconds,
-                "The milliseconds value cannot exceed 47,721,858.");
+            throw new ArgumentOutOfRangeException("timeSpan", timeSpan,
+                "The time span value cannot exceed approximately 13:15:21.859.");
         }
 
-        return new PgsTime(milliseconds * 90);
+        return new PgsTime(ticks);
     }
 
     /// <summary>

@@ -31,13 +31,6 @@ public class PgsTimeTests
     }
 
     [Fact]
-    public void Milliseconds()
-    {
-        for (long ms = 0; ms <= PgsTime.MaxMilliseconds; ms++)
-            Assert.Equal(ms, PgsTime.FromMilliseconds(ms).ToMilliseconds());
-    }
-
-    [Fact]
     public void Comparison()
     {
         var a = new PgsTime(1);
@@ -106,15 +99,5 @@ public class PgsTimeTests
     [Fact]
     public void Exceptions()
     {
-        try
-        {
-            _ = PgsTime.FromMilliseconds(PgsTime.MaxMilliseconds + 1);
-
-            Assert.Fail("Was able to create PgsTime with excessive millisecond count.");
-        }
-        catch (ArgumentOutOfRangeException aoore)
-        {
-            Assert.Contains("The milliseconds value cannot exceed 47,721,858.", aoore.Message);
-        }
     }
 }
