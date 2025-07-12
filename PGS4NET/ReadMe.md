@@ -36,7 +36,7 @@ using var stream = new FileStream(args[0], FileMode.Open);
 
 while (stream.ReadDisplaySet() is DisplaySet displaySet)
 {
-    Console.WriteLine($"Read display set with PTS = {displaySet.Pts}");
+    Console.WriteLine($"Read display set with PTS = {displaySet.PresentationTime}");
 }
 ```
 

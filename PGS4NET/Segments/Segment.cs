@@ -48,16 +48,16 @@ namespace PGS4NET.Segments;
 public abstract class Segment
 {
     /// <summary>
-    ///     The timestamp indicating when composition decoding should start. In practice, this
-    ///     is the time at which the composition is displayed, repeated, modified, or removed.
+    ///     The time at which a composition is displayed, repeated, updated, or removed. This
+    ///     value should be consistent across all segments in a display set.
     /// </summary>
-    public PgsTime Pts { get; set; }
+    public PgsTime PresentationTime { get; set; }
 
     /// <summary>
-    ///     The timestamp indicating when the composition should be enacted. In practice, this
-    ///     value is always zero.
+    ///     The time by which the segment needs to be available to the decoder in order to be
+    ///     presented in time.
     /// </summary>
-    public PgsTime Dts { get; set; }
+    public PgsTime DecodeStartTime { get; set; }
 
     /// <summary>
     ///     Initializes a new instance with default values.
@@ -69,18 +69,17 @@ public abstract class Segment
     /// <summary>
     ///     Initializes a new instance with the provided values.
     /// </summary>
-    /// <param name="pts">
-    ///     The timestamp indicating when composition decoding should start. In practice, this
-    ///     is the time at which the composition is displayed, repeated, modified, or removed.
-    ///     All PTS values within a display set should match.
+    /// <param name="presentationTime">
+    ///     The time at which a composition is displayed, repeated, updated, or removed. This
+    ///     value should be consistent across all segments in a display set.
     /// </param>
-    /// <param name="dts">
-    ///     The timestamp indicating when the composition should be enacted. In practice, this
-    ///     value is always zero.
+    /// <param name="decodeStartTime">
+    ///     The time by which the segment needs to be available to the decoder in order to be
+    ///     presented in time.
     /// </param>
-    protected Segment(PgsTime pts, PgsTime dts)
+    protected Segment(PgsTime presentationTime, PgsTime decodeStartTime)
     {
-        Pts = pts;
-        Dts = dts;
+        PresentationTime = presentationTime;
+        DecodeStartTime = decodeStartTime;
     }
 }

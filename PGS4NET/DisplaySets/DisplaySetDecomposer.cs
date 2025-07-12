@@ -40,7 +40,7 @@ public sealed class DisplaySetDecomposer
         }
 
         // TODO: Calculate DTS
-        var pcs = new PresentationCompositionSegment(displaySet.Pts, 0,
+        var pcs = new PresentationCompositionSegment(displaySet.PresentationTime, 0,
             displaySet.Width, displaySet.Height, displaySet.FrameRate,
             displaySet.CompositionNumber, displaySet.CompositionState,
             displaySet.PaletteUpdateOnly, displaySet.PaletteId, compositionObjects);
@@ -58,7 +58,7 @@ public sealed class DisplaySetDecomposer
             }
 
             // TODO: Calculate DTS
-            var wds = new WindowDefinitionSegment(displaySet.Pts, 0,
+            var wds = new WindowDefinitionSegment(displaySet.PresentationTime, 0,
                 windowEntries);
 
             OnReady(wds);
@@ -78,7 +78,7 @@ public sealed class DisplaySetDecomposer
             }
 
             // TODO: Calculate DTS
-            var pds = new PaletteDefinitionSegment(displaySet.Pts, 0, palette.Key,
+            var pds = new PaletteDefinitionSegment(displaySet.PresentationTime, 0, palette.Key,
                 paletteEntries);
 
             OnReady(pds);
@@ -98,7 +98,7 @@ public sealed class DisplaySetDecomposer
                 Array.Copy(data, iodsBuffer, iodsBuffer.Length);
 
                 // TODO: Calculate DTS
-                var iods = new InitialObjectDefinitionSegment(displaySet.Pts, 0,
+                var iods = new InitialObjectDefinitionSegment(displaySet.PresentationTime, 0,
                     displayObject.Key, displayObject.Value.Width, displayObject.Value.Height,
                     (long)data.Length + 4, iodsBuffer);
 
@@ -114,7 +114,7 @@ public sealed class DisplaySetDecomposer
                     Array.Copy(data, index, modsBuffer, 0, modsBuffer.Length);
 
                     // TODO: Calculate DTS
-                    var mods = new MiddleObjectDefinitionSegment(displaySet.Pts, 0,
+                    var mods = new MiddleObjectDefinitionSegment(displaySet.PresentationTime, 0,
                         displayObject.Key, modsBuffer);
 
                     OnReady(mods);
@@ -128,7 +128,7 @@ public sealed class DisplaySetDecomposer
                 Array.Copy(data, index, fodsBuffer, 0, fodsBuffer.Length);
 
                 // TODO: Calculate DTS
-                var fods = new FinalObjectDefinitionSegment(displaySet.Pts, 0,
+                var fods = new FinalObjectDefinitionSegment(displaySet.PresentationTime, 0,
                     displayObject.Key, fodsBuffer);
 
                 OnReady(fods);
@@ -136,7 +136,7 @@ public sealed class DisplaySetDecomposer
             else
             {
                 // TODO: Calculate DTS
-                var sods = new SingleObjectDefinitionSegment(displaySet.Pts, 0,
+                var sods = new SingleObjectDefinitionSegment(displaySet.PresentationTime, 0,
                     displayObject.Key, displayObject.Value.Width, displayObject.Value.Height,
                     data);
 
@@ -145,7 +145,7 @@ public sealed class DisplaySetDecomposer
         }
 
         // TODO: Calculate DTS
-        var es = new EndSegment(displaySet.Pts, 0);
+        var es = new EndSegment(displaySet.PresentationTime, 0);
 
         OnReady(es);
     }

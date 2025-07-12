@@ -76,14 +76,13 @@ public class PresentationCompositionSegment : Segment
     /// <summary>
     ///     Initializes a new instance with the provided values.
     /// </summary>
-    /// <param name="pts">
-    ///     The timestamp indicating when composition decoding should start. In practice, this
-    ///     is the time at which the composition is displayed, repeated, modified, or removed.
-    ///     All PTS values within a display set should match.
+    /// <param name="presentationTime">
+    ///     The time at which a composition is displayed, repeated, updated, or removed. This
+    ///     value should be consistent across all segments in a display set.
     /// </param>
-    /// <param name="dts">
-    ///     The timestamp indicating when the composition should be enacted. In practice, this
-    ///     value is always zero.
+    /// <param name="decodeStartTime">
+    ///     The time by which the segment needs to be available to the decoder in order to be
+    ///     presented in time.
     /// </param>
     /// <param name="width">
     ///     The width of the screen in pixels. This value should be consistent within a
@@ -113,9 +112,10 @@ public class PresentationCompositionSegment : Segment
     /// <param name="compositionObjects">
     ///     Maps an epoch's objects (or areas within them) to its windows.
     /// </param>
-    public PresentationCompositionSegment(PgsTime pts, PgsTime dts, int width, int height,
-        byte frameRate, int number, CompositionState state, bool paletteUpdateOnly,
-        byte paletteId, IList<CompositionObject> compositionObjects) : base(pts, dts)
+    public PresentationCompositionSegment(PgsTime presentationTime, PgsTime decodeStartTime,
+        int width, int height, byte frameRate, int number, CompositionState state,
+        bool paletteUpdateOnly, byte paletteId, IList<CompositionObject> compositionObjects) :
+        base(presentationTime, decodeStartTime)
     {
         Width = width;
         Height = height;

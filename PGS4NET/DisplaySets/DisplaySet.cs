@@ -44,9 +44,9 @@ namespace PGS4NET.DisplaySets;
 public class DisplaySet
 {
     /// <summary>
-    ///     The time at which any compositions are displayed, repeated, updated, or removed.
+    ///     The time at which a composition is displayed, repeated, updated, or removed.
     /// </summary>
-    public PgsTime Pts { get; set; }
+    public PgsTime PresentationTime { get; set; }
 
     /// <summary>
     ///     The width of the screen in pixels. This value should be consistent within a
@@ -126,8 +126,8 @@ public class DisplaySet
     /// <summary>
     ///     Initializes a new instance with the provided values.
     /// </summary>
-    /// <param name="pts">
-    ///     The time at which any compositions are displayed, repeated, updated, or removed.
+    /// <param name="presentationTime">
+    ///     The time at which a composition is displayed, repeated, updated, or removed.
     /// </param>
     /// <param name="width">
     ///     The width of the screen in pixels. This value should be consistent within a
@@ -170,14 +170,14 @@ public class DisplaySet
     ///     The collection of <see cref="DisplayComposition"/>s, which map
     ///     <see cref="DisplayObject"/>s to <see cref="DisplayWindow"/>s.
     /// </param>
-    public DisplaySet(PgsTime pts, int width, int height, byte frameRate,
+    public DisplaySet(PgsTime presentationTime, int width, int height, byte frameRate,
         bool paletteUpdateOnly, byte paletteId, IDictionary<byte, DisplayWindow> windows,
         IDictionary<VersionedId<byte>, DisplayPalette> palettes,
         IDictionary<VersionedId<int>, DisplayObject> objects, int compositionNumber,
         CompositionState compositionState,
         IDictionary<CompositionId, DisplayComposition> compositions)
     {
-        Pts = pts;
+        PresentationTime = presentationTime;
         Width = width;
         Height = height;
         FrameRate = frameRate;

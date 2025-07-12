@@ -226,8 +226,8 @@ public class SegmentWriter : IDisposable
 
     private static void WriteTs(Stream stream, Segment segment)
     {
-        WriteUInt32Be(stream, segment.Pts);
-        WriteUInt32Be(stream, segment.Dts);
+        WriteUInt32Be(stream, segment.PresentationTime);
+        WriteUInt32Be(stream, segment.DecodeStartTime);
     }
 
     private static void WritePcs(Stream stream, PresentationCompositionSegment pcs)

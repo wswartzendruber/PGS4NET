@@ -22,8 +22,8 @@ internal static class SegmentBuffers
             "pcs-es", new byte[]
             {
                 0x50, 0x47,             // Magic number
-                0x01, 0x23, 0x45, 0x67, // Pts
-                0x12, 0x34, 0x56, 0x78, // Dts
+                0x01, 0x23, 0x45, 0x67, // PTS
+                0x12, 0x34, 0x56, 0x78, // DTS
                 0x16,                   // Type
                 0x00, 0x0B,             // Size
                 0x21, 0x43,             // Width
@@ -40,8 +40,8 @@ internal static class SegmentBuffers
             "pcs-ap", new byte[]
             {
                 0x50, 0x47,             // Magic number
-                0x01, 0x23, 0x45, 0x67, // Pts
-                0x12, 0x34, 0x56, 0x78, // Dts
+                0x01, 0x23, 0x45, 0x67, // PTS
+                0x12, 0x34, 0x56, 0x78, // DTS
                 0x16,                   // Type
                 0x00, 0x0B,             // Size
                 0x21, 0x43,             // Width
@@ -58,8 +58,8 @@ internal static class SegmentBuffers
             "pcs-n-palette-update", new byte[]
             {
                 0x50, 0x47,             // Magic number
-                0x01, 0x23, 0x45, 0x67, // Pts
-                0x12, 0x34, 0x56, 0x78, // Dts
+                0x01, 0x23, 0x45, 0x67, // PTS
+                0x12, 0x34, 0x56, 0x78, // DTS
                 0x16,                   // Type
                 0x00, 0x0B,             // Size
                 0x21, 0x43,             // Width
@@ -76,8 +76,8 @@ internal static class SegmentBuffers
             "pcs-n-no-palette-update", new byte[]
             {
                 0x50, 0x47,             // Magic number
-                0x01, 0x23, 0x45, 0x67, // Pts
-                0x12, 0x34, 0x56, 0x78, // Dts
+                0x01, 0x23, 0x45, 0x67, // PTS
+                0x12, 0x34, 0x56, 0x78, // DTS
                 0x16,                   // Type
                 0x00, 0x0B,             // Size
                 0x21, 0x43,             // Width
@@ -94,8 +94,8 @@ internal static class SegmentBuffers
             "pcs-n-one", new byte[]
             {
                 0x50, 0x47,             // Magic number
-                0x01, 0x23, 0x45, 0x67, // Pts
-                0x12, 0x34, 0x56, 0x78, // Dts
+                0x01, 0x23, 0x45, 0x67, // PTS
+                0x12, 0x34, 0x56, 0x78, // DTS
                 0x16,                   // Type
                 0x00, 0x13,             // Size
                 0x21, 0x43,             // Width
@@ -117,8 +117,8 @@ internal static class SegmentBuffers
             "pcs-n-one-cropped", new byte[]
             {
                 0x50, 0x47,             // Magic number
-                0x01, 0x23, 0x45, 0x67, // Pts
-                0x12, 0x34, 0x56, 0x78, // Dts
+                0x01, 0x23, 0x45, 0x67, // PTS
+                0x12, 0x34, 0x56, 0x78, // DTS
                 0x16,                   // Type
                 0x00, 0x1B,             // Size
                 0x21, 0x43,             // Width
@@ -144,8 +144,8 @@ internal static class SegmentBuffers
             "pcs-n-three-mixed", new byte[]
             {
                 0x50, 0x47,             // Magic number
-                0x01, 0x23, 0x45, 0x67, // Pts
-                0x12, 0x34, 0x56, 0x78, // Dts
+                0x01, 0x23, 0x45, 0x67, // PTS
+                0x12, 0x34, 0x56, 0x78, // DTS
                 0x16,                   // Type
                 0x00, 0x33,             // Size
                 0x21, 0x43,             // Width
@@ -185,8 +185,8 @@ internal static class SegmentBuffers
             "es", new byte[]
             {
                 0x50, 0x47,             // Magic number
-                0x01, 0x23, 0x45, 0x67, // Pts
-                0x12, 0x34, 0x56, 0x78, // Dts
+                0x01, 0x23, 0x45, 0x67, // PTS
+                0x12, 0x34, 0x56, 0x78, // DTS
                 0x80,                   // Type
                 0x00, 0x00,             // Size
             }
@@ -195,8 +195,8 @@ internal static class SegmentBuffers
             "iods-large-empty", new byte[]
             {
                 0x50, 0x47,             // Magic number
-                0x01, 0x23, 0x45, 0x67, // Pts
-                0x12, 0x34, 0x56, 0x78, // Dts
+                0x01, 0x23, 0x45, 0x67, // PTS
+                0x12, 0x34, 0x56, 0x78, // DTS
                 0x15,                   // Type
                 0x00, 0x0B,             // Size
                 0xA0, 0xA1,             // ID
@@ -211,8 +211,8 @@ internal static class SegmentBuffers
             "iods-large-small", new byte[]
             {
                 0x50, 0x47,             // Magic number
-                0x01, 0x23, 0x45, 0x67, // Pts
-                0x12, 0x34, 0x56, 0x78, // Dts
+                0x01, 0x23, 0x45, 0x67, // PTS
+                0x12, 0x34, 0x56, 0x78, // DTS
                 0x15,                   // Type
                 0x00, 0x0F,             // Size
                 0xA0, 0xA1,             // ID
@@ -228,8 +228,8 @@ internal static class SegmentBuffers
             "mods-empty", new byte[]
             {
                 0x50, 0x47,             // Magic number
-                0x01, 0x23, 0x45, 0x67, // Pts
-                0x12, 0x34, 0x56, 0x78, // Dts
+                0x01, 0x23, 0x45, 0x67, // PTS
+                0x12, 0x34, 0x56, 0x78, // DTS
                 0x15,                   // Type
                 0x00, 0x04,             // Size
                 0xA0, 0xA1,             // ID
@@ -241,8 +241,8 @@ internal static class SegmentBuffers
             "mods-small", new byte[]
             {
                 0x50, 0x47,             // Magic number
-                0x01, 0x23, 0x45, 0x67, // Pts
-                0x12, 0x34, 0x56, 0x78, // Dts
+                0x01, 0x23, 0x45, 0x67, // PTS
+                0x12, 0x34, 0x56, 0x78, // DTS
                 0x15,                   // Type
                 0x00, 0x08,             // Size
                 0xA0, 0xA1,             // ID
@@ -255,8 +255,8 @@ internal static class SegmentBuffers
             "fods-empty", new byte[]
             {
                 0x50, 0x47,             // Magic number
-                0x01, 0x23, 0x45, 0x67, // Pts
-                0x12, 0x34, 0x56, 0x78, // Dts
+                0x01, 0x23, 0x45, 0x67, // PTS
+                0x12, 0x34, 0x56, 0x78, // DTS
                 0x15,                   // Type
                 0x00, 0x04,             // Size
                 0xA0, 0xA1,             // ID
@@ -268,8 +268,8 @@ internal static class SegmentBuffers
             "fods-small", new byte[]
             {
                 0x50, 0x47,             // Magic number
-                0x01, 0x23, 0x45, 0x67, // Pts
-                0x12, 0x34, 0x56, 0x78, // Dts
+                0x01, 0x23, 0x45, 0x67, // PTS
+                0x12, 0x34, 0x56, 0x78, // DTS
                 0x15,                   // Type
                 0x00, 0x08,             // Size
                 0xA0, 0xA1,             // ID
@@ -282,8 +282,8 @@ internal static class SegmentBuffers
             "pds-empty", new byte[]
             {
                 0x50, 0x47,             // Magic number
-                0x01, 0x23, 0x45, 0x67, // Pts
-                0x12, 0x34, 0x56, 0x78, // Dts
+                0x01, 0x23, 0x45, 0x67, // PTS
+                0x12, 0x34, 0x56, 0x78, // DTS
                 0x14,                   // Type
                 0x00, 0x02,             // Size
                 0xA1,                   // ID
@@ -294,8 +294,8 @@ internal static class SegmentBuffers
             "pds-one", new byte[]
             {
                 0x50, 0x47,             // Magic number
-                0x01, 0x23, 0x45, 0x67, // Pts
-                0x12, 0x34, 0x56, 0x78, // Dts
+                0x01, 0x23, 0x45, 0x67, // PTS
+                0x12, 0x34, 0x56, 0x78, // DTS
                 0x14,                   // Type
                 0x00, 0x07,             // Size
                 0xA1,                   // ID
@@ -311,8 +311,8 @@ internal static class SegmentBuffers
             "pds-two", new byte[]
             {
                 0x50, 0x47,             // Magic number
-                0x01, 0x23, 0x45, 0x67, // Pts
-                0x12, 0x34, 0x56, 0x78, // Dts
+                0x01, 0x23, 0x45, 0x67, // PTS
+                0x12, 0x34, 0x56, 0x78, // DTS
                 0x14,                   // Type
                 0x00, 0x0C,             // Size
                 0xA1,                   // ID
@@ -333,8 +333,8 @@ internal static class SegmentBuffers
             "sods-empty", new byte[]
             {
                 0x50, 0x47,             // Magic number
-                0x01, 0x23, 0x45, 0x67, // Pts
-                0x12, 0x34, 0x56, 0x78, // Dts
+                0x01, 0x23, 0x45, 0x67, // PTS
+                0x12, 0x34, 0x56, 0x78, // DTS
                 0x15,                   // Type
                 0x00, 0x0B,             // Size
                 0xA0, 0xA1,             // ID
@@ -349,8 +349,8 @@ internal static class SegmentBuffers
             "sods-small", new byte[]
             {
                 0x50, 0x47,             // Magic number
-                0x01, 0x23, 0x45, 0x67, // Pts
-                0x12, 0x34, 0x56, 0x78, // Dts
+                0x01, 0x23, 0x45, 0x67, // PTS
+                0x12, 0x34, 0x56, 0x78, // DTS
                 0x15,                   // Type
                 0x00, 0x0F,             // Size
                 0xA0, 0xA1,             // ID
@@ -366,8 +366,8 @@ internal static class SegmentBuffers
             "wds-empty", new byte[]
             {
                 0x50, 0x47,             // Magic number
-                0x01, 0x23, 0x45, 0x67, // Pts
-                0x12, 0x34, 0x56, 0x78, // Dts
+                0x01, 0x23, 0x45, 0x67, // PTS
+                0x12, 0x34, 0x56, 0x78, // DTS
                 0x17,                   // Type
                 0x00, 0x01,             // Size
                 0x00,                   // Window count
@@ -377,8 +377,8 @@ internal static class SegmentBuffers
             "wds-one", new byte[]
             {
                 0x50, 0x47,             // Magic number
-                0x01, 0x23, 0x45, 0x67, // Pts
-                0x12, 0x34, 0x56, 0x78, // Dts
+                0x01, 0x23, 0x45, 0x67, // PTS
+                0x12, 0x34, 0x56, 0x78, // DTS
                 0x17,                   // Type
                 0x00, 0x0A,             // Size
                 0x01,                   // Window count
@@ -393,8 +393,8 @@ internal static class SegmentBuffers
             "wds-two", new byte[]
             {
                 0x50, 0x47,             // Magic number
-                0x01, 0x23, 0x45, 0x67, // Pts
-                0x12, 0x34, 0x56, 0x78, // Dts
+                0x01, 0x23, 0x45, 0x67, // PTS
+                0x12, 0x34, 0x56, 0x78, // DTS
                 0x17,                   // Type
                 0x00, 0x13,             // Size
                 0x02,                   // Window count

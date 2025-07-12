@@ -76,7 +76,7 @@ public sealed class CaptionComposer
     /// </exception>
     public void Input(DisplaySet displaySet)
     {
-        var timeStamp = displaySet.Pts;
+        var timeStamp = displaySet.PresentationTime;
 
         if (displaySet.CompositionState == CompositionState.EpochStart)
             Reset();

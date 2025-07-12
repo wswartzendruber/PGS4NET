@@ -25,9 +25,9 @@ public sealed class DisplaySetComposer
         = new("Object portions have inconsistent IDs.");
     private static readonly DisplaySetException InconsistentObjectVersion
         = new("Object portions have inconsistent versions.");
-    private static readonly DisplaySetException InconsistentPts
+    private static readonly DisplaySetException InconsistentPresentationTime
         = new("PTS is not consistent with PCS.");
-    private static readonly DisplaySetException InconsistentDts
+    private static readonly DisplaySetException InconsistentDecodeTime
         = new("DTS is not consistent with PCS.");
     private static readonly DisplaySetException InvalidObjectSequence
         = new("Invalid object sequence state.");
@@ -85,10 +85,10 @@ public sealed class DisplaySetComposer
                 }
                 case WindowDefinitionSegment wds:
                 {
-                    if (wds.Pts != Pcs.Pts)
-                        throw InconsistentPts;
-                    if (wds.Dts != Pcs.Dts)
-                        throw InconsistentDts;
+                    if (wds.PresentationTime != Pcs.PresentationTime)
+                        throw InconsistentPresentationTime;
+                    if (wds.DecodeStartTime != Pcs.DecodeStartTime)
+                        throw InconsistentDecodeTime;
 
                     foreach (var wd in wds.Definitions)
                     {
@@ -102,10 +102,10 @@ public sealed class DisplaySetComposer
                 }
                 case PaletteDefinitionSegment pds:
                 {
-                    if (pds.Pts != Pcs.Pts)
-                        throw InconsistentPts;
-                    if (pds.Dts != Pcs.Dts)
-                        throw InconsistentDts;
+                    if (pds.PresentationTime != Pcs.PresentationTime)
+                        throw InconsistentPresentationTime;
+                    if (pds.DecodeStartTime != Pcs.DecodeStartTime)
+                        throw InconsistentDecodeTime;
 
                     var vid = pds.VersionedId;
 
@@ -128,10 +128,10 @@ public sealed class DisplaySetComposer
                 }
                 case SingleObjectDefinitionSegment sods:
                 {
-                    if (sods.Pts != Pcs.Pts)
-                        throw InconsistentPts;
-                    if (sods.Dts != Pcs.Dts)
-                        throw InconsistentDts;
+                    if (sods.PresentationTime != Pcs.PresentationTime)
+                        throw InconsistentPresentationTime;
+                    if (sods.DecodeStartTime != Pcs.DecodeStartTime)
+                        throw InconsistentDecodeTime;
 
                     if (InitialObject is null)
                     {
@@ -153,10 +153,10 @@ public sealed class DisplaySetComposer
                 };
                 case InitialObjectDefinitionSegment iods:
                 {
-                    if (iods.Pts != Pcs.Pts)
-                        throw InconsistentPts;
-                    if (iods.Dts != Pcs.Dts)
-                        throw InconsistentDts;
+                    if (iods.PresentationTime != Pcs.PresentationTime)
+                        throw InconsistentPresentationTime;
+                    if (iods.DecodeStartTime != Pcs.DecodeStartTime)
+                        throw InconsistentDecodeTime;
 
                     if (InitialObject is null)
                     {
@@ -176,10 +176,10 @@ public sealed class DisplaySetComposer
                 }
                 case MiddleObjectDefinitionSegment mods:
                 {
-                    if (mods.Pts != Pcs.Pts)
-                        throw InconsistentPts;
-                    if (mods.Dts != Pcs.Dts)
-                        throw InconsistentDts;
+                    if (mods.PresentationTime != Pcs.PresentationTime)
+                        throw InconsistentPresentationTime;
+                    if (mods.DecodeStartTime != Pcs.DecodeStartTime)
+                        throw InconsistentDecodeTime;
 
                     if (InitialObject is not null)
                     {
@@ -199,10 +199,10 @@ public sealed class DisplaySetComposer
                 }
                 case FinalObjectDefinitionSegment fods:
                 {
-                    if (fods.Pts != Pcs.Pts)
-                        throw InconsistentPts;
-                    if (fods.Dts != Pcs.Dts)
-                        throw InconsistentDts;
+                    if (fods.PresentationTime != Pcs.PresentationTime)
+                        throw InconsistentPresentationTime;
+                    if (fods.DecodeStartTime != Pcs.DecodeStartTime)
+                        throw InconsistentDecodeTime;
 
                     if (InitialObject is not null)
                     {
@@ -240,8 +240,8 @@ public sealed class DisplaySetComposer
                     if (InitialObject is not null)
                         throw new DisplaySetException("Incomplete object sequence.");
 
-                    if (es.Pts != Pcs.Pts)
-                        throw InconsistentPts;
+                    if (es.PresentationTime != Pcs.PresentationTime)
+                        throw InconsistentPresentationTime;
 
                     foreach (var compositionObject in Pcs.CompositionObjects)
                     {
@@ -253,9 +253,9 @@ public sealed class DisplaySetComposer
                             compositionObject.Crop);
                     }
 
-                    var newDisplaySet = new DisplaySet(Pcs.Pts, Pcs.Width, Pcs.Height,
-                        Pcs.FrameRate, Pcs.PaletteUpdateOnly, Pcs.PaletteId, Windows, Palettes,
-                        Objects, Pcs.Number, Pcs.State, Compositions);
+                    var newDisplaySet = new DisplaySet(Pcs.PresentationTime, Pcs.Width,
+                        Pcs.Height, Pcs.FrameRate, Pcs.PaletteUpdateOnly, Pcs.PaletteId,
+                        Windows, Palettes, Objects, Pcs.Number, Pcs.State, Compositions);
 
                     Reset();
 

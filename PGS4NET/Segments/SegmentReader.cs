@@ -85,9 +85,9 @@ public class SegmentReader : IDisposable
         if (magicNumber != 0x5047)
             throw new SegmentException("Unrecognized segment magic number.");
 
-        var pts = ReadUInt32Be(headerBuffer, 2)
+        var presentationTime = ReadUInt32Be(headerBuffer, 2)
             ?? throw new InvalidOperationException();
-        var dts = ReadUInt32Be(headerBuffer, 6)
+        var decodeStartTime = ReadUInt32Be(headerBuffer, 6)
             ?? throw new InvalidOperationException();
         var kind = ReadUInt8(headerBuffer, 10)
             ?? throw new InvalidOperationException();
@@ -101,11 +101,11 @@ public class SegmentReader : IDisposable
 
         return kind switch
         {
-            0x14 => ParsePds(payloadBuffer, pts, dts),
-            0x15 => ParseOds(payloadBuffer, pts, dts),
-            0x16 => ParsePcs(payloadBuffer, pts, dts),
-            0x17 => ParseWds(payloadBuffer, pts, dts),
-            0x80 => new EndSegment(pts, dts),
+            0x14 => ParsePds(payloadBuffer, presentationTime, decodeStartTime),
+            0x15 => ParseOds(payloadBuffer, presentationTime, decodeStartTime),
+            0x16 => ParsePcs(payloadBuffer, presentationTime, decodeStartTime),
+            0x17 => ParseWds(payloadBuffer, presentationTime, decodeStartTime),
+            0x80 => new EndSegment(presentationTime, decodeStartTime),
             _ => throw new SegmentException("Unrecognized segment kind."),
         };
     }
@@ -148,9 +148,9 @@ public class SegmentReader : IDisposable
         if (magicNumber != 0x5047)
             throw new SegmentException("Unrecognized segment magic number.");
 
-        var pts = ReadUInt32Be(headerBuffer, 2)
+        var presentationTime = ReadUInt32Be(headerBuffer, 2)
             ?? throw new InvalidOperationException();
-        var dts = ReadUInt32Be(headerBuffer, 6)
+        var decodeStartTime = ReadUInt32Be(headerBuffer, 6)
             ?? throw new InvalidOperationException();
         var kind = ReadUInt8(headerBuffer, 10)
             ?? throw new InvalidOperationException();
@@ -165,11 +165,11 @@ public class SegmentReader : IDisposable
 
         return kind switch
         {
-            0x14 => ParsePds(payloadBuffer, pts, dts),
-            0x15 => ParseOds(payloadBuffer, pts, dts),
-            0x16 => ParsePcs(payloadBuffer, pts, dts),
-            0x17 => ParseWds(payloadBuffer, pts, dts),
-            0x80 => new EndSegment(pts, dts),
+            0x14 => ParsePds(payloadBuffer, presentationTime, decodeStartTime),
+            0x15 => ParseOds(payloadBuffer, presentationTime, decodeStartTime),
+            0x16 => ParsePcs(payloadBuffer, presentationTime, decodeStartTime),
+            0x17 => ParseWds(payloadBuffer, presentationTime, decodeStartTime),
+            0x80 => new EndSegment(presentationTime, decodeStartTime),
             _ => throw new SegmentException("Unrecognized segment kind."),
         };
     }
@@ -196,7 +196,8 @@ public class SegmentReader : IDisposable
     }
 #endif
 
-    private static PresentationCompositionSegment ParsePcs(byte[] buffer, long pts, long dts)
+    private static PresentationCompositionSegment ParsePcs(byte[] buffer, long presentationTime,
+        long decodeStartTime)
     {
         var width = ReadUInt16Be(buffer, 0)
             ?? throw new IOException("EOS reading PCS width.");
@@ -271,12 +272,13 @@ public class SegmentReader : IDisposable
             compositionObjects.Add(co);
         }
 
-        return new PresentationCompositionSegment(pts, dts, width, height, frameRate,
-            compositionNumber, compositionState, paletteUpdateOnly, paletteId,
-            compositionObjects);
+        return new PresentationCompositionSegment(presentationTime, decodeStartTime, width,
+            height, frameRate, compositionNumber, compositionState, paletteUpdateOnly,
+            paletteId, compositionObjects);
     }
 
-    private static WindowDefinitionSegment ParseWds(byte[] buffer, long pts, long dts)
+    private static WindowDefinitionSegment ParseWds(byte[] buffer, long presentationTime,
+        long decodeStartTime)
     {
         var definitions = new List<WindowDefinitionEntry>();
         var count = ReadUInt8(buffer, 0)
@@ -301,10 +303,11 @@ public class SegmentReader : IDisposable
             offset += 9;
         }
 
-        return new WindowDefinitionSegment(pts, dts, definitions);
+        return new WindowDefinitionSegment(presentationTime, decodeStartTime, definitions);
     }
 
-    private static PaletteDefinitionSegment ParsePds(byte[] buffer, long pts, long dts)
+    private static PaletteDefinitionSegment ParsePds(byte[] buffer, long presentationTime,
+        long decodeStartTime)
     {
         var count = (buffer.Length - 2) / 5;
         var paletteId = ReadUInt8(buffer, 0)
@@ -334,10 +337,12 @@ public class SegmentReader : IDisposable
             offset += 5;
         }
 
-        return new PaletteDefinitionSegment(pts, dts, versionedId, entries);
+        return new PaletteDefinitionSegment(presentationTime, decodeStartTime, versionedId,
+            entries);
     }
 
-    private static ObjectDefinitionSegment ParseOds(byte[] buffer, long pts, long dts)
+    private static ObjectDefinitionSegment ParseOds(byte[] buffer, long presentationTime,
+        long decodeStartTime)
     {
         var id = ReadUInt16Be(buffer, 0)
             ?? throw new IOException("EOS reading ODS ID.");
@@ -348,16 +353,16 @@ public class SegmentReader : IDisposable
 
         return sequenceFlags switch
         {
-            0xC0 => ParseSods(buffer, pts, dts, id, version),
-            0x80 => ParseIods(buffer, pts, dts, id, version),
-            0x00 => ParseMods(buffer, pts, dts, id, version),
-            0x40 => ParseFods(buffer, pts, dts, id, version),
+            0xC0 => ParseSods(buffer, presentationTime, decodeStartTime, id, version),
+            0x80 => ParseIods(buffer, presentationTime, decodeStartTime, id, version),
+            0x00 => ParseMods(buffer, presentationTime, decodeStartTime, id, version),
+            0x40 => ParseFods(buffer, presentationTime, decodeStartTime, id, version),
             _ => throw new SegmentException("Unrecognized ODS sequence flag."),
         };
     }
 
-    private static SingleObjectDefinitionSegment ParseSods(byte[] buffer, long pts, long dts,
-        int id, byte version)
+    private static SingleObjectDefinitionSegment ParseSods(byte[] buffer, long presentationTime,
+        long decodeStartTime, int id, byte version)
     {
         var versionedId = new VersionedId<int>(id, version);
         var dataLength = ReadUInt24Be(buffer, 4)
@@ -374,11 +379,12 @@ public class SegmentReader : IDisposable
 
         Array.Copy(buffer, 11, data, 0, data.Length);
 
-        return new SingleObjectDefinitionSegment(pts, dts, versionedId, width, height, data);
+        return new SingleObjectDefinitionSegment(presentationTime, decodeStartTime, versionedId,
+            width, height, data);
     }
 
-    private static InitialObjectDefinitionSegment ParseIods(byte[] buffer, long pts, long dts,
-        int id, byte version)
+    private static InitialObjectDefinitionSegment ParseIods(byte[] buffer,
+        long presentationTime, long decodeStartTime, int id, byte version)
     {
         var versionedId = new VersionedId<int>(id, version);
         var dataLength = ReadUInt24Be(buffer, 4)
@@ -391,30 +397,32 @@ public class SegmentReader : IDisposable
 
         Array.Copy(buffer, 11, data, 0, data.Length);
 
-        return new InitialObjectDefinitionSegment(pts, dts, versionedId, width, height,
-            dataLength, data);
+        return new InitialObjectDefinitionSegment(presentationTime, decodeStartTime,
+            versionedId, width, height, dataLength, data);
     }
 
-    private static MiddleObjectDefinitionSegment ParseMods(byte[] buffer, long pts, long dts,
-        int id, byte version)
+    private static MiddleObjectDefinitionSegment ParseMods(byte[] buffer, long presentationTime,
+        long decodeStartTime, int id, byte version)
     {
         var versionedId = new VersionedId<int>(id, version);
         var data = new byte[buffer.Length - 4];
 
         Array.Copy(buffer, 4, data, 0, data.Length);
 
-        return new MiddleObjectDefinitionSegment(pts, dts, versionedId, data);
+        return new MiddleObjectDefinitionSegment(presentationTime, decodeStartTime, versionedId,
+            data);
     }
 
-    private static FinalObjectDefinitionSegment ParseFods(byte[] buffer, long pts, long dts,
-        int id, byte version)
+    private static FinalObjectDefinitionSegment ParseFods(byte[] buffer, long presentationTime,
+        long decodeStartTime, int id, byte version)
     {
         var versionedId = new VersionedId<int>(id, version);
         var data = new byte[buffer.Length - 4];
 
         Array.Copy(buffer, 4, data, 0, data.Length);
 
-        return new FinalObjectDefinitionSegment(pts, dts, versionedId, data);
+        return new FinalObjectDefinitionSegment(presentationTime, decodeStartTime, versionedId,
+            data);
     }
 
     private static byte? ReadUInt8(byte[] buffer, int offset) =>

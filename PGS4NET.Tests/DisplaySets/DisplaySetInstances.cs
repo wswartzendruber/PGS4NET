@@ -30,7 +30,7 @@ internal static class DisplaySetInstances
         {
             "empty", new DisplaySet
             {
-                Pts = RandomUInt32(),
+                PresentationTime = RandomUInt32(),
                 Width = RandomUInt16(),
                 Height = RandomUInt16(),
                 FrameRate = RandomByte(),
@@ -47,7 +47,7 @@ internal static class DisplaySetInstances
         {
             "not-empty", new DisplaySet
             {
-                Pts = RandomUInt32(),
+                PresentationTime = RandomUInt32(),
                 Width = RandomUInt16(),
                 Height = RandomUInt16(),
                 FrameRate = RandomByte(),

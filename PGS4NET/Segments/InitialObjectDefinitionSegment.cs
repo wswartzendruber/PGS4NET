@@ -46,14 +46,13 @@ public class InitialObjectDefinitionSegment : ObjectDefinitionSegment
     /// <summary>
     ///     Initializes a new instance with the provided values.
     /// </summary>
-    /// <param name="pts">
-    ///     The timestamp indicating when composition decoding should start. In practice, this
-    ///     is the time at which the composition is displayed, repeated, modified, or removed.
-    ///     All PTS values within a display set should match.
+    /// <param name="presentationTime">
+    ///     The time at which a composition is displayed, repeated, updated, or removed. This
+    ///     value should be consistent across all segments in a display set.
     /// </param>
-    /// <param name="dts">
-    ///     The timestamp indicating when the composition should be enacted. In practice, this
-    ///     value is always zero.
+    /// <param name="decodeStartTime">
+    ///     The time by which the segment needs to be available to the decoder in order to be
+    ///     presented in time.
     /// </param>
     /// <param name="versionedId">
     ///     The versioned ID of this object where the version should start at zero and then
@@ -71,9 +70,9 @@ public class InitialObjectDefinitionSegment : ObjectDefinitionSegment
     /// <param name="data">
     ///     The RLE-compressed data for this portion of the completed object.
     /// </param>
-    public InitialObjectDefinitionSegment(PgsTime pts, PgsTime dts,
-        VersionedId<int> versionedId, int width, int height, long length, byte[] data)
-        : base(pts, dts, versionedId, data)
+    public InitialObjectDefinitionSegment(PgsTime presentationTime, PgsTime decodeStartTime,
+        VersionedId<int> versionedId, int width, int height, long length, byte[] data) :
+        base(presentationTime, decodeStartTime, versionedId, data)
     {
         Length = length;
         Width = width;
