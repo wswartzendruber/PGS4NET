@@ -49,12 +49,6 @@ public class DisplaySet
     public PgsTime Pts { get; set; }
 
     /// <summary>
-    ///     The time at which any compositions should be enacted. In practice, this value is
-    ///     always zero.
-    /// </summary>
-    public PgsTime Dts { get; set; }
-
-    /// <summary>
     ///     The width of the screen in pixels. This value should be consistent within a
     ///     presentation.
     /// </summary>
@@ -135,10 +129,6 @@ public class DisplaySet
     /// <param name="pts">
     ///     The time at which any compositions are displayed, repeated, updated, or removed.
     /// </param>
-    /// <param name="dts">
-    ///     The time at which any compositions should be enacted. In practice, this value is
-    ///     always zero.
-    /// </param>
     /// <param name="width">
     ///     The width of the screen in pixels. This value should be consistent within a
     ///     presentation.
@@ -180,7 +170,7 @@ public class DisplaySet
     ///     The collection of <see cref="DisplayComposition"/>s, which map
     ///     <see cref="DisplayObject"/>s to <see cref="DisplayWindow"/>s.
     /// </param>
-    public DisplaySet(PgsTime pts, PgsTime dts, int width, int height, byte frameRate,
+    public DisplaySet(PgsTime pts, int width, int height, byte frameRate,
         bool paletteUpdateOnly, byte paletteId, IDictionary<byte, DisplayWindow> windows,
         IDictionary<VersionedId<byte>, DisplayPalette> palettes,
         IDictionary<VersionedId<int>, DisplayObject> objects, int compositionNumber,
@@ -188,7 +178,6 @@ public class DisplaySet
         IDictionary<CompositionId, DisplayComposition> compositions)
     {
         Pts = pts;
-        Dts = dts;
         Width = width;
         Height = height;
         FrameRate = frameRate;

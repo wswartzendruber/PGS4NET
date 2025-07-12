@@ -242,8 +242,6 @@ public sealed class DisplaySetComposer
 
                     if (es.Pts != Pcs.Pts)
                         throw InconsistentPts;
-                    if (es.Dts != Pcs.Dts)
-                        throw InconsistentDts;
 
                     foreach (var compositionObject in Pcs.CompositionObjects)
                     {
@@ -255,7 +253,7 @@ public sealed class DisplaySetComposer
                             compositionObject.Crop);
                     }
 
-                    var newDisplaySet = new DisplaySet(Pcs.Pts, Pcs.Dts, Pcs.Width, Pcs.Height,
+                    var newDisplaySet = new DisplaySet(Pcs.Pts, Pcs.Width, Pcs.Height,
                         Pcs.FrameRate, Pcs.PaletteUpdateOnly, Pcs.PaletteId, Windows, Palettes,
                         Objects, Pcs.Number, Pcs.State, Compositions);
 
